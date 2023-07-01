@@ -21,3 +21,4 @@ split screen multi player
 ai cars
 
 
+discord discussion: https://discord.gg/bFPK3Asj
