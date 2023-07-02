@@ -2,9 +2,22 @@ cmake_minimum_required(VERSION 3.24)
 
 project(skidtool)
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++20")
+
 include_directories(
   zlib
   libpng
+  mame/emu
+  mame/util
+  mame/osd
+)
+
+set(m68_src
+    m68000/m68kcpu.cpp
+)
+set(m68_include
+    m68000/m68kmusashi.h
+    mame/emu/emu.h
 )
 
 set(zlib_src
@@ -68,7 +81,8 @@ set(png_include
 
 ADD_LIBRARY(zlib ${zlib_src} ${zlib_include})
 ADD_LIBRARY(libpng ${png_src} ${png_include})
+ADD_LIBRARY(m68 ${m68_src} ${m68_include})
 
 ADD_EXECUTABLE(tool main.cpp)
 
-target_link_libraries(tool zlib libpng)
+target_link_libraries(tool m68 zlib libpng)
