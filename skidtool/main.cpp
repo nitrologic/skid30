@@ -269,6 +269,8 @@ int decodeCar(std::string src,std::string dest){
 
 }
 
+// todo - support compressed aga for caravan and f1 cars
+
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
@@ -280,7 +282,8 @@ int main() {
 //	decodeCar("C:\\nitrologic\\skid30\\vehicles\\camaro.aga", "C:\\nitrologic\\skid30\\vehicles\\camaro.png");
 //	decodeCar("C:\\nitrologic\\skid30\\vehicles\\cow.aga", "C:\\nitrologic\\skid30\\vehicles\\cow.png");
 
-	decodeCar("C:\\nitrologic\\skid30\\vehicles\\midget.aga", "C:\\nitrologic\\skid30\\vehicles\\midget.png");
+//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\midget.aga", "C:\\nitrologic\\skid30\\vehicles\\midget.png");
+	decodeCar("C:\\nitrologic\\skid30\\vehicles\\police.aga", "C:\\nitrologic\\skid30\\vehicles\\police.png");
 
 	return 0;
 };
