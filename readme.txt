@@ -1,28 +1,6 @@
-The thing about blitz basic games is they don't (typically) hit the hardware directly so headless emulation with native skin (connected via breakpoint) may be plausible. 
-
-
+A project to celebrate 30th anniversary of original Skidmarks game.
 July 2023
 
-A project to celebrate 30th anniversary of original Skidmarks game.
-
-step 1
-
-collect media and tools and reference source
-
-step 2 
-
-draw aga cars to png sprite sheet
-smooth scroll display system
-
-step 3
-
-drive flat
-drive contours
-drive into walls
-lap times
-split screen multi player
-ai cars
-
+The thing about blitz basic games is they don't (typically) hit the hardware directly so headless emulation with native skin (connected via breakpoint) seems plausible.
 
 discord discussion: https://discord.gg/bFPK3Asj
-

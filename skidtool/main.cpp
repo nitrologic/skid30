@@ -1,14 +1,13 @@
 #include <iostream>
 #include <sstream>
+#include  <iomanip>
 
 #include "libpng/png.h"
 #include <zlib.h>
 
-
-
+typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
-
 
 //int palette[] = { 0,0xff000000,0xffffffff,0xff0000ff };
 int palette[] = { 0,0xffffffff,0xff000000,0xff0000ff };
@@ -158,10 +157,21 @@ struct filedecoder {
 		f = fopen(s.c_str(), "rb");
 	}
 
+	u8 readByte() {
+		u8 result;
+		fread(&result, sizeof(u8), 1, f);
+		return result;
+	}
+
 	u16 readShort() {
         u16 result;
         fread(&result,sizeof(u16),1,f);
         return result;
+	}
+	u16 readLittleShort() {
+		u16 big = readShort();
+		u16 little = ((big << 8)&0xff00) | ((big>>8)&0xff);
+		return little;
 	}
 
 	u32 readInt() {
@@ -175,6 +185,103 @@ struct filedecoder {
 	}
 
 };
+
+void writeByte(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b;
+}
+void writeShort(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b;
+}
+void writeInt(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b;
+}
+void writeEOL() {
+	std::cout << std::endl;
+}
+void writeSpace() {
+	std::cout << " ";
+}
+void writeString(std::string s) {
+	std::cout << s;
+}
+
+/*
+
+HUNK_UNIT	999	3E7
+HUNK_NAME	1000	3E8
+HUNK_CODE	1001	3E9
+HUNK_DATA	1002	3EA
+HUNK_BSS	1003	3EB
+HUNK_RELOC32	1004	3EC
+HUNK_RELOC16	1005	3ED
+HUNK_RELOC8	1006	3EE
+HUNK_EXT	1007	3EF
+HUNK_SYMBOL	1008	3F0
+HUNK_DEBUG	1009	3F1
+HUNK_END	1010	3F2
+HUNK_HEADER	1011	3F3
+HUNK_OVERLAY	1013	3F5
+HUNK_BREAK	1014	3F6
+HUNK_DREL32	1015	3F7
+HUNK_DREL16	1016	3F8
+HUNK_DREL8	1017	3F9
+HUNK_LIB	1018	3FA
+HUNK_INDEX	1019	3FB
+HUNK_RELOC32SHORT	1020	3FC
+HUNK_RELRELOC32	1021	3FD
+HUNK_ABSRELOC16	1022	3FE
+HUNK_PPC_CODE *	1257	4E9
+HUNK_RELRELOC26 *	1260	4EC
+
+*/
+
+enum hunks{
+	HUNK_END = 0x3f2,
+	HUNK_HEADER=0x3f3,
+	HUNK_CODE=0x3E9
+};
+
+// see page 238 of AmigaDOS technical manual
+
+void loadHunk(std::string path) {
+	writeString("Reading Hunk from ");
+	writeString(path);
+	writeEOL();
+
+	filedecoder fd(path);
+
+	u16 h0 = fd.readLittleShort();
+	u16 h1 = fd.readLittleShort();
+	bool magic = (h0 == 0) && (h1 == HUNK_HEADER);
+
+	if (!magic) {
+		writeString("loadHunk fail magic");
+		writeEOL();
+		return;
+	}
+
+
+	int i = 0;
+	while(!fd.eof()){
+//	for (int i = 0; i < 24; i++) {
+//		u8 b = fd.readByte();
+//		writeByte(b);
+		u16 w = fd.readLittleShort();
+
+		writeInt(i*2);
+		writeSpace();
+		writeShort(w);
+		if ((w & 0xff00) == 0x0300) {
+			writeString("*");
+		}
+		writeEOL();
+
+		i++;
+	}
+	
+	int a = 0;
+
+}
 
 const std::string bitplane16(u16 s){
 	std::stringstream ss;
@@ -327,6 +434,9 @@ void disassemble_program()
 
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
+
+	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
+	loadHunk(amiga_binary);
 
 //	disassemble_program();
 
