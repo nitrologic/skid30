@@ -4,8 +4,6 @@ project(skidtool)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
 
-add_definitions( -DMAME_NOASM )
-
 include_directories(
   .
   zlib

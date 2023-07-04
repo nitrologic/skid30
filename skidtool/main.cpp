@@ -289,14 +289,57 @@ extern "C" {
 #include "musashi/m68kops.h"
 }
 
+
+
+void make_hex(char* buff, unsigned int pc, unsigned int length)
+{
+	char* ptr = buff;
+
+	for (; length > 0; length -= 2)
+	{
+		sprintf(ptr, "%04x", cpu_read_word_dasm(pc));
+		pc += 2;
+		ptr += 4;
+		if (length > 2)
+			*ptr++ = ' ';
+	}
+}
+
+void disassemble_program()
+{
+	unsigned int pc;
+	unsigned int instr_size;
+	char buff[100];
+	char buff2[100];
+
+	pc = cpu_read_long_dasm(4);
+
+	while (pc <= 0x16e)
+	{
+		instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
+		make_hex(buff2, pc, instr_size);
+		printf("%03x: %-20s: %s\n", pc, buff2, buff);
+		pc += instr_size;
+	}
+	fflush(stdout);
+}
+
+
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
+//	disassemble_program();
+
 	m68k_init();
+	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
+	m68k_pulse_reset();
 
-	const char* tag = "";
+	m68k_execute(100000);
 
-
+//	input_device_reset();
+//	output_device_reset();
+//	nmi_device_reset();
+//	const char* tag = "";
 
 	return 0;
 };
