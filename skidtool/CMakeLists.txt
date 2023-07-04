@@ -20,6 +20,7 @@ set(musashi_src
     musashi/m68kops.c
     musashi/sim.c
     musashi/osd.c
+    musashi/softfloat/softfloat.c
 )
 set(musashi_include
     musashi/m68kconf.h
@@ -30,6 +31,7 @@ set(musashi_include
     musashi/m68kops.h
     musashi/sim.h
     musashi/osd.h
+    musashi/softfloat/softfloat.h
 )
 
 set(zlib_src

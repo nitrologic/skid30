@@ -512,7 +512,8 @@ void cpu_instr_callback(int pc)
 
 
 /* The main loop */
-int sim_main(int argc, char* argv[])
+
+int test_68k(int argc, char* argv[])
 {
 	FILE* fhandle;
 
