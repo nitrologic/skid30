@@ -2,22 +2,29 @@ cmake_minimum_required(VERSION 3.24)
 
 project(skidtool)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++20")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+
+add_definitions( -DMAME_NOASM )
 
 include_directories(
+  .
   zlib
   libpng
-  mame/emu
-  mame/util
-  mame/osd
+  musashi
 )
 
-set(m68_src
-    m68000/m68kcpu.cpp
+set(musashi_src
+    musashi/m68kcpu.c
+    musashi/m68kdasm.c
+#    musashi/m68kfpu.c
+    musashi/m68kops.c
 )
-set(m68_include
-    m68000/m68kmusashi.h
-    mame/emu/emu.h
+set(musashi_include
+    musashi/m68k.h
+    musashi/m68kconf.h
+    musashi/m68kcpu.h
+    musashi/m68kmmu.h
+    musashi/m68kops.h
 )
 
 set(zlib_src
@@ -81,8 +88,16 @@ set(png_include
 
 ADD_LIBRARY(zlib ${zlib_src} ${zlib_include})
 ADD_LIBRARY(libpng ${png_src} ${png_include})
-ADD_LIBRARY(m68 ${m68_src} ${m68_include})
+ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
-ADD_EXECUTABLE(tool main.cpp)
+ADD_EXECUTABLE(skidtool main.cpp)
 
-target_link_libraries(tool m68 zlib libpng)
+target_link_libraries(skidtool musashi zlib libpng)
+
+# m68kmake
+
+set(make68k_src
+    musashi/m68kmake.c
+)
+
+ADD_EXECUTABLE(make68k ${make68k_src})

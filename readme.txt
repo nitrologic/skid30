@@ -1,6 +1,6 @@
 July 2023
 
-Celebrate 30th anniversary of first ever Skidmarks demo.
+A project to celebrate 30th anniversary of original Skidmarks game.
 
 step 1
 
@@ -22,3 +22,4 @@ ai cars
 
 
 discord discussion: https://discord.gg/bFPK3Asj
+

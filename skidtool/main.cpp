@@ -4,6 +4,8 @@
 #include "libpng/png.h"
 #include <zlib.h>
 
+
+
 typedef uint16_t u16;
 typedef uint32_t u32;
 
@@ -271,19 +273,50 @@ int decodeCar(std::string src,std::string dest){
 
 // todo - support compressed aga for caravan and f1 cars
 
+
+
+
+
+
+
+#define musashi
+
+#ifdef musashi
+
+extern "C" {
+#include "musashi/m68k.h"
+#include "musashi/m68kcpu.h"
+#include "musashi/m68kops.h"
+}
+
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\mini.aga", "C:\\nitrologic\\skid30\\vehicles\\mini.png");
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\vw.aga", "C:\\nitrologic\\skid30\\vehicles\\vw.png");
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\truck.aga", "C:\\nitrologic\\skid30\\vehicles\\truck.png");
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\porsche.aga", "C:\\nitrologic\\skid30\\vehicles\\porsche.png");
+	m68k_init();
 
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\camaro.aga", "C:\\nitrologic\\skid30\\vehicles\\camaro.png");
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\cow.aga", "C:\\nitrologic\\skid30\\vehicles\\cow.png");
+	const char* tag = "";
 
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\midget.aga", "C:\\nitrologic\\skid30\\vehicles\\midget.png");
-//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\police.aga", "C:\\nitrologic\\skid30\\vehicles\\police.png");
+
 
 	return 0;
 };
+
+#else
+
+int main() {
+	std::cout << "skidtool 0.1" << std::endl;
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\mini.aga", "C:\\nitrologic\\skid30\\vehicles\\mini.png");
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\vw.aga", "C:\\nitrologic\\skid30\\vehicles\\vw.png");
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\truck.aga", "C:\\nitrologic\\skid30\\vehicles\\truck.png");
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\porsche.aga", "C:\\nitrologic\\skid30\\vehicles\\porsche.png");
+
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\camaro.aga", "C:\\nitrologic\\skid30\\vehicles\\camaro.png");
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\cow.aga", "C:\\nitrologic\\skid30\\vehicles\\cow.png");
+
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\midget.aga", "C:\\nitrologic\\skid30\\vehicles\\midget.png");
+	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\police.aga", "C:\\nitrologic\\skid30\\vehicles\\police.png");
+
+	return 0;
+}
+
+#endif
