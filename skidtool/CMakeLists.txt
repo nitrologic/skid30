@@ -18,13 +18,18 @@ set(musashi_src
     musashi/m68kdasm.c
 #    musashi/m68kfpu.c
     musashi/m68kops.c
+    musashi/sim.c
+    musashi/osd.c
 )
 set(musashi_include
+    musashi/m68kconf.h
     musashi/m68k.h
     musashi/m68kconf.h
     musashi/m68kcpu.h
     musashi/m68kmmu.h
     musashi/m68kops.h
+    musashi/sim.h
+    musashi/osd.h
 )
 
 set(zlib_src
