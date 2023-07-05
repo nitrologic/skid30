@@ -21,7 +21,7 @@ void disassemble_program();
 #define OUTPUT_DEVICE_PERIOD 1
 
 /* ROM and RAM sizes */
-#define MAX_ROM 0xfff
+#define MAX_ROM 0xffff	// simon was here
 #define MAX_RAM 0xff
 
 

@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <iostream>
 #include <sstream>
 #include  <iomanip>
@@ -8,6 +9,445 @@
 typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
+
+// ctrl shift period
+
+struct filedecoder {
+
+    FILE *f;
+
+	filedecoder(std::string s) {
+		f = fopen(s.c_str(), "rb");
+	}
+
+	u8 readByte() {
+		u8 result;
+		fread(&result, sizeof(u8), 1, f);
+		return result;
+	}
+
+	u16 readShort() {
+        u16 result;
+        fread(&result,sizeof(u16),1,f);
+        return result;
+	}
+	u16 readLittleShort() {
+		u16 big = readShort();
+		u16 little = ((big << 8)&0xff00) | ((big>>8)&0xff);
+		return little;
+	}
+
+	u32 readInt() {
+		u32 result;
+		fread(&result, sizeof(u32), 1, f);
+		return result;
+	}
+
+	u32 readLittleInt() {
+		u32 big=readInt();
+		u32 little = ((big << 24) & 0xff000000) | ((big << 8) & 0xff0000) | ((big >> 8) & 0xff00) | ((big >> 24) & 0xff);
+		return little;
+	}
+
+	bool eof() {
+		return feof(f)!=0;
+	}
+
+};
+
+
+#define musashi
+
+#ifdef musashi
+
+extern "C" {
+#include "musashi/m68k.h"
+#include "musashi/m68kcpu.h"
+#include "musashi/m68kops.h"
+#include "musashi/sim.h"
+}
+
+
+void writeByte(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
+}
+void writeShort(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b << std::dec;
+}
+void writeInt(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
+}
+void writeEOL() {
+	std::cout << std::endl;
+}
+void writeSpace() {
+	std::cout << " ";
+}
+void writeString(std::string s) {
+	std::cout << s;
+}
+void writeIndex(int i) {
+	std::cout << i;
+}
+
+/*
+
+HUNK_UNIT	999	3E7
+HUNK_NAME	1000	3E8
+HUNK_CODE	1001	3E9
+HUNK_DATA	1002	3EA
+HUNK_BSS	1003	3EB
+HUNK_RELOC32	1004	3EC
+HUNK_RELOC16	1005	3ED
+HUNK_RELOC8	1006	3EE
+HUNK_EXT	1007	3EF
+HUNK_SYMBOL	1008	3F0
+HUNK_DEBUG	1009	3F1
+HUNK_END	1010	3F2
+HUNK_HEADER	1011	3F3
+HUNK_OVERLAY	1013	3F5
+HUNK_BREAK	1014	3F6
+HUNK_DREL32	1015	3F7
+HUNK_DREL16	1016	3F8
+HUNK_DREL8	1017	3F9
+HUNK_LIB	1018	3FA
+HUNK_INDEX	1019	3FB
+HUNK_RELOC32SHORT	1020	3FC
+HUNK_RELRELOC32	1021	3FD
+HUNK_ABSRELOC16	1022	3FE
+HUNK_PPC_CODE *	1257	4E9
+HUNK_RELRELOC26 *	1260	4EC
+
+*/
+
+void loadHunk(std::string path) {
+	writeString("Reading Hunk from ");
+	writeString(path);
+	writeEOL();
+
+	filedecoder fd(path);
+
+	// page 256 hunk__header
+
+	u16 h0 = fd.readLittleShort();
+	u16 h1 = fd.readLittleShort();
+	bool magic = (h0 == 0) && (h1 == 1011);
+
+	if (!magic) {
+		writeString("loadHunk fail magic");
+		writeEOL();
+		return;
+	}
+
+	while (!fd.eof()) {
+		u32 l0 = fd.readLittleInt();
+		if (l0 == 0) break;
+		for (int i = 0; i < l0; i++) {
+			u32 name = fd.readLittleInt();
+			writeString("hunk i name ");
+			writeInt(i);
+			writeSpace();
+			writeInt(name);
+			writeEOL();
+		}
+	}
+
+	if (fd.eof()) {
+		std::cout << "unexpected data remaining in file" << std::endl;
+	}
+
+	u32 tablsize = fd.readLittleInt();
+	u32 firsthunkf = fd.readLittleInt();
+	u32 lasthunkl = fd.readLittleInt();
+	int n = lasthunkl - firsthunkf + 1;
+
+	std::vector<int> sizes(n);
+	std::vector<std::vector<u32>> hunks(n);
+	for (int i = 0; i < n; i++) {
+		u32 hunkSize=fd.readLittleInt();
+		sizes[i] = hunkSize;
+		if (hunkSize == 0) {
+			std::cout << "todo: support empty bss hunks" << std::endl;
+		}
+		hunks[i] = std::vector<u32>(hunkSize);
+	}
+
+	int index = 0;
+	bool parseHunk = true;
+	while (parseHunk) 
+	{
+		if (fd.eof()) {
+			std::cout << "unexpected end of file" << std::endl;
+			break;
+		}
+		u32 type = fd.readLittleInt();
+		switch (type) {
+		case 1001: // HUNK___CODE
+		{			
+			std::cout << "HUNK_CODE" << std::endl;
+			std::vector<u32>&hunk=hunks[index];
+			u32 size = fd.readLittleInt();
+			assert(size == hunk.size());
+			//		writeInt(code);
+			//		writeSpace();
+			for (int j = 0; j < size; j++) {
+				u32 l = fd.readInt();	// make little endian?
+				hunk[j] = l;
+				if (j < 8) {
+					writeInt(l);
+					writeSpace();
+				}
+			}
+			writeEOL();
+			break;
+		}
+		case 1002: //HUNK__DATA
+		{
+			std::cout << "HUNK_DATA" << std::endl;
+			std::vector<u32>& hunk = hunks[index];
+			u32 count = fd.readLittleInt();
+			//			assert(count == hunk.size());
+			for (int i = 0; i < count; i++) {
+				u32 l = fd.readLittleInt();
+//				hunk[i] = l;
+			}
+			break;
+		}
+		case 1004:	//RELOC32
+		{
+			std::cout << "HUNK_RELOC32" << std::endl;
+			while (true) {
+				u32 number = fd.readLittleInt();
+				if (number == 0)
+					break;
+				u32 index32 = fd.readLittleInt();
+				for (int i = 0; i < number; i++) {
+					u32 offset = fd.readLittleInt();
+				}
+			}
+			break;
+		}
+		case 1010:	//HUNK__END
+		{
+			std::cout << "HUNK_END" << std::endl;
+			index++;
+			if (index == n) {
+				parseHunk = false;
+			}
+			break;
+		}
+		default:
+		{
+			assert(false);
+			break;
+		}
+		}
+	}
+	if(!fd.eof()){
+		std::cout << "unexpected data remaining in file" << std::endl;
+		u32 i = 0;
+		// debug section?
+		while (!fd.eof()) {
+			u16 h0 = fd.readLittleShort();
+			writeIndex(i++);
+			writeSpace();
+			writeShort(h0);
+			writeEOL();
+		}
+
+	}
+
+	writeString("hunks parsed");
+	writeEOL();
+
+	return;
+
+	std::vector<u32>& romhunk = hunks[1];
+	int words = romhunk.size();
+	for (int i = 0; i < words; i++) {
+		u32 l = romhunk[i];
+
+		cpu_write_word_dasm(8 + i * 4 + 0, (l>>16) );
+		cpu_write_word_dasm(8 + i * 4 + 2, (l &0xffff));
+	}
+
+}
+
+const std::string bitplane16(u16 s){
+	std::stringstream ss;
+	for (int i = 0; i < 16; i++) {
+		char c = (s & 1) ? '#' : ' ';
+		ss << c;
+		s >>= 1;
+	}
+	return ss.str();
+}
+
+
+const std::string dualbitplane32(u32 s0,u32 s1) {
+	std::stringstream ss;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 8; j++) {
+			int bit = (1 << (7 - j)) << (i * 8);
+
+			int bits = ((s0 & bit) ? 2 : 0 ) + ((s1 & bit) ? 1 : 0);
+
+			char c = 48 + bits;	// (s & bit) ? '#' : ' ';
+			ss << c;
+		}
+	}
+	return ss.str();
+}
+
+
+const std::string bitplane32(u32 s) {
+	std::stringstream ss;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 8; j++) {
+			int bit = (1 << (7-j)) << (i * 8);
+			char c = (s & bit) ? '#' : ' ';
+			ss << c;
+		}
+	}
+	return ss.str();
+}
+
+const std::string bitplane64(u32 s0, u32 s1, u32 s2, u32 s3) {
+	return bitplane32(s0) + bitplane32(s1);
+}
+
+const std::string bitplane32be(u32 s) {
+	std::stringstream ss;
+	for (int i = 0; i < 32; i++) {
+		char c = (s & 1) ? '#' : ' ';
+		ss << c;
+		s >>= 1;
+	}
+	return ss.str();
+}
+
+void make_hex(char* buff, unsigned int pc, unsigned int length)
+{
+	char* ptr = buff;
+
+	for (; length > 0; length -= 2)
+	{
+		sprintf(ptr, "%04x", cpu_read_word_dasm(pc));
+		pc += 2;
+		ptr += 4;
+		if (length > 2)
+			*ptr++ = ' ';
+	}
+}
+
+void disassemble_program()
+{
+	unsigned int pc;
+	unsigned int instr_size;
+	char buff[100];
+	char buff2[100];
+
+	pc = cpu_read_long_dasm(4);
+
+	while (pc <= 0x40)// 0x16e)
+	{
+		instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
+		make_hex(buff2, pc, instr_size);
+		printf("%03x: %-20s: %s\n", pc, buff2, buff);
+		pc += instr_size;
+	}
+	fflush(stdout);
+}
+
+
+int main() {
+	std::cout << "skidtool 0.1" << std::endl;
+
+	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
+	loadHunk(amiga_binary);
+
+/*
+move.l #$aaaaaaaa,d5
+nop
+moveq #1,d1
+jmp 0
+*/
+
+/*
+	u16 code[] = { 0,0,0,0, 0x2a3c,0xaaaa,0xaaaa,0x4e71,0x7201,0x4ef9,0,0 };
+
+	for (int i = 0; i < 10; i++) {
+		u16 w = code[i];
+		cpu_write_word_dasm(i*2,w);
+	}
+*/
+
+	disassemble_program();
+
+#define runcode
+#ifdef runcode
+	m68k_init();
+	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
+	m68k_pulse_reset();
+
+	m68k_execute(100000);
+#endif
+//	input_device_reset();
+//	output_device_reset();
+//	nmi_device_reset();
+//	const char* tag = "";
+
+	return 0;
+};
+
+#else
+
+int decodeCar(std::string src, std::string dest) {
+	filedecoder fd(src);
+	Image cels(2048, 800, 8, 4);
+
+	for (int i = 0; i < 800; i++) {
+
+		// .aga frames are 512 bytes = 64 x 8 
+
+		for (int j = 0; j < 32; j++) {
+			//u16 s0 = fd.readShort();
+			//std::cout << "[" << index << "] " <<  bitplane16(s0) << std::endl;
+
+			u32 i0 = fd.readInt();
+			u32 i1 = fd.readInt();
+			u32 i2 = fd.readInt();
+			u32 i3 = fd.readInt();
+
+			//			std::cout << "[" << index << "] " <<  bitplane32(i0) << bitplane32(i1)  << std::endl;
+			std::cout << "[" << i << "] " << dualbitplane32(i0, i2) << dualbitplane32(i1, i3) << std::endl;
+
+			int celx = i & 31;
+			int cely = i >> 5;
+
+			cels.hlin32x2(celx * 64, cely * 32 + j, i0, i2);
+			cels.hlin32x2(celx * 64 + 32, cely * 32 + j, i1, i3);
+		}
+
+		std::cout << "-------------------------------------------------" << std::endl;
+
+
+		if (fd.eof())
+			break;
+
+	}
+
+	cels.savePNG(dest.c_str());
+
+	return 0;
+
+}
+
+// todo - support compressed aga for caravan and f1 cars
+
 
 //int palette[] = { 0,0xff000000,0xffffffff,0xff0000ff };
 int palette[] = { 0,0xffffffff,0xff000000,0xff0000ff };
@@ -35,12 +475,12 @@ struct Image {
 		pixels[y * span + x] = c;
 	}
 
-	void hlin32x2(int celx,int cely,u32 s0, u32 s1) {
+	void hlin32x2(int celx, int cely, u32 s0, u32 s1) {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 8; j++) {
 				int bit = (1 << (7 - j)) << (i * 8);
 				int bits = ((s0 & bit) ? 2 : 0) + ((s1 & bit) ? 1 : 0);
-				if(bits) plot(celx, cely, palette[bits]);
+				if (bits) plot(celx, cely, palette[bits]);
 				celx++;
 			}
 		}
@@ -147,390 +587,6 @@ struct Image {
 
 };
 
-// ctrl shift period
-
-struct filedecoder {
-
-    FILE *f;
-
-	filedecoder(std::string s) {
-		f = fopen(s.c_str(), "rb");
-	}
-
-	u8 readByte() {
-		u8 result;
-		fread(&result, sizeof(u8), 1, f);
-		return result;
-	}
-
-	u16 readShort() {
-        u16 result;
-        fread(&result,sizeof(u16),1,f);
-        return result;
-	}
-	u16 readLittleShort() {
-		u16 big = readShort();
-		u16 little = ((big << 8)&0xff00) | ((big>>8)&0xff);
-		return little;
-	}
-
-	u32 readInt() {
-		u32 result;
-		fread(&result, sizeof(u32), 1, f);
-		return result;
-	}
-
-	u32 readLittleInt() {
-		u32 big=readInt();
-		u32 little = ((big << 24) & 0xff000000) | ((big << 8) & 0xff0000) | ((big >> 8) & 0xff00) | ((big >> 24) & 0xff);
-		return little;
-	}
-
-	bool eof() {
-		return feof(f)!=0;
-	}
-
-};
-
-void writeByte(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
-}
-void writeShort(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b << std::dec;
-}
-void writeInt(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
-}
-void writeEOL() {
-	std::cout << std::endl;
-}
-void writeSpace() {
-	std::cout << " ";
-}
-void writeString(std::string s) {
-	std::cout << s;
-}
-void writeIndex(int i) {
-	std::cout << i;
-}
-
-/*
-
-HUNK_UNIT	999	3E7
-HUNK_NAME	1000	3E8
-HUNK_CODE	1001	3E9
-HUNK_DATA	1002	3EA
-HUNK_BSS	1003	3EB
-HUNK_RELOC32	1004	3EC
-HUNK_RELOC16	1005	3ED
-HUNK_RELOC8	1006	3EE
-HUNK_EXT	1007	3EF
-HUNK_SYMBOL	1008	3F0
-HUNK_DEBUG	1009	3F1
-HUNK_END	1010	3F2
-HUNK_HEADER	1011	3F3
-HUNK_OVERLAY	1013	3F5
-HUNK_BREAK	1014	3F6
-HUNK_DREL32	1015	3F7
-HUNK_DREL16	1016	3F8
-HUNK_DREL8	1017	3F9
-HUNK_LIB	1018	3FA
-HUNK_INDEX	1019	3FB
-HUNK_RELOC32SHORT	1020	3FC
-HUNK_RELRELOC32	1021	3FD
-HUNK_ABSRELOC16	1022	3FE
-HUNK_PPC_CODE *	1257	4E9
-HUNK_RELRELOC26 *	1260	4EC
-
-*/
-
-enum hunks{
-	HUNK_END = 0x3f2,
-	HUNK_HEADER=0x3f3,
-	HUNK_CODE=0x3E9
-};
-
-// see page 238 of AmigaDOS technical manual
-
-void loadHunk(std::string path) {
-	writeString("Reading Hunk from ");
-	writeString(path);
-	writeEOL();
-
-	filedecoder fd(path);
-
-	// page 256 hunk__header
-
-	u16 h0 = fd.readLittleShort();
-	u16 h1 = fd.readLittleShort();
-	bool magic = (h0 == 0) && (h1 == HUNK_HEADER);
-//	u16 h2 = fd.readLittleShort();
-//	u16 h3 = fd.readLittleShort();
-
-	if (!magic) {
-		writeString("loadHunk fail magic");
-		writeEOL();
-		return;
-	}
-
-	while (!fd.eof()) {
-		u32 l0 = fd.readLittleInt();
-		if (l0 == 0) break;
-		for (int i = 0; i < l0; i++) {
-			u32 name = fd.readLittleInt();
-			writeString("hunk i name ");
-			writeInt(i);
-			writeSpace();
-			writeInt(name);
-			writeEOL();
-		}
-	}
-
-	if (fd.eof()) {
-		std::cout << "unexpected data remaining in file" << std::endl;
-	}
-
-	u32 tablsize = fd.readLittleInt();
-	u32 firsthunkf = fd.readLittleInt();
-	u32 lasthunkl = fd.readLittleInt();
-	int n = lasthunkl - firsthunkf + 1;
-
-	std::vector<int> sizes(n);
-	std::vector<std::vector<int>> hunks(n);
-	for (int i = 0; i < n; i++) {
-		u32 hunkSize=fd.readLittleInt();
-		sizes[i] = hunkSize;
-		if (hunkSize == 0) {
-			std::cout << "todo: support empty bss hunks" << std::endl;
-		}
-		hunks[i] = std::vector<int>(hunkSize);
-	}
-
-	for (int i = 0; i < n; i++) {
-		u32 size = sizes[i];
-		std::vector<int>& hunk = hunks[i];
-		writeString("hunk ");
-		writeInt(size);
-		writeSpace();
-		for (int j = 0; j < size; j++) {
-			u32 l = fd.readInt();	// make little endian?
-			hunk[j] = l;
-			if (j < 8) {
-				writeInt(l);
-				writeSpace();
-			}
-		}
-		writeEOL();
-	}
-	if(!fd.eof()){
-		std::cout << "unexpected data remaining in file" << std::endl;
-
-		u32 i = 0;
-		// debug section?
-		while (!fd.eof()) {
-			u16 h0 = fd.readLittleShort();
-			writeIndex(i++);
-			writeSpace();
-			writeShort(h0);
-			writeEOL();
-		}
-
-	}
-
-	writeString("hunks parsed");
-	writeEOL();
-}
-
-const std::string bitplane16(u16 s){
-	std::stringstream ss;
-	for (int i = 0; i < 16; i++) {
-		char c = (s & 1) ? '#' : ' ';
-		ss << c;
-		s >>= 1;
-	}
-	return ss.str();
-}
-
-
-const std::string dualbitplane32(u32 s0,u32 s1) {
-	std::stringstream ss;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 8; j++) {
-			int bit = (1 << (7 - j)) << (i * 8);
-
-			int bits = ((s0 & bit) ? 2 : 0 ) + ((s1 & bit) ? 1 : 0);
-
-			char c = 48 + bits;	// (s & bit) ? '#' : ' ';
-			ss << c;
-		}
-	}
-	return ss.str();
-}
-
-
-const std::string bitplane32(u32 s) {
-	std::stringstream ss;
-	for (int i = 0; i < 4; i++) {
-		for (int j = 0; j < 8; j++) {
-			int bit = (1 << (7-j)) << (i * 8);
-			char c = (s & bit) ? '#' : ' ';
-			ss << c;
-		}
-	}
-	return ss.str();
-}
-
-const std::string bitplane64(u32 s0, u32 s1, u32 s2, u32 s3) {
-	return bitplane32(s0) + bitplane32(s1);
-}
-
-const std::string bitplane32be(u32 s) {
-	std::stringstream ss;
-	for (int i = 0; i < 32; i++) {
-		char c = (s & 1) ? '#' : ' ';
-		ss << c;
-		s >>= 1;
-	}
-	return ss.str();
-}
-
-
-int decodeCar(std::string src,std::string dest){
-	filedecoder fd(src);
-	Image cels(2048, 800, 8, 4);
-
-	for (int i = 0; i < 800; i++) {
-
-		// .aga frames are 512 bytes = 64 x 8 
-
-		for (int j = 0; j < 32; j++) {
-			//u16 s0 = fd.readShort();
-			//std::cout << "[" << index << "] " <<  bitplane16(s0) << std::endl;
-			
-			u32 i0 = fd.readInt();
-			u32 i1 = fd.readInt();
-			u32 i2 = fd.readInt();
-			u32 i3 = fd.readInt();
-
-//			std::cout << "[" << index << "] " <<  bitplane32(i0) << bitplane32(i1)  << std::endl;
-			std::cout << "[" << i << "] " << dualbitplane32(i0,i2) << dualbitplane32(i1,i3) << std::endl;
-
-			int celx = i & 31;
-			int cely = i >> 5;
-
-			cels.hlin32x2(celx*64,cely*32+j, i0, i2);
-			cels.hlin32x2(celx * 64+32, cely * 32 + j, i1, i3);
-		}
-
-		std::cout << "-------------------------------------------------" << std::endl;
-
-
-		if (fd.eof()) 
-			break;
-
-	}
-
-	cels.savePNG(dest.c_str());
-
-	return 0;
-
-}
-
-// todo - support compressed aga for caravan and f1 cars
-
-
-
-
-
-
-
-#define musashi
-
-#ifdef musashi
-
-extern "C" {
-#include "musashi/m68k.h"
-#include "musashi/m68kcpu.h"
-#include "musashi/m68kops.h"
-}
-
-
-
-void make_hex(char* buff, unsigned int pc, unsigned int length)
-{
-	char* ptr = buff;
-
-	for (; length > 0; length -= 2)
-	{
-		sprintf(ptr, "%04x", cpu_read_word_dasm(pc));
-		pc += 2;
-		ptr += 4;
-		if (length > 2)
-			*ptr++ = ' ';
-	}
-}
-
-void disassemble_program()
-{
-	unsigned int pc;
-	unsigned int instr_size;
-	char buff[100];
-	char buff2[100];
-
-	pc = cpu_read_long_dasm(4);
-
-	while (pc <= 0x40)// 0x16e)
-	{
-		instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
-		make_hex(buff2, pc, instr_size);
-		printf("%03x: %-20s: %s\n", pc, buff2, buff);
-		pc += instr_size;
-	}
-	fflush(stdout);
-}
-
-
-int main() {
-	std::cout << "skidtool 0.1" << std::endl;
-
-	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
-//	loadHunk(amiga_binary);
-
-/*
-move.l #$aaaaaaaa,d5
-nop
-moveq #1,d1
-jmp 0
-*/
-
-	u16 code[] = { 0,0,0,0, 0x2a3c,0xaaaa,0xaaaa,0x4e71,0x7201,0x4ef9,0,0 };
-
-	for (int i = 0; i < 10; i++) {
-		u16 w = code[i];
-		cpu_write_word_dasm(i*2,w);
-	}
-	disassemble_program();
-
-#define runcode
-#ifdef runcode
-	m68k_init();
-	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
-	m68k_pulse_reset();
-
-	m68k_execute(100000);
-#endif
-//	input_device_reset();
-//	output_device_reset();
-//	nmi_device_reset();
-//	const char* tag = "";
-
-	return 0;
-};
-
-#else
 
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
@@ -549,3 +605,5 @@ int main() {
 }
 
 #endif
+
+
