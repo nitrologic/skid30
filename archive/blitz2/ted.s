@@ -9,7 +9,7 @@ begin	;
 	;Not sure if intuition compatibility is such a good
 	;thing, but let's at least get the editor underway!
 	;
-	include	e:myoffs
+	include	myoffs
 	;
 doslen	equ	2048	;len of i/o buffer
 	rsreset
@@ -133,7 +133,7 @@ fail1	move	returncode(pc),d0
 	ext.l	d0
 	bra	wb_exit
 
-edstart	include	e:wbheader
+edstart	include	wbheader
 	sub.l	a1,a1
 	rts
 
