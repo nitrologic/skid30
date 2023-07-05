@@ -479,7 +479,7 @@ void disassemble_program()
 
 	pc = cpu_read_long_dasm(4);
 
-	while (pc <= 0x16e)
+	while (pc <= 0x40)// 0x16e)
 	{
 		instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
 		make_hex(buff2, pc, instr_size);
@@ -493,19 +493,35 @@ void disassemble_program()
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
-	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\bb2";
-	loadHunk(amiga_binary);
+	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
+//	loadHunk(amiga_binary);
 
-//	disassemble_program();
+/*
+move.l #$aaaaaaaa,d5
+nop
+moveq #1,d1
+jmp 0
+*/
 
+	u16 code[] = { 0,0,0,0, 0x2a3c,0xaaaa,0xaaaa,0x4e71,0x7201,0x4ef9,0,0 };
+
+	for (int i = 0; i < 10; i++) {
+		u16 w = code[i];
+		cpu_write_word_dasm(i*2,w);
+	}
+	disassemble_program();
+
+#define runcode
+#ifdef runcode
 	m68k_init();
 	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
 	m68k_pulse_reset();
 
 	m68k_execute(100000);
-
+#endif
 //	input_device_reset();
 //	output_device_reset();
 //	nmi_device_reset();

@@ -1,6 +1,9 @@
 #ifndef SIM__HEADER
 #define SIM__HEADER
 
+void cpu_write_word_dasm(unsigned int address, unsigned int value);
+
+
 unsigned int cpu_read_byte(unsigned int address);
 unsigned int cpu_read_word(unsigned int address);
 unsigned int cpu_read_long(unsigned int address);
