@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include  <iomanip>
-
+#include <vector>
 #include "libpng/png.h"
 #include <zlib.h>
 
@@ -180,6 +180,12 @@ struct filedecoder {
 		return result;
 	}
 
+	u32 readLittleInt() {
+		u32 big=readInt();
+		u32 little = ((big << 24) & 0xff000000) | ((big << 8) & 0xff0000) | ((big >> 8) & 0xff00) | ((big >> 24) & 0xff);
+		return little;
+	}
+
 	bool eof() {
 		return feof(f)!=0;
 	}
@@ -187,13 +193,13 @@ struct filedecoder {
 };
 
 void writeByte(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b;
+	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
 }
 void writeShort(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b;
+	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b << std::dec;
 }
 void writeInt(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b;
+	std::cout << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
 }
 void writeEOL() {
 	std::cout << std::endl;
@@ -203,6 +209,9 @@ void writeSpace() {
 }
 void writeString(std::string s) {
 	std::cout << s;
+}
+void writeIndex(int i) {
+	std::cout << i;
 }
 
 /*
@@ -250,9 +259,13 @@ void loadHunk(std::string path) {
 
 	filedecoder fd(path);
 
+	// page 256 hunk__header
+
 	u16 h0 = fd.readLittleShort();
 	u16 h1 = fd.readLittleShort();
 	bool magic = (h0 == 0) && (h1 == HUNK_HEADER);
+//	u16 h2 = fd.readLittleShort();
+//	u16 h3 = fd.readLittleShort();
 
 	if (!magic) {
 		writeString("loadHunk fail magic");
@@ -260,27 +273,72 @@ void loadHunk(std::string path) {
 		return;
 	}
 
+	while (!fd.eof()) {
+		u32 l0 = fd.readLittleInt();
+		if (l0 == 0) break;
+		for (int i = 0; i < l0; i++) {
+			u32 name = fd.readLittleInt();
+			writeString("hunk i name ");
+			writeInt(i);
+			writeSpace();
+			writeInt(name);
+			writeEOL();
+		}
+	}
 
-	int i = 0;
-	while(!fd.eof()){
-//	for (int i = 0; i < 24; i++) {
-//		u8 b = fd.readByte();
-//		writeByte(b);
-		u16 w = fd.readLittleShort();
+	if (fd.eof()) {
+		std::cout << "unexpected data remaining in file" << std::endl;
+	}
 
-		writeInt(i*2);
+	u32 tablsize = fd.readLittleInt();
+	u32 firsthunkf = fd.readLittleInt();
+	u32 lasthunkl = fd.readLittleInt();
+	int n = lasthunkl - firsthunkf + 1;
+
+	std::vector<int> sizes(n);
+	std::vector<std::vector<int>> hunks(n);
+	for (int i = 0; i < n; i++) {
+		u32 hunkSize=fd.readLittleInt();
+		sizes[i] = hunkSize;
+		if (hunkSize == 0) {
+			std::cout << "todo: support empty bss hunks" << std::endl;
+		}
+		hunks[i] = std::vector<int>(hunkSize);
+	}
+
+	for (int i = 0; i < n; i++) {
+		u32 size = sizes[i];
+		std::vector<int>& hunk = hunks[i];
+		writeString("hunk ");
+		writeInt(size);
 		writeSpace();
-		writeShort(w);
-		if ((w & 0xff00) == 0x0300) {
-			writeString("*");
+		for (int j = 0; j < size; j++) {
+			u32 l = fd.readInt();	// make little endian?
+			hunk[j] = l;
+			if (j < 8) {
+				writeInt(l);
+				writeSpace();
+			}
 		}
 		writeEOL();
-
-		i++;
 	}
-	
-	int a = 0;
+	if(!fd.eof()){
+		std::cout << "unexpected data remaining in file" << std::endl;
 
+		u32 i = 0;
+		// debug section?
+		while (!fd.eof()) {
+			u16 h0 = fd.readLittleShort();
+			writeIndex(i++);
+			writeSpace();
+			writeShort(h0);
+			writeEOL();
+		}
+
+	}
+
+	writeString("hunks parsed");
+	writeEOL();
 }
 
 const std::string bitplane16(u16 s){
@@ -435,7 +493,9 @@ void disassemble_program()
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
-	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
+	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\bb2";
 	loadHunk(amiga_binary);
 
 //	disassemble_program();

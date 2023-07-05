@@ -1,0 +1,3 @@
+T h e format of a load file (that is, the output from the linker) is similar to that of
+an objec t file.
+
