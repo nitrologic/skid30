@@ -94,7 +94,6 @@ unsigned char g_rom[MAX_ROM+1];                 /* ROM */
 unsigned char g_ram[MAX_RAM+1];                 /* RAM */
 unsigned int  g_fc;                             /* Current function code from CPU */
 
-
 /* Exit with an error message.  Use printf syntax. */
 void exit_error(char* fmt, ...)
 {
@@ -118,7 +117,6 @@ void exit_error(char* fmt, ...)
 
 	exit(EXIT_FAILURE);
 }
-
 
 /* Read data from RAM, ROM, or a device */
 unsigned int cpu_read_byte(unsigned int address)
@@ -284,18 +282,20 @@ void cpu_write_long(unsigned int address, unsigned int value)
 	WRITE_LONG(g_ram, address, value);
 }
 
+/* Called when the CPU changes the function code pins */
+void cpu_set_fc(unsigned int fc)
+{
+	g_fc = fc;
+}
+
+
+
 /* Called when the CPU pulses the RESET line */
 void cpu_pulse_reset(void)
 {
 	nmi_device_reset();
 	output_device_reset();
 	input_device_reset();
-}
-
-/* Called when the CPU changes the function code pins */
-void cpu_set_fc(unsigned int fc)
-{
-	g_fc = fc;
 }
 
 /* Called when the CPU acknowledges an interrupt */
@@ -518,7 +518,7 @@ void cpu_instr_callback(int pc)
 */
 }
 
-
+#ifdef HASTEST
 /* The main loop */
 
 int test_68k(int argc, char* argv[])
@@ -569,3 +569,5 @@ int test_68k(int argc, char* argv[])
 	return 0;
 }
 
+
+#endif

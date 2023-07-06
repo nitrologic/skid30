@@ -10,6 +10,8 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 
+
+
 // ctrl shift period
 
 struct filedecoder {
@@ -56,6 +58,140 @@ struct filedecoder {
 };
 
 
+// physical address and mask == physical address
+
+struct memory32 {
+	u32 physical;
+	u32 mask;
+
+	memory32(u32 phys, u32 bits) : physical(phys), mask(bits) {
+	}
+
+	// address interface is local with physical bits already removed
+
+	virtual int read16(int address) {
+		return 0;
+	}
+
+	virtual void write16(int address, int value) {
+
+	}
+
+	// little endian helpers
+
+	virtual int read8(int address) {
+		int odd = address & 1;
+		int word = read16(address - odd);
+		word >>= 8 * odd;
+		return word;
+	}
+
+	virtual int read32(int address) {
+		int w0 = read16(address);
+		int w1 = read16(address+2);
+		return (w1 << 16) | (w0 & 0xffff);
+	}
+
+	virtual void write8(int address, int value) {
+		int odd = address & 1;
+		address -= odd;
+		int word = read16(address);
+		if (odd) {
+			word = (word & 0xff) | (value << 8);
+		}
+		else {
+			word = (word & 0xff00) | (value & 0xff);
+		}
+		write16(address,word);
+	}
+
+	virtual void write32(int address, int value) {
+		write16(address, value);
+		write16(address+2, (value>>16));
+	}
+};
+
+
+struct rom16 : memory32 {
+	std::vector<u16> shorts;
+	rom16(u32 physical, u32 mask, std::string path,int wordCount):memory32(physical,mask),shorts(wordCount) {
+		filedecoder fd(path);
+		for (int i = 0; i < wordCount; i++) {
+			shorts[i] = fd.readLittleShort();
+		}
+		if (!fd.eof()) {
+			std::cout << "unexpected end of rom16 file" << std::endl;
+		}
+	}
+	virtual int read16(int address) {
+		return shorts[address>>1];
+	}
+};
+
+struct ram16 : memory32 {
+	std::vector<u16> shorts;
+	ram16(u32 p,u32 m, int wordCount) : memory32(p,m), shorts(wordCount) {
+	}
+	virtual void write16(int address,int value) {
+		shorts[address>>1]=value;
+	}
+	virtual int read16(int address) {
+		return shorts[address>>1];
+	}
+};
+
+rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
+ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
+
+// chinnamasta soc
+
+struct acid68000 {
+
+	memory32* mem;
+
+	int decode(int physicalAddress) {
+		if ((physicalAddress & kickstart.mask) == kickstart.physical) {
+			mem = &kickstart;
+			return physicalAddress & (!kickstart.mask);
+		}
+		if ((physicalAddress & chipmem.mask) == chipmem.physical) {
+			mem = &chipmem;
+			return physicalAddress & (!chipmem.mask);
+		}
+		return -1;
+	}
+
+	int read8(int physicalAddress) {
+		int address=decode(physicalAddress);
+		int value=mem->read8(address);
+		return value;
+	}
+	int read16(int physicalAddress) {
+		int address = decode(physicalAddress);
+		int value = mem->read16(address);
+		return value;
+	}
+	int read32(int physicalAddress) {
+		int address = decode(physicalAddress);
+		int value = mem->read32(address);
+		return value;
+	}
+	void write8(int physicalAddress, int value) {
+		int address = decode(physicalAddress);
+		mem->write8(address, value);
+	}
+	void write16(int physicalAddress, int value) {
+		int address = decode(physicalAddress);
+		mem->write16(address, value);
+	}
+	void write32(int physicalAddress, int value) {
+		int address = decode(physicalAddress);
+		mem->write32(address, value);
+	}
+};
+
+acid68000 acid30;
+
 #define musashi
 
 #ifdef musashi
@@ -65,8 +201,17 @@ extern "C" {
 #include "musashi/m68kcpu.h"
 #include "musashi/m68kops.h"
 #include "musashi/sim.h"
+#include "musashi/mmu.h"
 }
 
+// musashi entry points to acid cpu address bus
+
+unsigned int mmu_read_byte(unsigned int address){return acid30.read8(address);}
+unsigned int mmu_read_word(unsigned int address){return acid30.read16(address);}
+unsigned int mmu_read_long(unsigned int address){return acid30.read32(address);}
+void mmu_write_byte(unsigned int address, unsigned int value){acid30.write8(address,value);}
+void mmu_write_word(unsigned int address, unsigned int value){acid30.write16(address,value);}
+void mmu_write_long(unsigned int address, unsigned int value){acid30.write32(address,value);}
 
 void writeByte(int b) {
 	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;

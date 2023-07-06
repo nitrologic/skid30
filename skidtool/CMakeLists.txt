@@ -29,6 +29,7 @@ set(musashi_include
     musashi/m68kops.h
     musashi/sim.h
     musashi/osd.h
+    musashi/mmu.h
     musashi/softfloat/softfloat.h
 )
 

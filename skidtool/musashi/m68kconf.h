@@ -203,16 +203,36 @@
 
 #include "sim.h"
 
+#define ACID_MMU
+
+#ifdef ACID_MMU
+
+#include "mmu.h"
+
+#define m68k_read_memory_8(A) mmu_read_byte(A)
+#define m68k_read_memory_16(A) mmu_read_word(A)
+#define m68k_read_memory_32(A) mmu_read_long(A)
+
+#define m68k_write_memory_8(A, V) mmu_write_byte(A, V)
+#define m68k_write_memory_16(A, V) mmu_write_word(A, V)
+#define m68k_write_memory_32(A, V) mmu_write_long(A, V)
+
+
+#else
+
 #define m68k_read_memory_8(A) cpu_read_byte(A)
 #define m68k_read_memory_16(A) cpu_read_word(A)
 #define m68k_read_memory_32(A) cpu_read_long(A)
 
-#define m68k_read_disassembler_16(A) cpu_read_word_dasm(A)
-#define m68k_read_disassembler_32(A) cpu_read_long_dasm(A)
-
 #define m68k_write_memory_8(A, V) cpu_write_byte(A, V)
 #define m68k_write_memory_16(A, V) cpu_write_word(A, V)
 #define m68k_write_memory_32(A, V) cpu_write_long(A, V)
+
+#endif
+
+
+#define m68k_read_disassembler_16(A) cpu_read_word_dasm(A)
+#define m68k_read_disassembler_32(A) cpu_read_long_dasm(A)
 
 
 #endif /* M68K_COMPILE_FOR_MAME ==  OPT_OFF */
