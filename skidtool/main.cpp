@@ -143,6 +143,7 @@ struct ram16 : memory32 {
 rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
 ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
 
+
 // chinnamasta soc
 
 struct acid68000 {
@@ -317,6 +318,10 @@ void loadHunk(std::string path) {
 		hunks[i] = std::vector<u32>(hunkSize);
 	}
 
+	writeString("hunkCount:");
+	writeIndex(n);
+	writeEOL();
+
 	int index = 0;
 	bool parseHunk = true;
 	while (parseHunk) 
@@ -326,6 +331,9 @@ void loadHunk(std::string path) {
 			break;
 		}
 		u32 type = fd.readLittleInt();
+
+		type &= 0xffff;
+
 		switch (type) {
 		case 1001: // HUNK___CODE
 		{			
@@ -383,6 +391,7 @@ void loadHunk(std::string path) {
 		}
 		default:
 		{
+			std::cout << "type " << std::hex << type << " not supported " << std::endl;
 			assert(false);
 			break;
 		}
@@ -507,9 +516,11 @@ void disassemble_program()
 
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
-
-	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
+	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\game";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\devpac";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
 	loadHunk(amiga_binary);
