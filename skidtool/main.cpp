@@ -31,7 +31,7 @@ struct filedecoder {
         fread(&result,sizeof(u16),1,f);
         return result;
 	}
-	u16 readLittleShort() {
+	u16 readBigShort() {
 		u16 big = readShort();
 		u16 little = ((big << 8)&0xff00) | ((big>>8)&0xff);
 		return little;
@@ -43,10 +43,18 @@ struct filedecoder {
 		return result;
 	}
 
-	u32 readLittleInt() {
+	u32 readBigInt() {
 		u32 big=readInt();
 		u32 little = ((big << 24) & 0xff000000) | ((big << 8) & 0xff0000) | ((big >> 8) & 0xff00) | ((big >> 24) & 0xff);
 		return little;
+	}
+
+	// skip is forwards only
+
+	void skip(int bytes) {
+		if (bytes>0) {
+			fseek(f, bytes, SEEK_CUR);
+		}
 	}
 
 	bool eof() {
@@ -115,7 +123,7 @@ struct rom16 : memory32 {
 	rom16(u32 physical, u32 mask, std::string path,int wordCount):memory32(physical,mask),shorts(wordCount) {
 		filedecoder fd(path);
 		for (int i = 0; i < wordCount; i++) {
-			shorts[i] = fd.readLittleShort();
+			shorts[i] = fd.readBigShort();
 		}
 		if (!fd.eof()) {
 			std::cout << "unexpected end of rom16 file" << std::endl;
@@ -265,7 +273,7 @@ unsigned int cpu_read_long_dasm(unsigned int address)
 
 
 
-// c++ hex output
+// console log output helpers
 
 void writeByte(int b) {
 	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
@@ -287,6 +295,15 @@ void writeString(std::string s) {
 }
 void writeIndex(int i) {
 	std::cout << i;
+}
+void writeTag(int tag) {
+	for (int i = 0; i < 4; i++) {
+		int b = tag & 0xff;
+		tag >>= 4;
+		if (b < 32 || b>127) 
+			b = '#';
+		std::cout << (char)(b);
+	}
 }
 
 
@@ -320,21 +337,65 @@ HUNK_RELRELOC26 *	1260	4EC
 
 */
 
+// not used
 int tag32(char* c4) {
 	u8* cv = (u8*)c4;
 //	return cv[0] | (cv[1] << 8) | (cv[2] << 16) | (cv[3] << 24);
 	return (cv[0]<<24) | (cv[1] << 16) | (cv[2] << 8) | (cv[3]);
 }
+
+const int FORM=0x464f524d;
+const int ILBM=0x494c424d;
+const int BMHD=0x424d4844;
+const int BODY=0x424f4459;
+
 void loadIFF(std::string path){
 	writeString("Reading IFF from ");
 	writeString(path);
 	writeEOL();
 	filedecoder fd(path);
 
-	int form = fd.readLittleInt();
-	if (form != tag32("FORM")) {
+	int form = fd.readBigInt();
+	if (form != FORM){
 		std::cout << "expecting FORM at start of IFF ILBM" << std::endl;
 		return;
+	}
+	int fsize=fd.readBigInt();
+	int ilbm=fd.readBigInt();
+	if(ilbm!=ILBM){
+		writeTag(ilbm);
+		std::cout << "expecting ILBM at start of IFF ILBM" << std::endl;
+		return;
+	}
+	int w = 0;
+	int h = 0;
+	fsize -= 4;
+	while (fsize > 0) {
+		int token= fd.readBigInt();
+		int tsize= fd.readBigInt();
+		switch (token) {
+		case BMHD: {
+			fd.skip(16);
+			w = fd.readBigShort();
+			h = fd.readBigShort();
+			//can = new canvas(); can.init(w, h);
+			fd.skip(tsize - 20);
+		}
+			break;
+		case BODY:
+		{
+			for (int y = 0; y < h; y++) {
+
+			}
+		}
+			break;
+		default:
+			writeString("FORM ILBM TOKEN ");
+			writeTag(token);
+			writeEOL();
+			fd.skip(tsize);
+		}
+		fsize -= (tsize + 8);
 	}
 
 	for (int i = 0; i < 64; i++) {
@@ -342,8 +403,8 @@ void loadIFF(std::string path){
 		std::cout << x << " " << (char)x << std::endl;
 	}
 
-	u16 h0 = fd.readLittleShort();
-	u16 h1 = fd.readLittleShort();
+	u16 h0 = fd.readBigShort();
+	u16 h1 = fd.readBigShort();
 	bool magic = (h0 == 0) && (h1 == 1011);
 
 }
@@ -356,8 +417,8 @@ void loadHunk(std::string path) {
 
 	// page 256 hunk__header
 
-	u16 h0 = fd.readLittleShort();
-	u16 h1 = fd.readLittleShort();
+	u16 h0 = fd.readBigShort();
+	u16 h1 = fd.readBigShort();
 	bool magic = (h0 == 0) && (h1 == 1011);
 
 	if (!magic) {
@@ -367,10 +428,10 @@ void loadHunk(std::string path) {
 	}
 
 	while (!fd.eof()) {
-		u32 l0 = fd.readLittleInt();
+		u32 l0 = fd.readBigInt();
 		if (l0 == 0) break;
 		for (int i = 0; i < l0; i++) {
-			u32 name = fd.readLittleInt();
+			u32 name = fd.readBigInt();
 			writeString("hunk i name ");
 			writeInt(i);
 			writeSpace();
@@ -383,15 +444,15 @@ void loadHunk(std::string path) {
 		std::cout << "unexpected data remaining in file" << std::endl;
 	}
 
-	u32 tablsize = fd.readLittleInt();
-	u32 firsthunkf = fd.readLittleInt();
-	u32 lasthunkl = fd.readLittleInt();
+	u32 tablsize = fd.readBigInt();
+	u32 firsthunkf = fd.readBigInt();
+	u32 lasthunkl = fd.readBigInt();
 	int n = lasthunkl - firsthunkf + 1;
 
 	std::vector<int> sizes(n);
 	std::vector<std::vector<u32>> hunks(n);
 	for (int i = 0; i < n; i++) {
-		u32 hunkSize=fd.readLittleInt();
+		u32 hunkSize=fd.readBigInt();
 		sizes[i] = hunkSize;
 		if (hunkSize == 0) {
 			std::cout << "todo: support empty bss hunks" << std::endl;
@@ -411,7 +472,7 @@ void loadHunk(std::string path) {
 			std::cout << "unexpected end of file" << std::endl;
 			break;
 		}
-		u32 type = fd.readLittleInt();
+		u32 type = fd.readBigInt();
 
 		type &= 0xffff;
 
@@ -420,7 +481,7 @@ void loadHunk(std::string path) {
 		{			
 			std::cout << "HUNK_CODE" << std::endl;
 			std::vector<u32>&hunk=hunks[index];
-			u32 size = fd.readLittleInt();
+			u32 size = fd.readBigInt();
 			assert(size == hunk.size());
 			//		writeInt(code);
 			//		writeSpace();
@@ -439,10 +500,10 @@ void loadHunk(std::string path) {
 		{
 			std::cout << "HUNK_DATA" << std::endl;
 			std::vector<u32>& hunk = hunks[index];
-			u32 count = fd.readLittleInt();
+			u32 count = fd.readBigInt();
 			//			assert(count == hunk.size());
 			for (int i = 0; i < count; i++) {
-				u32 l = fd.readLittleInt();
+				u32 l = fd.readBigInt();
 //				hunk[i] = l;
 			}
 			break;
@@ -451,12 +512,12 @@ void loadHunk(std::string path) {
 		{
 			std::cout << "HUNK_RELOC32" << std::endl;
 			while (true) {
-				u32 number = fd.readLittleInt();
+				u32 number = fd.readBigInt();
 				if (number == 0)
 					break;
-				u32 index32 = fd.readLittleInt();
+				u32 index32 = fd.readBigInt();
 				for (int i = 0; i < number; i++) {
-					u32 offset = fd.readLittleInt();
+					u32 offset = fd.readBigInt();
 				}
 			}
 			break;
@@ -483,7 +544,7 @@ void loadHunk(std::string path) {
 		u32 i = 0;
 		// debug section?
 		while (!fd.eof()) {
-			u16 h0 = fd.readLittleShort();
+			u16 h0 = fd.readBigShort();
 			writeIndex(i++);
 			writeSpace();
 			writeShort(h0);
@@ -590,8 +651,12 @@ void disassemble_program()
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
-	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";//archive\\amigademogfx\\skid.iff";
+//	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
+	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
 	loadIFF(iff);
+//audio
+//	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\skid.iff";
+//	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\impact.iff";
 
 	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
 	// const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";

@@ -1,0 +1,43 @@
+java ilbm parser from D:\nitrogit\acid\rasm\juice
+
+					c=0;pos=0;wid=((w+15)>>4)<<1;bm=0;
+					for (y=0;y<h;y++)
+					{
+						val=0x10000;
+						for (d=0;d<24;d++)
+						{
+							for (x=0;x<wid;)
+							{
+								b=(int)myfile.readByte();				//*iff++;
+								if (b<0)
+								{
+									b=1-b;
+									c=(int)myfile.readByte();
+									for (i=0;i<b;i++) 
+										for(j=128;j>0;j=j>>1) {if((j&c)==j) can.pix[pos]|=val;pos++;}
+									x+=b;
+								}
+								else if (b<128)
+								{
+									b=1+b;
+									for (i=0;i<b;i++)
+									{
+										c=(int)myfile.readByte();
+										for(j=128;j>0;j=j>>1) {if((j&c)==j) can.pix[pos]|=val;pos++;}
+									}
+									x+=b;
+								}
+							}
+							if (x>wid) return can;
+							pos-=can.modulo;
+							val=val<<1;
+							if (val==0x1000000) {val=0x100;}
+							if (val==0x10000) {val=1;}
+						}
+						pos+=can.modulo;
+					}
+					break;
+				default:
+					myfile.skip(tsize);
+					break;
+				}			
