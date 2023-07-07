@@ -281,7 +281,6 @@ static uint dasm_read_imm_8(uint advance)
 	g_cpu_pc += advance;
 	return result;
 }
-
 static uint dasm_read_imm_16(uint advance)
 {
 	uint result;

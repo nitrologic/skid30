@@ -191,7 +191,7 @@ unsigned int cpu_read_long(unsigned int address)
 	return READ_LONG(g_ram, address);
 }
 
-
+#ifdef SIMONWASHERE
 unsigned int cpu_read_word_dasm(unsigned int address)
 {
 	if(address > MAX_ROM)
@@ -199,21 +199,13 @@ unsigned int cpu_read_word_dasm(unsigned int address)
 	return READ_WORD(g_rom, address);
 }
 
-void cpu_write_word_dasm(unsigned int address, unsigned int value)
-{
-	if (address > MAX_ROM)
-		exit_error("Disassembler attempted to read word from ROM address %08x", address);
-	WRITE_WORD(g_rom, address, value);
-}
-
-
 unsigned int cpu_read_long_dasm(unsigned int address)
 {
 	if(address > MAX_ROM)
 		exit_error("Dasm attempted to read long from ROM address %08x", address);
 	return READ_LONG(g_rom, address);
 }
-
+#endif
 
 /* Write data to RAM or a device */
 void cpu_write_byte(unsigned int address, unsigned int value)

@@ -10,8 +10,6 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 
-
-
 // ctrl shift period
 
 struct filedecoder {
@@ -140,9 +138,23 @@ struct ram16 : memory32 {
 	}
 };
 
+// a headless paula denise agnus chipset
+
+struct chipset16 : memory32 {
+	std::vector<u16> shorts;
+	chipset16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
+	}
+	virtual void write16(int address, int value) {
+		shorts[address >> 1] = value;
+	}
+	virtual int read16(int address) {
+		return shorts[address >> 1];
+	}
+};
+
 rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
 ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
-
+chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
 
 // chinnamasta soc
 
@@ -158,6 +170,10 @@ struct acid68000 {
 		if ((physicalAddress & chipmem.mask) == chipmem.physical) {
 			mem = &chipmem;
 			return physicalAddress & (!chipmem.mask);
+		}
+		if ((physicalAddress & chipset.mask) == chipset.physical) {
+			mem = &chipset;
+			return physicalAddress & (!chipset.mask);
 		}
 		return -1;
 	}
@@ -203,16 +219,53 @@ extern "C" {
 #include "musashi/m68kops.h"
 #include "musashi/sim.h"
 #include "musashi/mmu.h"
+#include "musashi/m68kops.h"
 }
 
 // musashi entry points to acid cpu address bus
 
-unsigned int mmu_read_byte(unsigned int address){return acid30.read8(address);}
-unsigned int mmu_read_word(unsigned int address){return acid30.read16(address);}
-unsigned int mmu_read_long(unsigned int address){return acid30.read32(address);}
-void mmu_write_byte(unsigned int address, unsigned int value){acid30.write8(address,value);}
-void mmu_write_word(unsigned int address, unsigned int value){acid30.write16(address,value);}
-void mmu_write_long(unsigned int address, unsigned int value){acid30.write32(address,value);}
+unsigned int mmu_read_byte(unsigned int address){
+	return acid30.read8(address);
+}
+unsigned int mmu_read_word(unsigned int address){
+	return acid30.read16(address);
+}
+unsigned int mmu_read_long(unsigned int address){
+	return acid30.read32(address);
+}
+void mmu_write_byte(unsigned int address, unsigned int value){
+	acid30.write8(address,value);
+}
+void mmu_write_word(unsigned int address, unsigned int value){
+	acid30.write16(address,value);
+}
+void mmu_write_long(unsigned int address, unsigned int value){
+	acid30.write32(address,value);
+}
+
+uint  read_imm_8(void) { 
+	return 0; 
+}
+uint  read_imm_16(void) { 
+	return 0; 
+}
+uint  read_imm_32(void) { 
+	return 0; 
+}
+
+unsigned int cpu_read_word_dasm(unsigned int address)
+{
+	return acid30.read16(address);
+}
+
+unsigned int cpu_read_long_dasm(unsigned int address)
+{
+	return acid30.read32(address);
+}
+
+
+
+// c++ hex output
 
 void writeByte(int b) {
 	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
@@ -235,6 +288,7 @@ void writeString(std::string s) {
 void writeIndex(int i) {
 	std::cout << i;
 }
+
 
 /*
 
@@ -266,6 +320,33 @@ HUNK_RELRELOC26 *	1260	4EC
 
 */
 
+int tag32(char* c4) {
+	u8* cv = (u8*)c4;
+//	return cv[0] | (cv[1] << 8) | (cv[2] << 16) | (cv[3] << 24);
+	return (cv[0]<<24) | (cv[1] << 16) | (cv[2] << 8) | (cv[3]);
+}
+void loadIFF(std::string path){
+	writeString("Reading IFF from ");
+	writeString(path);
+	writeEOL();
+	filedecoder fd(path);
+
+	int form = fd.readLittleInt();
+	if (form != tag32("FORM")) {
+		std::cout << "expecting FORM at start of IFF ILBM" << std::endl;
+		return;
+	}
+
+	for (int i = 0; i < 64; i++) {
+		int x = fd.readByte();
+		std::cout << x << " " << (char)x << std::endl;
+	}
+
+	u16 h0 = fd.readLittleShort();
+	u16 h1 = fd.readLittleShort();
+	bool magic = (h0 == 0) && (h1 == 1011);
+
+}
 void loadHunk(std::string path) {
 	writeString("Reading Hunk from ");
 	writeString(path);
@@ -415,16 +496,6 @@ void loadHunk(std::string path) {
 	writeEOL();
 
 	return;
-
-	std::vector<u32>& romhunk = hunks[1];
-	int words = romhunk.size();
-	for (int i = 0; i < words; i++) {
-		u32 l = romhunk[i];
-
-		cpu_write_word_dasm(8 + i * 4 + 0, (l>>16) );
-		cpu_write_word_dasm(8 + i * 4 + 2, (l &0xffff));
-	}
-
 }
 
 const std::string bitplane16(u16 s){
@@ -480,6 +551,8 @@ const std::string bitplane32be(u32 s) {
 	return ss.str();
 }
 
+
+
 void make_hex(char* buff, unsigned int pc, unsigned int length)
 {
 	char* ptr = buff;
@@ -516,8 +589,13 @@ void disassemble_program()
 
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
-	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
+
+	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";//archive\\amigademogfx\\skid.iff";
+	loadIFF(iff);
+
+	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
+	// const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
+	//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\game";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\devpac";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
