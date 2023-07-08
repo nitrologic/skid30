@@ -41,16 +41,17 @@ struct filedecoder {
         fread(&result,sizeof(u16),1,f);
         return result;
 	}
-	u16 readBigShort() {
-		u16 big = readShort();
-		u16 little = ((big << 8)&0xff00) | ((big>>8)&0xff);
-		return little;
-	}
 
 	u32 readInt() {
 		u32 result;
 		fread(&result, sizeof(u32), 1, f);
 		return result;
+	}
+
+	u16 readBigShort() {
+		u16 big = readShort();
+		u16 little = ((big << 8) & 0xff00) | ((big >> 8) & 0xff);
+		return little;
 	}
 
 	u32 readBigInt() {
@@ -313,10 +314,9 @@ void writeString(std::string s) {
 void writeIndex(int i) {
 	std::cout << i;
 }
-void writeTag(int tag) {
+void writeCC4Big(int tag) {
 	for (int i = 0; i < 4; i++) {
-		int b = tag & 0xff;
-		tag >>= 4;
+		int b = (tag >> ((3-i)*8) )& 0xff;
 		if (b < 32 || b>127) 
 			b = '#';
 		std::cout << (char)(b);
@@ -324,47 +324,20 @@ void writeTag(int tag) {
 }
 
 
-/*
-
-HUNK_UNIT	999	3E7
-HUNK_NAME	1000	3E8
-HUNK_CODE	1001	3E9
-HUNK_DATA	1002	3EA
-HUNK_BSS	1003	3EB
-HUNK_RELOC32	1004	3EC
-HUNK_RELOC16	1005	3ED
-HUNK_RELOC8	1006	3EE
-HUNK_EXT	1007	3EF
-HUNK_SYMBOL	1008	3F0
-HUNK_DEBUG	1009	3F1
-HUNK_END	1010	3F2
-HUNK_HEADER	1011	3F3
-HUNK_OVERLAY	1013	3F5
-HUNK_BREAK	1014	3F6
-HUNK_DREL32	1015	3F7
-HUNK_DREL16	1016	3F8
-HUNK_DREL8	1017	3F9
-HUNK_LIB	1018	3FA
-HUNK_INDEX	1019	3FB
-HUNK_RELOC32SHORT	1020	3FC
-HUNK_RELRELOC32	1021	3FD
-HUNK_ABSRELOC16	1022	3FE
-HUNK_PPC_CODE *	1257	4E9
-HUNK_RELRELOC26 *	1260	4EC
-
-*/
-
-// not used
-int tag32(char* c4) {
-	u8* cv = (u8*)c4;
-//	return cv[0] | (cv[1] << 8) | (cv[2] << 16) | (cv[3] << 24);
-	return (cv[0]<<24) | (cv[1] << 16) | (cv[2] << 8) | (cv[3]);
-}
+// EA DPAINT IFF ILBM FILE FORMAT
+// http://www.etwright.org/lwsdk/docs/filefmts/ilbm.html
 
 const int FORM=0x464f524d;
 const int ILBM=0x494c424d;
 const int BMHD=0x424d4844;
 const int BODY=0x424f4459;
+const int CMAP=0x434d4150;
+const int CRNG=0x43524e47;
+const int CAMG=0x43414d47;
+const int DPPS=0x44505053;
+
+#define CAMG_HAM 0x800   /* hold and modify */
+#define CAMG_EHB 0x80    /* extra halfbrite */
 
 void loadIFF(std::string path){
 	writeString("Reading IFF from ");
@@ -380,7 +353,7 @@ void loadIFF(std::string path){
 	int fsize=fd.readBigInt();
 	int ilbm=fd.readBigInt();
 	if(ilbm!=ILBM){
-		writeTag(ilbm);
+		writeCC4Big(ilbm);
 		std::cout << "expecting ILBM at start of IFF ILBM" << std::endl;
 		return;
 	}
@@ -397,10 +370,122 @@ void loadIFF(std::string path){
 	int pagew = 0;
 	int pageh = 0;
 	fsize -= 4;
+
 	while (fsize > 0) {
 		int token= fd.readBigInt();
 		int tsize= fd.readBigInt();
+
 		switch (token) {
+
+		case BODY:{
+
+			int depth = planes;
+			int c = 0; 
+			int pos = 0; 
+			int wid = ((w + 15) >> 4) << 1; 
+			int bm = 0;
+			if (comp == 0)
+			{
+				for (int y = 0; y < h; y++)
+				{
+					int val = 0x10000; 
+					if (depth <= 8) val = 1;
+					for (int d = 0; d < depth; d++)
+					{
+						for (int x = 0; x < wid; x++)
+						{
+							int b = fd.readByte();
+							for (int j = 128; j > 0; j = j >> 1)
+							{
+//								if ((j & b) == j) can.pix[pos] |= val;
+								pos++;
+							}
+						}
+						pos -= wid * 8;
+						val = val << 1;
+						if (val == 0x1000000) { val = 0x100; }
+						if (val == 0x10000) { val = 1; }
+					}
+//					pos += can.modulo;
+				}
+				break;
+			}
+
+			for (int y = 0; y < h; y++)
+			{
+				int val = 0x10000; 
+				if (depth <= 8) val = 1;
+				for (int d = 0; d < depth; d++)
+				{
+					for (int x = 0; x < wid;)
+					{
+						int b = fd.readByte();				//*iff++
+						if (b == -128) continue;
+						if (b < 0)
+						{
+							b = 1 - b;
+							c = fd.readByte();
+							for (int i = 0; i < b; i++) {
+								for (int j = 128; j > 0; j = j >> 1) {
+									if ((j & c) == j) {
+//										can.pix[pos] |= val; 
+										pos++;
+									}
+								}
+							}
+							x += b;
+						}
+						else
+						{
+							b = 1 + b;
+							for (int i = 0; i < b; i++){
+								c = fd.readByte();
+								for (int j = 128; j > 0; j = j >> 1) { 
+//									if ((j & c) == j) can.pix[pos] |= val; 
+									pos++; 
+								}
+							}
+							x += b;
+						}
+					}
+					pos -= wid * 8;
+					val = val << 1;
+					if (val == 0x1000000) { val = 0x100; }
+					if (val == 0x10000) { val = 1; }
+				}
+//				pos += can.modulo;
+			}
+
+//			fd.skip(tsize);
+		}
+			break;
+		case DPPS:
+			fd.skip(tsize);
+			break;
+		case CRNG: {
+			int pad = fd.readBigShort();
+			int rate = fd.readBigShort();
+			int flags = fd.readBigShort();
+			int low = fd.readByte();
+			int high = fd.readByte();
+			fd.skip(tsize-8);
+		}
+			break;
+		case CMAP: {
+			int n = 1 << planes;
+			for (int i = 0; i < n; i++) {
+				int r = fd.readByte();
+				int g = fd.readByte();
+				int b = fd.readByte();
+			}
+			fd.skip(tsize-3*n);
+		}
+			break;
+		case CAMG: {
+			int camg = fd.readBigInt();
+			fd.skip(tsize-4);
+		}
+			 break;
 		case BMHD: {
 //			fd.skip(16);
 			w = fd.readBigShort();
@@ -423,21 +508,14 @@ void loadIFF(std::string path){
 			pageh = fd.readBigShort();
 
 			//can = new canvas(); can.init(w, h);
-//			fd.skip(tsize - 20);
-		}
-			break;
-		case BODY:
-		{
-			for (int y = 0; y < h; y++) {
 
-			}
+			fd.skip(tsize - 20);
 		}
 			break;
 		default:
-			writeString("FORM ILBM TOKEN ");
-			writeTag(token);
+//			writeString("FORM ILBM TOKEN ");
+			writeCC4Big(token);
 			writeEOL();
-			return;
 			fd.skip(tsize);
 		}
 		fsize -= (tsize + 8);
@@ -691,14 +769,14 @@ void disassemble(int pc,int count)
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
-//	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
+	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
-//	loadIFF(iff);
+	loadIFF(iff);
 //audio
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\skid.iff";
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\impact.iff";
 
-	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
 	// const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
 	//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\game";
@@ -706,7 +784,7 @@ int main() {
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
-	loadHunk(amiga_binary);
+//	loadHunk(amiga_binary);
 
 /*
 move.l #$aaaaaaaa,d5
@@ -724,11 +802,10 @@ jmp 0
 	}
 */
 	// test it on kickstart rom
+#ifdef disassembleRom
 	disassemble(0xf80000,4);
-	
 	disassemble(0xf800d2, 16);
-
-
+#endif
 
 //	disassemble_program();
 
