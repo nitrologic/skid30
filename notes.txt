@@ -1,3 +1,351 @@
+// axis.util.adpro
+
+package axis.util;
+
+import axis.system.*;
+import axis.device.*;
+import axis.display.*;
+
+import java.io.*;
+import java.util.Vector;
+
+public class adpro
+{
+	static final int FORM=0x464f524d;
+	static final int ILBM=0x494c424d;
+	static final int BMHD=0x424d4844;
+	static final int BODY=0x424f4459;
+	static final int CMAP=0x434d4150;
+
+	static int gamma=100;
+
+	public static void setgamma(int g) {gamma=g;}
+
+//	public static ramcanvas loadiff(String name) throws IOException
+	public static ramcanvas loadiff(input myfile) throws IOException
+	{
+		ramcanvas can=null;
+		int		w=0,h=0,depth=24;
+		int		i,j,x,y,c,d,val,pos,wid,bm,n,r,g,b,comp=0;
+		int		fsize,token,tsize;
+
+//		system.debug("loadiff="+name);
+//		DataInputStream myfile=netlink.read(name);
+
+		if (myfile.readInt()!=FORM) return null;
+		fsize=myfile.readInt();
+		if (myfile.readInt()!=ILBM) return null;
+		fsize-=4;
+
+		while (fsize>7)
+		{
+			token=myfile.readInt();
+			tsize=myfile.readInt();
+
+			switch (token)
+			{
+			case BMHD:
+				w=myfile.readShort();
+				h=myfile.readShort();
+				myfile.skipBytes(4);
+				depth=myfile.readByte();
+				myfile.skipBytes(1);
+				comp=myfile.readByte();
+				myfile.skipBytes(7+2);
+				can=new ramcanvas();
+				can.init(w,h);
+				myfile.skipBytes(tsize-20);
+//				system.debug("w="+w+"h="+h+"depth="+depth);
+				break;
+
+			case CMAP:
+				n=tsize/3;
+				can.palette=new int[n];
+				for (i=0;i<n;i++)
+				{
+					r=myfile.readByte();
+					g=myfile.readByte();
+					b=myfile.readByte();
+					r=((r&255)*gamma)/100;if (r>255) r=255;
+					g=((g&255)*gamma)/100;if (g>255) g=255;
+					b=((b&255)*gamma)/100;if (b>255) b=255;
+					can.palette[i]=0xff000000|(r<<16)|(g<<8)|(b);
+				}
+				can.palette[0]=0;
+				break;
+
+			case BODY:					//iff=tt+8;
+				if (can==null) return null;
+				c=0;pos=0;wid=((w+15)>>4)<<1;bm=0;
+				if (comp==0)
+				{
+					for (y=0;y<h;y++)
+					{
+						val=0x10000;if (depth<=8) val=1;			
+						for (d=0;d<depth;d++)
+						{
+							for (x=0;x<wid;x++)
+							{
+								b=(int)myfile.readByte();
+								for(j=128;j>0;j=j>>1)
+								{
+									if((j&b)==j) can.pix[pos]|=val;
+									pos++;
+								}
+							}
+							pos-=wid*8;
+							val=val<<1;
+							if (val==0x1000000) {val=0x100;}
+							if (val==0x10000) {val=1;}
+						}
+						pos+=can.modulo;
+					}
+					break;
+				}
+					
+				for (y=0;y<h;y++)
+				{
+					val=0x10000;if (depth<=8) val=1;			
+					for (d=0;d<depth;d++)
+					{
+						for (x=0;x<wid;)
+						{
+							b=(int)myfile.readByte();				//*iff++
+							if (b==-128) continue;
+							if (b<0)
+							{
+								b=1-b;
+								c=(int)myfile.readByte();
+								for (i=0;i<b;i++) 
+									for(j=128;j>0;j=j>>1) {if((j&c)==j) can.pix[pos]|=val;pos++;}
+								x+=b;
+							}
+							else 
+							{
+								b=1+b;
+								for (i=0;i<b;i++)
+								{
+									c=(int)myfile.readByte();
+									for(j=128;j>0;j=j>>1) {if((j&c)==j) can.pix[pos]|=val;pos++;}
+								}
+								x+=b;
+							}
+						}
+						if (x>wid) throw new IOException("IFF PARSE ERROR");
+						pos-=wid*8;
+						val=val<<1;
+						if (val==0x1000000) {val=0x100;}
+						if (val==0x10000) {val=1;}
+					}
+					pos+=can.modulo;
+				}
+				break;
+			default:
+				myfile.skipBytes(tsize);
+				break;
+			}			
+			fsize-=tsize+8;
+		}
+
+//		system.debug("remap");
+
+		if (depth==24)
+		{
+			int p[]=can.pix;for (i=0;i<p.length;i++) p[i]|=0xff000000;
+		}
+		else
+		{
+//			for (i=0;i<32;i++) can.fillrect(i*8,0,8,8,i);
+			can.remap();
+		}
+
+//		system.debug("done");
+		return can;
+	}
+
+	static ramcanvas readshape(input f,int pal[]) throws IOException
+	{
+		ramcanvas	can;
+		short		w,h,depth,ebw,bltsize,xhandle,yhandle;
+
+		w=f.readShort();
+		if ((w<0) || (w>1024)) return null;
+		h=f.readShort();
+		depth=f.readShort();
+		ebw=f.readShort();		//even byte width
+		bltsize=f.readShort();
+		xhandle=f.readShort();
+		yhandle=f.readShort();
+		f.skipBytes(18);			//*gfx,*cookie,bpsize,bpesize,size,esize,pad
+
+//			system.debug("w="+w+" h="+h+" d="+depth+" ebw="+ebw+" xh="+xhandle+" yh="+yhandle+"\n");
+
+		can=new ramcanvas();
+		can.init(w,h);
+		can.palette=pal;
+
+		int		x,y,i,j,bp,b,v,c;
+
+		for (bp=0;bp<depth;bp++)
+		{
+			c=1<<bp;
+			for (y=0;y<h;y++)
+			{
+				for (x=0;x<ebw;x++)
+				{
+					b=f.readByte();v=1;for (j=0;j<8;j++,v=v<<1) if ((b&v)!=0) can.plotor(x*8+7-j,y,c);
+				}
+			}
+		}
+		can.remap();
+		return can;
+	}
+
+	public static ramcanvas loadshape(String name,int pal[]) throws IOException
+	{
+		return readshape(netlink.read(name),pal);
+	}
+
+	public static ramcanvas[] loadshapes(String name,int pal[]) throws IOException
+	{
+		Vector		cans;
+		ramcanvas	can;
+		input		f;
+		
+		f=netlink.read(name);
+
+		cans=new Vector();
+		try
+		{
+			while (true)
+			{
+				can=readshape(f,pal);
+				if (can==null) break;
+				cans.addElement(can);
+			}
+		}
+		catch (EOFException e) {}
+
+		ramcanvas shapes[]=new ramcanvas[cans.size()];
+		for (int i=0;i<cans.size();i++) shapes[i]=(ramcanvas)cans.elementAt(i);
+
+		return shapes;
+	}
+
+	byte bmpheader[]={
+		0x42,0x4d,0x38,0x06,0,0,0,00,0,0x36,0,0,0,0x28,0,
+		0,0,0x10,0,0,0,0x20,0,0,0,0x01,0,0x18,0,0,0,
+		0,0,0,0,0,0,0x12,0x0b,0,0,0x12,0x0b,0,0,0,0,
+		0,0,0,0,0,0};
+
+	void savebmp(output out,canvas can) throws IOException
+	{
+		int		x,y,c,i;
+		byte	rgb[]=new byte[3*can.width];
+
+		out.print("BM");											//2 BM
+		out.write(netlink.endian(can.width*can.height*3+0x38));		//4 filesize
+		out.write(0);												//4 res0 res1
+		out.write(netlink.endian(0x36));								//4 offset
+		out.write(netlink.endian(0x28));								//4 bitmapinfo size
+		out.write(netlink.endian(can.width));						//4 width
+		out.write(netlink.endian(can.height));						//4 height
+		out.write(netlink.endian((short)0x01));						//2 planes
+		out.write(netlink.endian((short)0x18));						//2 bpp
+		out.write(0);								//4 compression
+		out.write(0);								//4 sizeimage	
+		out.write(netlink.endian(0x00000b12));						//4 xpelspermeter
+		out.write(netlink.endian(0x00000b12));						//4 ypelspermeter
+		out.write(0x00);							//4 CLRUSED
+		out.write(0x00);							//4 CLRIMPORTANT
+
+		for (y=can.height-1;y>=0;y--)
+		{
+			i=0;
+			for (x=0;x<can.width;x++)
+			{
+				c=can.point(x,y);
+				rgb[i++]=(byte)(c&0xff);
+				rgb[i++]=(byte)((c>>8)&0xff);
+				rgb[i++]=(byte)((c>>16)&0xff);				
+			}
+			out.write(rgb);
+		}
+		out.flush();
+
+	}
+
+	void writetga(output out,canvas can) throws Exception
+	{
+		int		x,xx,y,c0,c1,i;
+		byte	header[]={0,0,10,0,0,0,0,0};
+
+		out.write(header);
+		out.write((short)0);
+		out.write((short)0);
+		out.write(netlink.endian((short)can.width));
+		out.write(netlink.endian((short)can.height));
+		out.write((byte)32);
+		out.write((byte)8);
+
+		for (y=can.height-1;y>=0;y--)
+		{
+			x=0;
+			while (x<can.width)
+			{
+				c0=can.point(x,y);				
+				if (x==can.width-1 || c0!=can.point(x+1,y))
+				{
+					i=0;xx=x+1;
+					while ( (xx<can.width) && (can.point(xx,y)!=c0) && (i<127) ) {c0=can.point(xx,y);xx++;i++;}
+					out.write((byte)i);
+					while (i>=0) {out.write(netlink.endian(can.point(x,y)));x++;i--;}
+				}
+				else
+				{
+					i=0;x++;
+					while ( (x<can.width) && (can.point(x,y)==c0) && (i<127) ) {x++;i++;}
+					out.write((byte)(i|0x80));
+					out.write(netlink.endian(c0));
+				}
+			}
+		}
+		out.flush();
+	}
+}
+
+
+/*
+	void out.writetga(canvas can)
+	{
+		int		x,y,c,i;
+		byte	header[]={0,0,2,0,0,0,0,0};
+		byte	rgb[]=new byte[4*can.width];
+
+		out.write(header);
+		out.write((short)0);
+		out.write((short)0);
+		out.write(acid.endian((short)can.width));
+		out.write(acid.endian((short)can.height));
+		out.write((byte)32);
+		out.write((byte)8);
+
+		for (y=can.height-1;y>=0;y--)
+		{
+			for (x=0;x<can.width;x++)
+			{
+				c=can.point(x,y);
+				out.write(acid.endian(c));
+			}
+		}
+
+		flush();
+	}
+*/
+
+
+
+
 java ilbm parser from D:\nitrogit\acid\rasm\juice
 
 					c=0;pos=0;wid=((w+15)>>4)<<1;bm=0;

@@ -12,6 +12,16 @@ typedef uint32_t u32;
 
 // ctrl shift period
 
+struct block {
+	void* raw;
+	block(size_t size) {
+		raw = malloc(size);
+	}
+	~block() {
+		free(raw);
+	}
+};
+
 struct filedecoder {
 
     FILE *f;
@@ -66,6 +76,8 @@ struct filedecoder {
 
 // physical address and mask == physical address
 
+// big endian byte order
+
 struct memory32 {
 	u32 physical;
 	u32 mask;
@@ -95,7 +107,8 @@ struct memory32 {
 	virtual int read32(int address) {
 		int w0 = read16(address);
 		int w1 = read16(address+2);
-		return (w1 << 16) | (w0 & 0xffff);
+//		return (w1 << 16) | (w0 & 0xffff);
+		return (w0 << 16) | (w1 & 0xffff);
 	}
 
 	virtual void write8(int address, int value) {
@@ -112,11 +125,12 @@ struct memory32 {
 	}
 
 	virtual void write32(int address, int value) {
-		write16(address, value);
-		write16(address+2, (value>>16));
+//		write16(address, value);
+//		write16(address+2, (value>>16));
+		write16(address, (value>>16));
+		write16(address + 2, (value &0xffff));
 	}
 };
-
 
 struct rom16 : memory32 {
 	std::vector<u16> shorts;
@@ -124,6 +138,7 @@ struct rom16 : memory32 {
 		filedecoder fd(path);
 		for (int i = 0; i < wordCount; i++) {
 			shorts[i] = fd.readBigShort();
+//			shorts[i] = fd.readShort();
 		}
 		if (!fd.eof()) {
 			std::cout << "unexpected end of rom16 file" << std::endl;
@@ -160,6 +175,8 @@ struct chipset16 : memory32 {
 	}
 };
 
+// address is 24 bit 6hexdigit
+
 rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
 ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
@@ -173,15 +190,15 @@ struct acid68000 {
 	int decode(int physicalAddress) {
 		if ((physicalAddress & kickstart.mask) == kickstart.physical) {
 			mem = &kickstart;
-			return physicalAddress & (!kickstart.mask);
+			return physicalAddress & (~kickstart.mask);
 		}
 		if ((physicalAddress & chipmem.mask) == chipmem.physical) {
 			mem = &chipmem;
-			return physicalAddress & (!chipmem.mask);
+			return physicalAddress & (~chipmem.mask);
 		}
 		if ((physicalAddress & chipset.mask) == chipset.physical) {
 			mem = &chipset;
-			return physicalAddress & (!chipset.mask);
+			return physicalAddress & (~chipset.mask);
 		}
 		return -1;
 	}
@@ -281,8 +298,8 @@ void writeByte(int b) {
 void writeShort(int b) {
 	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b << std::dec;
 }
-void writeInt(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
+void writeNamedInt(const char *name,int b) {
+	std::cout << name << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
 }
 void writeEOL() {
 	std::cout << std::endl;
@@ -369,17 +386,44 @@ void loadIFF(std::string path){
 	}
 	int w = 0;
 	int h = 0;
+	int planes = 0;
+	int mask = 0;
+	int comp = 0;
+	int xorg = 0;
+	int yorg = 0;
+	int trans = 0;
+	int xasp = 0;
+	int yasp = 0;
+	int pagew = 0;
+	int pageh = 0;
 	fsize -= 4;
 	while (fsize > 0) {
 		int token= fd.readBigInt();
 		int tsize= fd.readBigInt();
 		switch (token) {
 		case BMHD: {
-			fd.skip(16);
+//			fd.skip(16);
 			w = fd.readBigShort();
 			h = fd.readBigShort();
+
+			xorg = fd.readBigShort();
+			yorg = fd.readBigShort();
+				
+			planes = fd.readByte();
+			mask = fd.readByte();
+			
+			comp = fd.readByte();
+			fd.skip(1);
+
+			trans = fd.readBigShort();
+			xasp = fd.readByte();
+			yasp = fd.readByte();
+
+			pagew = fd.readBigShort();
+			pageh = fd.readBigShort();
+
 			//can = new canvas(); can.init(w, h);
-			fd.skip(tsize - 20);
+//			fd.skip(tsize - 20);
 		}
 			break;
 		case BODY:
@@ -393,6 +437,7 @@ void loadIFF(std::string path){
 			writeString("FORM ILBM TOKEN ");
 			writeTag(token);
 			writeEOL();
+			return;
 			fd.skip(tsize);
 		}
 		fsize -= (tsize + 8);
@@ -432,10 +477,9 @@ void loadHunk(std::string path) {
 		if (l0 == 0) break;
 		for (int i = 0; i < l0; i++) {
 			u32 name = fd.readBigInt();
-			writeString("hunk i name ");
-			writeInt(i);
+			writeNamedInt("hunk ",i);
 			writeSpace();
-			writeInt(name);
+			writeNamedInt("name ",name);
 			writeEOL();
 		}
 	}
@@ -489,7 +533,7 @@ void loadHunk(std::string path) {
 				u32 l = fd.readInt();	// make little endian?
 				hunk[j] = l;
 				if (j < 8) {
-					writeInt(l);
+					writeNamedInt("$",l);
 					writeSpace();
 				}
 			}
@@ -627,24 +671,20 @@ void make_hex(char* buff, unsigned int pc, unsigned int length)
 			*ptr++ = ' ';
 	}
 }
-
-void disassemble_program()
+void disassemble(int pc,int count)
 {
-	unsigned int pc;
 	unsigned int instr_size;
 	char buff[100];
 	char buff2[100];
 
-	pc = cpu_read_long_dasm(4);
-
-	while (pc <= 0x40)// 0x16e)
+	while (count--)
 	{
 		instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
 		make_hex(buff2, pc, instr_size);
-		printf("%03x: %-20s: %s\n", pc, buff2, buff);
+		printf("%06x: %-20s: %s\n", pc, buff2, buff);
 		pc += instr_size;
 	}
-	fflush(stdout);
+	writeEOL();
 }
 
 
@@ -652,8 +692,8 @@ int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
 //	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
-	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
-	loadIFF(iff);
+//	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
+//	loadIFF(iff);
 //audio
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\skid.iff";
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\impact.iff";
@@ -683,8 +723,14 @@ jmp 0
 		cpu_write_word_dasm(i*2,w);
 	}
 */
+	// test it on kickstart rom
+	disassemble(0xf80000,4);
+	
+	disassemble(0xf800d2, 16);
 
-	disassemble_program();
+
+
+//	disassemble_program();
 
 #define runcode
 #ifdef runcode

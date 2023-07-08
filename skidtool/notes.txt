@@ -1,3 +1,17 @@
+UINT16BE	width	Image width, in pixels
+UINT16BE	height	Image height, in pixels
+INT16BE	xOrigin	Where on screen, in pixels, the image's top-left corner is. Value is usually 0,0 unless image is part of a larger image or not fullscreen.
+INT16BE	yOrigin
+UINT8	numPlanes	Number of planes in bitmap; 1 for monochrome, 4 for 16 color, 8 for 256 color, or 0 if there is only a colormap, and no image data. (i.e., this file is just a colormap.)
+UINT8	mask	1 = masked, 2 = transparent color, 3 = lasso (for MacPaint). Mask data is not considered a bit plane.
+UINT8	compression	If 0 then uncompressed. If 1 then image data is RLE compressed. If 2 "Vertical RLE" from Deluxe Paint for Atari ST. Other values are theoretically possible, representing other compression methods.
+UINT8	pad1	Ignore when reading, set to 0 when writing for future compatibility
+UINT16BE	transClr	Transparent colour, useful only when mask >= 2
+UINT8	xAspect	Pixel aspect, a ratio width:height; used for displaying the image on a variety of different screen resolutions for 320x200 5:6 or 10:11
+UINT8	yAspect
+INT16BE	pageWidth	The size of the screen the image is to be displayed on, in pixels, usually 320×200
+INT16BE	pageHeight
+
 T h e format of a load file (that is, the output from the linker) is similar to that of
 an objec t file.
 
