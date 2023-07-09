@@ -912,6 +912,7 @@ const char* help = "[s]tep [q]uit";
 
 void debugCode(int pc) {
 	int key = 0;
+	int run = 0;
 
 	acid500.qwrite32(0, 0x400); //sp
 	acid500.qwrite32(4, 0x2000); //pc
@@ -956,9 +957,18 @@ void debugCode(int pc) {
 		writeString(help);
 		writeEOL();
 
-		key=getch();
+		key=run?0:getch();
+
 		if (key == 'q') break;
 		if (key == 's') {
+			m68k_execute(1);
+			acid500.tick++;
+		}
+		if (key == 'r') {
+			run = 1 - run;
+		}
+
+		if (run) {
 			m68k_execute(1);
 			acid500.tick++;
 		}
