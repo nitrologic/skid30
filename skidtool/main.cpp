@@ -1,3 +1,4 @@
+#include <conio.h>
 #include <assert.h>
 #include <iostream>
 #include <sstream>
@@ -184,9 +185,35 @@ chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..d
 
 // chinnamasta soc
 
+
+
+#define musashi
+
+#ifdef musashi
+
+extern "C" {
+#include "musashi/m68k.h"
+#include "musashi/m68kcpu.h"
+#include "musashi/m68kops.h"
+#include "musashi/sim.h"
+#include "musashi/mmu.h"
+#include "musashi/m68kops.h"
+}
+
+//int m68k_execute(int num_cycles)
+
 struct acid68000 {
 
 	memory32* mem;
+
+	void writeRegister(int reg, int value) {
+		m68k_set_reg((m68k_register_t)reg, (unsigned int)value);
+	}
+
+	int readRegister(int reg) {
+		void* context = 0;
+		unsigned int value = m68k_get_reg(context, (m68k_register_t) reg);
+	}
 
 	int decode(int physicalAddress) {
 		if ((physicalAddress & kickstart.mask) == kickstart.physical) {
@@ -235,18 +262,6 @@ struct acid68000 {
 
 acid68000 acid30;
 
-#define musashi
-
-#ifdef musashi
-
-extern "C" {
-#include "musashi/m68k.h"
-#include "musashi/m68kcpu.h"
-#include "musashi/m68kops.h"
-#include "musashi/sim.h"
-#include "musashi/mmu.h"
-#include "musashi/m68kops.h"
-}
 
 // musashi entry points to acid cpu address bus
 
@@ -302,6 +317,10 @@ void writeShort(int b) {
 void writeNamedInt(const char *name,int b) {
 	std::cout << name << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
 }
+void writeHome() {
+	std::cout << "\033[2J" << "\033[H" << std::flush;
+}
+
 void writeEOL() {
 	std::cout << std::endl;
 }
@@ -531,7 +550,12 @@ void loadIFF(std::string path){
 	bool magic = (h0 == 0) && (h1 == 1011);
 
 }
-void loadHunk(std::string path) {
+
+typedef std::vector<int> Chunk;
+
+// write to acid30
+
+void loadHunk(std::string path,int physical) {
 	writeString("Reading Hunk from ");
 	writeString(path);
 	writeEOL();
@@ -572,15 +596,22 @@ void loadHunk(std::string path) {
 	int n = lasthunkl - firsthunkf + 1;
 
 	std::vector<int> sizes(n);
-	std::vector<std::vector<u32>> hunks(n);
+	std::vector<int> offsets(n);
+	int total = 0;
+//	std::vector<std::vector<u32>> hunks(n);
 	for (int i = 0; i < n; i++) {
 		u32 hunkSize=fd.readBigInt();
 		sizes[i] = hunkSize;
+		offsets[i] = total;
+		total += hunkSize;
 		if (hunkSize == 0) {
 			std::cout << "todo: support empty bss hunks" << std::endl;
 		}
-		hunks[i] = std::vector<u32>(hunkSize);
 	}
+	writeNamedInt("total", total);
+	writeEOL();
+
+	Chunk chunk(total);
 
 	writeString("hunkCount:");
 	writeIndex(n);
@@ -602,14 +633,15 @@ void loadHunk(std::string path) {
 		case 1001: // HUNK___CODE
 		{			
 			std::cout << "HUNK_CODE" << std::endl;
-			std::vector<u32>&hunk=hunks[index];
+			int chunkOffset = offsets[index];
+
 			u32 size = fd.readBigInt();
-			assert(size == hunk.size());
 			//		writeInt(code);
 			//		writeSpace();
 			for (int j = 0; j < size; j++) {
-				u32 l = fd.readInt();	// make little endian?
-				hunk[j] = l;
+//				int l = fd.readInt();	// make little endian?
+				int l = fd.readBigInt();	// make little endian?
+				chunk[chunkOffset+j] = l;
 				if (j < 8) {
 					writeNamedInt("$",l);
 					writeSpace();
@@ -621,25 +653,35 @@ void loadHunk(std::string path) {
 		case 1002: //HUNK__DATA
 		{
 			std::cout << "HUNK_DATA" << std::endl;
-			std::vector<u32>& hunk = hunks[index];
+			int chunkOffset = offsets[index];
+
 			u32 count = fd.readBigInt();
 			//			assert(count == hunk.size());
 			for (int i = 0; i < count; i++) {
-				u32 l = fd.readBigInt();
-//				hunk[i] = l;
+				int l = fd.readBigInt();
+				chunk[chunkOffset+i] = l;
 			}
 			break;
 		}
 		case 1004:	//RELOC32
 		{
 			std::cout << "HUNK_RELOC32" << std::endl;
+//			std::vector<u32>& hunk = hunks[index];
+
 			while (true) {
 				u32 number = fd.readBigInt();
 				if (number == 0)
 					break;
 				u32 index32 = fd.readBigInt();
+				int chunkOffset = offsets[index];
+
+				int targetOffset = offsets[index32];
+
 				for (int i = 0; i < number; i++) {
 					u32 offset = fd.readBigInt();
+
+					int o = chunkOffset + (offset >> 2);
+					chunk[o]=chunk[o] + (physical + targetOffset);
 				}
 			}
 			break;
@@ -677,6 +719,10 @@ void loadHunk(std::string path) {
 
 	writeString("hunks parsed");
 	writeEOL();
+
+	for (int i = 0; i < total; i++) {
+		acid30.write32(physical+i*4,chunk[i]);
+	}
 
 	return;
 }
@@ -766,25 +812,50 @@ void disassemble(int pc,int count)
 }
 
 
+void debugCode(int pc) {
+	int tick = 0;
+	int ch = 0;
+
+	while (true) {
+		writeHome();
+		writeNamedInt("ch", ch);
+		writeNamedInt("tick", tick);
+		tick++;
+
+		ch=getch();
+	}
+
+}
+
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
 
 	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
-	loadIFF(iff);
+//	loadIFF(iff);
 //audio
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\skid.iff";
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\impact.iff";
-
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
-	// const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
-	//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\game";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\devpac";
+//unknown
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
+// triple chunk issue
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\game";
+//  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\devpac";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
+
+//amiga 2 chunk hunks
+	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
-//	loadHunk(amiga_binary);
+//  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
+
+	loadHunk(amiga_binary,0x2000);
+//	disassemble(0x2000, 6);
+
+
+
+	debugCode(0x2000);
+
 
 /*
 move.l #$aaaaaaaa,d5
@@ -809,12 +880,11 @@ jmp 0
 
 //	disassemble_program();
 
-#define runcode
+//#define runcode
 #ifdef runcode
 	m68k_init();
 	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
 	m68k_pulse_reset();
-
 	m68k_execute(100000);
 #endif
 //	input_device_reset();
