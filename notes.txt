@@ -389,3 +389,63 @@ java ilbm parser from D:\nitrogit\acid\rasm\juice
 					myfile.skip(tsize);
 					break;
 				}			
+
+
+UINT16BE	width	Image width, in pixels
+UINT16BE	height	Image height, in pixels
+INT16BE	xOrigin	Where on screen, in pixels, the image's top-left corner is. Value is usually 0,0 unless image is part of a larger image or not fullscreen.
+INT16BE	yOrigin
+UINT8	numPlanes	Number of planes in bitmap; 1 for monochrome, 4 for 16 color, 8 for 256 color, or 0 if there is only a colormap, and no image data. (i.e., this file is just a colormap.)
+UINT8	mask	1 = masked, 2 = transparent color, 3 = lasso (for MacPaint). Mask data is not considered a bit plane.
+UINT8	compression	If 0 then uncompressed. If 1 then image data is RLE compressed. If 2 "Vertical RLE" from Deluxe Paint for Atari ST. Other values are theoretically possible, representing other compression methods.
+UINT8	pad1	Ignore when reading, set to 0 when writing for future compatibility
+UINT16BE	transClr	Transparent colour, useful only when mask >= 2
+UINT8	xAspect	Pixel aspect, a ratio width:height; used for displaying the image on a variety of different screen resolutions for 320x200 5:6 or 10:11
+UINT8	yAspect
+INT16BE	pageWidth	The size of the screen the image is to be displayed on, in pixels, usually 320×200
+INT16BE	pageHeight
+
+T h e format of a load file (that is, the output from the linker) is similar to that of
+an objec t file.
+
+
+
+
+
+/*
+
+HUNK_UNIT	999	3E7
+HUNK_NAME	1000	3E8
+HUNK_CODE	1001	3E9
+HUNK_DATA	1002	3EA
+HUNK_BSS	1003	3EB
+HUNK_RELOC32	1004	3EC
+HUNK_RELOC16	1005	3ED
+HUNK_RELOC8	1006	3EE
+HUNK_EXT	1007	3EF
+HUNK_SYMBOL	1008	3F0
+HUNK_DEBUG	1009	3F1
+HUNK_END	1010	3F2
+HUNK_HEADER	1011	3F3
+HUNK_OVERLAY	1013	3F5
+HUNK_BREAK	1014	3F6
+HUNK_DREL32	1015	3F7
+HUNK_DREL16	1016	3F8
+HUNK_DREL8	1017	3F9
+HUNK_LIB	1018	3FA
+HUNK_INDEX	1019	3FB
+HUNK_RELOC32SHORT	1020	3FC
+HUNK_RELRELOC32	1021	3FD
+HUNK_ABSRELOC16	1022	3FE
+HUNK_PPC_CODE *	1257	4E9
+HUNK_RELRELOC26 *	1260	4EC
+
+*/
+
+
+// not used
+int tag32(char* c4) {
+	u8* cv = (u8*)c4;
+//	return cv[0] | (cv[1] << 8) | (cv[2] << 16) | (cv[3] << 24);
+	return (cv[0]<<24) | (cv[1] << 16) | (cv[2] << 8) | (cv[3]);
+}

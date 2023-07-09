@@ -11,6 +11,61 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 
+// console log output helpers
+
+void writeByte(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
+}
+void writeShort(int b) {
+	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b << std::dec;
+}
+void writeNamedInt(const char* name, int b) {
+	std::cout << name << " " << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
+}
+void writeAddress(int b) {
+	std::cout << std::setfill('0') << std::setw(6) << std::right << std::hex << (b&0xffffff) << std::dec;
+}
+void writeData32(int b) {
+	std::cout << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
+}
+void writeData16(int b) {
+	std::cout << std::setfill('0') << std::setw(4) << std::right << std::hex << (b&0xffff) << std::dec;
+}
+void writeData8(int b) {
+	std::cout << std::setfill('0') << std::setw(2) << std::right << std::hex << (b&0xff) << std::dec;
+}
+void writeHome() {
+	std::cout << "\033[H" << std::flush;
+}
+void writeClear() {
+	std::cout << "\033[2J" << "\033[H" << std::flush;
+}
+
+void writeEOL() {
+	std::cout << "\033[K" << std::endl;
+}
+void writeSpace() {
+	std::cout << " ";
+}
+void writeChar(int c) {
+	std::cout << (char)c;
+}
+void writeString(std::string s) {
+	std::cout << s;
+}
+void writeIndex(int i) {
+	std::cout << i;
+}
+void writeCC4Big(int tag) {
+	for (int i = 0; i < 4; i++) {
+		int b = (tag >> ((3 - i) * 8)) & 0xff;
+		if (b < 32 || b>127)
+			b = '#';
+		std::cout << (char)(b);
+	}
+}
+
+
 // ctrl shift period
 
 struct block {
@@ -200,11 +255,68 @@ extern "C" {
 #include "musashi/m68kops.h"
 }
 
+struct MemEvent {
+	int time;
+	int address; // bit31 - R=0 W=1 bit 30-29 - byte,short,long 
+	int data;
+
+	MemEvent(int t32,int a32, int d32) :time(t32), address(a32), data(d32) {}
+};
+
+typedef std::vector<MemEvent> MemEvents;
+
 //int m68k_execute(int num_cycles)
+
+const char readwrite[] = { 'r','w' };
+const char longshortbyte[] = {'l','w','b','?'};
 
 struct acid68000 {
 
+	int tick=0;
 	memory32* mem;
+	MemEvents memlog;
+
+	void log_bus(int readwrite, int byteshortlong, int address, int value) {
+		int a32 = (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
+		memlog.emplace_back(tick, a32, value);
+	}
+
+	void dumplog() {
+		int n = memlog.size();
+		int begin = n - 5;
+		if (begin < 0) begin = 0;
+		for (int i = begin; i < n; i++) {
+			MemEvent& e = memlog[i];
+			int t32 = e.time;
+			int a32 = e.address;
+			int d32 = e.data;
+			int rw = (a32 >> 30) & 1;
+			int opsize = (a32 >> 28) & 3;
+
+			writeIndex(t32);
+			writeSpace();
+			writeChar(readwrite[rw]);
+			writeSpace();
+			writeChar(longshortbyte[opsize]);
+			writeSpace();
+			writeAddress(a32);
+			writeSpace();
+
+			switch (opsize) {
+			case 0:
+				writeData32(d32);
+				break;
+			case 1:
+				writeData16(d32);
+				break;
+			case 2:
+				writeData8(d32);
+				break;
+			}
+			writeEOL();
+		}
+
+	}
 
 	void writeRegister(int reg, int value) {
 		m68k_set_reg((m68k_register_t)reg, (unsigned int)value);
@@ -213,6 +325,7 @@ struct acid68000 {
 	int readRegister(int reg) {
 		void* context = 0;
 		unsigned int value = m68k_get_reg(context, (m68k_register_t) reg);
+		return (int)value;
 	}
 
 	int decode(int physicalAddress) {
@@ -234,54 +347,68 @@ struct acid68000 {
 	int read8(int physicalAddress) {
 		int address=decode(physicalAddress);
 		int value=mem->read8(address);
+		log_bus(0, 2, physicalAddress, value);
 		return value;
 	}
-	int read16(int physicalAddress) {
+	int read16(int a32) {
+		int qbit = a32 & 0x80000000;
+		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
 		int value = mem->read16(address);
+		if(qbit==0) log_bus(0, 1, physicalAddress, value);
 		return value;
 	}
-	int read32(int physicalAddress) {
+	int read32(int a32) {
+		int qbit = a32 & 0x80000000;
+		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
 		int value = mem->read32(address);
+		if(qbit==0) log_bus(0, 0, physicalAddress, value);
 		return value;
 	}
 	void write8(int physicalAddress, int value) {
+		log_bus(1, 2, physicalAddress, value);
 		int address = decode(physicalAddress);
 		mem->write8(address, value);
 	}
 	void write16(int physicalAddress, int value) {
+		log_bus(1, 1, physicalAddress, value);
 		int address = decode(physicalAddress);
 		mem->write16(address, value);
 	}
 	void write32(int physicalAddress, int value) {
+		log_bus(1, 0, physicalAddress, value);
+		int address = decode(physicalAddress);
+		mem->write32(address, value);
+	}
+	void qwrite32(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		mem->write32(address, value);
 	}
 };
 
-acid68000 acid30;
+acid68000 acid500;
 
 
 // musashi entry points to acid cpu address bus
 
 unsigned int mmu_read_byte(unsigned int address){
-	return acid30.read8(address);
+	return acid500.read8(address);
 }
 unsigned int mmu_read_word(unsigned int address){
-	return acid30.read16(address);
+	return acid500.read16(address);
 }
 unsigned int mmu_read_long(unsigned int address){
-	return acid30.read32(address);
+	return acid500.read32(address);
 }
 void mmu_write_byte(unsigned int address, unsigned int value){
-	acid30.write8(address,value);
+	acid500.write8(address,value);
 }
 void mmu_write_word(unsigned int address, unsigned int value){
-	acid30.write16(address,value);
+	acid500.write16(address,value);
 }
 void mmu_write_long(unsigned int address, unsigned int value){
-	acid30.write32(address,value);
+	acid500.write32(address,value);
 }
 
 uint  read_imm_8(void) { 
@@ -294,53 +421,20 @@ uint  read_imm_32(void) {
 	return 0; 
 }
 
+// address with qbit so does not clog up bus log
+
 unsigned int cpu_read_word_dasm(unsigned int address)
 {
-	return acid30.read16(address);
+	return acid500.read16(address | 0x80000000);
 }
 
 unsigned int cpu_read_long_dasm(unsigned int address)
 {
-	return acid30.read32(address);
+	return acid500.read32(address | 0x80000000);
 }
 
 
 
-// console log output helpers
-
-void writeByte(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
-}
-void writeShort(int b) {
-	std::cout << "0x" << std::setfill('0') << std::setw(4) << std::right << std::hex << b << std::dec;
-}
-void writeNamedInt(const char *name,int b) {
-	std::cout << name << "0x" << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
-}
-void writeHome() {
-	std::cout << "\033[2J" << "\033[H" << std::flush;
-}
-
-void writeEOL() {
-	std::cout << std::endl;
-}
-void writeSpace() {
-	std::cout << " ";
-}
-void writeString(std::string s) {
-	std::cout << s;
-}
-void writeIndex(int i) {
-	std::cout << i;
-}
-void writeCC4Big(int tag) {
-	for (int i = 0; i < 4; i++) {
-		int b = (tag >> ((3-i)*8) )& 0xff;
-		if (b < 32 || b>127) 
-			b = '#';
-		std::cout << (char)(b);
-	}
-}
 
 
 // EA DPAINT IFF ILBM FILE FORMAT
@@ -553,7 +647,7 @@ void loadIFF(std::string path){
 
 typedef std::vector<int> Chunk;
 
-// write to acid30
+// write to acid500
 
 void loadHunk(std::string path,int physical) {
 	writeString("Reading Hunk from ");
@@ -721,7 +815,7 @@ void loadHunk(std::string path,int physical) {
 	writeEOL();
 
 	for (int i = 0; i < total; i++) {
-		acid30.write32(physical+i*4,chunk[i]);
+		acid500.qwrite32(physical+i*4,chunk[i]);
 	}
 
 	return;
@@ -805,24 +899,70 @@ void disassemble(int pc,int count)
 	{
 		instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
 		make_hex(buff2, pc, instr_size);
-		printf("%06x: %-20s: %s\n", pc, buff2, buff);
+		printf("%06x: %-20s: %s \033[K\n", pc, buff2, buff);
+
+
 		pc += instr_size;
 	}
 	writeEOL();
 }
 
+const char* title = "acid500 monitor";
+const char* help = "[s]tep [q]uit";
 
 void debugCode(int pc) {
-	int tick = 0;
-	int ch = 0;
+	int key = 0;
+
+	acid500.qwrite32(0, 0x400); //sp
+	acid500.qwrite32(4, 0x2000); //pc
+
+	writeClear();
+
+	m68k_init();
+	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
+	m68k_pulse_reset();
 
 	while (true) {
 		writeHome();
-		writeNamedInt("ch", ch);
-		writeNamedInt("tick", tick);
-		tick++;
+		writeString(title);
+		writeEOL();
+		writeEOL();
+		writeNamedInt("key", key);
+		writeEOL();
+		writeNamedInt("TICK", acid500.tick);
+		writeEOL();
 
-		ch=getch();
+		int pc = acid500.readRegister(16);
+		writeNamedInt("PC", pc);
+		writeEOL();
+
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 8; j++) {
+				int r = i * 8 + j;
+				int r32=acid500.readRegister(r);
+				writeChar(i == 0 ? 'D' : 'A');
+				writeChar('0' + j);
+				writeNamedInt("",r32);
+				writeSpace();
+			}
+			writeEOL();
+		}
+		writeEOL();
+
+		disassemble(pc, 6);
+
+		acid500.dumplog();
+
+		writeString(help);
+		writeEOL();
+
+		key=getch();
+		if (key == 'q') break;
+		if (key == 's') {
+			m68k_execute(1);
+			acid500.tick++;
+		}
+
 	}
 
 }
