@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.24)
 
 project(skidtool)
 
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
 
 include_directories(
   .
@@ -17,7 +18,7 @@ set(musashi_src
 #    musashi/m68kfpu.c
     musashi/m68kops.c
     musashi/sim.c
-    musashi/osd.c
+#    musashi/osd.c
     musashi/softfloat/softfloat.c
 )
 set(musashi_include
@@ -28,7 +29,7 @@ set(musashi_include
     musashi/m68kmmu.h
     musashi/m68kops.h
     musashi/sim.h
-    musashi/osd.h
+#    musashi/osd.h
     musashi/mmu.h
     musashi/softfloat/softfloat.h
 )
@@ -98,8 +99,8 @@ ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool main.cpp)
 
-target_link_libraries(skidtool musashi zlib libpng)
-
+target_link_libraries(skidtool musashi zlib libpng ncurses)
+#curses
 # m68kmake
 
 set(make68k_src
@@ -107,3 +108,6 @@ set(make68k_src
 )
 
 ADD_EXECUTABLE(make68k ${make68k_src})
+
+ADD_EXECUTABLE(test test.cpp)
+target_link_libraries(test musashi zlib libpng ncurses)

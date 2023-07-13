@@ -1,4 +1,7 @@
-#include <conio.h>
+#include <termios.h>
+//#include <curses.h>
+//#include <conio.h>
+#include <unistd.h>
 #include <assert.h>
 #include <iostream>
 #include <sstream>
@@ -6,6 +9,54 @@
 #include <vector>
 #include "libpng/png.h"
 #include <zlib.h>
+
+
+// https://stackoverflow.com/questions/312185/kbhit-on-macos-to-detect-keypress
+int tty_getch() {
+    char ch;
+    int error;
+    static struct termios Otty, Ntty;
+
+    fflush(stdout);
+    tcgetattr(0, &Otty);
+    Ntty = Otty;
+
+    Ntty.c_iflag  =  0;     /* input mode       */
+    Ntty.c_oflag  =  0;     /* output mode      */
+    Ntty.c_lflag &= ~ICANON;    /* line settings    */
+
+#if 1
+    /* disable echoing the char as it is typed */
+    Ntty.c_lflag &= ~ECHO;  /* disable echo     */
+#else
+    /* enable echoing the char as it is typed */
+    Ntty.c_lflag |=  ECHO;  /* enable echo      */
+#endif
+
+    Ntty.c_cc[VMIN]  = CMIN;    /* minimum chars to wait for */
+    Ntty.c_cc[VTIME] = CTIME;   /* minimum wait time    */
+
+#if 1
+    /*
+    * use this to flush the input buffer before blocking for new input
+    */
+    #define FLAG TCSAFLUSH
+#else
+    /*
+    * use this to return a char from the current input buffer, or block if
+    * no input is waiting.
+    */
+    #define FLAG TCSANOW
+
+#endif
+
+    if ((error = tcsetattr(0, FLAG, &Ntty)) == 0) {
+        error  = read(0, &ch, 1 );        /* get char from stdin */
+        error += tcsetattr(0, FLAG, &Otty);   /* restore old settings */
+    }
+
+    return (error == 1 ? (int) ch : -1 );
+}
 
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -198,7 +249,7 @@ struct rom16 : memory32 {
 //			shorts[i] = fd.readShort();
 		}
 		if (!fd.eof()) {
-			std::cout << "unexpected end of rom16 file" << std::endl;
+			std::cout << "unexpected eof fail for rom16 file" << std::endl;
 		}
 	}
 	virtual int read16(int address) {
@@ -234,7 +285,8 @@ struct chipset16 : memory32 {
 
 // address is 24 bit 6hexdigit
 
-rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
+//rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
+rom16 kickstart(0xf80000, 0xf80000, "/Users/simon.armstrong/simon/skid30/media/kick.rom", 524288 / 2); // 512K
 ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
 
@@ -910,12 +962,20 @@ void disassemble(int pc,int count)
 const char* title = "acid500 monitor";
 const char* help = "[s]tep [q]uit";
 
-void debugCode(int pc) {
+int getch2(){
+	return 0;
+
+}
+
+void debugCode(int pc24) {
 	int key = 0;
 	int run = 0;
 
 	acid500.qwrite32(0, 0x400); //sp
-	acid500.qwrite32(4, 0x2000); //pc
+//	acid500.qwrite32(4, 0x2000); //pc
+	acid500.qwrite32(4, pc24); //pc
+
+	int pc = pc24;//acid500.readRegister(16);
 
 	writeClear();
 
@@ -923,6 +983,9 @@ void debugCode(int pc) {
 	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
 	m68k_pulse_reset();
 
+
+//noecho();
+//nodelay();
 	while (true) {
 		writeHome();
 		writeString(title);
@@ -932,8 +995,8 @@ void debugCode(int pc) {
 		writeEOL();
 		writeNamedInt("TICK", acid500.tick);
 		writeEOL();
+		writeEOL();
 
-		int pc = acid500.readRegister(16);
 		writeNamedInt("PC", pc);
 		writeEOL();
 
@@ -957,7 +1020,7 @@ void debugCode(int pc) {
 		writeString(help);
 		writeEOL();
 
-		key=run?0:getch();
+		key=run?0:tty_getch();
 
 		if (key == 'q') break;
 		if (key == 's') {
@@ -972,6 +1035,10 @@ void debugCode(int pc) {
 			m68k_execute(1);
 			acid500.tick++;
 		}
+
+		pc = acid500.readRegister(16);
+
+		usleep(10000);
 
 	}
 
@@ -999,13 +1066,10 @@ int main() {
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
 //  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
 
-	loadHunk(amiga_binary,0x2000);
+//	loadHunk(amiga_binary,0x2000);
 //	disassemble(0x2000, 6);
-
-
-
-	debugCode(0x2000);
-
+//	debugCode(0x2000);
+	debugCode(0xf800d2);
 
 /*
 move.l #$aaaaaaaa,d5
@@ -1232,6 +1296,8 @@ struct Image {
 
 int main() {
 	std::cout << "skidtool 0.1" << std::endl;
+	return 0;
+
 	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\mini.aga", "C:\\nitrologic\\skid30\\vehicles\\mini.png");
 	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\vw.aga", "C:\\nitrologic\\skid30\\vehicles\\vw.png");
 	//	decodeCar("C:\\nitrologic\\skid30\\vehicles\\truck.aga", "C:\\nitrologic\\skid30\\vehicles\\truck.png");
