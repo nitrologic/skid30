@@ -1,5 +1,4 @@
-#include <termios.h>
-//#include <curses.h>
+#include "tty_getch.h"
 //#include <conio.h>
 #include <unistd.h>
 #include <assert.h>
@@ -10,53 +9,7 @@
 #include "libpng/png.h"
 #include <zlib.h>
 
-
-// https://stackoverflow.com/questions/312185/kbhit-on-macos-to-detect-keypress
-int tty_getch() {
-    char ch;
-    int error;
-    static struct termios Otty, Ntty;
-
-    fflush(stdout);
-    tcgetattr(0, &Otty);
-    Ntty = Otty;
-
-    Ntty.c_iflag  =  0;     /* input mode       */
-    Ntty.c_oflag  =  0;     /* output mode      */
-    Ntty.c_lflag &= ~ICANON;    /* line settings    */
-
-#if 1
-    /* disable echoing the char as it is typed */
-    Ntty.c_lflag &= ~ECHO;  /* disable echo     */
-#else
-    /* enable echoing the char as it is typed */
-    Ntty.c_lflag |=  ECHO;  /* enable echo      */
-#endif
-
-    Ntty.c_cc[VMIN]  = CMIN;    /* minimum chars to wait for */
-    Ntty.c_cc[VTIME] = CTIME;   /* minimum wait time    */
-
-#if 1
-    /*
-    * use this to flush the input buffer before blocking for new input
-    */
-    #define FLAG TCSAFLUSH
-#else
-    /*
-    * use this to return a char from the current input buffer, or block if
-    * no input is waiting.
-    */
-    #define FLAG TCSANOW
-
-#endif
-
-    if ((error = tcsetattr(0, FLAG, &Ntty)) == 0) {
-        error  = read(0, &ch, 1 );        /* get char from stdin */
-        error += tcsetattr(0, FLAG, &Otty);   /* restore old settings */
-    }
-
-    return (error == 1 ? (int) ch : -1 );
-}
+//"/home/skid/simon/skid30/";
 
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -286,7 +239,9 @@ struct chipset16 : memory32 {
 // address is 24 bit 6hexdigit
 
 //rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
-rom16 kickstart(0xf80000, 0xf80000, "/Users/simon.armstrong/simon/skid30/media/kick.rom", 524288 / 2); // 512K
+//rom16 kickstart(0xf80000, 0xf80000, "/Users/simon.armstrong/simon/skid30/media/kick.rom", 524288 / 2); // 512K
+//rom16 kickstart(0xf80000, 0xf80000, "/home/skid/simon/skid30/media/kick.rom", 524288 / 2); // 512K
+rom16 kickstart(0xf80000, 0xf80000, "../../media/kick.rom", 524288 / 2); // 512K
 ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
 
@@ -960,11 +915,10 @@ void disassemble(int pc,int count)
 }
 
 const char* title = "acid500 monitor";
-const char* help = "[s]tep [q]uit";
+const char* help = "[s]tep [c]ontinue [pause] [r]eset [q]uit";
 
 int getch2(){
 	return 0;
-
 }
 
 void debugCode(int pc24) {
@@ -982,7 +936,6 @@ void debugCode(int pc24) {
 	m68k_init();
 	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
 	m68k_pulse_reset();
-
 
 //noecho();
 //nodelay();

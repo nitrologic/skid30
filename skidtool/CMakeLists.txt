@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.18)
 
 project(skidtool)
 
@@ -99,7 +99,7 @@ ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool main.cpp)
 
-target_link_libraries(skidtool musashi zlib libpng ncurses)
+target_link_libraries(skidtool musashi zlib libpng)
 #curses
 # m68kmake
 
@@ -110,4 +110,4 @@ set(make68k_src
 ADD_EXECUTABLE(make68k ${make68k_src})
 
 ADD_EXECUTABLE(test test.cpp)
-target_link_libraries(test musashi zlib libpng ncurses)
+target_link_libraries(test musashi zlib libpng)
