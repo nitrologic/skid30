@@ -274,8 +274,8 @@ typedef std::vector<MemEvent> MemEvents;
 
 //int m68k_execute(int num_cycles)
 
-const char readwrite[] = { 'r','w' };
-const char longshortbyte[] = {'l','w','b','?'};
+const char readwrite[] = { 'R','W' };
+const char longshortbyte[] = {'l','s','b','?'};
 
 struct acid68000 {
 
