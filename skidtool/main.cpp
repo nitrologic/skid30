@@ -1,16 +1,16 @@
-//#include <curses.h>
+#ifdef WIN32
+#include <conio.h>
+#else
 #include "tty_getch.h"
-//#include <conio.h>
+#endif
 #include <unistd.h>
 #include <assert.h>
 #include <iostream>
 #include <sstream>
-#include  <iomanip>
+#include <iomanip>
 #include <vector>
 #include "libpng/png.h"
 #include <zlib.h>
-
-//"/home/skid/simon/skid30/";
 
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -216,6 +216,9 @@ struct ram16 : memory32 {
 	ram16(u32 p,u32 m, int wordCount) : memory32(p,m), shorts(wordCount) {
 	}
 	virtual void write16(int address,int value) {
+		if(address<0||(address>>1)>=shorts.size()){
+			return;
+		}
 		shorts[address>>1]=value;
 	}
 	virtual int read16(int address) {
