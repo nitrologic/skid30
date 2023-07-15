@@ -277,6 +277,8 @@ typedef std::vector<MemEvent> MemEvents;
 const char readwrite[] = { 'R','W' };
 const char longshortbyte[] = {'l','s','b','?'};
 
+const int DumpLimit=5000;
+
 struct acid68000 {
 
 	int tick=0;
@@ -288,9 +290,10 @@ struct acid68000 {
 		memlog.emplace_back(tick, a32, value);
 	}
 
-	void dumplog() {
+	void dumplog(int max) {
 		int n = memlog.size();
-		int begin = n - 5;
+		if(max==0) max=(n<DumpLimit)?n:DumpLimit;
+		int begin = n - max;//5;
 		if (begin < 0) begin = 0;
 		for (int i = begin; i < n; i++) {
 			MemEvent& e = memlog[i];
@@ -914,7 +917,7 @@ void disassemble(int pc,int count)
 	writeEOL();
 }
 
-const char* title = "acid500 monitor";
+const char* title = "☰☰☰☰☰☰☰☰☰☰ ACID500 monitor";
 const char* help = "[s]tep [c]ontinue [pause] [r]eset [q]uit";
 
 int getch2(){
@@ -960,7 +963,10 @@ void debugCode(int pc24) {
 				writeChar(i == 0 ? 'D' : 'A');
 				writeChar('0' + j);
 				writeNamedInt("",r32);
-				writeSpace();
+				if(j==3)
+					writeEOL();
+				else
+					writeSpace();
 			}
 			writeEOL();
 		}
@@ -968,20 +974,30 @@ void debugCode(int pc24) {
 
 		disassemble(pc, 6);
 
-		acid500.dumplog();
+		acid500.dumplog(5);
 
 		writeString(help);
 		writeEOL();
 
-		key=run?0:tty_getch();
+//		key=run?0:tty_getch();
+		key=tty_getch();
 
 		if (key == 'q') break;
+
 		if (key == 's') {
 			m68k_execute(1);
 			acid500.tick++;
 		}
-		if (key == 'r') {
-			run = 1 - run;
+
+//		if (key == 'r') {
+//			run = 1 - run;
+//		}
+
+		if(key=='c'){
+			run=1;
+		}
+		if(key=='p'){
+			run=0;
 		}
 
 		if (run) {
@@ -994,6 +1010,9 @@ void debugCode(int pc24) {
 		usleep(10000);
 
 	}
+
+
+	acid500.dumplog(0);
 
 }
 
@@ -1014,15 +1033,17 @@ int main() {
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
 
 //amiga 2 chunk hunks
-	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
+//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
 //  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
 
-//	loadHunk(amiga_binary,0x2000);
+
+	const char* amiga_binary = "../../archive/virus";
+	loadHunk(amiga_binary,0x2000);
 //	disassemble(0x2000, 6);
-//	debugCode(0x2000);
-	debugCode(0xf800d2);
+	debugCode(0x2000);
+//	debugCode(0xf800d2);
 
 /*
 move.l #$aaaaaaaa,d5

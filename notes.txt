@@ -1,3 +1,65 @@
+.InstSer
+  ClrInt 11:SetInt 11
+    CNIF #bars:MOVE#$f0f,$dff180:CEND
+    sr.w=Peek.b(#serdatr+1):If sr<0 Then sr=256+sr
+    bfirst.w=(bfirst+1) AND #maxleng
+    las(bfirst)=sr
+  End SetInt  ;read interupt
+  bfirst.w=blast.w:bword.w=bfirst.w       :;<does rap thing with hands
+  sr=256
+Return
+
+SetMod
+  Gosub InstSer:SetInt 5:tim.w+1:End SetInt      :; timeout for modem!
+  cop.w=tim.w+120
+  Repeat
+    VWait:writeser{$3f}
+    If cop<tim Then sr.w=$3f:done=On
+  Until (sr=$70) OR (sr=$3f)
+  If NOT done
+    VWait 5:tv=$70:writeser{tv}:cop.w=tim.w+60
+    Repeat
+      If cop<tim Then sr=$70:done=On
+    Until sr=$70
+  EndIf
+  If done Then connect=Off:twin=Off:ClrInt 5:done=On
+
+  VWait 5:master.w=0
+  While master=0
+    trx.w=Rnd(50)+10:writeser{trx}:VWait 10:rrx=sr
+    If rrx<trx Then master=1
+    If rrx>trx Then master=2
+  Wend
+
+
+  bfirst.w=blast.w:bword.w=bfirst.w       :;<does rap thing with hands
+  trx.w=0:rrx=0
+
+  VWait 15:writegam{$15}:VWait:writegam{$15}
+Return
+
+HandShake
+  sr=256
+  For cnt= 1 To 4
+    VWait:writeser{cnt}
+  Next
+  VWait 10:bcopy.w=bfirst:connect=On
+  For cnt=0 To 3
+    If (las((bcopy-cnt) AND #maxleng))<>(4-cnt) Then connect=Off:Goto Damage
+  Next
+  VWait 10
+  cnt=0
+  If connect Then writeser{12}
+  While connect AND (sr<>12)
+    VWait:cnt+1
+    If cnt>50 Then connect=Off:Goto Damage
+  Wend
+  connect=On
+  If connect Then VWait 15
+Return
+
+
+
 // axis.util.adpro
 
 package axis.util;
