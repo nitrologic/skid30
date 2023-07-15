@@ -445,6 +445,7 @@ const char* help = "[s]tep [c]ontinue [pause] [r]eset [q]uit";
 void debugCode(int pc24) {
 	int key = 0;
 	int run = 0;
+	bool refresh=true;
 
 	acid500.qwrite32(0, 0x400); //sp
 //	acid500.qwrite32(4, 0x2000); //pc
@@ -461,41 +462,45 @@ void debugCode(int pc24) {
 //noecho();
 //nodelay();
 	while (true) {
-		writeHome();
-		writeString(title);
-		writeEOL();
-		writeEOL();
-		writeNamedInt("key", key);
-		writeEOL();
-		writeNamedInt("TICK", acid500.tick);
-		writeEOL();
-		writeEOL();
+		if(refresh){
+			writeHome();
+			writeString(title);
+			writeEOL();
+			writeEOL();
+			writeNamedInt("key", key);
+			writeEOL();
+			writeNamedInt("TICK", acid500.tick);
+			writeEOL();
+			writeEOL();
 
-		writeNamedInt("PC", pc);
-		writeEOL();
+			writeNamedInt("PC", pc);
+			writeEOL();
 
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 8; j++) {
-				int r = i * 8 + j;
-				int r32=acid500.readRegister(r);
-				writeChar(i == 0 ? 'D' : 'A');
-				writeChar('0' + j);
-				writeNamedInt("",r32);
-				if(j==3)
-					writeEOL();
-				else
-					writeSpace();
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 8; j++) {
+					int r = i * 8 + j;
+					int r32=acid500.readRegister(r);
+					writeChar(i == 0 ? 'D' : 'A');
+					writeChar('0' + j);
+					writeNamedInt("",r32);
+					if(j==3)
+						writeEOL();
+					else
+						writeSpace();
+				}
+				writeEOL();
 			}
 			writeEOL();
+
+			disassemble(pc, 6);
+
+			acid500.dumplog(5);
+
+			writeString(help);
+			writeEOL();
+
+			refresh=false;
 		}
-		writeEOL();
-
-		disassemble(pc, 6);
-
-		acid500.dumplog(5);
-
-		writeString(help);
-		writeEOL();
 
 //		key=run?0:tty_getch();
 //		key=tty_getch();
@@ -507,6 +512,7 @@ void debugCode(int pc24) {
 		if (key == 's') {
 			m68k_execute(1);
 			acid500.tick++;
+			refresh=true;
 		}
 
 //		if (key == 'r') {
@@ -523,6 +529,7 @@ void debugCode(int pc24) {
 		if (run) {
 			m68k_execute(1);
 			acid500.tick++;
+			refresh=true;
 		}
 
 		pc = acid500.readRegister(16);
