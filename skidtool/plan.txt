@@ -1,0 +1,23 @@
+todo
+
+add serial port, monitor rx tx buffers
+
+add medplayer.bb, monitor audio registers and dma
+
+design simple acid kickstart rom based on Sega Skidmarks project
+
+plan projects to bring up blitz, bare metal and intuition dependent hunks
+
+
+done
+
+(simon)
+
+build musashi processor emulation engine (Copyright 1998-2002 Karl Stenerud) MIT license 2013
+
+add c++ memory manager unit
+
+add tty monitor to display disassemble and step cpu
+
+export amiga iff to png32
+
