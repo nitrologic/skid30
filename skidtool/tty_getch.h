@@ -3,52 +3,58 @@
 #include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 
-//"/home/skid/simon/skid30/";
+//#include <stdlib.h>
+
+// termios for life
 
 // https://stackoverflow.com/questions/312185/kbhit-on-macos-to-detect-keypress
+
 int tty_getch() {
-    char ch;
-    int error;
-    static struct termios Otty, Ntty;
 
-    fflush(stdout);
-    tcgetattr(0, &Otty);
-    Ntty = Otty;
+  //  int n;
 
-    Ntty.c_iflag  =  0;     /* input mode       */
-    Ntty.c_oflag  =  0;     /* output mode      */
-    Ntty.c_lflag &= ~ICANON;    /* line settings    */
+//    ioctl(STDIN_FILENO, FIONREAD, &n);
+//	if(n==0) return -1;
 
-#if 1
-    /* disable echoing the char as it is typed */
-    Ntty.c_lflag &= ~ECHO;  /* disable echo     */
-#else
-    /* enable echoing the char as it is typed */
-    Ntty.c_lflag |=  ECHO;  /* enable echo      */
-#endif
+	char ch;
+	int error;
+	static struct termios Otty, Ntty;
 
-    Ntty.c_cc[VMIN]  = CMIN;    /* minimum chars to wait for */
-    Ntty.c_cc[VTIME] = CTIME;   /* minimum wait time    */
+//    fflush(stdout);
+	tcgetattr(0, &Otty);
+	Ntty = Otty;
+
+	Ntty.c_iflag  =  0;     /* input mode       */
+	Ntty.c_oflag  =  0;     /* output mode      */
+	Ntty.c_lflag &= ~ICANON;    /* line settings    */
 
 #if 1
-    /*
-    * use this to flush the input buffer before blocking for new input
-    */
-    #define FLAG TCSAFLUSH
+	/* disable echoing the char as it is typed */
+	Ntty.c_lflag &= ~ECHO;  /* disable echo     */
 #else
-    /*
-    * use this to return a char from the current input buffer, or block if
-    * no input is waiting.
-    */
-    #define FLAG TCSANOW
-
+	/* enable echoing the char as it is typed */
+	Ntty.c_lflag |=  ECHO;  /* enable echo      */
 #endif
 
-    if ((error = tcsetattr(0, FLAG, &Ntty)) == 0) {
-        error  = read(0, &ch, 1 );        /* get char from stdin */
-        error += tcsetattr(0, FLAG, &Otty);   /* restore old settings */
-    }
+	Ntty.c_cc[VMIN]  = 0;//CMIN;    /* minimum chars to wait for */
+	Ntty.c_cc[VTIME] = 0;//CTIME;   /* minimum wait time    */
+//	#define FLAG TCSAFLUSH
+	if ((error = tcsetattr(0, TCSANOW, &Ntty)) == 0) {
 
-    return (error == 1 ? (int) ch : -1 );
+		fd_set set;
+		struct timeval timeout = {0,10000};
+		FD_ZERO(&set);
+		FD_SET(0,&set);
+
+		int rv = select(0 + 1, &set, NULL, NULL, &timeout);
+		if(rv>0){
+				error  = read(0, &ch, 1 );        /* get char from stdin */
+		}
+
+		error += tcsetattr(0, TCSANOW, &Otty);   /* restore old settings */
+	}
+
+	return (error == 1 ? (int) ch : -1 );
 }

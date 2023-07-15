@@ -1,3 +1,4 @@
+//#include <curses.h>
 #include "tty_getch.h"
 //#include <conio.h>
 #include <unistd.h>
@@ -920,10 +921,6 @@ void disassemble(int pc,int count)
 const char* title = "☰☰☰☰☰☰☰☰☰☰ ACID500 monitor";
 const char* help = "[s]tep [c]ontinue [pause] [r]eset [q]uit";
 
-int getch2(){
-	return 0;
-}
-
 void debugCode(int pc24) {
 	int key = 0;
 	int run = 0;
@@ -981,6 +978,7 @@ void debugCode(int pc24) {
 
 //		key=run?0:tty_getch();
 		key=tty_getch();
+//		key=getch();
 
 		if (key == 'q') break;
 
@@ -1017,7 +1015,12 @@ void debugCode(int pc24) {
 }
 
 int main() {
+#ifdef NCURSES
+	initscr();
+	timeout(200);
+#endif
 	std::cout << "skidtool 0.1" << std::endl;
+
 
 	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
