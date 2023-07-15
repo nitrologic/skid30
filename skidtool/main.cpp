@@ -498,8 +498,9 @@ void debugCode(int pc24) {
 		writeEOL();
 
 //		key=run?0:tty_getch();
-		key=tty_getch();
+//		key=tty_getch();
 //		key=getch();
+		key=getch();
 
 		if (key == 'q') break;
 

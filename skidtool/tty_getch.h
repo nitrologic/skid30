@@ -4,8 +4,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/ioctl.h>
+#include <stdlib.h>
 
-//#include <stdlib.h>
+#define getch tty_getch
 
 // termios for life
 
