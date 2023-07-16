@@ -45,8 +45,8 @@ struct block {
 //rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
 //rom16 kickstart(0xf80000, 0xf80000, "/Users/simon.armstrong/simon/skid30/media/kick.rom", 524288 / 2); // 512K
 //rom16 kickstart(0xf80000, 0xf80000, "/home/skid/simon/skid30/media/kick.rom", 524288 / 2); // 512K
-rom16 kickstart(0xf80000, 0xf80000, "../../media/kick.rom", 524288 / 2); // 512K
-ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
+rom16 kickstart(0xf80000, 0xff80000, "../../media/kick.rom", 524288 / 2); // 512K
+ram16 chipmem(0x000000, 0xff00000, 0x100000);	// 2MB
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
 interface8 cia_a(0xbfe000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
 interface8 cia_b(0xbfd000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
@@ -87,8 +87,9 @@ struct acid68000 {
 
 	void log_bus(int readwrite, int byteshortlong, int address, int value) {
 		bool enable=(readwrite)?(mem->flags&2):(mem->flags&1);
+		int star=(mem->flags&4)?1:0;
 		if(enable){
-			int a32 = (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
+			int a32 = (star << 31) | (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
 			memlog.emplace_back(tick, a32, value);
 		}
 	}
@@ -103,8 +104,10 @@ struct acid68000 {
 			int t32 = e.time;
 			int a32 = e.address;
 			int d32 = e.data;
+			int star=(a32 >> 31) & 1;
 			int rw = (a32 >> 30) & 1;
 			int opsize = (a32 >> 28) & 3;
+			int a24 = a32 & 0xffffff;
 
 			writeIndex(t32);
 			writeSpace();
@@ -112,7 +115,7 @@ struct acid68000 {
 			writeSpace();
 			writeChar(longshortbyte[opsize]);
 			writeSpace();
-			writeAddress(a32);
+			writeAddress(a24);
 			writeSpace();
 
 			switch (opsize) {
@@ -126,6 +129,7 @@ struct acid68000 {
 				writeData8(d32);
 				break;
 			}
+			if(star) writeChar('*');
 			writeEOL();
 		}
 
@@ -172,6 +176,7 @@ struct acid68000 {
 		log_bus(0, 2, physicalAddress, value);
 		return value;
 	}
+
 	int read16(int a32) {
 		int qbit = a32 & 0x80000000;
 		int physicalAddress = a32 & 0xffffff;
@@ -180,6 +185,7 @@ struct acid68000 {
 		if(qbit==0) log_bus(0, 1, physicalAddress, value);
 		return value;
 	}
+
 	int read32(int a32) {
 		int qbit = a32 & 0x80000000;
 		int physicalAddress = a32 & 0xffffff;
@@ -188,21 +194,25 @@ struct acid68000 {
 		if(qbit==0) log_bus(0, 0, physicalAddress, value);
 		return value;
 	}
+
 	void write8(int physicalAddress, int value) {
 		log_bus(1, 2, physicalAddress, value);
 		int address = decode(physicalAddress);
 		mem->write8(address, value);
 	}
+
 	void write16(int physicalAddress, int value) {
 		log_bus(1, 1, physicalAddress, value);
 		int address = decode(physicalAddress);
 		mem->write16(address, value);
 	}
+
 	void write32(int physicalAddress, int value) {
 		log_bus(1, 0, physicalAddress, value);
 		int address = decode(physicalAddress);
 		mem->write32(address, value);
 	}
+
 	void qwrite32(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		mem->write32(address, value);
@@ -584,8 +594,7 @@ int main() {
 #endif
 	std::cout << "skidtool 0.1" << std::endl;
 
-
-	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
+//	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
 //	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
 //	loadIFF(iff);
 //audio
@@ -603,7 +612,6 @@ int main() {
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
 //  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
-
 
 	const char* amiga_binary = "../../archive/virus";
 	loadHunk(amiga_binary,0x2000);
