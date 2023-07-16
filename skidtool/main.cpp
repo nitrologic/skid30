@@ -1,5 +1,19 @@
 #ifdef WIN32
+#include <windows.h>
 #include <conio.h>
+#include <synchapi.h>
+
+int getch2() {
+	if (_kbhit()) {
+		return getch();
+	}
+	return -1;
+}
+void usleep(int micros) {
+	int millis = micros / 1e6;
+	Sleep(millis);
+}
+
 #else
 #include "tty_getch.h"
 #endif
@@ -34,6 +48,8 @@ struct block {
 rom16 kickstart(0xf80000, 0xf80000, "../../media/kick.rom", 524288 / 2); // 512K
 ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
+interface8 cia_a(0xbfe000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
+interface8 cia_b(0xbfd000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
 
 // chinnamasta soc
 
@@ -130,14 +146,23 @@ struct acid68000 {
 			mem = &kickstart;
 			return physicalAddress & (~kickstart.mask);
 		}
-		if ((physicalAddress & chipmem.mask) == chipmem.physical) {
-			mem = &chipmem;
-			return physicalAddress & (~chipmem.mask);
-		}
 		if ((physicalAddress & chipset.mask) == chipset.physical) {
 			mem = &chipset;
 			return physicalAddress & (~chipset.mask);
 		}
+		if ((physicalAddress & chipmem.mask) == chipmem.physical) {
+			mem = &chipmem;
+			return physicalAddress & (~chipmem.mask);
+		}
+		if ((physicalAddress & cia_a.mask) == cia_a.physical) {
+			mem = &cia_a;
+			return physicalAddress & (~cia_a.mask);
+		}
+		if ((physicalAddress & cia_b.mask) == cia_b.physical) {
+			mem = &cia_b;
+			return physicalAddress & (~cia_b.mask);
+		}
+
 		return -1;
 	}
 
@@ -508,7 +533,7 @@ void debugCode(int pc24) {
 //		key=run?0:tty_getch();
 //		key=tty_getch();
 //		key=getch();
-		key=getch();
+		key=getch2();
 
 		if (key == 'q') break;
 
@@ -547,6 +572,12 @@ void debugCode(int pc24) {
 }
 
 int main() {
+
+#ifdef WIN32
+	SetConsoleOutputCP(CP_UTF8);
+//	SetConsoleCP(CP_UTF8);
+#endif
+
 #ifdef NCURSES
 	initscr();
 	timeout(200);

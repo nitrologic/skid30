@@ -5,6 +5,12 @@ project(skidtool)
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
 
+if(WIN32)
+add_definitions( -DWIN32 )
+add_definitions( -DUNICODE )
+add_definitions( -D_UNICODE )
+endif(WIN32)
+
 include_directories(
   .
   zlib

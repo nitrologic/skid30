@@ -6,7 +6,7 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 
-#define getch tty_getch
+#define getch2 tty_getch
 
 // termios for life
 

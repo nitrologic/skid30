@@ -111,3 +111,16 @@ struct chipset16 : memory32 {
 		return shorts[address >> 1];
 	}
 };
+
+struct interface8 : memory32 {
+	std::vector<u8> bytes;
+	interface8(u32 p, u32 m, int byteCount) : memory32(p, m), bytes(byteCount) {
+		flags = 3;
+	}
+	virtual void write8(int address, int value) {
+		bytes[address] = value;
+	}
+	virtual int read8(int address) {
+		return bytes[address];
+	}
+};
