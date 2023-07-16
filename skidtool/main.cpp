@@ -1,3 +1,5 @@
+#include <cassert>
+
 #ifdef WIN32
 #include <windows.h>
 #include <conio.h>
@@ -45,7 +47,7 @@ struct block {
 //rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
 //rom16 kickstart(0xf80000, 0xf80000, "/Users/simon.armstrong/simon/skid30/media/kick.rom", 524288 / 2); // 512K
 //rom16 kickstart(0xf80000, 0xf80000, "/home/skid/simon/skid30/media/kick.rom", 524288 / 2); // 512K
-rom16 kickstart(0xf80000, 0xff80000, "../../media/kick.rom", 524288 / 2); // 512K
+rom16 kickstart(0xf80000, 0xff80000, "../../media/kick.rom", 524288 ); // 512K
 ram16 chipmem(0x000000, 0xff00000, 0x100000);	// 2MB
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
 interface8 cia_a(0xbfe000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
@@ -109,7 +111,9 @@ struct acid68000 {
 			int opsize = (a32 >> 28) & 3;
 			int a24 = a32 & 0xffffff;
 
-			writeIndex(t32);
+			// tick: R/W l/s/b address data 
+
+			writeData32(t32);
 			writeSpace();
 			writeChar(readwrite[rw]);
 			writeSpace();
@@ -196,26 +200,30 @@ struct acid68000 {
 	}
 
 	void write8(int physicalAddress, int value) {
-		log_bus(1, 2, physicalAddress, value);
 		int address = decode(physicalAddress);
+		log_bus(1, 2, physicalAddress, value);
 		mem->write8(address, value);
 	}
 
 	void write16(int physicalAddress, int value) {
-		log_bus(1, 1, physicalAddress, value);
 		int address = decode(physicalAddress);
+		log_bus(1, 1, physicalAddress, value);
 		mem->write16(address, value);
 	}
 
 	void write32(int physicalAddress, int value) {
-		log_bus(1, 0, physicalAddress, value);
 		int address = decode(physicalAddress);
+		log_bus(1, 0, physicalAddress, value);
 		mem->write32(address, value);
 	}
 
 	void qwrite32(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		mem->write32(address, value);
+	}
+	void qwrite16(int physicalAddress, int value) {
+		int address = decode(physicalAddress);
+		mem->write16(address, value);
 	}
 };
 
@@ -268,7 +276,7 @@ unsigned int cpu_read_long_dasm(unsigned int address)
 
 
 
-typedef std::vector<int> Chunk;
+typedef std::vector<u16> Chunk;
 
 // write to acid500
 
@@ -312,26 +320,36 @@ void loadHunk(std::string path,int physical) {
 	u32 lasthunkl = fd.readBigInt();
 	int n = lasthunkl - firsthunkf + 1;
 
-	std::vector<int> sizes(n);
-	std::vector<int> offsets(n);
-	int total = 0;
+	// warning - word addressing ahead
+
+	std::vector<int> sizeWords(n);
+	std::vector<int> offsetWords(n);
+	int totalWords = 0;
 //	std::vector<std::vector<u32>> hunks(n);
 	for (int i = 0; i < n; i++) {
 		u32 hunkSize=fd.readBigInt();
-		sizes[i] = hunkSize;
-		offsets[i] = total;
-		total += hunkSize;
+
+		int bits = (hunkSize >> 30) & 3;
+		hunkSize &= 0x3fffffff;
+
+		if (bits == 3) {
+			hunkSize = fd.readBigInt();
+		}
+
+		u32 hunkSizeWords = hunkSize * 2;
+		sizeWords[i] = hunkSizeWords;
+		offsetWords[i] = totalWords;
+		totalWords += hunkSizeWords;
 		if (hunkSize == 0) {
 			std::cout << "todo: support empty bss hunks" << std::endl;
 		}
 	}
-	writeNamedInt("total", total);
+	writeNamedInt("total words", totalWords);
 	writeEOL();
 
-	Chunk chunk(total);
+	Chunk chunk(totalWords);
 
-	writeString("hunkCount:");
-	writeIndex(n);
+	writeNamedInt("hunk count", n);
 	writeEOL();
 
 	int index = 0;
@@ -350,17 +368,18 @@ void loadHunk(std::string path,int physical) {
 		case 1001: // HUNK___CODE
 		{			
 			std::cout << "HUNK_CODE" << std::endl;
-			int chunkOffset = offsets[index];
+			int target = offsetWords[index];
 
 			u32 size = fd.readBigInt();
 			//		writeInt(code);
 			//		writeSpace();
 			for (int j = 0; j < size; j++) {
-//				int l = fd.readInt();	// make little endian?
-				int l = fd.readBigInt();	// make little endian?
-				chunk[chunkOffset+j] = l;
+				int l32 = fd.readBigInt();	// make little endian?
+				chunk[target + j*2 + 0] = (l32 >> 16);
+				chunk[target + j*2 + 1] = (l32 & 0xffff);
+
 				if (j < 8) {
-					writeNamedInt("$",l);
+					writeNamedInt("$",l32);
 					writeSpace();
 				}
 			}
@@ -370,13 +389,12 @@ void loadHunk(std::string path,int physical) {
 		case 1002: //HUNK__DATA
 		{
 			std::cout << "HUNK_DATA" << std::endl;
-			int chunkOffset = offsets[index];
-
+			int target = offsetWords[index];
 			u32 count = fd.readBigInt();
-			//			assert(count == hunk.size());
 			for (int i = 0; i < count; i++) {
-				int l = fd.readBigInt();
-				chunk[chunkOffset+i] = l;
+				int l32 = fd.readBigInt();
+				chunk[target+i*2+0] = (l32 >> 16);
+				chunk[target+i*2+1] = (l32 & 0xffff);
 			}
 			break;
 		}
@@ -384,21 +402,21 @@ void loadHunk(std::string path,int physical) {
 		{
 			std::cout << "HUNK_RELOC32" << std::endl;
 //			std::vector<u32>& hunk = hunks[index];
-
 			while (true) {
 				u32 number = fd.readBigInt();
 				if (number == 0)
 					break;
+				int current = offsetWords[index];
 				u32 index32 = fd.readBigInt();
-				int chunkOffset = offsets[index];
-
-				int targetOffset = offsets[index32];
-
+				int target = offsetWords[index32];
+				u32 reloc32 = physical + target * 2;
 				for (int i = 0; i < number; i++) {
 					u32 offset = fd.readBigInt();
-
-					int o = chunkOffset + (offset >> 2);
-					chunk[o]=chunk[o] + (physical + targetOffset);
+					u32 word = current + offset / 2;
+					u32 loc32=(chunk[word] << 16) | (chunk[word + 1]&0xfff);
+					loc32 = loc32 + reloc32;
+					chunk[word] = (loc32 >> 16);
+					chunk[word + 1] = loc32 & 0xffff;
 				}
 			}
 			break;
@@ -437,8 +455,8 @@ void loadHunk(std::string path,int physical) {
 	writeString("hunks parsed");
 	writeEOL();
 
-	for (int i = 0; i < total; i++) {
-		acid500.qwrite32(physical+i*4,chunk[i]);
+	for (int i = 0; i < totalWords; i++) {
+		acid500.qwrite16(physical+i*2,chunk[i]);
 	}
 
 	return;
@@ -572,7 +590,7 @@ void debugCode(int pc24) {
 
 		pc = acid500.readRegister(16);
 
-		usleep(10000);
+		usleep(100);
 
 	}
 
@@ -606,14 +624,16 @@ int main() {
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\game";
 //  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\devpac";
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
+//	const char* amiga_binary = "../../archive/game";
+//	const char* amiga_binary = "../../archive/devpac";
+//	const char* amiga_binary = "../../archive/dp";
 
 //amiga 2 chunk hunks
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\virus";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\blitz2";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\blitz2\\ted";
-//  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\lha";
 
-	const char* amiga_binary = "../../archive/virus";
+	const char* amiga_binary = "../../archive/lha";
+//	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../../archive/blitz2/blitz2";
+//	const char* amiga_binary = "../../archive/blitz2/ted";
 	loadHunk(amiga_binary,0x2000);
 //	disassemble(0x2000, 6);
 	debugCode(0x2000);
