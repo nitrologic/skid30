@@ -45,7 +45,7 @@ int tty_getch() {
 	if ((error = tcsetattr(0, TCSANOW, &Ntty)) == 0) {
 
 		fd_set set;
-		struct timeval timeout = {0,10000};
+		struct timeval timeout = {0,100};
 		FD_ZERO(&set);
 		FD_SET(0,&set);
 

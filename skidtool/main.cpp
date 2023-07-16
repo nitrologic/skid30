@@ -17,7 +17,24 @@ void usleep(int micros) {
 }
 
 #else
+
 #include "tty_getch.h"
+#include <time.h>
+
+#ifndef LINUX
+
+int millis(){
+	uint64_t t=clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
+	return (int)(t/1e6);
+}
+#else
+
+int millis(){
+	timespec spec;
+    clock_gettime(CLOCK_REALTIME, &spec);
+	return spec.tv_sec*1000+spec.tv_nsec/1e6;
+}
+#endif
 #endif
 
 #include <assert.h>
@@ -504,7 +521,6 @@ void debugCode(int pc24) {
 	bool refresh=true;
 
 	acid500.qwrite32(0, 0x400); //sp
-//	acid500.qwrite32(4, 0x2000); //pc
 	acid500.qwrite32(4, pc24); //pc
 
 	int pc = pc24;//acid500.readRegister(16);
@@ -515,15 +531,19 @@ void debugCode(int pc24) {
 	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
 	m68k_pulse_reset();
 
-//noecho();
-//nodelay();
+	int drawtime=millis();
+
 	while (true) {
-		if(refresh){
+		int t=millis();
+		int elapsed=t-drawtime;
+		if(refresh && elapsed>10){
 			writeHome();
 			writeString(title);
 			writeEOL();
 			writeEOL();
 			writeNamedInt("key", key);
+			writeEOL();
+			writeNamedInt("elapsed", elapsed);
 			writeEOL();
 			writeNamedInt("TICK", acid500.tick);
 			writeEOL();
@@ -555,6 +575,7 @@ void debugCode(int pc24) {
 			writeString(help);
 			writeEOL();
 
+			drawtime=millis();
 			refresh=false;
 		}
 
@@ -590,8 +611,7 @@ void debugCode(int pc24) {
 
 		pc = acid500.readRegister(16);
 
-		usleep(100);
-
+//		usleep(1000);
 	}
 
 
@@ -630,8 +650,8 @@ int main() {
 
 //amiga 2 chunk hunks
 
-	const char* amiga_binary = "../../archive/lha";
-//	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../../archive/lha";
+	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
 //	const char* amiga_binary = "../../archive/blitz2/ted";
 	loadHunk(amiga_binary,0x2000);
