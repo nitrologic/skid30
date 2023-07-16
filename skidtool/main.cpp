@@ -70,8 +70,11 @@ struct acid68000 {
 	MemEvents memlog;
 
 	void log_bus(int readwrite, int byteshortlong, int address, int value) {
-		int a32 = (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
-		memlog.emplace_back(tick, a32, value);
+		bool enable=(readwrite)?(mem->flags&2):(mem->flags&1);
+		if(enable){
+			int a32 = (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
+			memlog.emplace_back(tick, a32, value);
+		}
 	}
 
 	void dumplog(int max) {

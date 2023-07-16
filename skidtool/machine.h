@@ -4,14 +4,15 @@
 #include "filedecoder.h"
 
 // physical address and mask == physical address
-
-
-
 // big endian byte order
+// flag 1 - logs reads
+// flag 2 - logs writes
+// flag 4 - star
 
 struct memory32 {
 	u32 physical;
 	u32 mask;
+	u32 flags;
 
 	memory32(u32 phys, u32 bits) : physical(phys), mask(bits) {
 	}
@@ -83,6 +84,7 @@ struct rom16 : memory32 {
 struct ram16 : memory32 {
 	std::vector<u16> shorts;
 	ram16(u32 p,u32 m, int wordCount) : memory32(p,m), shorts(wordCount) {
+		flags=2;
 	}
 	virtual void write16(int address,int value) {
 		if(address<0||(address>>1)>=shorts.size()){
@@ -100,6 +102,7 @@ struct ram16 : memory32 {
 struct chipset16 : memory32 {
 	std::vector<u16> shorts;
 	chipset16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
+		flags=3;
 	}
 	virtual void write16(int address, int value) {
 		shorts[address >> 1] = value;
