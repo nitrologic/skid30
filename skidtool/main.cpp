@@ -1,3 +1,7 @@
+#define RUN_CYCLES_PER_TICK 1024
+//128
+//1024
+
 #include <cassert>
 
 #ifdef WIN32
@@ -61,10 +65,11 @@ struct block {
 
 // address is 24 bit 6hexdigit
 
-//rom16 kickstart(0xf80000, 0xf80000, "C:\\nitrologic\\skid30\\media\\kick.rom", 524288 / 2); // 512K
-//rom16 kickstart(0xf80000, 0xf80000, "/Users/simon.armstrong/simon/skid30/media/kick.rom", 524288 / 2); // 512K
-//rom16 kickstart(0xf80000, 0xf80000, "/home/skid/simon/skid30/media/kick.rom", 524288 / 2); // 512K
+// for validation purposes only
+#ifdef KICKSTART
 rom16 kickstart(0xf80000, 0xff80000, "../../media/kick.rom", 524288 ); // 512K
+#endif
+
 ram16 chipmem(0x000000, 0xff00000, 0x100000);	// 2MB
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
 interface8 cia_a(0xbfe000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
@@ -85,8 +90,9 @@ struct MemEvent {
 	int time;
 	int address; // bit31 - R=0 W=1 bit 30-29 - byte,short,long 
 	int data;
+	int pc;
 
-	MemEvent(int t32,int a32, int d32) :time(t32), address(a32), data(d32) {}
+	MemEvent(int t32,int a32, int d32, int pc32) :time(t32), address(a32), data(d32), pc(pc32) {}
 };
 
 typedef std::vector<MemEvent> MemEvents;
@@ -109,7 +115,8 @@ struct acid68000 {
 		int star=(mem->flags&4)?1:0;
 		if(enable){
 			int a32 = (star << 31) | (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
-			memlog.emplace_back(tick, a32, value);
+			int pc=readRegister(16);
+			memlog.emplace_back(tick, a32, value, pc);
 		}
 	}
 
@@ -123,6 +130,7 @@ struct acid68000 {
 			int t32 = e.time;
 			int a32 = e.address;
 			int d32 = e.data;
+			int pc32 = e.pc;
 			int star=(a32 >> 31) & 1;
 			int rw = (a32 >> 30) & 1;
 			int opsize = (a32 >> 28) & 3;
@@ -150,7 +158,10 @@ struct acid68000 {
 				writeData8(d32);
 				break;
 			}
-			if(star) writeChar('*');
+			if(star) {
+				writeSpace();
+				writeAddress(pc32);
+			}
 			writeEOL();
 		}
 
@@ -167,10 +178,12 @@ struct acid68000 {
 	}
 
 	int decode(int physicalAddress) {
+#ifdef KICKSTART		
 		if ((physicalAddress & kickstart.mask) == kickstart.physical) {
 			mem = &kickstart;
 			return physicalAddress & (~kickstart.mask);
 		}
+#endif		
 		if ((physicalAddress & chipset.mask) == chipset.physical) {
 			mem = &chipset;
 			return physicalAddress & (~chipset.mask);
@@ -513,7 +526,7 @@ void disassemble(int pc,int count)
 }
 
 const char* title = "☰☰☰☰☰☰☰☰☰☰ ACID500 monitor";
-const char* help = "[s]tep [c]ontinue [pause] [r]eset [q]uit";
+const char* help = "[s]tep [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
 void debugCode(int pc24) {
 	int key = 0;
@@ -531,12 +544,12 @@ void debugCode(int pc24) {
 	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
 	m68k_pulse_reset();
 
+	// refresh has 20 milli second sanity delay
 	int drawtime=millis();
-
 	while (true) {
 		int t=millis();
 		int elapsed=t-drawtime;
-		if(refresh && elapsed>10){
+		if(refresh && elapsed>19){
 			writeHome();
 			writeString(title);
 			writeEOL();
@@ -586,6 +599,11 @@ void debugCode(int pc24) {
 
 		if (key == 'q') break;
 
+		if(key=='h'){
+			writeClear();
+			refresh=true;
+		}
+
 		if (key == 's') {
 			m68k_execute(1);
 			acid500.tick++;
@@ -604,8 +622,9 @@ void debugCode(int pc24) {
 		}
 
 		if (run) {
-			m68k_execute(1);
-			acid500.tick++;
+			int n=RUN_CYCLES_PER_TICK;
+			m68k_execute(n);
+			acid500.tick+=n;
 			refresh=true;
 		}
 
