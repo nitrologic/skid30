@@ -19,7 +19,9 @@ void usleep(int micros) {
 	int millis = micros / 1e6;
 	Sleep(millis);
 }
-
+int millis() {
+	return GetTickCount();
+}
 #else
 
 #include "tty_getch.h"
@@ -107,14 +109,18 @@ const int DumpLimit=5000;
 struct acid68000 {
 
 	int tick=0;
+
+	int memoryError = 0;
+
 	memory32* mem;
 	MemEvents memlog;
 
 	void log_bus(int readwrite, int byteshortlong, int address, int value) {
 		bool enable=(readwrite)?(mem->flags&2):(mem->flags&1);
 		int star=(mem->flags&4)?1:0;
-		if(enable){
-			int a32 = (star << 31) | (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
+		int err = (address == memoryError)?1:0;
+		if(enable||err){
+			int a32 = ((star|err) << 31) | (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
 			int pc=readRegister(16);
 			memlog.emplace_back(tick, a32, value, pc);
 		}
@@ -201,11 +207,18 @@ struct acid68000 {
 			return physicalAddress & (~cia_b.mask);
 		}
 
+		memoryError = physicalAddress;
+		writeAddress(physicalAddress);
+
 		return -1;
 	}
 
 	int read8(int physicalAddress) {
 		int address=decode(physicalAddress);
+		if (address < 0) {
+			log_bus(0, 2, physicalAddress, 0);
+			return 0; // free pass hackers are us
+		}
 		int value=mem->read8(address);
 		log_bus(0, 2, physicalAddress, value);
 		return value;
@@ -232,7 +245,7 @@ struct acid68000 {
 	void write8(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		log_bus(1, 2, physicalAddress, value);
-		mem->write8(address, value);
+		if(!memoryError) mem->write8(address, value);
 	}
 
 	void write16(int physicalAddress, int value) {
@@ -531,6 +544,7 @@ const char* help = "[s]tep [c]ontinue [pause] [r]eset [h]ome [q]uit";
 void debugCode(int pc24) {
 	int key = 0;
 	int run = 0;
+	int err = 0;
 	bool refresh=true;
 
 	acid500.qwrite32(0, 0x400); //sp
@@ -555,6 +569,8 @@ void debugCode(int pc24) {
 			writeEOL();
 			writeEOL();
 			writeNamedInt("key", key);
+			writeEOL();
+			writeNamedInt("error", acid500.memoryError);
 			writeEOL();
 			writeNamedInt("elapsed", elapsed);
 			writeEOL();
@@ -624,8 +640,13 @@ void debugCode(int pc24) {
 		if (run) {
 			int n=RUN_CYCLES_PER_TICK;
 			m68k_execute(n);
-			acid500.tick+=n;
+			acid500.tick+=n; // may error early
 			refresh=true;
+			if (acid500.memoryError) {
+				run = false;
+				err = acid500.memoryError;
+			}
+
 		}
 
 		pc = acid500.readRegister(16);
