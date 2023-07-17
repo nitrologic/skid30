@@ -692,17 +692,14 @@ int main() {
 //unknown
 //	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
 // triple chunk issue
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\game";
-//  const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\devpac";
-//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\dp";
 //	const char* amiga_binary = "../../archive/game";
 //	const char* amiga_binary = "../../archive/devpac";
 //	const char* amiga_binary = "../../archive/dp";
 
 //amiga 2 chunk hunks
 
-	const char* amiga_binary = "../../archive/lha";
-//	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../../archive/lha";
+	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
 //	const char* amiga_binary = "../../archive/blitz2/ted";
 	loadHunk(amiga_binary,0x2000);

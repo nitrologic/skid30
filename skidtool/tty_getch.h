@@ -11,6 +11,11 @@
 // termios for life
 
 // https://stackoverflow.com/questions/312185/kbhit-on-macos-to-detect-keypress
+int getch(){
+	char c;
+	scanf("%c",&c);	
+	return (int)c;
+}
 
 int tty_getch() {
 
