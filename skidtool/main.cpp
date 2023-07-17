@@ -208,7 +208,7 @@ struct acid68000 {
 		}
 
 		memoryError = physicalAddress;
-		writeAddress(physicalAddress);
+//		writeAddress(physicalAddress);
 
 		return -1;
 	}
@@ -228,6 +228,10 @@ struct acid68000 {
 		int qbit = a32 & 0x80000000;
 		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
+		if (address < 0) {
+			log_bus(0, 1, physicalAddress, 0);
+			return 0; // free pass hackers are us
+		}
 		int value = mem->read16(address);
 		if(qbit==0) log_bus(0, 1, physicalAddress, value);
 		return value;
@@ -237,6 +241,10 @@ struct acid68000 {
 		int qbit = a32 & 0x80000000;
 		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
+		if (address < 0) {
+			log_bus(0, 0, physicalAddress, 0);
+			return 0; // free pass hackers are us
+		}
 		int value = mem->read32(address);
 		if(qbit==0) log_bus(0, 0, physicalAddress, value);
 		return value;
@@ -548,7 +556,10 @@ void debugCode(int pc24) {
 	bool refresh=true;
 
 	acid500.qwrite32(0, 0x400); //sp
-	acid500.qwrite32(4, pc24); //pc
+	acid500.qwrite32(4, 0xac1d0000); //exec
+	acid500.qwrite32(8, pc24); //pc
+
+//	acid500.writeRegister(16, pc24);
 
 	int pc = pc24;//acid500.readRegister(16);
 
@@ -690,11 +701,12 @@ int main() {
 
 //amiga 2 chunk hunks
 
-//	const char* amiga_binary = "../../archive/lha";
-	const char* amiga_binary = "../../archive/virus";
+	const char* amiga_binary = "../../archive/lha";
+//	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
 //	const char* amiga_binary = "../../archive/blitz2/ted";
 	loadHunk(amiga_binary,0x2000);
+	getch();
 //	disassemble(0x2000, 6);
 	debugCode(0x2000);
 //	debugCode(0xf800d2);

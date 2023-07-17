@@ -87,7 +87,7 @@ struct ram16 : memory32 {
 	}
 	virtual void write16(int address,int value) {
 		if(address<0||(address>>1)>=shorts.size()){
-			return;
+//			return;
 		}
 		shorts[address>>1]=value;
 	}
