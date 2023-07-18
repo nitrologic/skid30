@@ -104,8 +104,11 @@ ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool 
-    main.cpp 
-    machine.h filedecoder.h monitor.h loadiff.h
+    skidtool.cpp 
+    machine.h 
+    filedecoder.h 
+    monitor.h 
+    loadiff.h
 )
 
 target_link_libraries(skidtool musashi zlib libpng)

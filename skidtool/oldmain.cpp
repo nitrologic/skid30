@@ -1,3 +1,5 @@
+// this version is deprecated see skidtool.cpp for more recent action
+
 #define RUN_CYCLES_PER_TICK 1024
 //128
 //1024
