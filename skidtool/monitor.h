@@ -48,6 +48,9 @@ void writeChar(int c) {
 void writeString(std::string s) {
 	std::cout << s;
 }
+void writeNamedString(std::string n,std::string s) {
+	std::cout << n << " " << s;
+}
 void writeIndex(int i) {
 	std::cout << i;
 }

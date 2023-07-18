@@ -101,7 +101,7 @@ struct ram16 : memory32 {
 struct chipset16 : memory32 {
 	std::vector<u16> shorts;
 	chipset16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
-		flags=7;
+		flags=0;
 	}
 	virtual void write16(int address, int value) {
 		shorts[address >> 1] = value;

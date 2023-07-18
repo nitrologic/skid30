@@ -213,6 +213,9 @@ struct acid68000 {
 		}
 
 		memoryError = physicalAddress;
+		m68k_pulse_halt();
+
+//		m68k_pulse_bus_error();
 //		writeAddress(physicalAddress);
 
 		return -1;
@@ -559,6 +562,8 @@ void debugCode(int pc24) {
 	int run = 0;
 	int err = 0;
 	bool refresh=true;
+	
+	const char* status = "single";
 
 	acid500.qwrite32(0, 0x400); //sp
 	acid500.qwrite32(4, 0xac1d0000); //exec
@@ -590,7 +595,9 @@ void debugCode(int pc24) {
 			writeEOL();
 			writeNamedInt("elapsed", elapsed);
 			writeEOL();
-			writeNamedInt("TICK", acid500.tick);
+			writeNamedInt("tick", acid500.tick);
+			writeEOL();
+			writeNamedString("status", status);
 			writeEOL();
 			writeEOL();
 
@@ -637,8 +644,9 @@ void debugCode(int pc24) {
 		}
 
 		if (key == 's') {
-			m68k_execute(1);
-			acid500.tick++;
+			int ticks=m68k_execute(1);
+			acid500.tick+=ticks;
+			status = "step";
 			refresh=true;
 		}
 
@@ -647,20 +655,23 @@ void debugCode(int pc24) {
 //		}
 
 		if(key=='c'){
+			status = "running";
 			run=1;
 		}
 		if(key=='p'){
+			status = "paused";
 			run=0;
 		}
 
 		if (run) {
 			int n=RUN_CYCLES_PER_TICK;
-			m68k_execute(n);
-			acid500.tick+=n; // may error early
+			int ticks=m68k_execute(n);
+			acid500.tick+=ticks;
 			refresh=true;
 			if (acid500.memoryError) {
 				run = false;
 				err = acid500.memoryError;
+				status = "memory error";
 			}
 
 		}
@@ -704,16 +715,17 @@ int main() {
 
 // amiga chunks are hunks
 
-//	const char* amiga_binary = "../../archive/virus";
+	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
 
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
-	const char* amiga_binary = "../../archive/blitz2/ted";
+//	const char* amiga_binary = "../../archive/blitz2/ted";
 
 	loadHunk(amiga_binary,0x2000);
 
 	writeString("enter to continue");
+	writeEOL();
 	getch();
 
 //	disassemble(0x2000, 6);
