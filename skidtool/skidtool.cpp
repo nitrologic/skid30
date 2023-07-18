@@ -704,13 +704,12 @@ int main() {
 
 // amiga chunks are hunks
 
-	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
-//	const char* amiga_binary = "../../archive/devpac";
-//	const char* amiga_binary = "../../archive/dp";
+
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
-//	const char* amiga_binary = "../../archive/blitz2/ted";
+	const char* amiga_binary = "../../archive/blitz2/ted";
 
 	loadHunk(amiga_binary,0x2000);
 
@@ -720,41 +719,6 @@ int main() {
 //	disassemble(0x2000, 6);
 	debugCode(0x2000);
 //	debugCode(0xf800d2);
-
-/*
-move.l #$aaaaaaaa,d5
-nop
-moveq #1,d1
-jmp 0
-*/
-
-/*
-	u16 code[] = { 0,0,0,0, 0x2a3c,0xaaaa,0xaaaa,0x4e71,0x7201,0x4ef9,0,0 };
-
-	for (int i = 0; i < 10; i++) {
-		u16 w = code[i];
-		cpu_write_word_dasm(i*2,w);
-	}
-*/
-	// test it on kickstart rom
-#ifdef disassembleRom
-	disassemble(0xf80000,4);
-	disassemble(0xf800d2, 16);
-#endif
-
-//	disassemble_program();
-
-//#define runcode
-#ifdef runcode
-	m68k_init();
-	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
-	m68k_pulse_reset();
-	m68k_execute(100000);
-#endif
-//	input_device_reset();
-//	output_device_reset();
-//	nmi_device_reset();
-//	const char* tag = "";
 
 	return 0;
 };
