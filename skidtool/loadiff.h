@@ -12,12 +12,23 @@ const int CMAP=0x434d4150;
 const int CRNG=0x43524e47;
 const int CAMG=0x43414d47;
 const int DPPS=0x44505053;
+const int _8SVX = 0x38535658;
+
+const int VHDR = 0x56484452;
+const int NAME = 0x4e414d45;
+const int ANNO = 0x414e4e4f;
+const int Audi = 0x41756469;
+
+//ilbm	0x38535658	int
+
+const int ERRCODE = 0xcccccccc;
+
 
 #define CAMG_HAM 0x800   /* hold and modify */
 #define CAMG_EHB 0x80    /* extra halfbrite */
 
-void loadIFF(std::string path){
-	writeString("Reading IFF from ");
+void loadILBM(std::string path){
+	writeString("Reading IFF ILBM from ");
 	writeString(path);
 	writeEOL();
 	filedecoder fd(path);
@@ -47,6 +58,7 @@ void loadIFF(std::string path){
 	int pagew = 0;
 	int pageh = 0;
 	fsize -= 4;
+//	token	0x424d4844	int
 
 	while (fsize > 0) {
 		int token= fd.readBigInt();
@@ -189,6 +201,12 @@ void loadIFF(std::string path){
 			fd.skip(tsize - 20);
 		}
 			break;
+// GRAB
+
+		case ERRCODE:
+			fsize = 0;
+			continue;
+
 		default:
 //			writeString("FORM ILBM TOKEN ");
 			writeCC4Big(token);
@@ -198,8 +216,112 @@ void loadIFF(std::string path){
 		fsize -= (tsize + 8);
 	}
 
-	for (int i = 0; i < 64; i++) {
+	if (!fd.eof()) {
+
+		for (int i = 0; i < 64; i++) {
+			int x = fd.readByte();
+			std::cout << x << " " << (char)x << std::endl;
+		}
+
+	}
+
+	u16 h0 = fd.readBigShort();
+	u16 h1 = fd.readBigShort();
+	bool magic = (h0 == 0) && (h1 == 1011);
+
+}
+
+void loadSVX(std::string path) {
+	writeString("Reading IFF 8SVX from ");
+	writeString(path);
+	writeEOL();
+	filedecoder fd(path);
+
+	int form = fd.readBigInt();
+	if (form != FORM) {
+		std::cout << "expecting FORM at start of IFF ILBM" << std::endl;
+		return;
+	}
+	int fsize = fd.readBigInt();
+	int ilbm = fd.readBigInt();
+	if (ilbm != _8SVX) {
+		writeCC4Big(ilbm);
+		std::cout << "expecting ILBM at start of IFF ILBM" << std::endl;
+		return;
+	}
+	fsize -= 4;
+
+	int l0 = 0;
+	int l1 = 0;
+	int rate = 0;
+	int code = 0;
+	int octave = 0;
+	int comp = 0;
+	int volume = 0;
+
+	char buffer[1024];
+	std::string name;
+	std::string anno;
+	while (fsize > 0) {
+		int token = fd.readBigInt();
+		int tsize = fd.readBigInt();
+
+		switch (token) {
+
+		case VHDR:
+			l0 = fd.readBigInt();
+			l1 = fd.readBigInt();
+			rate = fd.readBigInt();
+			code = fd.readBigShort();
+			octave = fd.readByte();
+			comp = fd.readByte();
+			volume = fd.readBigInt();
+			std::cout << " l0 l1:" << l0 << " " << l1 << ",";
+			std::cout << " rate:" << rate;
+			std::cout << " code:" << code;
+			std::cout << " octave:" << octave;
+			std::cout << " comp:" << comp;
+			std::cout << " vol:" << volume;
+			std::cout << std::endl;
+			break;
+
+		case NAME:
+			fd.readChars(tsize,buffer);
+			name = std::string(buffer, tsize);
+			std::cout << "NAME:" << name << std::endl;
+			break;
+
+		case ANNO:
+			fd.readChars(tsize, buffer);
+			anno = std::string(buffer, tsize);
+			std::cout << "ANNO:" << anno << std::endl;
+			break;
+
+		case BODY:
+			std::cout << "BODY:" << tsize << std::endl;
+			fd.skip(tsize);
+			if (tsize & 2) {
+//				fd.skip(2);
+			}
+			break;
+
+		case ERRCODE:
+			fsize = 0;
+			continue;
+
+		default:
+			//			writeString("FORM ILBM TOKEN ");
+			writeCC4Big(token);
+			writeEOL();
+			fd.skip(tsize);
+		}
+		fsize -= (tsize + 8);
+	}
+
+	int count = 0;
+	while (!fd.eof() && count<64) {
 		int x = fd.readByte();
+		writeData8(x);
 		std::cout << x << " " << (char)x << std::endl;
 	}
 

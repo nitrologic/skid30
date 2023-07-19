@@ -3,6 +3,8 @@
 // all rights reserved
 // 2023
 
+#include "loadiff.h"
+
 #define RUN_CYCLES_PER_TICK 1024
 
 // vscode F11 - focus
@@ -694,15 +696,12 @@ void debugCode(int pc24) {
 }
 
 int convertFiles() {
-	//	const char *iff="C:\\nitrologic\\skid30\\maps\\format.iff";
-	//	const char* iff = "C:\\nitrologic\\skid30\\archive\\titlescreen.iff";
-	//	loadIFF(iff);
-	//audio
-	//	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\skid.iff";
-	//	const char* iff = "C:\\nitrologic\\skid30\\archive\\amigademogfx\\impact.iff";
-	//unknown
-	//	const char* amiga_binary = "C:\\nitrologic\\skid30\\archive\\genam2";
-	// triple chunk issue
+//	const char* iff = "../../archive/amigademogfx/skid.iff";
+//	const char* iff = "../../archive/amigademogfx/impact.iff";
+	const char* iff = "../../archive/amigademogfx/engine.iff";
+
+//	loadILBM(iff);
+	loadSVX(iff);
 	return 0;
 }
 
@@ -717,8 +716,10 @@ int main() {
 	initscr();
 	timeout(200);
 #endif
-	std::cout << "skidtool 0.1" << std::endl;
 
+	std::cout << "skidtool 0.2" << std::endl;
+
+	convertFiles();
 
 // amiga chunks are hunks
 

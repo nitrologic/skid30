@@ -55,6 +55,8 @@ void writeIndex(int i) {
 	std::cout << i;
 }
 void writeCC4Big(int tag) {
+	writeData32(tag);
+	std::cout << " ";
 	for (int i = 0; i < 4; i++) {
 		int b = (tag >> ((3 - i) * 8)) & 0xff;
 		if (b < 32 || b>127)
