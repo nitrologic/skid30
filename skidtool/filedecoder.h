@@ -42,6 +42,10 @@ struct filedecoder {
 		return little;
 	}
 
+	void readChars(int n, void *buffer) {
+		fread(buffer, n, 1, f);
+	}
+
 	// skip is forwards only
 
 	void skip(int bytes) {
