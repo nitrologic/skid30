@@ -9,6 +9,8 @@
 // flag 2 - logs writes
 // flag 4 - star
 
+int machineError;
+
 struct memory32 {
 	u32 physical;
 	u32 mask;
@@ -121,5 +123,22 @@ struct interface8 : memory32 {
 	}
 	virtual int read8(int address) {
 		return bytes[address];
+	}
+};
+
+
+struct amiga16 : memory32{
+	std::vector<u16> shorts;
+	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
+		flags=0;
+	}
+	virtual int read16(int address) {
+		return 0x4e75;//shorts[address >> 1];
+	}
+	virtual int read32(int address) {		
+		return address;
+//		writeData32(address);
+//		machineError=address;
+//		return shorts[address >> 1];
 	}
 };

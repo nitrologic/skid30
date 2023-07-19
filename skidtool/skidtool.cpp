@@ -82,6 +82,8 @@ chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..d
 interface8 cia_a(0xbfe000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
 interface8 cia_b(0xbfd000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
 
+amiga16 mig(0x800000, 0xff00000, 0x100000);
+
 // chinnamasta soc
 
 extern "C" {
@@ -195,6 +197,10 @@ struct acid68000 {
 			return physicalAddress & (~kickstart.mask);
 		}
 #endif		
+		if ((physicalAddress & mig.mask) == mig.physical) {
+			mem = &mig;
+			return physicalAddress & (~mig.mask);
+		}
 		if ((physicalAddress & chipset.mask) == chipset.physical) {
 			mem = &chipset;
 			return physicalAddress & (~chipset.mask);
@@ -566,7 +572,8 @@ void debugCode(int pc24) {
 	const char* status = "single";
 
 	acid500.qwrite32(0, 0x400); //sp
-	acid500.qwrite32(4, 0xac1d0000); //exec
+//	acid500.qwrite32(4, 0xac1d0000); //exec
+	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
 
 //	acid500.writeRegister(16, pc24);
@@ -715,18 +722,18 @@ int main() {
 
 // amiga chunks are hunks
 
-	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
 
-//	const char* amiga_binary = "../../archive/blitz2/blitz2";
+	const char* amiga_binary = "../../archive/blitz2/blitz2";
 //	const char* amiga_binary = "../../archive/blitz2/ted";
 
 	loadHunk(amiga_binary,0x2000);
 
 	writeString("enter to continue");
 	writeEOL();
-	getch();
+	getchar();
 
 //	disassemble(0x2000, 6);
 	debugCode(0x2000);
