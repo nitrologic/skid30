@@ -699,7 +699,6 @@ int convertFiles() {
 //	const char* iff = "../../archive/amigademogfx/skid.iff";
 //	const char* iff = "../../archive/amigademogfx/impact.iff";
 	const char* iff = "../../archive/amigademogfx/engine.iff";
-
 //	loadILBM(iff);
 	loadSVX(iff);
 	return 0;
@@ -722,6 +721,9 @@ int main() {
 	convertFiles();
 
 // amiga chunks are hunks
+
+//	const char* amiga_binary = "../../archive/genam2";
+//	const char* amiga_binary = "../../archive/devpac";
 
 //	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/lha";

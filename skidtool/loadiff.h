@@ -1,6 +1,7 @@
 #pragma once
 #include "monitor.h"
 #include "filedecoder.h"
+
 // EA DPAINT IFF ILBM FILE FORMAT
 // http://www.etwright.org/lwsdk/docs/filefmts/ilbm.html
 
