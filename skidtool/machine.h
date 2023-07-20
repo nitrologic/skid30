@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+
+#include "exec.h"
 #include "monitor.h"
 #include "filedecoder.h"
 
@@ -11,6 +14,8 @@
 
 int machineError;
 
+std::string machineState="";
+
 struct memory32 {
 	u32 physical;
 	u32 mask;
@@ -21,7 +26,7 @@ struct memory32 {
 
 	// address interface is local with physical bits already removed
 
-	virtual int read16(int address) {
+	virtual int read16(int address, int flags) {
 		return 0;
 	}
 
@@ -32,14 +37,14 @@ struct memory32 {
 
 	virtual int read8(int address) {
 		int odd = address & 1;
-		int word = read16(address - odd);
+		int word = read16(address - odd,0);
 		word >>= 8 * odd;
 		return word;
 	}
 
 	virtual int read32(int address) {
-		int w0 = read16(address);
-		int w1 = read16(address+2);
+		int w0 = read16(address,0);
+		int w1 = read16(address+2,0);
 //		return (w1 << 16) | (w0 & 0xffff);
 		return (w0 << 16) | (w1 & 0xffff);
 	}
@@ -47,7 +52,7 @@ struct memory32 {
 	virtual void write8(int address, int value) {
 		int odd = address & 1;
 		address -= odd;
-		int word = read16(address);
+		int word = read16(address,0);
 		if (odd) {
 			word = (word & 0xff) | (value << 8);
 		}
@@ -77,7 +82,7 @@ struct rom16 : memory32 {
 			std::cout << "unexpected eof fail for rom16 file" << std::endl;
 		}
 	}
-	virtual int read16(int address) {
+	virtual int read16(int address,int flags) {
 		return shorts[address>>1];
 	}
 };
@@ -93,7 +98,7 @@ struct ram16 : memory32 {
 		}
 		shorts[address>>1]=value;
 	}
-	virtual int read16(int address) {
+	virtual int read16(int address,int flags) {
 		return shorts[address>>1];
 	}
 };
@@ -108,7 +113,7 @@ struct chipset16 : memory32 {
 	virtual void write16(int address, int value) {
 		shorts[address >> 1] = value;
 	}
-	virtual int read16(int address) {
+	virtual int read16(int address,int flags) {
 		return shorts[address >> 1];
 	}
 };
@@ -126,13 +131,49 @@ struct interface8 : memory32 {
 	}
 };
 
+// execbase breakpoint platform 
+// common origin is 0x800000
+// execbase=
+
+const int QBIT = 0x80000000;
+
+const std::string execNames[] = {"ReplyMsg","WaitPort"}; // just guessing here, please step slowly
+
+enum enum_exec {
+	REPLY,
+	WAIT
+};
 
 struct amiga16 : memory32{
 	std::vector<u16> shorts;
+	IExec* exec;
+
 	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags=0;
 	}
-	virtual int read16(int address) {
+	void setExec(IExec *bass) {
+		exec = bass;
+	}
+	// pc has arrived with a negative offset from execbase ($801000)
+	virtual int read16(int address,int flags) {
+		//		int base = 0x801000;
+		int offset = address | -4096;
+		if (flags&QBIT) {
+			//		log_bus(0, 1, physicalAddress, 0);
+		}
+		int func = -(offset/ 6) - 63;
+		switch (func) {
+		case REPLY:
+			// A1=message
+			machineState = "REPLY";
+			exec->replyMsg();
+			break;
+		case WAIT:
+			machineState = "WAIT";
+			exec->waitPort();
+			break;
+		}
+
 		return 0x4e75;//shorts[address >> 1];
 	}
 	virtual int read32(int address) {		

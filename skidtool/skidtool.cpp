@@ -124,12 +124,13 @@ struct acid68000 {
 	memory32* mem;
 	MemEvents memlog;
 
-	void log_bus(int readwrite, int byteshortlong, int address, int value) {
-		bool enable=(readwrite)?(mem->flags&2):(mem->flags&1);
+	void log_bus(int readwritefetch, int byteshortlong, int address, int value) {
+		bool enable=(readwritefetch==1)?(mem->flags&2):(mem->flags&1);
 		int star=(mem->flags&4)?1:0;
 		int err = (address == memoryError)?1:0;
 		if(enable||err){
-			int a32 = ((star|err) << 31) | (readwrite << 30) | (byteshortlong << 28) | (address & 0xffffff);
+			// low 24 bits are physical address
+			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortlong << 27) | (address & 0xffffff);
 			int pc=readRegister(16);
 			memlog.emplace_back(tick, a32, value, pc);
 		}
@@ -241,14 +242,14 @@ struct acid68000 {
 	}
 
 	int read16(int a32) {
-		int qbit = a32 & 0x80000000;
+		int qbit = a32 & 0x80000000;	// a PC instruction fetch
 		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
 		if (address < 0) {
-			log_bus(0, 1, physicalAddress, 0);
+			log_bus(qbit?2:0, 1, physicalAddress, 0);
 			return 0; // free pass hackers are us
 		}
-		int value = mem->read16(address);
+		int value = mem->read16(address,qbit);
 		if(qbit==0) log_bus(0, 1, physicalAddress, value);
 		return value;
 	}
@@ -295,6 +296,36 @@ struct acid68000 {
 };
 
 acid68000 acid500;
+
+class acidexec : public IExec {
+public:
+	acid68000* cpu0;
+
+	std::string fetchString(int a1) {
+		std::stringstream ss;
+		while (a1) {
+			int byte = cpu0->read8(a1++);
+			if (byte == 0) break;
+			ss << (char)byte;
+		}
+		return ss.str();
+	}
+	acidexec(acid68000* cpu) {
+		cpu0 = cpu;
+	}
+	void waitMsg() {
+
+	}
+	void waitPort() {
+		int a0 = cpu0->readRegister(8);
+		std::string s = fetchString(a0);
+	}
+	void replyMsg() {
+		int a1 = cpu0->readRegister(9);
+		std::string s = fetchString(a1);
+	}
+};
+
 
 
 // musashi entry points to acid cpu address bus
@@ -566,6 +597,11 @@ const char* title = "☰☰☰☰☰☰☰☰☰☰ ACID500 monitor";
 const char* help = "[s]tep [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
 void debugCode(int pc24) {
+
+	acidexec *bass=new acidexec(&acid500);
+
+	mig.setExec(bass);
+	
 	int key = 0;
 	int run = 0;
 	int err = 0;
@@ -682,17 +718,11 @@ void debugCode(int pc24) {
 				err = acid500.memoryError;
 				status = "memory error";
 			}
-
 		}
-
 		pc = acid500.readRegister(16);
-
 //		usleep(1000);
 	}
-
-
 	acid500.dumplog(0);
-
 }
 
 int convertFiles() {

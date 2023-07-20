@@ -46,13 +46,15 @@ struct filedecoder {
 		fread(buffer, n, 1, f);
 	}
 
-	// skip is forwards only
+	// skip is forward only
 
 	void skip(int bytes) {
 		if (bytes>0) {
 			fseek(f, bytes, SEEK_CUR);
 		}
 	}
+
+	// only works once you read past end
 
 	bool eof() {
 		return feof(f)!=0;

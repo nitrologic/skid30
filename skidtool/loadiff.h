@@ -18,7 +18,6 @@ const int _8SVX = 0x38535658;
 const int VHDR = 0x56484452;
 const int NAME = 0x4e414d45;
 const int ANNO = 0x414e4e4f;
-const int Audi = 0x41756469;
 
 //ilbm	0x38535658	int
 
