@@ -1,6 +1,16 @@
 test roms
 =========
 
+blitz2 command line compiler tool
+=================================
+1 hunk [ code ] with reloc32 84KB
+
+tests for command line vs workbench
+visis exec a few times 
+pc resets to zero after 0x188 ticks
+TBC
+see archive/blitz2/blitz2.s and wbheader for source reference
+
 zarch virus 
 ===========
 single chunk no reloc32 of bb26 (47910) words 94KB
@@ -13,9 +23,6 @@ game
 ====
 3 hunks [code data data] first two with reloc32 636KB
 
-blitz2 command line compiler tool
-=================================
-1 hunk [ code ] with reloc32 84KB
 
 ted workbench program editor
 ============================
