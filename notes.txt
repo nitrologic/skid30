@@ -8,8 +8,11 @@ zarch virus
 ===========
 single chunk no reloc32 of bb26 (47910) words 94KB
 
+On start, hammers color register 0 and does a bunch of CIA port reads.
 
+Dies reading -1 at the respectable tick count of 0x03127982
 
+03127982 R ? ffffff  000190
 
 
 blitz2 command line compiler tool
