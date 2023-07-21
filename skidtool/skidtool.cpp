@@ -780,8 +780,8 @@ int main() {
 //	const char* amiga_binary = "../../archive/genam2";
 //	const char* amiga_binary = "../../archive/devpac";
 
-	const char* amiga_binary = "../../archive/virus";
-//	const char* amiga_binary = "../../archive/lha";
+//	const char* amiga_binary = "../../archive/virus";
+	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
 
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
@@ -794,7 +794,7 @@ int main() {
 	getchar();
 
 //	disassemble(0x2000, 6);
-	debugCode(0x2000,"Zarch Virus @ 0x2000");
+	debugCode(0x2000, "lha @ 0x2000");
 //	debugCode(0xf800d2);
 
 	return 0;

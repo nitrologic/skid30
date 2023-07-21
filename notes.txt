@@ -1,8 +1,39 @@
 test roms
 =========
 
+* lha
 * blitz2
 * zarch
+
+lha command line tool
+=====================
+2 hunks [code data] both with reloc32 53KB
+
+On start, detects commandline as workbench pointer of 0 is now returned by the acid500.
+
+PC 00002060
+D0 00000000 D1 00000000 D2 00000000 D3 00000000
+D4 00000000 D5 00000000 D6 00000000 D7 00000000
+A0 00000000 A1 00000000 A2 00000000 A3 00000000
+A4 0000e9f4 A5 00000000 A6 00801000 A7 000003f0
+
+002060: 266e 0114           : movea.l ($114,A6), A3
+002064: 222b 00ac           : move.l  ($ac,A3), D1
+002068: 6700 0180           : beq     $21ea
+
+After 20 steps the app calls * AllocMem with parameters in D0/D1.
+
+* See Blitz2 reference manual Appendix 2 for details.
+
+PC 00800f3a
+D0 00000e1c D1 00010001 D2 00000000 D3 00000000
+D4 00000000 D5 00000000 D6 00000000 D7 00000000
+A0 000042b0 A1 00000000 A2 00000000 A3 89018008
+A4 0000e9f4 A5 0000200c A6 00801000 A7 000003ec
+
+002094: 4eae ff3a           : jsr     (-$c6,A6)
+
+TBC
 
 zarch virus 
 ===========
@@ -34,10 +65,6 @@ wb_header	move.l	4,a6
 	move.l	a4,us
 	tst.l	$ac(a4)
 	bne	fromcli
-
-lha command line tool
-=====================
-2 hunks [code data] both with reloc32 53KB
 
 game
 ====

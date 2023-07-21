@@ -94,7 +94,8 @@ struct ram16 : memory32 {
 	}
 	virtual void write16(int address,int value) {
 		if(address<0||(address>>1)>=shorts.size()){
-//			return;
+			machineError = address;
+			return;
 		}
 		shorts[address>>1]=value;
 	}
@@ -172,11 +173,18 @@ struct amiga16 : memory32{
 			machineState = "WAIT";
 			exec->waitPort();
 			break;
+		default:
+			machineState = std::to_string(offset) + "(execbase) un supported";
+			break;
 		}
 
 		return 0x4e75;//shorts[address >> 1];
 	}
 	virtual int read32(int address) {		
+		// trap $114(execbase) for apps looking for workbench pointers
+		if (address == (0x1000 + 0x114) ) {
+			return 0x801000;
+		}
 		return address;
 //		writeData32(address);
 //		machineError=address;
