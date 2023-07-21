@@ -118,8 +118,8 @@ const int DumpLimit=5000;
 
 struct acid68000 {
 
-	int tick=0;
-	int cycle = 0;
+	int step=0;
+	int cycle=0;
 
 	int memoryError = 0;
 
@@ -262,6 +262,13 @@ struct acid68000 {
 			return 0; // free pass hackers are us
 		}
 		int value = mem->read16(address,qbits);
+
+		if (machineError) {
+			// TODO - status = machineStatus;
+			memoryError = machineError;
+			m68k_pulse_halt();
+		}
+
 		if(qbits==0) log_bus(0, 1, physicalAddress, value);
 		return value;
 	}
@@ -607,7 +614,7 @@ void disassemble(int pc,int count)
 	writeEOL();
 }
 
-const char* title = "☰☰☰☰☰☰☰☰☰☰ ACID500 monitor";
+const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
 const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
 void debugCode(int pc24,const char *name) {
@@ -654,7 +661,7 @@ void debugCode(int pc24,const char *name) {
 			writeEOL();
 			writeNamedInt("elapsed", elapsed);
 			writeEOL();
-			writeNamedInt("tick", acid500.tick);
+			writeNamedInt("step", acid500.step);
 			writeEOL();
 			writeNamedInt("cycle", acid500.cycle);
 			writeEOL();
@@ -705,10 +712,10 @@ void debugCode(int pc24,const char *name) {
 		}
 
 		if (key == 's') {
-			int cycles=m68k_execute(1);
-			acid500.tick++;
-			acid500.cycle+=cycles;
 			status = "step";
+			int cycles=m68k_execute(1);
+			acid500.step++;
+			acid500.cycle+=cycles;
 			refresh=true;
 		}
 
@@ -735,7 +742,7 @@ void debugCode(int pc24,const char *name) {
 		if (run) {
 			int n=RUN_CYCLES_PER_TICK;
 			int cycles=m68k_execute(n);
-			acid500.tick++;
+			acid500.step++;
 			acid500.cycle+=cycles;
 			refresh=true;
 			if (acid500.memoryError) {
@@ -777,11 +784,12 @@ int main() {
 
 // amiga chunks are hunks
 
+	const char* amiga_binary = "../../archive/lha";
+
 //	const char* amiga_binary = "../../archive/genam2";
 //	const char* amiga_binary = "../../archive/devpac";
 
 //	const char* amiga_binary = "../../archive/virus";
-	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
 
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
@@ -793,8 +801,11 @@ int main() {
 	writeEOL();
 	getchar();
 
-//	disassemble(0x2000, 6);
-	debugCode(0x2000, "lha @ 0x2000");
+	const char* name = "lha @ 0x2000";
+
+	debugCode(0x2000, name);
+
+//  kickstart sanity test
 //	debugCode(0xf800d2);
 
 	return 0;

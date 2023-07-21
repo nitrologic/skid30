@@ -175,6 +175,7 @@ struct amiga16 : memory32{
 			break;
 		default:
 			machineState = std::to_string(offset) + "(execbase) un supported";
+			machineError=address;
 			break;
 		}
 
