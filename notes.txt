@@ -1,19 +1,35 @@
 test roms
 =========
 
-blitz2 command line compiler tool
-=================================
-1 hunk [ code ] with reloc32 84KB
-
-tests for command line vs workbench
-visis exec a few times 
-pc resets to zero after 0x188 ticks
-TBC
-see archive/blitz2/blitz2.s and wbheader for source reference
+* blitz2
+* zarch
 
 zarch virus 
 ===========
 single chunk no reloc32 of bb26 (47910) words 94KB
+
+
+
+
+
+blitz2 command line compiler tool
+=================================
+1 hunk [ code ] with reloc32 84KB
+
+On start, blitz2 binary tests for command line vs workbench
+with magic location.
+
+* amiga16 location $ac(276(a6)) should return 0
+
+Contemplate further with reference to blitz2 wbheader source
+
+archive/blitz2/wbheader[4]:
+
+wb_header	move.l	4,a6
+	move.l	276(a6),a4
+	move.l	a4,us
+	tst.l	$ac(a4)
+	bne	fromcli
 
 lha command line tool
 =====================

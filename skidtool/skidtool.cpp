@@ -1,7 +1,7 @@
 // skidtool
 // by simon
-// all rights reserved
-// 2023
+// 
+// all rights reserved 2023
 
 #include "loadiff.h"
 
@@ -53,6 +53,7 @@ int millis(){
 #include <assert.h>
 #include <sstream>
 #include <vector>
+#include <set>
 
 #include "machine.h"
 
@@ -123,6 +124,8 @@ struct acid68000 {
 
 	memory32* mem;
 	MemEvents memlog;
+
+	std::set<std::uint32_t> breakpoints;
 
 	void log_bus(int readwritefetch, int byteshortlong, int address, int value) {
 		bool enable=(readwritefetch==1)?(mem->flags&2):(mem->flags&1);
@@ -242,20 +245,28 @@ struct acid68000 {
 	}
 
 	int read16(int a32) {
-		int qbit = a32 & 0x80000000;	// a PC instruction fetch
+		int qbits = a32 & 0xc0000000;	// instruction or debugger fetch
 		int physicalAddress = a32 & 0xffffff;
+
+		if (qbits & 0x80000000) {	// pc is on the bus, check breakpoints
+			if (breakpoints.count(a32)) {
+				memoryError = physicalAddress;
+				m68k_pulse_halt();
+				return 0;
+			}
+		}
 		int address = decode(physicalAddress);
 		if (address < 0) {
-			log_bus(qbit?2:0, 1, physicalAddress, 0);
+			log_bus(qbits?2:0, 1, physicalAddress, 0);
 			return 0; // free pass hackers are us
 		}
-		int value = mem->read16(address,qbit);
-		if(qbit==0) log_bus(0, 1, physicalAddress, value);
+		int value = mem->read16(address,qbits);
+		if(qbits==0) log_bus(0, 1, physicalAddress, value);
 		return value;
 	}
 
 	int read32(int a32) {
-		int qbit = a32 & 0x80000000;
+		int qbits = a32 & 0xc0000000;
 		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
 		if (address < 0) {
@@ -263,7 +274,7 @@ struct acid68000 {
 			return 0; // free pass hackers are us
 		}
 		int value = mem->read32(address);
-		if(qbit==0) log_bus(0, 0, physicalAddress, value);
+		if(qbits==0) log_bus(0, 0, physicalAddress, value);
 		return value;
 	}
 
@@ -292,6 +303,10 @@ struct acid68000 {
 	void qwrite16(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		mem->write16(address, value);
+	}
+
+	void breakpoint(int address) {
+		breakpoints.insert(address|0x80000000);
 	}
 };
 
@@ -363,12 +378,12 @@ uint  read_imm_32(void) {
 
 unsigned int cpu_read_word_dasm(unsigned int address)
 {
-	return acid500.read16(address | 0x80000000);
+	return acid500.read16(address | 0x40000000);
 }
 
 unsigned int cpu_read_long_dasm(unsigned int address)
 {
-	return acid500.read32(address | 0x80000000);
+	return acid500.read32(address | 0x40000000);
 }
 
 
@@ -594,7 +609,7 @@ void disassemble(int pc,int count)
 }
 
 const char* title = "☰☰☰☰☰☰☰☰☰☰ ACID500 monitor";
-const char* help = "[s]tep [c]ontinue [pause] [r]eset [h]ome [q]uit";
+const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
 void debugCode(int pc24) {
 
@@ -695,6 +710,12 @@ void debugCode(int pc24) {
 			refresh=true;
 		}
 
+		if (key == 'o') {
+			acid500.breakpoint(pc+4);
+			status = "running";
+			run = 1;
+		}
+
 //		if (key == 'r') {
 //			run = 1 - run;
 //		}
@@ -703,6 +724,7 @@ void debugCode(int pc24) {
 			status = "running";
 			run=1;
 		}
+
 		if(key=='p'){
 			status = "paused";
 			run=0;
@@ -755,11 +777,11 @@ int main() {
 //	const char* amiga_binary = "../../archive/genam2";
 //	const char* amiga_binary = "../../archive/devpac";
 
-//	const char* amiga_binary = "../../archive/virus";
+	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
 
-	const char* amiga_binary = "../../archive/blitz2/blitz2";
+//	const char* amiga_binary = "../../archive/blitz2/blitz2";
 //	const char* amiga_binary = "../../archive/blitz2/ted";
 
 	loadHunk(amiga_binary,0x2000);
