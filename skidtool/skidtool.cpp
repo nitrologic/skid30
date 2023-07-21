@@ -119,6 +119,7 @@ const int DumpLimit=5000;
 struct acid68000 {
 
 	int tick=0;
+	int cycle = 0;
 
 	int memoryError = 0;
 
@@ -135,7 +136,7 @@ struct acid68000 {
 			// low 24 bits are physical address
 			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortlong << 27) | (address & 0xffffff);
 			int pc=readRegister(16);
-			memlog.emplace_back(tick, a32, value, pc);
+			memlog.emplace_back(cycle, a32, value, pc);
 		}
 	}
 
@@ -601,8 +602,6 @@ void disassemble(int pc,int count)
 		instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
 		make_hex(buff2, pc, instr_size);
 		printf("%06x: %-20s: %s \033[K\n", pc, buff2, buff);
-
-
 		pc += instr_size;
 	}
 	writeEOL();
@@ -611,7 +610,7 @@ void disassemble(int pc,int count)
 const char* title = "☰☰☰☰☰☰☰☰☰☰ ACID500 monitor";
 const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
-void debugCode(int pc24) {
+void debugCode(int pc24,const char *name) {
 
 	acidexec *bass=new acidexec(&acid500);
 
@@ -622,7 +621,7 @@ void debugCode(int pc24) {
 	int err = 0;
 	bool refresh=true;
 	
-	const char* status = "single";
+	const char* status = name;
 
 	acid500.qwrite32(0, 0x400); //sp
 //	acid500.qwrite32(4, 0xac1d0000); //exec
@@ -656,6 +655,8 @@ void debugCode(int pc24) {
 			writeNamedInt("elapsed", elapsed);
 			writeEOL();
 			writeNamedInt("tick", acid500.tick);
+			writeEOL();
+			writeNamedInt("cycle", acid500.cycle);
 			writeEOL();
 			writeNamedString("status", status);
 			writeEOL();
@@ -704,8 +705,9 @@ void debugCode(int pc24) {
 		}
 
 		if (key == 's') {
-			int ticks=m68k_execute(1);
-			acid500.tick+=ticks;
+			int cycles=m68k_execute(1);
+			acid500.tick++;
+			acid500.cycle+=cycles;
 			status = "step";
 			refresh=true;
 		}
@@ -732,8 +734,9 @@ void debugCode(int pc24) {
 
 		if (run) {
 			int n=RUN_CYCLES_PER_TICK;
-			int ticks=m68k_execute(n);
-			acid500.tick+=ticks;
+			int cycles=m68k_execute(n);
+			acid500.tick++;
+			acid500.cycle+=cycles;
 			refresh=true;
 			if (acid500.memoryError) {
 				run = false;
@@ -791,7 +794,7 @@ int main() {
 	getchar();
 
 //	disassemble(0x2000, 6);
-	debugCode(0x2000);
+	debugCode(0x2000,"Zarch Virus @ 0x2000");
 //	debugCode(0xf800d2);
 
 	return 0;
