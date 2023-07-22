@@ -16,6 +16,8 @@ Then came the mouse, and then came the workbench, and then there was confusion f
     beq     iscommandline
 
 
-![test notes](notes.txt)
+[test notes](notes.txt)
+
+[early days on discord](https://discord.gg/QRx5tDjqx)
 
 ![acid500 monitor tool](media/acid500monitor.png)
