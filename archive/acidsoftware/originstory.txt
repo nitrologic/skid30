@@ -1,0 +1,9 @@
+Company History
+
+Armstrong Communications Ltd was formed in 1989 from the success of the Color Vision product developed for the international paint industry. This system used early Amiga technology and custom software to visualize color schemes on interior and exterior images of homes and was successfully licensed worldwide to major industry manufacturers including the likes of Benjamin Moore as a point of sale merchandising tool.
+
+Based in Auckland New Zealand, Armstrong Communications Ltd trading under the name Acid Software proceeded to develop and publish software for the Amiga computer in the early 90's. Our flagship product was a BASIC compiler named Blitz2 that provided a fast, friendly, professional environment for the hobbyist game programmer. Blitz2 also became a popular tool with professional developers for rapid development of tools and utilities required in the game design process back then.
+
+During this time Acid Software also developed and published a string of games for the European market including the titles Woody's World, Skidmarks, Guardian and Roadkill. Skidmarks was the most popular of these titles reaching the number 1 position in the UK charts for several weeks in 1994 and it was successfully ported to Sega Megadrive in 1995 for UK publisher Codemasters.
+
+In late 1995 it was evident the home computer era was over and the company concentrated on development contracts with TVNZ the local Television broadcaster. These contracts included an interactive video game played live on Saturday morning television by viewers with their touch tone telephones as well as various scoring / statistics packages for deployment in live sports broadcasting situations.

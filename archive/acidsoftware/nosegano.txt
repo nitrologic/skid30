@@ -1,0 +1,33 @@
+To:	Sega of America Dreamcast, Inc. 
+	650 Townsend, Suite 650 
+	San Francisco, 
+	CA 94103
+
+Date:	April 04, 2000
+
+Re:	Introduction to Acid Virtual Machine
+
+
+Dear Sirs,
+
+Please find attached an introduction to the Acid Virtual Machine which also includes some background on my company and some technical information which I hope makes some sense to somebody at your end.
+
+I am interested in promoting to your company the concept that Java based technology is destined to become a powerful development technology for the video game industry.
+
+I am aware that Sun Microsystems have already done some preparatory work in this area for the Dreamcast platform but firmly believe a demonstration of our high speed, real time engine will reverse any negative impressions of the technology you may have gained from their efforts.
+
+I look forward to your reply,
+
+Yours Sincerely,
+
+
+
+
+
+Simon Armstrong
+Managing Director
+simon@acid.co.nz
+
+
+Armstrong Communications Ltd - 1/91 St Johns Road - Auckland 5 - New Zealand
+Tel +649 578 2346 - Fax +649 521 4351

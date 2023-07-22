@@ -1,0 +1,42 @@
+This document details the design, functionality and rationale behind the development of the Acid  Virtual Machine (AVM) by Armstrong Communications Ltd.
+
+For the last 12 months Armstrong Communications Ltd has been developing Virtual Machine technology based on the Java VM specification which it is now prepared to license to interested parties in the entertainment industry.
+
+We believe our research to date proves Java technology can deliver a high performance runtime solution to the video game industry in addition to it’s proven abilities in the areas of developer productivity and of course it’s clean modular object oriented nature.
+
+based on a modular JIT design (Just In Time compiler). Our current reference platform is the original Playstion hardware featuring a MIPS R3000 processor. The AVM reads standard Java class files and compiles them into native R3000 machine code performing several layers of optimizations using advanced register and instruction scheduling techniques.
+
+Memory allocation and garbage collection services are tuned using proprietary techniques that help deliver a high speed environment for the most demanding Java applications. However, developers are still encouraged to employ object recycling techniques to minimize garbage creation in order to achieve optimal performance results in their applications. 
+
+Research is currently being done in the area of code positioning which plays an important part in software optimization due to the limited instruction caches common in console hardware. Performance gains from the reduction of such cache hits are considerable and it seems there is significant potential for Virtual Machine design to reduce such bottlenecks given the control available during runtime linkage of native code libraries and compilation of Java class files.
+
+The true strength of any Java Virtual Machine is of course the robust documented specification which provides a highly stable framework in which applications can be deployed. Benefits include greater productivity on the development side and a guaranteed level of system integrity on the user side.
+
+
+Applications Layer
+
+A small friendly Operating System developed in pure Java is intended to be bundled with the Acid Virtual Machine.
+
+Axis (development name) currently provides a simple GUI, device drivers, messaging services and rendering tools for use by the application developer. Frames have been integrated into the GUI with browser applications in mind. Desktop effects such as transparent layers and 3D icons are also being integrated into the core GUI to provide developers plenty of options in the design of slick polished applications. 
+
+Although not an immediate goal, an AWT compatible interface to Axis is planned in order to provide for the execution of Java1.1 applets, this would provide similar compatibility to that of the Microsoft Virtual Machine bundled with the IE browser.
+
+A primary focus in the development of the Acid Virtual Machine is the deployment of networked interactive 3D applications. It seems evident that such products will be the killer apps of next generation console systems and it is Armstrong Communication’s aim to position the Acid Virtual Machine as an enabling technology for developers in this arena.  
+
+
+Dreamcast Target
+
+The Acid Virtual Machine is a clean-room implementation of Sun Microsystems’ VM Specification built in an object oriented modular fashion with zero reliance on legacy code. Operating system specific function has been provided where possible in pure Java with machine dependent native code for the Playstation reference platform currently < 8K.
+
+The JIT compilation engine has been designed in a generic manner with instruction and register scheduling performed on a pseudo ISA (suitably constrained) with target processor specific output as the final step.
+
+
+Summary
+
+The concept of Java to many is a slow interpreted language only suitable for simplistic applets on the world wide web.
+
+In reality Java technology now provides the backbone to many e-commerce solutions and is becoming increasingly popular in the enterprise world.
+
+The Acid Virtual Machine has been designed to provide a high speed, robust platform to meet the real time demands of the video game industry. The AVM technology has been developed and can be demonstrated using the Playstation hardware as reference platform.
+
+Armstrong Communications Ltd is now looking at establishing partnerships in the industry in order to bring this exciting technology to market.
