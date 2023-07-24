@@ -34,7 +34,7 @@ int millis() {
 #include "tty_getch.h"
 #include <time.h>
 
-#ifndef LINUX
+#ifdef LINUX2
 
 int millis(){
 	uint64_t t=clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
