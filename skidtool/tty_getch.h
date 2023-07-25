@@ -6,7 +6,6 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 
-#define getch2 tty_getch
 
 // termios for life
 
@@ -63,4 +62,12 @@ int tty_getch() {
 	}
 
 	return (error == 1 ? (int) ch : -1 );
+}
+
+
+int getch2(){
+	int key=tty_getch();
+	if(key==-1){
+//		usleep(50000);
+	}
 }

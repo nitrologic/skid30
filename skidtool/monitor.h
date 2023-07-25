@@ -30,7 +30,9 @@ void writeData8(int b) {
 	std::cout << std::setfill('0') << std::setw(2) << std::right << std::hex << (b&0xff) << std::dec;
 }
 void writeHome() {
-	std::cout << "\033[H" << std::flush;
+	std::cout << "\033[0;0f" << std::flush;
+//	std::cout << "\033[0;0H" << std::flush;
+//	std::cout << "\033[H" << std::flush;
 }
 void writeClear() {
 	std::cout << "\033[2J" << "\033[H" << std::flush;

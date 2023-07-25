@@ -42,10 +42,10 @@ int millis(){
 }
 #else
 
-int millis(){
+uint64_t millis(){
 	timespec spec;
     clock_gettime(CLOCK_REALTIME, &spec);
-	return spec.tv_sec*1000+spec.tv_nsec/1e6;
+	return (spec.tv_sec*1000)+(spec.tv_nsec/1e6);
 }
 #endif
 #endif
@@ -650,6 +650,9 @@ void debugCode(int pc24,const char *name) {
 	while (true) {
 		int t=millis();
 		int elapsed=t-drawtime;
+
+//		std::cout << "elapsed:" << elapsed << std::endl;
+
 		if(refresh && elapsed>19){
 			writeHome();
 			writeString(title);
@@ -752,6 +755,7 @@ void debugCode(int pc24,const char *name) {
 			}
 		}
 		pc = acid500.readRegister(16);
+
 //		usleep(1000);
 	}
 	acid500.dumplog(0);
