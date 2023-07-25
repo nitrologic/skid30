@@ -1,0 +1,703 @@
+;
+; sega lib (=137)
+;
+
+!libheader {#segalib,0,0,0,0}
+
+!dumtoke{"Sega","",_toke}
+
+!astatement
+!args {#long,#long,#word}
+!libs
+!subs {_segadma,0,0}
+!name {"SegaDMA","src.l,dest.l,size.w[,displayon]"}
+
+!afunction {#word}
+!args {#long,#long}
+!libs
+!subs {_segaquad,0,0}
+!name {"SegaQuad","verts.l,spritedata.l  ;returns yoffset"}
+
+!afunction {#word}
+!args {#word}
+!libs
+!subs {_segajoy,0,0}
+!name {"SegaJoy","(joynum)  ;returns %SACB RLDU"}
+
+!astatement
+!args {#long,#long,#word,#word}
+!libs
+!subs {_segamap,0,0}
+!name {"SegaMap","src.l,dest.l,width.w,height.w"}
+
+!astatement
+!args {#long,#long,#word,#long,#word}
+!libs
+!subs {_segachar,0,0}
+!name {"SegaCharChar","vram.l,array.l,link.w,array.l,link.w"}
+
+!afunction{#quick}
+!args {#quick}
+!libs
+!subs {_threequarts,0,0}
+!name {"IOP","quick.q"}
+
+!astatement
+!args {#long,#long,#long}
+!libs
+!subs {_segasprites,0,0}
+!name {"SegaSprites","vram,viewports.l,cars.l [,people.l]"}
+
+!astatement
+!args {#long,#long,#long}
+!libs
+!subs {_segatransfer,0,0}
+!name {"SegaTransfer","src.l,dest.l,len.l (in words)"}
+
+!astatement
+!args {#word}
+!libs
+!subs {_segadisplay,0,0}
+!name {"SegaDisplay","on/off"}
+
+!astatement
+!args {#word,#word,#long,#word,#word}
+!libs
+!subs {_segacar2,0,0}
+!name {"SegaCarCar","car.w,frame.w,dest.l,color.w,carnum.w"}
+
+!astatement
+!args {#word,#long,#long}
+!libs
+!subs {_printcar2,0,0}
+!args {#word,#long,#long,#word}
+!libs
+!subs {_printcar,0,0}
+!name {"PrintCarCar","score.w,tags.l,dest.l[,flip.w]"}
+
+!astatement
+!args {#long,#long,#long,#word}
+!libs
+!subs {_namecar,0,0}
+!name {"NameCarCar","&name,tags.l,dest.l,flip.w"}
+
+!afunction {#word}
+!args
+!libs
+!subs {_numjoy,0,0}
+!name {"NumSegaJoy"," ;returns 2 or 4 joyspads present"}
+
+!astatement
+!args {#long}
+!libs
+!subs {_flipmap,0,0}
+!name {"SegaFlipMap","reverts the map array"}
+
+; music routines here
+
+!astatement
+!args {#word,#word}
+!libs
+!subs {_segastarttune,0,0}
+!name {"SegaStartTune","tune#,volume (0-31,-1=original)"}
+
+!astatement
+!args {#word}
+!libs
+!subs {_segastoptune,0,0}
+!name {"SegaStopTune","tune#"}
+
+!astatement
+!args {#word,#word,#word}
+!libs
+!subs {_segainterupttune,0,0}
+!name {"SegaInteruptTune","newtune#,oldtune#,volume (0-31,-1=original)"}
+
+!astatement
+!args {#word}
+!libs
+!subs {_segapausetune,0,0}
+!name {"SegaPauseTune","tune#"}
+
+!astatement
+!args {#word,#word}
+!libs
+!subs {_segatempo,0,0}
+!name {"SegaTempo","tune#,tempo"}
+
+!astatement
+!args {#word}
+!libs
+!subs {_segasamplemode,0,0}
+!name {"SegaSampleMode","0-off 1-18 2=variable"}
+
+!astatement
+!args {#word,#word}
+!libs
+!subs {_segasamplefreq,0,0}
+!name {"SegaSampleFreq","tune#,bend  ;$200=200% $80=50%"}
+
+!astatement
+!args {#word,#word}
+!libs
+!subs {_segafmbend,0,0}
+!name {"SegaFMBend","tune#,bend  ;$200=200% $80=50%"}
+
+!astatement
+!args {#word}
+!libs
+!subs {_segavolume,0,0}
+!name {"SegaVolume","volume"}
+
+!libfin
+
+_segasprites:RTS
+
+;--------------------------------------------------------------------
+
+_segadisplay:
+  TST d0:BNE sdon:MOVE.w#$812c,$c00004:RTS:sdon:MOVE.w#$816c,$c00004:RTS
+
+#vd=$c00000  ;vdp data port
+#cp=$c00004  ;vdp control port
+#hv=$c00008  ;hv counter
+
+#ram=$ff0000
+
+#wvram=  $40000000
+#wcram=  $c0000000
+#wsram=  $40000010
+
+#vram=$0
+#cram=$80000000
+#vsram=$40000000
+
+#z80=$a11100
+#z80sram=$a00000
+#z80dram=$ff8000
+
+NEWTYPE .sprite
+  vp.w
+  size.b:splink.b
+  spdata.w
+  hp.w
+End NEWTYPE
+
+Macro reg #$8000+`1*256:End Macro
+Macro setreg:MOVE.w #$8000+`1*256+`2,cp:End Macro
+Macro setmem:MOVE.l `1,cp:MOVE.w `2,vd:End Macro
+Macro pokemem:MOVE.l `1,cp:Poke.w #vd,`2:End Macro
+
+Macro waitfifo:wf`@:BTST #1,4(a0):BEQ wf`@:End Macro
+
+Macro stopz80:MOVE.b#1,z80:wz`@:BTST.b#0,z80:BNE wz`@:End Macro
+Macro startz80:MOVE #0,z80:End Macro
+
+;------------------------------------------------------------------
+_threequarts:
+  Dc $a000,'f-'s
+  's:ASR.l#1,d0:MOVE.l d0,d1:ASR.l#1,d1:ADD.l d1,d0:'f:RTS
+
+._segadma:
+  ;
+  !stopz80:LEA cp,a0:!setreg{1,$7c}:!setreg{15,2}                  ;disp+m1 & increment
+  ;
+  MOVE !reg{19},d3:MOVE.b d2,d3:MOVE d3,(a0)              ;size
+  MOVE !reg{20},d3:LSR#8,d2:MOVE.b d2,d3:MOVE d3,(a0)
+  ;
+  MOVE !reg{21},d3:LSR.l #1,d0:MOVE.b d0,d3:MOVE d3,(a0)  ;src
+  MOVE !reg{22},d3:LSR.l #8,d0:MOVE.b d0,d3:MOVE d3,(a0)
+  MOVE !reg{23},d3:LSR.l #8,d0:MOVE.b d0,d3:MOVE d3,(a0)
+  ;
+  ROL.l#2,d1:ROR #2,d1:SWAP d1:BSET#7,d1:MOVE.l d1,-(a7)
+  ;
+  MOVE (a7)+,(a0):MOVE (a7)+,(a0)
+  ;
+  !setreg{1,$6c}:!startz80:RTS
+  ;
+;------------------------------------------------------------------
+
+._segaquad:        ; returns ystart verts=xy xy xy xy
+  ;
+  MOVEM.l a4-a6,-(a7):
+  ;
+  MOVE.l d0,a0:MOVE.l d1,a5:LEA 96(a5),a6  ;a2a3=spstrt/end
+  LEA ptab(pc),a4
+  ;
+  MOVEM.l (a0),d0-d3                                    ;getverts
+  CMP d0,d1:BPL notcl2:EXG d0,d3:EXG d0,d2:EXG d0,d1
+  CMP d0,d1:BPL notcl2:EXG d0,d3:EXG d0,d2:EXG d0,d1
+  CMP d0,d1:BPL notcl2:EXG d0,d3:EXG d0,d2:EXG d0,d1:notcl2
+  CMP d3,d0:BMI notan2:EXG d0,d1:EXG d0,d2:EXG d0,d3
+  CMP d3,d0:BMI notan2:EXG d0,d1:EXG d0,d2:EXG d0,d3
+  CMP d3,d0:BMI notan2:EXG d0,d1:EXG d0,d2:EXG d0,d3:notan2
+  ;
+deltay
+  MOVE d1,d4:SUB d0,d4:ADD d4,d4
+  MOVE d2,d5:SUB d1,d5:ADD d5,d5
+  MOVE d3,d6:SUB d2,d6:ADD d6,d6
+  MOVE d0,d7:SUB d3,d7:ADD d7,d7
+  MOVE d0,-(a7):LEA dtab+128(pc),a1
+  ;
+deltax
+  SWAP d0:SWAP d1:SWAP d2:SWAP d3:MOVE d0,a0
+  SUB d1,d0:MULS 0(a1,d4),d0:SWAP d4:MOVE d0,d4
+  SUB d2,d1:MULS 0(a1,d5),d1:SWAP d5:MOVE d1,d5
+  SUB d3,d2:MULS 0(a1,d6),d2:SWAP d6:MOVE d2,d6
+  SUB a0,d3:MULS 0(a1,d7),d3:SWAP d7:MOVE d3,d7
+  ;
+  MOVE a0,d0:BSET#15,d0:ROR#5,d0:MOVE d0,d1:SWAP d0:MOVE d1,d0
+  ;
+  MOVEQ#2,d3:SWAP d3
+  ;
+  SUB.l d3,d4:BPL rsn0:SUB d4,d0
+  MOVE.l d5,d4:BMI dunpoly:SUB.l d3,d4:MOVE.l d6,d5:rsn0
+  ;
+nxwrite:
+  MOVE.l d0,d1
+  ROL.l#5,d1:ROR#5,d1:LSR.l#7,d1:AND#$3ff0,d1:MOVEM.l 0(a4,d1),a1-a3
+  MOVE.l a3,192(a5):MOVE.l a2,96(a5):MOVE.l a1,(a5)+
+  CMP.l a5,a6:BEQ dunquad
+  SUB d4,d0:SWAP d0:SUB d7,d0:SWAP d0
+chkr
+  SUB.l d3,d4:BPL chkl
+  MOVE.l d5,d4:BMI dunpoly:SUB.l d3,d4:MOVE.l d6,d5
+chkl:
+  ADD.l d3,d7:BMI nxwrite
+  MOVE.l d6,d7:BPL dunpoly:MOVE.l d5,d6:BRA nxwrite
+dunpoly:
+  MOVEQ#0,d0:wipe:MOVE.l d0,192(a5):MOVE.l d0,96(a5):MOVE.l d0,(a5)+
+  CMP.l a5,a6:BNE wipe:dunquad:MOVE (a7)+,d0:MOVEM.l (a7)+,a4-a6:RTS
+  ;
+ptab:IncBin polytable
+dtab:IncBin divtable
+
+;------------------------------------------------------------------
+
+._segajoy:                         ;sacb rldu
+  !stopz80:CMP#2,d0:BPL jcart
+  LEA $a10000,a0:ADD d0,a0:ADD d0,a0
+stdjoy:     ;below was 40 for dir
+  MOVE.b#$40,9(a0):MOVE.b#$40,3(a0):NOP:NOP:MOVE.b 3(a0),d0
+  MOVE.b#0,3(a0):NOP:NOP:MOVE.b 3(a0),d1
+  ROL#2,d1:AND#$3f,d0:AND#$c0,d1:OR d1,d0:NOT d0:!startz80:RTS
+jcart:
+  CMP#4,d0:BPL eatap
+  MOVE #0,$38fffe:MOVE $38fffe,$ff001c
+  MOVE #1,$38fffe:MOVE $38fffe,$ff001e
+  MOVEM $ff001c,d1-d2:CMP#3,d0:BNE joy2:LSR#8,d1:LSR#8,d2
+joy2:
+  MOVE d1,d0:AND#3,d0:AND#$3c,d2:OR d2,d0
+  ASL#2,d1:AND#$c0,d1:OR d1,d0:NOT d0:!startz80:RTS
+eatap:
+  LEA $a10000,a0:SUBQ#4,d0:ASL#4,d0:OR#12,d0
+  MOVE.b#$7f,11(a0):MOVE.b d0,5(a0):MOVE.b#$40,9(a0)
+  MOVE.b#$40,3(a0):NOP:NOP:MOVE.b 3(a0),d0
+  MOVE.b#$00,3(a0):NOP:NOP:MOVE.b 3(a0),d1
+  ROL#2,d1:AND#$3f,d0:AND#$c0,d1:OR d1,d0:NOT d0:!startz80:RTS
+
+._numjoy:                ;check for jcart and ea-tap
+  !stopz80
+  MOVEQ  #2,d0
+  MOVE.w #0,$38fffe     ;check jcart
+  MOVE.w $38fffe,d1
+  AND.w  #%0000000001000000,d1
+  BNE    njcart
+  MOVE.w #1,$38fffe
+  MOVE.w $38fffe,d1
+  AND.w  #%0000000001000000,d1
+  BEQ    njcart
+  MOVEQ  #4,d0
+njcart
+  LEA $a10000,a0        ;cheack for eatap
+  MOVE.b #$40,9(a0)
+  MOVE.b #$40,11(a0)
+  MOVE.b #$43,11(a0)
+  MOVE.b #$7c,5(a0)
+  MOVE.b #$7f,11(a0)
+  MOVE.b #$7c,5(a0)
+  MOVE.b 3(a0),d1
+  AND#3,d1
+  BNE noeatap
+  NEG d0
+noeatap:
+  !startz80
+  RTS
+
+;------------------------------------------------------------------
+
+_segatransfer:
+  LEA vd,a0
+  ASL.l#2,d1:LSR#2,d1:SWAP d1:BSET#30,d1:MOVE.l d1,4(a0)
+  MOVE.l d0,a1:SUBQ#1,d2
+nxwrd:
+  MOVE 4(a0),d0:BTST #8,d0:BNE nxwrd:MOVE (a1)+,(a0)
+  DBRA d2,nxwrd:RTS
+
+;------------------------------------------------------------------
+
+._segamap:     ;src.l,dest.l,width,height
+  ;
+  !stopz80:LEA cp,a0:!setreg{1,$7c}:!setreg{15,2}  ;disp+m1 & increment
+  OR !reg{19},d2:MOVE !reg{20},(a0)
+  ;
+  SUBQ#1,d3:MOVE.l#128*65536,d7:ROL.l#2,d1:ROR #2,d1:SWAP d1:OR.l #$40000080,d1
+  ;
+  MOVE !reg{21},d4:LSR.l #1,d0:MOVE.b d0,d4          ;:SWAP d4
+  MOVE !reg{22},d5:LSR.l #8,d0:MOVE.b d0,d5
+  MOVE !reg{23},d6:LSR.l #8,d0:MOVE.b d0,d6:MOVE d6,(a0) ;SWAP d4
+  MOVEQ#0,d0:MOVEQ#96,d6:SWAP d4:MOVE d2,d4:SWAP d4
+  ;
+nxline:
+  MOVE.l d4,(a0):ADD.b d6,d4:MOVE d5,(a0):ADDX.b d0,d5:MOVE.l d1,(a0)
+  ADD.l d7,d1:DBRA d3,nxline:!setreg{1,$6c}:!startz80:RTS
+
+;!name {"SegaCharChar","vram.l,array.l,link.w,array.l,link.w"}
+
+._segachar:      ;vram array,nxlink array,nxlink
+  ;
+  LEA vd,a0:ASL.l#2,d0:LSR#2,d0:SWAP d0:BSET#30,d0:MOVE.l d0,4(a0)
+  MOVE.l d1,a1:MOVE.l d3,a2:MOVEQ#1,d1:SUBQ#1,d2:BMI mono
+nxlink1:
+  MOVE.l (a1)+,d0:BMI nono1:MOVE.b d1,d0:MOVE.l d0,(a0)
+  MOVE.l (a1),(a0):ADDQ#1,d1:nono1:ADDQ#4,a1:DBRA d2,nxlink1
+mono:
+  SUBQ#1,d4:BMI terminate
+nxlink2:
+  MOVE.l (a2)+,d0:BMI nono2:MOVE.b d1,d0:MOVE.l d0,(a0)
+  MOVE.l (a2),(a0):ADDQ#1,d1:nono2:ADDQ#4,a2:DBRA d4,nxlink2
+terminate:
+  MOVE.l #0,(a0):MOVE.l #0,(a0):RTS
+
+;------------------------------------------------------------------
+
+._segacar2:     ;car.w,frame.w,dest.l,color.w,type.w
+  ;
+  MOVE.l d2,a0:ADD#32,a0     ;:SUB a2,a2
+  ;
+  LEA 11*32(a0),a3
+  ;
+  MOVE.l $ff0008,a1:ASL#2,d4:ADD d4,a1:MOVE.l (a1),a1
+  ADD d1,d1:EXT.l d1:MOVE 0(a1,d1),d1
+  ;
+iscol1:
+  ASL.l#2,d1:ADD.l d1,a1:MOVEQ#0,d1
+  CMP#1,d3:BEQ iscol2:CMP#2,d3:BEQ iscol3:CMP#3,d3:BEQ iscol4
+  CMP#4,d3:BEQ iscol5
+  nxw3:MOVE (a1)+,d0:BMI bab3:SUBQ#1,d0:BPL bob3:ADD#32,a0:BRA nxw3
+  bob3:MOVE.l (a1)+,(a0)+:DBRA d0,bob3:BRA nxw3
+  bab3:NEG d0:BMI xit3:SUBQ#1,d0:bib3:MOVE.l d1,(a0)+:DBRA d0,bib3:BRA nxw3
+  xit3:BRA chkit
+
+iscol2:
+  MOVE.l #$88888888,d4
+  nxw4:MOVE (a1)+,d0:BMI bab4:SUBQ#1,d0:BPL bob4:ADD#32,a0:BRA nxw4
+  bob4:MOVE.l (a1)+,d5:MOVE.l d5,d6:AND.l d4,d6:LSR.l#1,d6:OR.ld6,d5
+  MOVE.l d5,(a0)+:DBRA d0,bob4:BRA nxw4
+  bab4:NEG d0:BMI xit4:SUBQ#1,d0:bib4:MOVE.l d1,(a0)+:DBRA d0,bib4:BRA nxw4
+  xit4:BRA chkit
+
+iscol3:
+  MOVE.l #$88888888,d4:MOVE.l#$77777777,d7
+  nxw5:MOVE (a1)+,d0:BMI bab5:SUBQ#1,d0:BPL bob5:ADD#32,a0:BRA nxw5
+  bob5:MOVE.l (a1)+,d5:MOVE.l d5,d6:AND.l d4,d6:AND.l d7,d5
+  LSR.l#1,d6:OR.ld6,d5:MOVE.l d5,(a0)+:DBRA d0,bob5:BRA nxw5
+  bab5:NEG d0:BMI xit5:SUBQ#1,d0:bib5:MOVE.l d1,(a0)+:DBRA d0,bib5:BRA nxw5
+  xit5:BRA chkit
+
+iscol4:
+  MOVE.l #$88888888,d4:MOVE.l#$77777777,d7
+  nxw6:MOVE (a1)+,d0:BMI bab6:SUBQ#1,d0:BPL bob6:ADD#32,a0:BRA nxw6
+  bob6:MOVE.l (a1)+,d5:MOVE.l d5,d6:AND.l d7,d5:AND.l d4,d6
+  LSR.l#3,d6:ADD.l d6,d5:MOVE.l d5,(a0)+:DBRA d0,bob6:BRA nxw6
+  bab6:NEG d0:BMI xit6:SUBQ#1,d0:bib6:MOVE.l d1,(a0)+:DBRA d0,bib6:BRA nxw6
+  xit6:BRA chkit
+
+iscol5:
+  MOVE.l #$80808080,d4:MOVE.l#$88888888,d7
+  nxw7:MOVE (a1)+,d0:BMI bab7:SUBQ#1,d0:BPL bob7:ADD#32,a0:BRA nxw7
+  bob7:MOVE.l (a1)+,d5:MOVE.l d5,d6:AND.l d4,d6:LSR.l#1,d6:OR.ld6,d5
+  MOVE.l d5,(a0)+:EOR.l d7,d4:DBRA d0,bob7:BRA nxw7
+  bab7:NEG d0:BMI xit7:SUBQ#1,d0:BTST #0,d0:BNE bib7:EOR.l d7,d4
+  bib7:MOVE.l d1,(a0)+:DBRA d0,bib7:BRA nxw7
+  xit7:BRA chkit
+
+chkit:CMP.l a0,a3:BNE bars:RTS
+
+bars:MOVE d0,d1:AND#15,d1:OR#$8700,d1:MOVE d1,$c00004:ADDQ#1,d0:BRA bars
+
+
+
+;------------------------------------------------------------------
+
+._printcar:     ;score.w,tags.l,dest.l
+  ;
+  MOVE.l d1,a0:MOVE.l d2,a1:TST d0:BEQ clrprint:BMI position
+  ;
+laptime:
+  EXT.l d0:DIVU#5,d0:TST d3:BNE flaptime
+  ;
+  CMP #2000,d0:BMI bn0:LEA 512(a0),a2:SUB#2000,d0:BRA gn0:bn0
+  LEA -32(a0),a2:nxhun:ADD#32,a2:SUB#100,d0:BPL nxhun:ADD#100,d0:gn0
+  MOVEM.l (a2),d1-d7/a3:MOVEM.l d1-d7/a3,(a1):ADD#128,a1
+  LEA 512+32-32(a0),a2:nxten:ADD#32,a2:SUB#10,d0:BPL nxten:ADD#10,d0
+  MOVEM.l (a2),d1-d7/a3:MOVEM.l d1-d7/a3,(a1):ADD#128,a1
+  LEA 1024+64(a0),a2:ASL#5,d0:ADD d0,a2
+  MOVEM.l (a2),d0-d7:MOVEM.l d0-d7,(a1):RTS
+  ;
+flaptime:
+  ADD#2784+96,a0
+  CMP #2000,d0:BMI bn1:LEA 512(a0),a2:SUB#2000,d0:BRA gn1:bn1
+  LEA -32(a0),a2:nxhun2:ADD#32,a2:SUB#100,d0:BPL nxhun2:ADD#100,d0:gn1
+  MOVEM.l (a2),d1-d7/a3:MOVEM.l d1-d7/a3,256(a1)
+  LEA 512+32-32(a0),a2:nxten2:ADD#32,a2:SUB#10,d0:BPL nxten2:ADD#10,d0
+  MOVEM.l (a2),d1-d7/a3:MOVEM.l d1-d7/a3,128(a1)
+  LEA 1024+64(a0),a2:ASL#5,d0:ADD d0,a2
+  MOVEM.l (a2),d0-d7:MOVEM.l d0-d7,(a1):RTS
+  ;
+position:
+  NEG d0:ADD#9,d0:ASL#5,d0:ADD d0,a0:TST d3:BNE fposition
+  MOVEM.l(a0),d0-d7:MOVEM.ld0-d7,(a1):ADD#512+32,a0:ADD#128,a1
+  MOVEM.l(a0),d0-d7:MOVEM.ld0-d7,(a1):ADD#512+32,a0:ADD#128,a1
+  MOVEM.l(a0),d0-d7:MOVEM.ld0-d7,(a1):RTS
+  ;
+fposition:
+  ADD#2784+96,a0
+  MOVEM.l(a0),d0-d7:MOVEM.ld0-d7,256(a1):ADD#512+32,a0
+  MOVEM.l(a0),d0-d7:MOVEM.ld0-d7,128(a1):ADD#512+32,a0
+  MOVEM.l(a0),d0-d7:MOVEM.ld0-d7,(a1):RTS
+  ;
+clrprint:
+  ;
+  MOVEQ#0,d0:MOVEQ#0,d1:MOVEQ#0,d2:MOVEQ#0,d3
+  MOVEQ#0,d4:MOVEQ#0,d5:MOVEQ#0,d6:MOVEQ#0,d7
+  MOVEM.ld0-d7,(a1):MOVEM.ld0-d7,128(a1):MOVEM.ld0-d7,256(a1)
+  RTS
+
+
+._printcar2:     ;score.w,tags.l,dest.l
+  ;
+  MOVE.l d1,a0:MOVE.l d2,a1:EXT.l d0:DIVU#5,d0
+  LEA -32(a0),a2:nxhun4:ADD#32,a2:SUB#100,d0:BPL nxhun4:ADD#100,d0
+  MOVEM.l (a2),d1-d7/a3:MOVEM.l d1-d7/a3,(a1):ADD#96,a1
+  LEA 512+32-32(a0),a2:nxten4:ADD#32,a2:SUB#10,d0:BPL nxten4:ADD#10,d0
+  MOVEM.l (a2),d1-d7/a3:MOVEM.l d1-d7/a3,(a1):ADD#96,a1
+  LEA 1024+64(a0),a2:ASL#5,d0:ADD d0,a2
+  MOVEM.l (a2),d0-d7:MOVEM.l d0-d7,(a1):RTS
+
+;------------------------------------------------------------------
+
+._namecar:     ;name.l,tags.l,dest.l
+  ;
+  MOVE.l a4,-(a7)
+  MOVE.l d0,a0:MOVE.l d1,a1:MOVE.l d2,a2:ADD#1632,a1:MOVEQ#2,d7
+  TST d3:BNE flipname
+nxcc:
+  MOVEQ#0,d0:MOVE.b(a0)+,d0:SUB#64,d0:ASL#4,d0:LEA 0(a1,d0),a3
+  MOVEQ#0,d0:MOVE.b(a0)+,d0:SUB#64,d0:ASL#4,d0:LEA 0(a1,d0),a4
+  MOVEQ#7,d6
+nxlin:
+  MOVE (a3)+,(a2)+:MOVE.w(a4)+,(a2)+:DBRA d6,nxlin:ADD#96,a2
+  DBRA d7,nxcc:MOVE.l (a7)+,a4:RTS
+  ;
+flipname:
+  ADD#2784+96,a1:ADD#256,a2
+fxcc:
+  MOVEQ#0,d0:MOVE.b(a0)+,d0:SUB#64,d0:ASL#4,d0:LEA 0(a1,d0),a3
+  MOVEQ#0,d0:MOVE.b(a0)+,d0:SUB#64,d0:ASL#4,d0:LEA 0(a1,d0),a4
+  MOVEQ#7,d6
+fxlin:
+  MOVE (a4)+,(a2)+:MOVE (a3)+,(a2)+:DBRA d6,fxlin:SUB#128+32,a2
+  DBRA d7,fxcc:MOVE.l (a7)+,a4:RTS
+
+;------------------------------------------------------------------
+
+._flipmap:      ;  map.w(95,47)
+  MOVE.l d0,a0:MOVE #47,d0
+nxx:
+  MOVE.l a0,a1:ADD#96*2,a0:MOVE#95*2,d1
+nxy:
+  MOVE (a1),d2:MOVE 0(a1,d1),d3:BCHG#11,d2:BCHG#11,d3
+  MOVE d2,0(a1,d1):MOVE d3,(a1)+:SUBQ#4,d1:BPL nxy
+  DBRA d0,nxx:RTS
+
+;------------------------------------------------------------------
+
+#z80_ram         =     $a00000
+#comms           =     #z80_ram+$1f00       ; Address in z80 ram for 68k Comms variables.
+#comms_buff      =     #z80_ram+$1e00       ; 1 page wrap-around command/comms buffer.
+#z80_rom_buff    =     #z80_ram+$1d00       ; Used as intrument test buffer.
+#z80_ins_buff    =     #z80_ram+$1b00-$400
+#module_addr     =     #comms+000
+#z_comms_pos     =     #comms+003       ; Offset in comms buffer for 68k to write to.
+#z80_ready       =     #comms+011       ; Three green lights, Z80 is ready for action!
+#z80_overflow    =     #comms+020       ; Set if polyphony was exceeded.
+#master_vol      =     #comms+17 ; [.w] 8-bit FPF.
+
+#cmd_module      =     2*1  ; ,L,M,H Address of module in ROM. Also restarts the z80.
+#cmd_start       =     2*2  ; ,tune.b
+#cmd_tempo       =     2*3  ; ,tune.b, tempo.w (L,H)
+#cmd_start_spl   =     2*4  ; ,flags: A/B.b, start.3b, end.3b, looppos.3b, no_loops.b.
+#cmd_stop_spl    =     2*5  ; ,flags: A/B.b
+#cmd_spl_mode    =     2*6  ; ,0 = off, 1 = Direct.
+#cmd_stop        =     2*7  ; ,Tune_no.
+#cmd_pause       =     2*8  ; ,Tune_no.
+#cmd_note_on     =     2*9  ; ,Instr_Addr.3b, Keycode.b
+#cmd_note_off    =     2*10 ; ,Keycode.b
+#cmd_interrupt   =     2*11 ; ,tune, tune_2_interrupt, delay.
+#cmd_spl_bend    =     2*12 ; ,spl_voice.b(0/1), Bend_range.w (L,H)
+#cmd_fm_bend     =     2*13 ; ,tune_no.b, bend range(+/-127)
+
+
+._segastarttune      ;tune,volume
+  MOVE d1,d3
+  MOVE.w  d0,-(a7)
+  BSR     bus_req
+  MOVE.w  #cmd_start,d0
+  BSR     z_send_cmd
+  MOVE.w  (a7)+,d0
+  MOVE.b  d0,0(a0,d1.w)    ; Write tune no.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d3,0(a0,d1.w)    ; Write volume override.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d1,z_comms_pos  ; Set next write pos.
+  BRA     bus_rel
+
+._segainterupttune:          ;newtune,oldtune,volume
+  MOVE d2,d3:MOVE d1,d2
+  MOVE.w  d0,-(a7)
+  BSR     bus_req
+  MOVE.w  #cmd_interrupt,d0
+  BSR     z_send_cmd
+  MOVE.b  d2,0(a0,d1.w)    ; Write tune to interrupt.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.w  (a7)+,d0                ; Write tune.
+  MOVE.b  d0,0(a0,d1.w)
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d3,0(a0,d1.w)    ; Write volume override.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d1,z_comms_pos  ; Set next write pos.
+  BRA     bus_rel
+
+._segastoptune:       ;tune#
+  MOVE.w  d0,-(a7)
+  BSR     bus_req
+  MOVE.w  #cmd_stop,d0
+  BSR     z_send_cmd
+m_1_param_D0
+  MOVE.w  (a7)+,d0
+  MOVE.b  d0,0(a0,d1.w)
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d1,z_comms_pos  ; Set next write pos.
+  BRA     bus_rel
+
+._segapausetune:      ;tune#
+  MOVE.w  d0,-(a7)
+  BSR     bus_req
+  MOVE.w  #cmd_pause,d0
+  BSR     z_send_cmd
+  BRA     m_1_param_D0
+
+._segatempo:        ;tune,tempo
+  MOVE.w  d0,-(a7)
+  BSR     bus_req
+  MOVE.w  d1,d2
+  MOVE.w  #cmd_tempo,d0
+  BSR     z_send_cmd
+  MOVE.w  (a7)+,d0
+  MOVE.b  d0,0(a0,d1.w)    ; Tune.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d2,0(a0,d1.w)    ; Tempo.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d1,z_comms_pos  ; Set next write pos.
+  BRA     bus_rel
+
+z_send_cmd
+  CLR.w   d1
+  MOVE.b  z_comms_pos,d1
+  LEA     comms_buff,a0
+  MOVE.b  d0,0(a0,d1.w)
+  ADD.b   #1,d1           ; Increment comms pos (wraps at 256)
+  AND.w   #$ff,d1
+  MOVE.b  d1,z_comms_pos
+  RTS
+
+
+._segasamplemode:    ;mode
+  ;
+  ; 0=off 1=DIRECT 18Khz2=VARIABLE3=COMPRESSED 9Khz.4=DIRECT 9Khz
+ ;
+m_a7l_mode
+  MOVE.w  d0,-(a7)
+  BSR     bus_req
+  MOVE.w  #cmd_spl_mode,d0
+  BSR     z_send_cmd
+  BRA     m_1_param_D0
+
+
+._segasamplefreq:     ;voice#,bend $200=200%
+  MOVE.w  d0,-(a7)
+  BSR     bus_req
+  MOVE.w  d1,d2
+  MOVE.w  #cmd_spl_bend,d0
+  BSR     z_send_cmd
+  MOVE.w  (a7)+,d0
+  MOVE.b  d0,0(a0,d1.w)    ; Voice.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d2,0(a0,d1.w)    ; Low byte.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  LSR.w   #8,d2
+  MOVE.b  d2,0(a0,d1.w)
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d1,z_comms_pos  ; Set next write pos.
+  BRA     bus_rel
+
+._segafmbend:     ;tune#,bend
+  BSR     bus_req
+  MOVE.w  d0,-(a7)
+  MOVE.w  d1,d2
+  MOVE.w  #cmd_fm_bend,d0
+  BSR     z_send_cmd
+  MOVE.w  (a7)+,d0
+  MOVE.b  d0,0(a0,d1.w)    ; Tune.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d2,0(a0,d1.w)    ; Low byte.
+  ADD.b   #1,d1
+  AND.w   #$ff,d1
+  MOVE.b  d1,z_comms_pos  ; Set next write pos.
+  BRA     bus_rel
+
+._segavolume:      ;volume = 0-224
+  MOVE    d0,d6
+  BSR     bus_req
+  MOVE.b  #0,master_vol
+  MOVE.b  d6,master_vol+1
+  BRA     bus_rel
+
+
+bus_req
+  MOVE.w  #$100,$a11100   ; ~BUSREQ
+wb_ack
+  BTST.b  #0,$a11100
+  BNE     wb_ack
+  RTS
+
+bus_rel
+  MOVE.w  #$0000,$a11100
+wb_ack1
+  BTST.b  #0,$a11100
+  BEQ     wb_ack1
+  RTS
+
