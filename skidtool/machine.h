@@ -141,7 +141,8 @@ const int QBIT = 0x80000000;
 const std::string execNames[] = {"ReplyMsg","WaitPort"}; // just guessing here, please step slowly
 
 enum enum_exec {
-	REPLY,
+	ALLOC,
+	REPLY=30,
 	WAIT
 };
 
@@ -156,14 +157,20 @@ struct amiga16 : memory32{
 		exec = bass;
 	}
 	// pc has arrived with a negative offset from execbase ($801000)
+	// this implementation does not touch underlying shorts[address >> 1];
 	virtual int read16(int address,int flags) {
 		//		int base = 0x801000;
 		int offset = address | -4096;
 		if (flags&QBIT) {
 			//		log_bus(0, 1, physicalAddress, 0);
 		}
-		int func = -(offset/ 6) - 63;
+//		int func = -(offset/ 6) - 63;
+		int func = -(offset / 6) - 33;
 		switch (func) {
+		case ALLOC:
+			machineState = "ALLOC";
+			exec->allocMem();
+			break;
 		case REPLY:
 			// A1=message
 			machineState = "REPLY";
@@ -178,8 +185,8 @@ struct amiga16 : memory32{
 			machineError=address;
 			break;
 		}
-
-		return 0x4e75;//shorts[address >> 1];
+		// once system implementation is done return an RTS
+		return 0x4e75;
 	}
 	virtual int read32(int address) {		
 		// trap $114(execbase) for apps looking for workbench pointers

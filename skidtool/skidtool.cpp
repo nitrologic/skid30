@@ -29,6 +29,22 @@ void usleep(int micros) {
 int millis() {
 	return GetTickCount();
 }
+void screenSize(int& columns, int& rows) {
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+	columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+	rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+}
+
+int mouseOn() {
+	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	int fdwMode = ENABLE_EXTENDED_FLAGS;
+	if (!SetConsoleMode(hStdin, fdwMode)) return -1;
+	fdwMode = ENABLE_WINDOW_INPUT | ENABLE_MOUSE_INPUT;
+	if (!SetConsoleMode(hStdin, fdwMode)) return -1;
+	return 0;
+}
+
 #else
 
 #include "tty_getch.h"
@@ -71,6 +87,10 @@ struct block {
 	~block() {
 		free(raw);
 	}
+};
+
+
+struct heap {
 };
 
 // address is 24 bit 6hexdigit
@@ -123,10 +143,18 @@ struct acid68000 {
 
 	int memoryError = 0;
 
+	// the active memory pointer is enabled during address decode 
 	memory32* mem;
 	MemEvents memlog;
 
 	std::set<std::uint32_t> breakpoints;
+
+	int allocate(int size, int bits) {
+
+
+		return 0;
+	}
+
 
 	void log_bus(int readwritefetch, int byteshortlong, int address, int value) {
 		bool enable=(readwritefetch==1)?(mem->flags&2):(mem->flags&1);
@@ -337,6 +365,11 @@ public:
 		cpu0 = cpu;
 	}
 	void waitMsg() {
+
+	}
+	void allocMem() {
+		int d0 = cpu0->readRegister(0);
+		int d1 = cpu0->readRegister(1);
 
 	}
 	void waitPort() {
@@ -772,6 +805,10 @@ int convertFiles() {
 
 int main() {
 
+	int w, h;
+	screenSize(w, h);
+	mouseOn();
+
 #ifdef WIN32
 	SetConsoleOutputCP(CP_UTF8);
 //	SetConsoleCP(CP_UTF8);
@@ -801,9 +838,11 @@ int main() {
 
 	loadHunk(amiga_binary,0x2000);
 
+#ifdef pause
 	writeString("enter to continue");
 	writeEOL();
 	getchar();
+#endif
 
 	const char* name = "lha @ 0x2000";
 
