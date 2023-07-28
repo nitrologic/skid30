@@ -805,8 +805,8 @@ int convertFiles() {
 
 int main() {
 
-	int w, h;
-	screenSize(w, h);
+	int rows, cols;
+	screenSize(rows, cols);
 	mouseOn();
 
 #ifdef WIN32
@@ -820,6 +820,8 @@ int main() {
 #endif
 
 	std::cout << "skidtool 0.2" << std::endl;
+
+	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
 	convertFiles();
 
@@ -838,6 +840,7 @@ int main() {
 
 	loadHunk(amiga_binary,0x2000);
 
+#define pause
 #ifdef pause
 	writeString("enter to continue");
 	writeEOL();

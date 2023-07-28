@@ -6,6 +6,16 @@
 #include <sys/ioctl.h>
 #include <stdlib.h>
 
+void screenSize(int &row,int &col){
+	winsize w;
+	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
+	row=w.ws_row;
+	col=w.ws_col;
+}
+
+void mouseOn(){
+
+}
 
 // termios for life
 
