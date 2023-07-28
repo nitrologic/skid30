@@ -370,7 +370,7 @@ public:
 	void allocMem() {
 		int d0 = cpu0->readRegister(0);
 		int d1 = cpu0->readRegister(1);
-
+		// TODO empty from heap above
 	}
 	void waitPort() {
 		int a0 = cpu0->readRegister(8);
@@ -823,7 +823,7 @@ int main() {
 
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
-	convertFiles();
+//	convertFiles();
 
 // amiga chunks are hunks
 
@@ -831,8 +831,15 @@ int main() {
 
 //	const char* amiga_binary = "../../archive/genam2";
 //	const char* amiga_binary = "../../archive/devpac";
+//	const char* amiga_binary = "../../archive/virus";
+
+// amiga chunks are hunks
+
+//	const char* amiga_binary = "../../archive/genam2";
+//	const char* amiga_binary = "../../archive/devpac";
 
 //	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
 
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";

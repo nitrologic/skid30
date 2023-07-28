@@ -1,0 +1,30 @@
+
+	;one alien's data struct :
+	;
+	;system stuff :-> * = must be set up when created!
+	;
+	;04.q -> x		*
+	;08.q -> xs		*	
+	;12.q -> xa		*
+	;16.q -> y		*
+	;20.q -> ys		*
+	;24.q -> ya		*
+	;28.l -> frame
+	;
+	;32.l -> individual stuff...inside here...at least 36(a0) *
+	;
+	;00.l -> animation	*
+	;04.l -> per loop routine	*
+	;08.l -> ship collide routine	*
+
+	;our first routine is called at start of pattern.
+	;we return either a 0, or the address of a routine
+	;to execute once every loop in d0.
+	;
+	moveq	#0,d0
+	rts
+	
+anim1	include	alien1.bin
+
+frag1	include	alien1.frags
+
