@@ -38,8 +38,8 @@ struct memory32 {
 	virtual int read8(int address) {
 		int odd = address & 1;
 		int word = read16(address - odd,0);
-		word >>= 8 * odd;
-		return word;
+		word >>= 8 * (1-odd);
+		return word & 0xff;
 	}
 
 	virtual int read32(int address) {
@@ -137,27 +137,39 @@ struct interface8 : memory32 {
 // execbase=
 
 const int QBIT = 0x80000000;
+const int DBIT = 0x40000000;
 
 const std::string execNames[] = {"ReplyMsg","WaitPort"}; // just guessing here, please step slowly
 
 enum enum_exec {
-	ALLOC,
+	ALLOCATE=-2,
+	DEALLOCATE=-1,
+	ALLOCMEM=0,
 	FINDTASK=14,
 	SETTASKPRI=15,
 	SETSIGNAL=16,
 	SETEXCEPT=17,
+	WAIT=18,
 
 	REMPORT=27,
 	PUTMSG=28,
 	GETMSG=29,
 	REPLY=30,
-	WAIT=31,
-	OPENLIBRARY=35
+	WAITPORT=31,
+	OLDOPENLIBRARY=35,
+	OPENLIBRARY=59,
+
+	DOSOPEN=118
 };
+
+// address is 0x800000
+// 
+// underlying 0x100000 shorts to be removed
 
 struct amiga16 : memory32{
 	std::vector<u16> shorts;
 	IExec* exec;
+	IDos* dos;
 
 	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags=0;
@@ -165,24 +177,41 @@ struct amiga16 : memory32{
 	void setExec(IExec *bass) {
 		exec = bass;
 	}
-	// pc has arrived with a negative offset from execbase ($801000)
-	// this implementation does not touch underlying shorts[address >> 1];
+	void setDos(IDos* sub) {
+		dos = sub;
+	}
+	// pc has arrived with a negative offset from lib
+	// execbase ($801000)
+	// dosbase ($802000)
+	// 
 	virtual int read16(int address,int flags) {
 		//		int base = 0x801000;
 		int offset = address | -4096;
 		if (flags&QBIT) {
 			//		log_bus(0, 1, physicalAddress, 0);
 		}
+		if (flags & DBIT) {
+			return 0x4e75;
+		}
 //		int func = -(offset/ 6) - 63;
 		int func = -(offset / 6) - 33;
 		switch (func) {
-		case ALLOC:
+		case DOSOPEN:
+			dos->open();
+			break;
+		case ALLOCMEM:
+		case ALLOCATE:
 			machineState = "ALLOC";
 			exec->allocMem();
 			break;
+		case DEALLOCATE:
+			break;
+		case WAIT:
+			break;
+		case OLDOPENLIBRARY:
 		case OPENLIBRARY:
 			exec->openLibrary();
-			machineError = address;
+//			machineError = address;
 			break;
 		case SETEXCEPT:
 		case SETSIGNAL:
@@ -199,8 +228,8 @@ struct amiga16 : memory32{
 			machineState = "REPLY";
 			exec->replyMsg();
 			break;
-		case WAIT:
-			machineState = "WAIT";
+		case WAITPORT:
+			machineState = "WAITPORT";
 			exec->waitPort();
 			break;
 		default:

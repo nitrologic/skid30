@@ -147,14 +147,27 @@ struct acid68000 {
 	memory32* mem;
 	MemEvents memlog;
 
+	int heapPointer = 0x60000;
+
 	std::set<std::uint32_t> breakpoints;
 
-	int allocate(int size, int bits) {
-
-
-		return 0;
+	std::string fetchString(int a1) {
+		std::stringstream ss;
+		while (a1) {
+			int byte = read8(a1++);
+			if (byte == 0) break;
+			ss << (char)byte;
+		}
+		return ss.str();
 	}
 
+	// TODO - round size to page boundary
+
+	int allocate(int size, int bits) {
+		int p = heapPointer;
+		heapPointer += size;
+		return p;
+	}
 
 	void log_bus(int readwritefetch, int byteshortlong, int address, int value) {
 		bool enable=(readwritefetch==1)?(mem->flags&2):(mem->flags&1);
@@ -353,42 +366,76 @@ struct acid68000 {
 
 acid68000 acid500;
 
+class aciddos : public IDos {
+public:
+	acid68000* cpu0;
+	aciddos(acid68000* cpu) {
+		cpu0 = cpu;
+	}
+//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0196.html
+	void open(){
+		int d1 = cpu0->readRegister(1);
+		std::string s=cpu0->fetchString(d1);
+		cpu0->writeRegister(0, 0);
+		return;
+	}
+	void close(){}
+	void read(){}
+	void write(){}
+	void input(){}
+	void output(){}
+	void seek(){}
+	void deleteFile(){}
+	void rename(){}
+	void lock(){}
+	void unLock(){}
+	void dupLock(){}
+};
+
 class acidexec : public IExec {
 public:
 	acid68000* cpu0;
 
-	std::string fetchString(int a1) {
-		std::stringstream ss;
-		while (a1) {
-			int byte = cpu0->read8(a1++);
-			if (byte == 0) break;
-			ss << (char)byte;
-		}
-		return ss.str();
-	}
 	acidexec(acid68000* cpu) {
 		cpu0 = cpu;
 	}
 	void waitMsg() {
 
 	}
+
+// http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0222.html
+
 	void openLibrary() {
 		int a1 = cpu0->readRegister(9);
-		std::string s = fetchString(a1);
-
+		std::string s = cpu0->fetchString(a1);
+		int r = 0;
+		if (s == "dos.library") {
+			r=0x802000;
+		}
+		else {
+			// todo: build a named map
+			r = -1;
+		}
+		cpu0->writeRegister(0, r);
 	}
+
+// TODO heap symantics
+// http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0332.html
+
 	void allocMem() {
 		int d0 = cpu0->readRegister(0);
 		int d1 = cpu0->readRegister(1);
-		// TODO empty from heap above
+		int r = cpu0->allocate(d0, d1);
+		cpu0->writeRegister(0, r);
 	}
+
 	void waitPort() {
 		int a0 = cpu0->readRegister(8);
-		std::string s = fetchString(a0);
+		std::string s = cpu0->fetchString(a0);
 	}
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
-		std::string s = fetchString(a1);
+		std::string s = cpu0->fetchString(a1);
 	}
 	void fakeTask() {
 		// to trap $ac(task) oblivion is looking for workbench pointers
@@ -667,8 +714,10 @@ const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 void debugCode(int pc24,const char *name) {
 
 	acidexec *bass=new acidexec(&acid500);
+	aciddos* sub = new aciddos(&acid500);
 
 	mig.setExec(bass);
+	mig.setDos(sub);
 	
 	int key = 0;
 	int run = 0;
@@ -843,12 +892,8 @@ int main() {
 
 // amiga chunks are hunks
 
-	const char* amiga_binary = "../../archive/oblivion/oblivion";
-
-
-//	const char* amiga_binary = "../../archive/lha";
-
-//	const char* amiga_binary = "../../archive/genam2";
+	const char* amiga_binary = "../../archive/lha";
+//	const char* amiga_binary = "../../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../../archive/devpac";
 //	const char* amiga_binary = "../../archive/virus";
 
@@ -858,7 +903,6 @@ int main() {
 //	const char* amiga_binary = "../../archive/devpac";
 
 //	const char* amiga_binary = "../../archive/virus";
-//	const char* amiga_binary = "../../archive/lha";
 //	const char* amiga_binary = "../../archive/game";
 
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
