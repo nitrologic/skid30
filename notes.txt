@@ -1,9 +1,54 @@
 test roms
 =========
 
+* oblivion
 * lha
 * blitz2
 * zarch
+
+
+oblivion shareware game
+=======================
+
+1 hunk [code] with reloc32 0x14dea words
+
+The warp.s source code is goldmine of well behaved bare metal behavior.
+
+The Amiga workbench sure did blow chunks.
+
+wbmess	dc.l	0
+
+wbkludge	movem.l	d0/a0,-(a7)
+	;
+	move.l	4.w,a6
+	sub.l	a1,a1
+	jsr	-294(a6)	;findtask
+	move.l	d0,a2
+	;
+	movem.l	(a7)+,d0/a0
+	;
+	tst.l	$ac(a2)
+	bne	susspattern
+	lea	$5c(a2),a0
+	jsr	-384(a6)	;waitport
+	jsr	-372(a6)	;getmsg
+	move.l	d0,wbmess
+	lea	dosname(pc),a1
+	jsr	-408(a6)
+	move.l	d0,a6
+	;
+	move.l	wbmess(pc),a0
+	move.l	$24(a0),a0
+	move.l	(a0),d1
+	jmp	-126(a6)
+
+wbkludge2	move.l	wbmess(pc),d0
+	beq.s	.done
+	move.l	4.w,a6
+	move.l	d0,a1
+	jmp	-378(a6)	;rplymsg
+.done	rts
+
 
 lha command line tool
 =====================
@@ -47,8 +92,10 @@ Dies reading -1 at the respectable clock cycle of 0x03127982
 
 Zero Equals rom calls - no exec base access detected.
 
+
 blitz2 command line compiler tool
 =================================
+
 1 hunk [ code ] with reloc32 84KB
 
 On start, blitz2 binary tests for command line vs workbench
@@ -74,3 +121,5 @@ game
 ted workbench program editor
 ============================
 1 hunk [ code ] with reloc32 59KB
+
+Should emit Intuition not supported close down.

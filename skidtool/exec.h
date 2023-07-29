@@ -5,4 +5,6 @@ public:
 	virtual void allocMem() = 0;
 	virtual void waitPort() = 0;
 	virtual void replyMsg() = 0;
+	virtual void fakeTask() = 0;
+	virtual void openLibrary() = 0;
 };

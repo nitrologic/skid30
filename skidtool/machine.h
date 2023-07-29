@@ -142,8 +142,17 @@ const std::string execNames[] = {"ReplyMsg","WaitPort"}; // just guessing here, 
 
 enum enum_exec {
 	ALLOC,
+	FINDTASK=14,
+	SETTASKPRI=15,
+	SETSIGNAL=16,
+	SETEXCEPT=17,
+
+	REMPORT=27,
+	PUTMSG=28,
+	GETMSG=29,
 	REPLY=30,
-	WAIT
+	WAIT=31,
+	OPENLIBRARY=35
 };
 
 struct amiga16 : memory32{
@@ -170,6 +179,20 @@ struct amiga16 : memory32{
 		case ALLOC:
 			machineState = "ALLOC";
 			exec->allocMem();
+			break;
+		case OPENLIBRARY:
+			exec->openLibrary();
+			machineError = address;
+			break;
+		case SETEXCEPT:
+		case SETSIGNAL:
+		case SETTASKPRI:
+			break;
+		case FINDTASK:
+			exec->fakeTask();
+			break;
+		case GETMSG:
+		case PUTMSG:
 			break;
 		case REPLY:
 			// A1=message

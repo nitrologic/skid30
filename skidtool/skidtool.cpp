@@ -295,9 +295,14 @@ struct acid68000 {
 			// TODO - status = machineStatus;
 			memoryError = machineError;
 			m68k_pulse_halt();
+			// TODO - emit message
+			machineError = 0;
 		}
 
-		if(qbits==0) log_bus(0, 1, physicalAddress, value);
+		if (qbits == 0) {
+			log_bus(0, 1, physicalAddress, value);
+		}
+
 		return value;
 	}
 
@@ -367,6 +372,11 @@ public:
 	void waitMsg() {
 
 	}
+	void openLibrary() {
+		int a1 = cpu0->readRegister(9);
+		std::string s = fetchString(a1);
+
+	}
 	void allocMem() {
 		int d0 = cpu0->readRegister(0);
 		int d1 = cpu0->readRegister(1);
@@ -379,6 +389,10 @@ public:
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
 		std::string s = fetchString(a1);
+	}
+	void fakeTask() {
+		// to trap $ac(task) oblivion is looking for workbench pointers
+		cpu0->writeRegister(0, 0x801000);
 	}
 };
 
@@ -785,6 +799,8 @@ void debugCode(int pc24,const char *name) {
 				run = false;
 				err = acid500.memoryError;
 				status = "memory error";
+				// TODO emit message - who will unhalt the processor
+				acid500.memoryError = 0;
 			}
 		}
 		pc = acid500.readRegister(16);
@@ -827,7 +843,10 @@ int main() {
 
 // amiga chunks are hunks
 
-	const char* amiga_binary = "../../archive/lha";
+	const char* amiga_binary = "../../archive/oblivion/oblivion";
+
+
+//	const char* amiga_binary = "../../archive/lha";
 
 //	const char* amiga_binary = "../../archive/genam2";
 //	const char* amiga_binary = "../../archive/devpac";
