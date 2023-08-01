@@ -1,0 +1,10 @@
+History 101
+===========
+
+In the beginning there was the command line (after the punch card after the mechanical switch grid).
+
+Then came the mouse, and then came the workbench, and then there was confusion for app startup.
+
+    movea.l ($114,A6), A3
+    move.l  ($ac,A3), D1
+    beq     iscommandline

@@ -2,3 +2,5 @@ sega
 bin
 old
 media/kick.rom
+.vscode
+.DS_Store
