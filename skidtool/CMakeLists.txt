@@ -121,5 +121,5 @@ set(make68k_src
 
 ADD_EXECUTABLE(make68k ${make68k_src})
 
-ADD_EXECUTABLE(test test.cpp)
-target_link_libraries(test musashi zlib libpng)
+#ADD_EXECUTABLE(test test.cpp)
+#target_link_libraries(test musashi zlib libpng)

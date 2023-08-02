@@ -387,28 +387,54 @@ struct acid68000 {
 
 acid68000 acid500;
 
+const int INPUT_STREAM = -4;
+const int OUTPUT_STREAM = -8;
+
 class aciddos : public IDos {
 public:
 	acid68000* cpu0;
 	aciddos(acid68000* cpu) {
 		cpu0 = cpu;
 	}
+
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0196.html
-	void open(){
+	void getvar() {
 		int d1 = cpu0->readRegister(1);
-		std::string s=cpu0->fetchString(d1);
-		cpu0->writeRegister(0, 0);
+		int d2 = cpu0->readRegister(2);
+		int d3 = cpu0->readRegister(3);
+		int d4 = cpu0->readRegister(4);
+		std::string name = cpu0->fetchString(d1);
+		cpu0->writeRegister(0,-1); // not defined
 		return;
+	}
+	void open() {
 	}
 	void close(){
 	}
 	void read(){
 	}
+
+// http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node01D1.html
+// 
 	void write(){
+		int d1 = cpu0->readRegister(1);
+		int d2 = cpu0->readRegister(2);
+		int d3 = cpu0->readRegister(3);
+		std::string s = cpu0->fetchString(d2);// TODO - pass d3 length
+		// file,buffer,length
+		switch (d1) {
+		case OUTPUT_STREAM:
+			break;
+		default:
+			break;
+		}
+		cpu0->writeRegister(0, d3);
 	}
 	void input(){
+		cpu0->writeRegister(0, INPUT_STREAM);
 	}
 	void output(){
+		cpu0->writeRegister(0, OUTPUT_STREAM);
 	}
 	void seek(){
 	}
@@ -436,7 +462,8 @@ public:
 
 	}
 	void currentdir() {
-
+		// d1=lock return d0=oldlock
+		cpu0->writeRegister(0, 0);
 	}
 	void ioerr() {
 
@@ -460,6 +487,8 @@ public:
 
 	}
 
+
+
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0222.html
 
 	void openLibrary() {
@@ -475,9 +504,27 @@ public:
 		}
 		cpu0->writeRegister(0, r);
 	}
+	void closeLibrary() {
+	}
+// http://www.amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node036C.html
+
+	void rawDoFmt() {
+		int a0 = cpu0->readRegister(8);
+		int a1 = cpu0->readRegister(9);
+		int a2 = cpu0->readRegister(10);
+		int a3 = cpu0->readRegister(11);
+
+		std::string fmt = cpu0->fetchString(a0);
+
+		cpu0->writeRegister(0, a1);
+	}
 
 // TODO heap symantics
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0332.html
+
+	void freeMem() {
+		// a1,d0
+	}
 
 	void allocMem() {
 		int d0 = cpu0->readRegister(0);
@@ -488,7 +535,7 @@ public:
 
 	void waitPort() {
 		int a0 = cpu0->readRegister(8);
-		std::string s = cpu0->fetchString(a0);
+		cpu0->writeRegister(0, 0);	// no message available
 	}
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
@@ -497,6 +544,11 @@ public:
 	void fakeTask() {
 		// to trap $ac(task) oblivion is looking for workbench pointers
 		cpu0->writeRegister(0, 0x801000);
+	}
+	void getMsg() {
+		cpu0->writeRegister(0, 0);	// no message available
+	}
+	void putMsg() {
 	}
 };
 
@@ -783,7 +835,7 @@ void debugRom(int pc24,const char *name,const char *args) {
 	
 	const char* status = name;
 
-	acid500.qwrite32(0, 0x400); //sp
+	acid500.qwrite32(0, 0x1400); //sp
 //	acid500.qwrite32(4, 0xac1d0000); //exec
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
@@ -933,7 +985,6 @@ int convertFiles() {
 }
 
 int main() {
-
 	int rows, cols;
 	screenSize(rows, cols);
 	mouseOn();
@@ -949,7 +1000,6 @@ int main() {
 #endif
 
 	std::cout << "skidtool 0.2" << std::endl;
-
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
 //	convertFiles();
@@ -959,18 +1009,25 @@ int main() {
 
 
 // amiga chunks are hunks
+//	convertFiles();
+// amiga chunks are hunks
 
-//	const char* amiga_binary = "../../archive/lha";
+//	const char* amiga_binary = "../../archive/genam2";
+//	const char* amiga_binary = "../../archive/devpac";
+//	const char* amiga_binary = "../../archive/virus";
+
+	const char* amiga_binary = "../../archive/lha";
+	const char* args = "e foo.lha";
+
 //	const char* args = "lha e foo.lha";
-//	const char* args = "e foo.lha";
 
 //	const char* amiga_binary = "../../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../../archive/virus";
 
 // amiga chunks are hunks
 
-	const char* amiga_binary = "../../archive/genam";
-	const char* args = 0;
+//	const char* amiga_binary = "../../archive/genam";
+//	const char* args = 0;
 //	const char* amiga_binary = "../../archive/devpac";
 
 //	const char* amiga_binary = "../../archive/virus";

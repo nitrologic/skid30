@@ -142,24 +142,36 @@ const int DBIT = 0x40000000;
 const std::string execNames[] = {"ReplyMsg","WaitPort"}; // just guessing here, please step slowly
 
 enum enum_exec {
-	ALLOCATE=-2,
-	DEALLOCATE=-1,
-	ALLOCMEM=0,
-	FINDTASK=14,
-	SETTASKPRI=15,
-	SETSIGNAL=16,
-	SETEXCEPT=17,
-	WAIT=18,
+	ALLOCATE = -186,
+	DEALLOCATE = -192,
+	ALLOCMEM = -198,
+	FREEMEM=-210,
 
-	REMPORT=27,
-	PUTMSG=28,
-	GETMSG=29,
-	REPLY=30,
-	WAITPORT=31,
-	OLDOPENLIBRARY=35,
-	OPENLIBRARY=59,
+	FINDTASK=-294,
+	SETTASKPRI=-300,
+	SETSIGNAL=-306,
+	SETEXCEPT=-312,
+	WAIT=-318,
 
-	DOSOPEN=118
+	REMPORT=-360,
+	PUTMSG=-366,
+	GETMSG=-372,
+	REPLY=-378,
+	WAITPORT=-384,
+
+	OLDOPENLIBRARY=-408,
+	CLOSELIBRARY=-414,
+	RAWDOFMT=-522,
+	OPENLIBRARY=-552,
+
+};
+
+enum enum_dos {
+	DOS_WRITE = -48,
+	DOS_INPUT = -54,
+	DOS_OUTPUT = -60,
+	DOS_CURRENTDIR = -126,
+	DOS_GETVAR = -906
 };
 
 // address is 0x800000
@@ -184,25 +196,62 @@ struct amiga16 : memory32{
 	// execbase ($801000)
 	// dosbase ($802000)
 	// 
-	virtual int read16(int address,int flags) {
-		//		int base = 0x801000;
-		int offset = address | -4096;
-		if (flags&QBIT) {
+	virtual int read16(int address, int flags) {
+		int lib = (address + 4095) >> 12;
+		int offset = address | (-1 << 12);
+		if (flags & QBIT) {
 			//		log_bus(0, 1, physicalAddress, 0);
 		}
 		if (flags & DBIT) {
 			return 0x4e75;
 		}
-//		int func = -(offset/ 6) - 63;
-		int func = -(offset / 6) - 33;
-		switch (func) {
-		case DOSOPEN:
-			dos->open();
+		switch (lib) {
+		case 1:
+			machineError = callExec(offset);
+			break;
+		case 2:
+			machineError = callDos(offset);
+			break;
+		}
+		return 0x4e75;
+	}
+
+	int callDos(int offset) {
+		switch (offset) {
+		case DOS_GETVAR:
+			dos->getvar();
+			break;
+		case DOS_CURRENTDIR:
+			dos->currentdir();
+			break;
+		case DOS_WRITE:
+			dos->write();
+			break;
+		case DOS_INPUT:
+			dos->input();
+			break;
+		case DOS_OUTPUT:
+			dos->output();
+			break;
+		default:
+			machineState = std::to_string(offset) + "(dosBase) un supported";
+			return offset;
+		}
+		return 0;
+	}
+
+	int callExec(int offset){
+		switch (offset) {
+		case RAWDOFMT:
+			exec->rawDoFmt();
 			break;
 		case ALLOCMEM:
 		case ALLOCATE:
 			machineState = "ALLOC";
 			exec->allocMem();
+			break;
+		case FREEMEM:
+			exec->freeMem();
 			break;
 		case DEALLOCATE:
 			break;
@@ -213,6 +262,9 @@ struct amiga16 : memory32{
 			exec->openLibrary();
 //			machineError = address;
 			break;
+		case CLOSELIBRARY:
+			exec->closeLibrary();
+			break;
 		case SETEXCEPT:
 		case SETSIGNAL:
 		case SETTASKPRI:
@@ -221,7 +273,10 @@ struct amiga16 : memory32{
 			exec->fakeTask();
 			break;
 		case GETMSG:
+			exec->getMsg();
+			break;
 		case PUTMSG:
+			exec->putMsg();
 			break;
 		case REPLY:
 			// A1=message
@@ -233,12 +288,10 @@ struct amiga16 : memory32{
 			exec->waitPort();
 			break;
 		default:
-			machineState = std::to_string(offset) + "(execbase) un supported";
-			machineError=address;
-			break;
+			machineState = std::to_string(offset) + "(execBase) un supported";
+			return offset;
 		}
-		// once system implementation is done return an RTS
-		return 0x4e75;
+		return 0;
 	}
 	virtual int read32(int address) {		
 		// trap $114(execbase) for apps looking for workbench pointers

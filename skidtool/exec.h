@@ -3,10 +3,15 @@
 class IExec{
 public:
 	virtual void allocMem() = 0;
+	virtual void freeMem() = 0;
 	virtual void waitPort() = 0;
 	virtual void replyMsg() = 0;
 	virtual void fakeTask() = 0;
 	virtual void openLibrary() = 0;
+	virtual void closeLibrary() = 0;
+	virtual void rawDoFmt() = 0;
+	virtual void putMsg() = 0;
+	virtual void getMsg() = 0;
 };
 
 class IDos {
@@ -31,4 +36,5 @@ public:
 	virtual void ioerr() = 0;
 	virtual void createproc() = 0;
 	virtual void exit() = 0;
+	virtual void getvar() = 0;
 };
