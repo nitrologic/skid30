@@ -161,6 +161,17 @@ struct acid68000 {
 		return ss.str();
 	}
 
+	std::vector<u16> fetchShorts(int a1, int d0) {
+		int n = (d0 + 1) / 2;
+		std::vector<u16> result(n);
+		for (int i = 0; i < n; i++) {
+			result[i] = read16(a1);
+			a1 += 2;
+		}
+		return result;
+	}
+
+
 
 	// http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0332.html
 	// TODO - round size to page boundary
@@ -420,7 +431,9 @@ public:
 		int d1 = cpu0->readRegister(1);
 		int d2 = cpu0->readRegister(2);
 		int d3 = cpu0->readRegister(3);
-		std::string s = cpu0->fetchString(d2);// TODO - pass d3 length
+// TODO: handle odd address in d2 and odd length in d3
+// or consider a fetchBytes command, little endians go sleep now
+		std::vector<u16> raw = cpu0->fetchShorts(d2, d3);
 		// file,buffer,length
 		switch (d1) {
 		case OUTPUT_STREAM:
@@ -515,6 +528,8 @@ public:
 		int a3 = cpu0->readRegister(11);
 
 		std::string fmt = cpu0->fetchString(a0);
+
+		// TODO: interpret datastream from the docs, bleh
 
 		cpu0->writeRegister(0, a1);
 	}
@@ -1017,9 +1032,9 @@ int main() {
 //	const char* amiga_binary = "../../archive/virus";
 
 	const char* amiga_binary = "../../archive/lha";
-	const char* args = "e foo.lha";
+//	const char* args = "e foo.lha";
 
-//	const char* args = "lha e foo.lha";
+	const char* args = "lha e foo.lha";
 
 //	const char* amiga_binary = "../../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../../archive/virus";
