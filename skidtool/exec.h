@@ -23,4 +23,12 @@ public:
 	virtual void lock() = 0;
 	virtual void unLock() = 0;
 	virtual void dupLock() = 0;
+	virtual void examine() = 0;
+	virtual void exnext() = 0;
+	virtual void info() = 0;
+	virtual void createdir() = 0;
+	virtual void currentdir() = 0;
+	virtual void ioerr() = 0;
+	virtual void createproc() = 0;
+	virtual void exit() = 0;
 };

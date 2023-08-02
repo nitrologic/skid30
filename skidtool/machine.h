@@ -167,7 +167,7 @@ enum enum_exec {
 // underlying 0x100000 shorts to be removed
 
 struct amiga16 : memory32{
-	std::vector<u16> shorts;
+	std::vector<u16> shorts;	// deprecate me
 	IExec* exec;
 	IDos* dos;
 
@@ -208,7 +208,7 @@ struct amiga16 : memory32{
 			break;
 		case WAIT:
 			break;
-		case OLDOPENLIBRARY:
+		case OLDOPENLIBRARY: 
 		case OPENLIBRARY:
 			exec->openLibrary();
 //			machineError = address;

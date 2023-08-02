@@ -161,11 +161,19 @@ struct acid68000 {
 		return ss.str();
 	}
 
+
+	// http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0332.html
 	// TODO - round size to page boundary
 
 	int allocate(int size, int bits) {
+		size = (size + 3) & -4;
 		int p = heapPointer;
 		heapPointer += size;
+		if (bits & 1) {
+			for (int i = 0; i < size; i += 4) {
+				qwrite32(p + i, 0);
+			}
+		}
 		return p;
 	}
 
@@ -350,8 +358,21 @@ struct acid68000 {
 		mem->write32(address, value);
 	}
 
+	int writes(int physicalAddress, std::string s,int maxlen) {
+		int address = decode(physicalAddress);
+		int count = 0;
+		for(auto c:s){
+			mem->write8(address++, c);
+			count++;
+			if (count >= maxlen) break;
+		}
+		mem->write8(address++, 0);
+		return count;
+	}
+
 	void qwrite32(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
+//		address|=QBIT;
 		mem->write32(address, value);
 	}
 	void qwrite16(int physicalAddress, int value) {
@@ -372,24 +393,60 @@ public:
 	aciddos(acid68000* cpu) {
 		cpu0 = cpu;
 	}
-//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0196.html
+// http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0196.html
 	void open(){
 		int d1 = cpu0->readRegister(1);
 		std::string s=cpu0->fetchString(d1);
 		cpu0->writeRegister(0, 0);
 		return;
 	}
-	void close(){}
-	void read(){}
-	void write(){}
-	void input(){}
-	void output(){}
-	void seek(){}
-	void deleteFile(){}
-	void rename(){}
-	void lock(){}
-	void unLock(){}
-	void dupLock(){}
+	void close(){
+	}
+	void read(){
+	}
+	void write(){
+	}
+	void input(){
+	}
+	void output(){
+	}
+	void seek(){
+	}
+	void deleteFile(){
+	}
+	void rename(){
+	}
+	void lock(){
+	}
+	void unLock(){
+	}
+	void dupLock(){
+	}
+
+	void examine() {
+
+	}
+	void exnext() {
+
+	}
+	void info() {
+
+	}
+	void createdir() {
+
+	}
+	void currentdir() {
+
+	}
+	void ioerr() {
+
+	}
+	void createproc() {
+
+	}
+	void exit() {
+
+	}
 };
 
 class acidexec : public IExec {
@@ -648,7 +705,7 @@ void loadHunk(std::string path,int physical) {
 		default:
 		{
 			std::cout << "type " << std::hex << type << " not supported " << std::endl;
-			assert(false);
+//			assert(false);
 			break;
 		}
 		}
@@ -711,11 +768,11 @@ void disassemble(int pc,int count)
 const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
 const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
-void debugCode(int pc24,const char *name) {
+void debugRom(int pc24,const char *name,const char *args) {
 
 	acidexec *bass=new acidexec(&acid500);
 	aciddos* sub = new aciddos(&acid500);
-
+	
 	mig.setExec(bass);
 	mig.setDos(sub);
 	
@@ -740,6 +797,13 @@ void debugCode(int pc24,const char *name) {
 	m68k_init();
 	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
 	m68k_pulse_reset();
+
+	int arglen = 0;
+	if (args) {
+		arglen=acid500.writes(0x200, args, 0x100);
+	}
+	acid500.writeRegister(0, arglen);
+	acid500.writeRegister(8, 0x200);
 
 	// refresh has 20 milli second sanity delay
 	int drawtime=millis();
@@ -890,16 +954,23 @@ int main() {
 
 //	convertFiles();
 
+//	const char* amiga_binary = "../../archive/devpac";
+	//	const char* args = "e foo.lha";
+
+
 // amiga chunks are hunks
 
-	const char* amiga_binary = "../../archive/lha";
+//	const char* amiga_binary = "../../archive/lha";
+//	const char* args = "lha e foo.lha";
+//	const char* args = "e foo.lha";
+
 //	const char* amiga_binary = "../../archive/oblivion/oblivion";
-//	const char* amiga_binary = "../../archive/devpac";
 //	const char* amiga_binary = "../../archive/virus";
 
 // amiga chunks are hunks
 
-//	const char* amiga_binary = "../../archive/genam2";
+	const char* amiga_binary = "../../archive/genam";
+	const char* args = 0;
 //	const char* amiga_binary = "../../archive/devpac";
 
 //	const char* amiga_binary = "../../archive/virus";
@@ -919,7 +990,7 @@ int main() {
 
 	const char* name = "lha @ 0x2000";
 
-	debugCode(0x2000, name);
+	debugRom(0x2000, name, args);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
