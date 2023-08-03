@@ -1,7 +1,38 @@
-// skidtool
+#include <assert.h>
+#include <sstream>
+#include <vector>
+#include <set>
+
+#include "machine.h"
+
+// acid500 monitor aka skidtool
 // by simon
 // 
 // all rights reserved 2023
+
+std::vector<logline> machineLog;
+
+void systemLog(const char* tag, std::string s) {
+	std::stringstream log;
+	log << "[" << tag << "] " << s;
+	std::cout << log.str() << std::endl;
+	machineLog.push_back(log.str());
+}
+
+void systemLog(const char* a, std::stringstream ss) {
+	systemLog(a, ss.str());
+}
+
+
+std::string rawString(std::vector<u8> raw) {
+	std::stringstream ss;
+	int n = (int)raw.size();
+	ss << std::setfill('0') << std::setw(2) << std::right << std::hex;
+	for (int i = 0; i < n; i++) {
+		ss << (int)raw[i] << " ";
+	}
+	return ss.str();
+}
 
 #include "loadiff.h"
 
@@ -66,14 +97,6 @@ uint64_t millis(){
 #endif
 #endif
 
-#include <assert.h>
-#include <sstream>
-#include <vector>
-#include <set>
-
-#include "machine.h"
-
-// acid500 monitor
 
 // console log output helpers
 
@@ -161,6 +184,15 @@ struct acid68000 {
 		return ss.str();
 	}
 
+	std::vector<u8> fetchBytes(int a1, int d0) {
+		int n = d0;
+		std::vector<u8> result(n);
+		for (int i = 0; i < n; i++) {
+			result[i] = read8(a1++);
+		}
+		return result;
+	}
+
 	std::vector<u16> fetchShorts(int a1, int d0) {
 		int n = (d0 + 1) / 2;
 		std::vector<u16> result(n);
@@ -170,7 +202,6 @@ struct acid68000 {
 		}
 		return result;
 	}
-
 
 
 	// http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0332.html
@@ -433,11 +464,15 @@ public:
 		int d3 = cpu0->readRegister(3);
 // TODO: handle odd address in d2 and odd length in d3
 // or consider a fetchBytes command, little endians go sleep now
-		std::vector<u16> raw = cpu0->fetchShorts(d2, d3);
-		// file,buffer,length
+
+// std::vector<u16> raw = cpu0->fetchShorts(d2, d3);
+		std::vector<u8> raw = cpu0->fetchBytes(d2, d3);
+// file,buffer,length
 		switch (d1) {
-		case OUTPUT_STREAM:
-			break;
+		case OUTPUT_STREAM: {
+			std::string s = rawString(raw);
+			systemLog("write", s);
+		}break;
 		default:
 			break;
 		}
@@ -487,6 +522,18 @@ public:
 	void exit() {
 
 	}
+
+	void isinteractive() {
+		int d0 = 0;
+		int d1 = cpu0->readRegister(1);
+		// d1=lock
+		switch (d1) {
+		case -4:
+			d0 = 1;
+			break;
+		}
+		cpu0->writeRegister(0, d0);
+	}
 };
 
 class acidexec : public IExec {
@@ -530,6 +577,8 @@ public:
 		std::string fmt = cpu0->fetchString(a0);
 
 		// TODO: interpret datastream from the docs, bleh
+
+		systemLog("fmt", fmt);
 
 		cpu0->writeRegister(0, a1);
 	}
@@ -1020,8 +1069,7 @@ int main() {
 //	convertFiles();
 
 //	const char* amiga_binary = "../../archive/devpac";
-	//	const char* args = "e foo.lha";
-
+//	const char* args = "e foo.lha";
 
 // amiga chunks are hunks
 //	convertFiles();
@@ -1032,9 +1080,9 @@ int main() {
 //	const char* amiga_binary = "../../archive/virus";
 
 	const char* amiga_binary = "../../archive/lha";
-//	const char* args = "e foo.lha";
+	const char* args = "lha e foo.lha\n";
 
-	const char* args = "lha e foo.lha";
+//	const char* args = "e foo.lha\n";
 
 //	const char* amiga_binary = "../../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../../archive/virus";

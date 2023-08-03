@@ -12,6 +12,10 @@
 // flag 2 - logs writes
 // flag 4 - star
 
+typedef std::string logline;
+
+extern std::vector<logline> machineLog;
+
 int machineError;
 
 std::string machineState="";
@@ -42,6 +46,13 @@ struct memory32 {
 		return word & 0xff;
 	}
 
+	virtual int read8a(int address) {
+		int odd = address & 1;
+		int word = read16(address - odd, 0);
+		word >>= 8 * odd;
+		return word & 0xff;
+	}
+
 	virtual int read32(int address) {
 		int w0 = read16(address,0);
 		int w1 = read16(address+2,0);
@@ -54,10 +65,11 @@ struct memory32 {
 		address -= odd;
 		int word = read16(address,0);
 		if (odd) {
-			word = (word & 0xff) | (value << 8);
-		}
-		else {
 			word = (word & 0xff00) | (value & 0xff);
+		}
+		else 
+		{
+			word = (word & 0xff) | (value << 8);
 		}
 		write16(address,word);
 	}
@@ -171,6 +183,7 @@ enum enum_dos {
 	DOS_INPUT = -54,
 	DOS_OUTPUT = -60,
 	DOS_CURRENTDIR = -126,
+	DOS_ISINTERACTIVE = -216,
 	DOS_GETVAR = -906
 };
 
@@ -220,6 +233,10 @@ struct amiga16 : memory32{
 		switch (offset) {
 		case DOS_GETVAR:
 			dos->getvar();
+			break;
+		case DOS_ISINTERACTIVE:
+//			return offset;
+			dos->isinteractive();
 			break;
 		case DOS_CURRENTDIR:
 			dos->currentdir();

@@ -36,5 +36,6 @@ public:
 	virtual void ioerr() = 0;
 	virtual void createproc() = 0;
 	virtual void exit() = 0;
+	virtual void isinteractive() = 0;
 	virtual void getvar() = 0;
 };
