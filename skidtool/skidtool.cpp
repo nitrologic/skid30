@@ -229,7 +229,7 @@ struct acid68000 {
 			int pc=readRegister(16);
 			memlog.emplace_back(cycle, a32, value, pc);
 			std::stringstream ss;
-			dumpEvent(ss, memlog.end());
+//			dumpEvent(ss, memlog.end());
 			// readwritefetch
 			ss << "op:" << readwrite[readwritefetch & 1] << " src:";
 			ss << a32;
@@ -239,9 +239,8 @@ struct acid68000 {
 		}
 	}
 
-	void dumpEvent(std:stringstream & out, MemEvent& e) {
-
-	}
+//	void dumpEvent(std:stringstream & out, MemEvent& e) {
+//	}
 
 	void dumplog(int max) {
 		int n = memlog.size();
@@ -498,7 +497,7 @@ public:
 	}
 	void seek(){
 	}
-	void deleteFile(){
+	void deletefile(){
 	}
 	void rename(){
 	}

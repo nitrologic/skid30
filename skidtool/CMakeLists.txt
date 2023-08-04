@@ -106,8 +106,9 @@ ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 ADD_EXECUTABLE(skidtool 
     skidtool.cpp 
     machine.h 
-    filedecoder.h 
+    exec.h
     monitor.h 
+    filedecoder.h 
     loadiff.h
 )
 

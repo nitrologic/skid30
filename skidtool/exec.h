@@ -23,7 +23,7 @@ public:
 	virtual void input() = 0;
 	virtual void output() = 0;
 	virtual void seek() = 0;
-	virtual void deleteFile() = 0;
+	virtual void deletefile() = 0;
 	virtual void rename() = 0;
 	virtual void lock() = 0;
 	virtual void unLock() = 0;
