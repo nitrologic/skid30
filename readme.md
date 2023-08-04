@@ -4,6 +4,6 @@ A project to celebrate 30th anniversary of original Skidmarks game.
 
 Active progress on this project includes the use of the lha command line archiving tool as a primary.
 
-![rawdofmt checking it's input](media/nicestep.png)
+![rawdofmt checking it's input](media/nicestep.jpg)
 
 [test notes](notes/notes.txt)
