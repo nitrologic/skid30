@@ -1,14 +1,15 @@
+// acid500 
+// 
+// monitor aka skidtool by simon
+// 
+// all rights reserved 2023
+
 #include <assert.h>
 #include <sstream>
 #include <vector>
 #include <set>
 
 #include "machine.h"
-
-// acid500 monitor aka skidtool
-// by simon
-// 
-// all rights reserved 2023
 
 std::vector<logline> machineLog;
 
@@ -19,10 +20,9 @@ void systemLog(const char* tag, std::string s) {
 	machineLog.push_back(log.str());
 }
 
-void systemLog(const char* a, std::stringstream ss) {
+void systemLog(const char* a, std::stringstream &ss) {
 	systemLog(a, ss.str());
 }
-
 
 std::string rawString(std::vector<u8> raw) {
 	std::stringstream ss;
@@ -228,7 +228,19 @@ struct acid68000 {
 			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortlong << 27) | (address & 0xffffff);
 			int pc=readRegister(16);
 			memlog.emplace_back(cycle, a32, value, pc);
+			std::stringstream ss;
+			dumpEvent(ss, memlog.end());
+			// readwritefetch
+			ss << "op:" << readwrite[readwritefetch & 1] << " src:";
+			ss << a32;
+			ss << " val:" << value << " pc:" << pc;
+
+			systemLog("mem", ss);
 		}
+	}
+
+	void dumpEvent(std:stringstream & out, MemEvent& e) {
+
 	}
 
 	void dumplog(int max) {

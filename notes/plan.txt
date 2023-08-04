@@ -1,5 +1,6 @@
-;opd.w=OpenSerial ("serial.device",0,2400,0)
+The thing about blitz basic games is they don't (typically) hit the hardware directly so headless emulation with native skin (connected via breakpoint) seems plausible.
 
+;opd.w=OpenSerial ("serial.device",0,2400,0)
 
 
 ⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠆⠜⣿⣿⣿⣿⣿⣿
@@ -14,8 +15,6 @@
 ⣿⣿⣿⣿⣿⣿⡿⠀⠀⢸⣿⣿⠀⠀⠣⠀⠀⠀⠀⠀⡟⢿⣿⣿⣿⣿⣿
 ⣿⣿⣿⡿⠟⠋⠀⠀⠀⠀⠹⣿⣧⣀⠀⠀⠀⠀⡀⣴⠁⢘⡙⢿⣿⣿⣿
 ⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⠗⠂⠄⠀⣴⡟⠀⠀⡃⠀⠉⠉⠟
-
-
 
 step 1
 

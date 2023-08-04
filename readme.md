@@ -1,7 +1,9 @@
 A project to celebrate 30th anniversary of original Skidmarks game.
 
-The thing about blitz basic games is they don't (typically) hit the hardware directly so headless emulation with native skin (connected via breakpoint) seems plausible.
+![acid500 monitor tool](media/acid500lha.png)
+
+Active progress on this project includes the use of the lha command line archiving tool as a primary.
+
+![rawdofmt checking it's input](media/nicestep.png)
 
 [test notes](notes/notes.txt)
-
-![acid500 monitor tool](media/acid500lha.png)

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "exec.h"
 #include "monitor.h"
@@ -25,7 +26,7 @@ struct memory32 {
 	u32 mask;
 	u32 flags;
 
-	memory32(u32 phys, u32 bits) : physical(phys), mask(bits) {
+	memory32(u32 phys, u32 bits) : physical(phys), mask(bits), flags(0) {
 	}
 
 	// address interface is local with physical bits already removed
@@ -198,6 +199,8 @@ struct amiga16 : memory32{
 
 	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags=0;
+		dos = NULL;
+		exec = NULL;
 	}
 	void setExec(IExec *bass) {
 		exec = bass;
