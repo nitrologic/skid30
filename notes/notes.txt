@@ -11,6 +11,10 @@ lha command line tool
 =====================
 2 hunks [code data] both with reloc32 53KB
 
+
+update: lha with "e foo.lha\n" argument now calls exec's rawDoFmt, the initial implementation of which, writes codes to scratch, and invokes a copy to a3 method provided for each char.
+
+
 On start, detects commandline as workbench pointer of 0 is now returned by the acid500.
 
 PC 00002060

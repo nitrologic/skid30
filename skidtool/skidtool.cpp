@@ -687,7 +687,7 @@ public:
 //			int moveqvald0 = 0xe000 | (255 & s[i]);
 			int moveqvald0 = 0x7000 | (255 & s[i]);
 			cpu0->write16(scratch + i * 4 + 0,moveqvald0);
-			cpu0->write16(scratch + i * 4 + 2,0x4e93);	//jsr(a3)
+			cpu0->write16(scratch + i * 4 + 2,0x4e92);	//jsr(a2)
 		}
 		cpu0->write16(scratch + n * 4, 0x4e75);
 
