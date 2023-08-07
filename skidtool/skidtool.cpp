@@ -228,14 +228,13 @@ struct acid68000 {
 			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortlong << 27) | (address & 0xffffff);
 			int pc=readRegister(16);
 			memlog.emplace_back(cycle, a32, value, pc);
-			std::stringstream ss;
+//			std::stringstream ss;
 //			dumpEvent(ss, memlog.end());
 			// readwritefetch
-			ss << "op:" << readwrite[readwritefetch & 1] << " src:";
-			ss << a32;
-			ss << " val:" << value << " pc:" << pc;
-
-			systemLog("mem", ss);
+//			ss << "op:" << readwrite[readwritefetch & 1] << " src:";
+//			ss << a32;
+//			ss << " val:" << value << " pc:" << pc;
+//			systemLog("mem", ss);
 		}
 	}
 
@@ -286,6 +285,10 @@ struct acid68000 {
 			}
 			writeEOL();
 		}
+
+	}
+
+	void call(int subroutine) {
 
 	}
 
@@ -399,6 +402,12 @@ struct acid68000 {
 		if(!memoryError) mem->write8(address, value);
 	}
 
+	void push(int physicalAddress) {
+		int sp=readRegister(15)-4;
+		write32(sp, physicalAddress);
+		writeRegister(15, sp);
+	}
+
 	void write16(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		log_bus(1, 1, physicalAddress, value);
@@ -501,9 +510,16 @@ public:
 	}
 	void rename(){
 	}
+	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0186.html
 	void lock(){
+		int d1 = cpu0->readRegister(1);//name
+		int d2 = cpu0->readRegister(2);//type
+		std::string s = cpu0->fetchString(d1);
+		int lock = -24;
+		cpu0->writeRegister(0, lock);
 	}
 	void unLock(){
+		int d1 = cpu0->readRegister(1);//lock
 	}
 	void dupLock(){
 	}
@@ -558,8 +574,6 @@ public:
 
 	}
 
-
-
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0222.html
 
 	void openLibrary() {
@@ -577,27 +591,116 @@ public:
 	}
 	void closeLibrary() {
 	}
+
 // http://www.amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node036C.html
 
+	// emit some code to writechar the result and push it on the stack
+	//
+	// moveq #c0,d0
+	// jsr (a2)
+	// moveq #c1,d0
+	// jsr (a2)
+	// 
+	// moveq #00,d0
+	// jsr (a2)
+	// 
+	// rts
+
 	void rawDoFmt() {
-		int a0 = cpu0->readRegister(8);
-		int a1 = cpu0->readRegister(9);
-		int a2 = cpu0->readRegister(10);
-		int a3 = cpu0->readRegister(11);
+		int a0 = cpu0->readRegister(8);//fmt
+		int a1 = cpu0->readRegister(9);//args
+		int a2 = cpu0->readRegister(10);//putchproc
+		int a3 = cpu0->readRegister(11);//putchdata
 
 		std::string fmt = cpu0->fetchString(a0);
-
-		// TODO: interpret datastream from the docs, bleh
-
 		systemLog("fmt", fmt);
+		std::stringstream ss;
 
-		cpu0->writeRegister(0, a1);
+		for (auto i = 0; i < fmt.length(); i++) {
+			char c = fmt[i];
+			if (c == '%') {
+				int len = 2;
+				int d = 0;
+				int decode = 1;
+				int dec = 0;
+				while(decode){
+					char d = fmt[++i];
+					if (d >= '0' && d <= '9') {
+						dec = dec * 10 + (int)(d - '0');
+						continue;
+					}
+					switch (d) {	//b=bstr d=decimal u=unsigned x=hex s=str
+						case '%':
+							ss << '%';
+							decode = 0;
+							break;
+						case 'l':
+							len = 4;
+							break;
+						case 'd':
+							if (len == 2) {
+								d = cpu0->read16(a1);
+								a1 += 2;
+							}
+							else {
+								d = cpu0->read32(a1);
+								a1 += 4;
+							}
+							ss << (int)d;
+							decode = 0;
+							break;
+						case 'c':
+							if (len == 2) {
+								d = cpu0->read16(a1); 
+								a1 += 2;
+							}
+							else {
+								d = cpu0->read32(a1);
+								a1 += 4;
+							}
+							ss << (char)d;
+							decode = 0;
+							break;
+						default:
+							break;
+					}
+				}
+			}
+			else {
+				ss << (char)c;
+			}
+
+		}
+
+		std::string s = ss.str();
+		int n = s.length();
+
+		// todo: check null terminated
+
+		int scratch = cpu0->allocate(n*4+2,0);
+		for (int i = 0; i < n; i++) {
+//			int moveqvald0 = 0xe000 | (255 & s[i]);
+			int moveqvald0 = 0x7000 | (255 & s[i]);
+			cpu0->write16(scratch + i * 4 + 0,moveqvald0);
+			cpu0->write16(scratch + i * 4 + 2,0x4e93);	//jsr(a3)
+		}
+		cpu0->write16(scratch + n * 4, 0x4e75);
+
+		cpu0->push(scratch);
+
+//		machineError = scratch;
+//		cpu0->memoryError = scratch;
+
+// TODO: interpret datastream from the docs, generate instructionlist
+// TODO: return args ptr (a1) at new pos
 	}
 
 // TODO heap symantics
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0332.html
 
 	void freeMem() {
+		int a1 = cpu0->readRegister(9);
+		int d0 = cpu0->readRegister(0);
 		// a1,d0
 	}
 
@@ -1091,9 +1194,8 @@ int main() {
 //	const char* amiga_binary = "../../archive/virus";
 
 	const char* amiga_binary = "../../archive/lha";
-	const char* args = "lha e foo.lha\n";
-
-//	const char* args = "e foo.lha\n";
+//	const char* args = "lha e foo.lha\n";
+	const char* args = "e foo.lha\n";
 
 //	const char* amiga_binary = "../../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../../archive/virus";
@@ -1101,13 +1203,16 @@ int main() {
 // amiga chunks are hunks
 
 //	const char* amiga_binary = "../../archive/genam";
-//	const char* args = 0;
+//	const char* args = "\n";
+
 //	const char* amiga_binary = "../../archive/devpac";
 
 //	const char* amiga_binary = "../../archive/virus";
 //	const char* amiga_binary = "../../archive/game";
 
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
+//	const char* args = "\n";
+
 //	const char* amiga_binary = "../../archive/blitz2/ted";
 
 	loadHunk(amiga_binary,0x2000);
