@@ -346,6 +346,7 @@ unsigned int m68k_get_virq(unsigned int level);
 
 /* Halt the CPU as if you pulsed the HALT pin. */
 void m68k_pulse_halt(void);
+void m68k_clear_halt(void);
 
 
 /* Trigger a bus error exception */

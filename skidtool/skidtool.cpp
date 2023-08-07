@@ -288,6 +288,11 @@ struct acid68000 {
 
 	}
 
+	void resume() {
+		memoryError = 0;
+		m68k_clear_halt();
+	}
+
 	void call(int subroutine) {
 
 	}
@@ -1143,7 +1148,7 @@ void debugRom(int pc24,const char *name,const char *args) {
 				err = acid500.memoryError;
 				status = "memory error";
 				// TODO emit message - who will unhalt the processor
-				acid500.memoryError = 0;
+				acid500.resume();
 			}
 		}
 		pc = acid500.readRegister(16);

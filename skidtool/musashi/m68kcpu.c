@@ -1153,6 +1153,11 @@ void m68k_pulse_halt(void)
 {
 	CPU_STOPPED |= STOP_LEVEL_HALT;
 }
+/* Clear the HALT line on the CPU */
+void m68k_clear_halt(void)
+{
+	CPU_STOPPED &= ~STOP_LEVEL_HALT;
+}
 
 /* Get and set the current CPU context */
 /* This is to allow for multiple CPUs */
