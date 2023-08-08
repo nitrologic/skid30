@@ -301,6 +301,14 @@ struct acid68000 {
 		m68k_set_reg((m68k_register_t)reg, (unsigned int)value);
 	}
 
+	void writeMem(int physicalAddress, void *src, size_t size) {
+		int n = size / 4;
+		uint32_t* l = (uint32_t *)src;
+		for (int i = 0; i < n; i++) {
+			write32(physicalAddress+i*4, l[i]); // good endian?
+		}
+	}
+
 	int readRegister(int reg) {
 		void* context = 0;
 		unsigned int value = m68k_get_reg(context, (m68k_register_t) reg);
@@ -457,6 +465,36 @@ acid68000 acid500;
 const int INPUT_STREAM = -4;
 const int OUTPUT_STREAM = -8;
 
+
+struct DateStamp {
+	LONG days,mins,ticks;
+};
+
+/* Returned by Examine() and ExNext(), must be on a 4 byte boundary */
+
+struct FileInfoBlock {
+	LONG	  fib_DiskKey;
+	LONG	  fib_DirEntryType;  /* Type of Directory. If < 0, then a plain file. If > 0 a directory */
+	char	  fib_FileName[108]; /* Null terminated. Max 30 chars used for now */
+	LONG	  fib_Protection;    /* bit mask of protection, rwxd are 3-0.	   */
+	LONG	  fib_EntryType;
+	LONG	  fib_Size;	     /* Number of bytes in file */
+	LONG	  fib_NumBlocks;     /* Number of blocks in file */
+	struct DateStamp fib_Date;/* Date file last changed */
+	char	  fib_Comment[80];  /* Null terminated comment associated with file */
+
+	/* Note: the following fields are not supported by all filesystems.	*/
+	/* They should be initialized to 0 sending an ACTION_EXAMINE packet.	*/
+	/* When Examine() is called, these are set to 0 for you.		*/
+	/* AllocDosObject() also initializes them to 0.			*/
+	UWORD  fib_OwnerUID;		/* owner's UID */
+	UWORD  fib_OwnerGID;		/* owner's GID */
+
+	char	  fib_Reserved[32];
+}; /* FileInfoBlock */
+
+FileInfoBlock _fib = { 0 };
+
 class aciddos : public IDos {
 public:
 	acid68000* cpu0;
@@ -530,7 +568,11 @@ public:
 	}
 
 	void examine() {
-
+		int d1 = cpu0->readRegister(1);//lock
+		int d2 = cpu0->readRegister(2);//fileinfo
+		cpu0->writeMem(d2, &_fib,sizeof(_fib));
+		int success = 1;
+		cpu0->writeRegister(0, success);
 	}
 	void exnext() {
 
@@ -628,6 +670,7 @@ public:
 				int d = 0;
 				int decode = 1;
 				int dec = 0;
+				std::string s;
 				while(decode){
 					char d = fmt[++i];
 					if (d >= '0' && d <= '9') {
@@ -637,6 +680,11 @@ public:
 					switch (d) {	//b=bstr d=decimal u=unsigned x=hex s=str
 						case '%':
 							ss << '%';
+							decode = 0;
+							break;
+						case 's':
+							if (a1) s = cpu0->fetchString(a1);
+							ss << s;
 							decode = 0;
 							break;
 						case 'l':
