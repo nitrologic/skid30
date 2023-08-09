@@ -495,8 +495,35 @@ struct FileInfoBlock {
 
 FileInfoBlock _fib = { 0 };
 
+#include <sys/stat.h>
+
+struct NativeFile {
+	std::string filePath;
+	int fileHandle;
+	struct stat fileStat;
+	int status;
+	NativeFile(int h, std::string path) {
+		filePath = path;
+		int res = stat(path.c_str(), &fileStat);
+		status = res;
+	}
+	NativeFile() {
+
+	}
+	NativeFile(NativeFile&a) {
+	}
+};
+
+#include <map>
+
+typedef std::map<int, NativeFile> FileMap;
+
 class aciddos : public IDos {
+	int fileCount = 0;
+	FileMap fileMap;
+
 public:
+	
 	acid68000* cpu0;
 	aciddos(acid68000* cpu) {
 		cpu0 = cpu;
@@ -558,7 +585,8 @@ public:
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
 		std::string s = cpu0->fetchString(d1);
-		int lock = -24;
+		int lock = -24-(fileCount++);
+		fileMap[lock]=NativeFile(lock, s);
 		cpu0->writeRegister(0, lock);
 	}
 	void unLock(){
@@ -570,8 +598,15 @@ public:
 	void examine() {
 		int d1 = cpu0->readRegister(1);//lock
 		int d2 = cpu0->readRegister(2);//fileinfo
-		cpu0->writeMem(d2, &_fib,sizeof(_fib));
-		int success = 1;
+		NativeFile& f = fileMap[d1];
+		int success = 0;
+		if (f.status == 0) {
+			int n = f.fileStat.st_size;
+			_fib.fib_Size = n;
+
+			cpu0->writeMem(d2, &_fib, sizeof(_fib));
+			success = 1;
+		}
 		cpu0->writeRegister(0, success);
 	}
 	void exnext() {
@@ -1233,40 +1268,18 @@ int main() {
 	std::cout << "skidtool 0.2" << std::endl;
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
-//	convertFiles();
-
-//	const char* amiga_binary = "../../archive/devpac";
-//	const char* args = "e foo.lha";
-
-// amiga chunks are hunks
-//	convertFiles();
-// amiga chunks are hunks
-
-//	const char* amiga_binary = "../../archive/genam2";
-//	const char* amiga_binary = "../../archive/devpac";
-//	const char* amiga_binary = "../../archive/virus";
-
-	const char* amiga_binary = "../../archive/lha";
-//	const char* args = "lha e foo.lha\n";
-	const char* args = "e foo.lha\n";
-
-//	const char* amiga_binary = "../../archive/oblivion/oblivion";
-//	const char* amiga_binary = "../../archive/virus";
-
-// amiga chunks are hunks
-
-//	const char* amiga_binary = "../../archive/genam";
-//	const char* args = "\n";
-
-//	const char* amiga_binary = "../../archive/devpac";
-
-//	const char* amiga_binary = "../../archive/virus";
+	const char* amiga_binary = "../archive/lha";
+//	const char* args = "e cv.lha\n";
+	const char* args = "e SkidMarksDemo.lha\n";
 //	const char* amiga_binary = "../../archive/game";
+//	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../../archive/oblivion/oblivion";
 
+//	const char* amiga_binary = "../../archive/genam";	//expects a6 loaded??
+//	const char* amiga_binary = "../../archive/devpac";	//cycle 4780
 //	const char* amiga_binary = "../../archive/blitz2/blitz2";
-//	const char* args = "\n";
 
-//	const char* amiga_binary = "../../archive/blitz2/ted";
+//	const char* args = "\n";
 
 	loadHunk(amiga_binary,0x2000);
 
