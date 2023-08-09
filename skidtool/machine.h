@@ -192,6 +192,7 @@ enum enum_dos {
 	DOS_LOCK = -84,
 	DOS_UNLOCK = -90,
 	DOS_EXAMINE = -102,
+	DOS_CREATEDIR = -120,
 	DOS_CURRENTDIR = -126,
 	DOS_ISINTERACTIVE = -216,
 	DOS_GETVAR = -906
@@ -282,7 +283,9 @@ struct amiga16 : memory32{
 			break;
 		case DOS_EXAMINE:
 			dos->examine();
-			return 1;
+			break;
+		case DOS_CREATEDIR:
+			dos->createdir();
 			break;
 		default:
 			machineState = std::to_string(offset) + "(dosBase) un supported";

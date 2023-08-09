@@ -9,6 +9,8 @@
 #include <vector>
 #include <set>
 
+#include <direct.h>
+
 #include "machine.h"
 
 std::vector<logline> machineLog;
@@ -26,12 +28,14 @@ void systemLog(const char* a, std::stringstream &ss) {
 
 std::string rawString(std::vector<u8> raw) {
 	std::stringstream ss;
+	std::stringstream ss2;
 	int n = (int)raw.size();
 	ss << std::setfill('0') << std::setw(2) << std::right << std::hex;
 	for (int i = 0; i < n; i++) {
 		ss << (int)raw[i] << " ";
+		ss2 << (char)raw[i];
 	}
-	return ss.str();
+	return ss.str() + ss2.str();
 }
 
 #include "loadiff.h"
@@ -549,10 +553,22 @@ struct NativeFile {
 	}
 
 	int open(int mode) {
-		if (status) return 0;
+//		if (status) return 0;
+		const char* m;
+		switch (mode) {
+		case 1005://MODE_OLDFILE
+			m = "r+";
+			break;
+		case 1006://MODE_NEWFILE
+			m = "w+";
+			break;
+		case 1004://MODE_READWRITE
+			m = "a+";
+			break;
+		}
 		// TODO: interpret amiga mode to fopen _Mode
-		fileHandle = fopen(filePath.c_str(), "rb");
-		return 1;
+		fileHandle = fopen(filePath.c_str(), m);
+		return fileHandle?1:0;
 	}
 	void close() {
 		fclose(fileHandle);
@@ -606,8 +622,6 @@ public:
 		return;
 	}
 
-	//+		s	"dikSkraMmeDshl.o"	std::string
-
 	void open() {
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//mode
@@ -618,9 +632,10 @@ public:
 		fileMap[lock] = NativeFile(lock, s);
 
 		NativeFile& f = fileMap[lock];
-		f.open(d2);
+		int success=f.open(d2);
 
-		cpu0->writeRegister(0, lock);
+		int result = success ? lock : 0;
+		cpu0->writeRegister(0, result);
 	}
 
 	void close(){
@@ -693,7 +708,8 @@ public:
 		std::string s = cpu0->fetchString(d1);
 		int lock = FILE_STREAM-(fileCount++);
 		fileMap[lock]=NativeFile(lock, s);
-		cpu0->writeRegister(0, lock);
+		int result = (fileMap[lock].status == 0) ? lock : 0;
+		cpu0->writeRegister(0, result);
 	}
 	void unLock(){
 		int d1 = cpu0->readRegister(1);//lock
@@ -727,7 +743,15 @@ public:
 
 	}
 	void createdir() {
-
+		int d1 = cpu0->readRegister(1);	//name
+		std::string s = cpu0->fetchString(d1);
+		int result=mkdir(s.c_str());
+		int lock = 0;
+		if (result == 0) {
+			int lock = FILE_STREAM - (fileCount++);
+			fileMap[lock] = NativeFile(lock, s);
+		}
+		cpu0->writeRegister(0, lock);
 	}
 	void currentdir() {
 		// d1=lock return d0=oldlock
