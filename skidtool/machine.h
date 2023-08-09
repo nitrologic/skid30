@@ -177,12 +177,18 @@ enum enum_exec {
 	RAWDOFMT=-522,
 	OPENLIBRARY=-552,
 
+	COPYMEM=-624
+
 };
 
 enum enum_dos {
+	DOS_OPEN = -30,
+	DOS_CLOSE = -36,
+	DOS_READ = -42,
 	DOS_WRITE = -48,
 	DOS_INPUT = -54,
 	DOS_OUTPUT = -60,
+	DOS_SEEK = -66,
 	DOS_LOCK = -84,
 	DOS_UNLOCK = -90,
 	DOS_EXAMINE = -102,
@@ -237,6 +243,12 @@ struct amiga16 : memory32{
 
 	int callDos(int offset) {
 		switch (offset) {
+		case DOS_OPEN:
+			dos->open();
+			break;
+		case DOS_CLOSE:
+			dos->close();
+			break;
 		case DOS_GETVAR:
 			dos->getvar();
 			break;
@@ -247,6 +259,9 @@ struct amiga16 : memory32{
 		case DOS_CURRENTDIR:
 			dos->currentdir();
 			break;
+		case DOS_READ:
+			dos->read();
+			break;
 		case DOS_WRITE:
 			dos->write();
 			break;
@@ -256,6 +271,9 @@ struct amiga16 : memory32{
 		case DOS_OUTPUT:
 			dos->output();
 			break;
+		case DOS_SEEK:
+			dos->seek();
+			break;
 		case DOS_LOCK:
 			dos->lock();
 			break;
@@ -264,6 +282,7 @@ struct amiga16 : memory32{
 			break;
 		case DOS_EXAMINE:
 			dos->examine();
+			return 1;
 			break;
 		default:
 			machineState = std::to_string(offset) + "(dosBase) un supported";
@@ -319,6 +338,9 @@ struct amiga16 : memory32{
 		case WAITPORT:
 			machineState = "WAITPORT";
 			exec->waitPort();
+			break;
+		case COPYMEM:
+			exec->copyMem();
 			break;
 		default:
 			machineState = std::to_string(offset) + "(execBase) un supported";

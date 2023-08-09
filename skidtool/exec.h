@@ -12,6 +12,7 @@ public:
 	virtual void rawDoFmt() = 0;
 	virtual void putMsg() = 0;
 	virtual void getMsg() = 0;
+	virtual void copyMem() = 0;
 };
 
 class IDos {

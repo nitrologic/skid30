@@ -464,6 +464,7 @@ acid68000 acid500;
 
 const int INPUT_STREAM = -4;
 const int OUTPUT_STREAM = -8;
+const int FILE_STREAM = -24;
 
 
 struct DateStamp {
@@ -496,14 +497,48 @@ struct FileInfoBlock {
 FileInfoBlock _fib = { 0 };
 
 #include <sys/stat.h>
+#include <string.h>
+
+void pokeString(std::string s, char* dest, int maxlen) {
+	int n = s.size();
+	if (n > maxlen) n = maxlen;
+	memcpy(dest, s.data(), n);
+	dest[n] = 0;
+}
+void ekopString(std::string s, char* dest, int maxlen) {
+	int n = s.size();
+	if (n > maxlen) n = maxlen;
+	int i = 0;
+	while (i < n) {
+		dest[(i & -4) | (3 - (i & 3))] = s[i];
+		i++;
+	}
+	dest[(i & -4) | (3 - (i & 3))] = 0;
+}
+
+typedef std::vector<uint8_t> Blob;
 
 struct NativeFile {
 	std::string filePath;
-	int fileHandle;
+	FILE *fileHandle;
 	struct stat fileStat;
 	int status;
+
 	NativeFile(int h, std::string path) {
 		filePath = path;
+		fileHandle = 0;
+		if (path == "stdin") {
+			fileHandle = stdin;
+			fileStat = { 0 };
+			status = 0;
+			return;
+		}
+		if (path == "stdout") {
+			fileHandle = stdout;
+			fileStat = { 0 };
+			status = 0;
+			return;
+		}
 		int res = stat(path.c_str(), &fileStat);
 		status = res;
 	}
@@ -511,6 +546,34 @@ struct NativeFile {
 
 	}
 	NativeFile(NativeFile&a) {
+	}
+
+	int open(int mode) {
+		if (status) return 0;
+		// TODO: interpret amiga mode to fopen _Mode
+		fileHandle = fopen(filePath.c_str(), "rb");
+		return 1;
+	}
+	void close() {
+		fclose(fileHandle);
+		fileHandle = 0;
+	}
+
+	Blob read(int address, int length) {
+		Blob blob;
+		uint8_t c;
+		for (int i = 0; i < length; i++) {
+			int n = fread(&c, 1, 1, fileHandle);
+			blob.push_back(c);
+		}
+		return blob;
+	}
+
+	int seek(int offset, int mode) {
+		long oldpos = ftell(fileHandle);
+		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
+		fseek(fileHandle, offset, origin);
+		return (int)oldpos;
 	}
 };
 
@@ -527,6 +590,9 @@ public:
 	acid68000* cpu0;
 	aciddos(acid68000* cpu) {
 		cpu0 = cpu;
+
+		fileMap[INPUT_STREAM] = NativeFile(INPUT_STREAM, "stdin");
+		fileMap[OUTPUT_STREAM] = NativeFile(OUTPUT_STREAM, "stdout");
 	}
 
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0196.html
@@ -539,11 +605,43 @@ public:
 		cpu0->writeRegister(0,-1); // not defined
 		return;
 	}
+
+	//+		s	"dikSkraMmeDshl.o"	std::string
+
 	void open() {
+		int d1 = cpu0->readRegister(1);//name
+		int d2 = cpu0->readRegister(2);//mode
+
+		std::string s = cpu0->fetchString(d1);
+
+		int lock = FILE_STREAM - (fileCount++)*4;	//document encoding or fix ffs
+		fileMap[lock] = NativeFile(lock, s);
+
+		NativeFile& f = fileMap[lock];
+		f.open(d2);
+
+		cpu0->writeRegister(0, lock);
 	}
+
 	void close(){
+		int d1 = cpu0->readRegister(1); //file
+		NativeFile& f = fileMap[d1];
+		f.close();
+		cpu0->writeRegister(0, 0);	//RETURN_OK
 	}
+
 	void read(){
+		int d1 = cpu0->readRegister(1); //file
+		int d2 = cpu0->readRegister(2); //buffer physicalAddress
+		int d3 = cpu0->readRegister(3); //length
+		NativeFile& f = fileMap[d1];
+		Blob blob = f.read(d2, d3);
+		int n = blob.size();
+		for (int i = 0; i < n; i++) {
+			cpu0->write8(d2+i,blob[i]);
+		}
+		int result = n;			
+		cpu0->writeRegister(0, result);
 	}
 
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node01D1.html
@@ -574,7 +672,15 @@ public:
 	void output(){
 		cpu0->writeRegister(0, OUTPUT_STREAM);
 	}
+
 	void seek(){
+		int d1 = cpu0->readRegister(1);//file
+		int d2 = cpu0->readRegister(2);//position	
+		int d3 = cpu0->readRegister(3);//mode start,current,end  -1,0,1
+
+		NativeFile& f = fileMap[d1];
+		int oldpos=f.seek(d2, d3);
+		cpu0->writeRegister(0, oldpos);
 	}
 	void deletefile(){
 	}
@@ -585,7 +691,7 @@ public:
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
 		std::string s = cpu0->fetchString(d1);
-		int lock = -24-(fileCount++);
+		int lock = FILE_STREAM-(fileCount++);
 		fileMap[lock]=NativeFile(lock, s);
 		cpu0->writeRegister(0, lock);
 	}
@@ -602,7 +708,12 @@ public:
 		int success = 0;
 		if (f.status == 0) {
 			int n = f.fileStat.st_size;
+			int mode = f.fileStat.st_mode & 7;
 			_fib.fib_Size = n;
+			_fib.fib_Protection = mode;
+
+//			pokeString(f.filePath,_fib.fib_FileName,108);
+			ekopString(f.filePath, _fib.fib_FileName, 108);
 
 			cpu0->writeMem(d2, &_fib, sizeof(_fib));
 			success = 1;
@@ -802,6 +913,14 @@ public:
 	void waitPort() {
 		int a0 = cpu0->readRegister(8);
 		cpu0->writeRegister(0, 0);	// no message available
+	}
+	void copyMem() {
+		int a0 = cpu0->readRegister(8); //src
+		int a1 = cpu0->readRegister(9); //dest
+		int d0 = cpu0->readRegister(0); //size
+		for (int i = 0; i < d0; i++) {
+			cpu0->write8(a1 + i, cpu0->read8(a0 + i));
+		}
 	}
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
