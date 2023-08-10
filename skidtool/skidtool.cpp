@@ -9,9 +9,13 @@
 #include <vector>
 #include <set>
 
-#include <direct.h>
-
 #include "machine.h"
+
+#ifdef _WIN32
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
 
 std::vector<logline> machineLog;
 
