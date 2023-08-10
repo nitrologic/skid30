@@ -1,4 +1,4 @@
-acidname: CMake
+name: CMake
 
 on:
   push:
