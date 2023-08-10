@@ -496,8 +496,8 @@ struct FileInfoBlock {
 	/* They should be initialized to 0 sending an ACTION_EXAMINE packet.	*/
 	/* When Examine() is called, these are set to 0 for you.		*/
 	/* AllocDosObject() also initializes them to 0.			*/
-	uint6_t fib_OwnerUID;		/* owner's UID */
-	uint6_t fib_OwnerGID;		/* owner's GID */
+	uint16_t fib_OwnerUID;		/* owner's UID */
+	uint16_t fib_OwnerGID;		/* owner's GID */
 
 	char	  fib_Reserved[32];
 }; /* FileInfoBlock */
@@ -981,7 +981,7 @@ unsigned int mmu_read_byte(unsigned int address){
 unsigned int mmu_read_word(unsigned int address){
 	return acid500.read16(address);
 }
-unsigned int mmu_read_int(unsigned int address){
+unsigned int mmu_read_long(unsigned int address){
 	return acid500.read32(address);
 }
 void mmu_write_byte(unsigned int address, unsigned int value){
