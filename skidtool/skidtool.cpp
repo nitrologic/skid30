@@ -1011,7 +1011,7 @@ unsigned int cpu_read_word_dasm(unsigned int address)
 	return acid500.read16(address | 0x40000000);
 }
 
-unsigned int cpu_read_int_dasm(unsigned int address)
+unsigned int cpu_read_long_dasm(unsigned int address)
 {
 	return acid500.read32(address | 0x40000000);
 }
