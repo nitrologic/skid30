@@ -151,7 +151,7 @@ extern "C" {
 
 struct MemEvent {
 	int time;
-	int address; // bit31 - R=0 W=1 bit 30-29 - byte,short,long 
+	int address; // bit31 - R=0 W=1 bit 30-29 - byte,short,int 
 	int data;
 	int pc;
 
@@ -163,7 +163,7 @@ typedef std::vector<MemEvent> MemEvents;
 //int m68k_execute(int num_cycles)
 
 const char readwrite[] = { 'R','W' };
-const char longshortbyte[] = {'l','s','b','?'};
+const char intshortbyte[] = {'l','s','b','?'};
 
 const int DumpLimit=5000;
 
@@ -227,13 +227,13 @@ struct acid68000 {
 		return p;
 	}
 
-	void log_bus(int readwritefetch, int byteshortlong, int address, int value) {
+	void log_bus(int readwritefetch, int byteshortint, int address, int value) {
 		bool enable=(readwritefetch==1)?(mem->flags&2):(mem->flags&1);
 		int star=(mem->flags&4)?1:0;
 		int err = (address == memoryError)?1:0;
 		if(enable||err){
 			// low 24 bits are physical address
-			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortlong << 27) | (address & 0xffffff);
+			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortint << 27) | (address & 0xffffff);
 			int pc=readRegister(16);
 			memlog.emplace_back(cycle, a32, value, pc);
 //			std::stringstream ss;
@@ -271,7 +271,7 @@ struct acid68000 {
 			writeSpace();
 			writeChar(readwrite[rw]);
 			writeSpace();
-			writeChar(longshortbyte[opsize]);
+			writeChar(intshortbyte[opsize]);
 			writeSpace();
 			writeAddress(a24);
 			writeSpace();
@@ -476,19 +476,19 @@ const int FILE_STREAM = -24;
 
 
 struct DateStamp {
-	LONG days,mins,ticks;
+	int days,mins,ticks;
 };
 
 /* Returned by Examine() and ExNext(), must be on a 4 byte boundary */
 
 struct FileInfoBlock {
-	LONG	  fib_DiskKey;
-	LONG	  fib_DirEntryType;  /* Type of Directory. If < 0, then a plain file. If > 0 a directory */
+	int	  fib_DiskKey;
+	int	  fib_DirEntryType;  /* Type of Directory. If < 0, then a plain file. If > 0 a directory */
 	char	  fib_FileName[108]; /* Null terminated. Max 30 chars used for now */
-	LONG	  fib_Protection;    /* bit mask of protection, rwxd are 3-0.	   */
-	LONG	  fib_EntryType;
-	LONG	  fib_Size;	     /* Number of bytes in file */
-	LONG	  fib_NumBlocks;     /* Number of blocks in file */
+	int	  fib_Protection;    /* bit mask of protection, rwxd are 3-0.	   */
+	int	  fib_EntryType;
+	int	  fib_Size;	     /* Number of bytes in file */
+	int	  fib_NumBlocks;     /* Number of blocks in file */
 	struct DateStamp fib_Date;/* Date file last changed */
 	char	  fib_Comment[80];  /* Null terminated comment associated with file */
 
@@ -496,8 +496,8 @@ struct FileInfoBlock {
 	/* They should be initialized to 0 sending an ACTION_EXAMINE packet.	*/
 	/* When Examine() is called, these are set to 0 for you.		*/
 	/* AllocDosObject() also initializes them to 0.			*/
-	UWORD  fib_OwnerUID;		/* owner's UID */
-	UWORD  fib_OwnerGID;		/* owner's GID */
+	uint6_t fib_OwnerUID;		/* owner's UID */
+	uint6_t fib_OwnerGID;		/* owner's GID */
 
 	char	  fib_Reserved[32];
 }; /* FileInfoBlock */
@@ -592,7 +592,7 @@ struct NativeFile {
 	}
 
 	int seek(int offset, int mode) {
-		long oldpos = ftell(fileHandle);
+		int oldpos = ftell(fileHandle);
 		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
 		fseek(fileHandle, offset, origin);
 		return (int)oldpos;
@@ -977,7 +977,7 @@ unsigned int mmu_read_byte(unsigned int address){
 unsigned int mmu_read_word(unsigned int address){
 	return acid500.read16(address);
 }
-unsigned int mmu_read_long(unsigned int address){
+unsigned int mmu_read_int(unsigned int address){
 	return acid500.read32(address);
 }
 void mmu_write_byte(unsigned int address, unsigned int value){
@@ -986,7 +986,7 @@ void mmu_write_byte(unsigned int address, unsigned int value){
 void mmu_write_word(unsigned int address, unsigned int value){
 	acid500.write16(address,value);
 }
-void mmu_write_long(unsigned int address, unsigned int value){
+void mmu_write_int(unsigned int address, unsigned int value){
 	acid500.write32(address,value);
 }
 
@@ -1007,7 +1007,7 @@ unsigned int cpu_read_word_dasm(unsigned int address)
 	return acid500.read16(address | 0x40000000);
 }
 
-unsigned int cpu_read_long_dasm(unsigned int address)
+unsigned int cpu_read_int_dasm(unsigned int address)
 {
 	return acid500.read32(address | 0x40000000);
 }
