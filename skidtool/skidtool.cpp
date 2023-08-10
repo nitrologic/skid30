@@ -990,7 +990,7 @@ void mmu_write_byte(unsigned int address, unsigned int value){
 void mmu_write_word(unsigned int address, unsigned int value){
 	acid500.write16(address,value);
 }
-void mmu_write_int(unsigned int address, unsigned int value){
+void mmu_write_long(unsigned int address, unsigned int value){
 	acid500.write32(address,value);
 }
 
