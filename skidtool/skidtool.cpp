@@ -751,7 +751,11 @@ public:
 	void createdir() {
 		int d1 = cpu0->readRegister(1);	//name
 		std::string s = cpu0->fetchString(d1);
+#ifdef _WIN32	
 		int result=mkdir(s.c_str());
+#else
+		int result=mkdir(s.c_str(),0777);	//fuck octal
+#endif
 		int lock = 0;
 		if (result == 0) {
 			int lock = FILE_STREAM - (fileCount++);
