@@ -580,6 +580,8 @@ struct NativeFile {
 		uint8_t c;
 		for (int i = 0; i < length; i++) {
 			int n = fread(&c, 1, 1, fileHandle);
+			if (n == 0) 
+				break;
 			blob.push_back(c);
 		}
 		return blob;
