@@ -1150,17 +1150,21 @@ void loadHunk(std::string path,int physical) {
 			std::cout << "HUNK_RELOC32" << std::endl;
 //			std::vector<u32>& hunk = hunks[index];
 			while (true) {
-				u32 number = fd.readBigInt();
-				if (number == 0)
+				u32 count = fd.readBigInt();
+				if (count == 0)
 					break;
 				int current = offsetWords[index];
 				u32 index32 = fd.readBigInt();
 				int target = offsetWords[index32];
 				u32 reloc32 = physical + target * 2;
-				for (int i = 0; i < number; i++) {
+				for (int i = 0; i < count; i++) {
 					u32 offset = fd.readBigInt();
 					u32 word = current + offset / 2;
 					u32 loc32=(chunk[word] << 16) | (chunk[word + 1]&0xfff);
+
+					std::cout << std::hex;
+					std::cout << "@" << (word * 4) << " " << (loc32) << " => " << (loc32 + reloc32) << std::endl;
+
 					loc32 = loc32 + reloc32;
 					chunk[word] = (loc32 >> 16);
 					chunk[word + 1] = loc32 & 0xffff;
@@ -1410,10 +1414,10 @@ int convertFiles() {
 int main() {
 	int rows, cols;
 	screenSize(rows, cols);
-	mouseOn();
+//	mouseOn();
 
 #ifdef WIN32
-	SetConsoleOutputCP(CP_UTF8);
+//	SetConsoleOutputCP(CP_UTF8);
 //	SetConsoleCP(CP_UTF8);
 #endif
 
