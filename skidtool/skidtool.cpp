@@ -579,7 +579,7 @@ struct NativeFile {
 		fileHandle = 0;
 	}
 
-	Blob read(int address, int length) {
+	Blob read(int length) {
 		Blob blob;
 		uint8_t c;
 		for (int i = 0; i < length; i++) {
@@ -657,7 +657,7 @@ public:
 		int d2 = cpu0->readRegister(2); //buffer physicalAddress
 		int d3 = cpu0->readRegister(3); //length
 		NativeFile& f = fileMap[d1];
-		Blob blob = f.read(d2, d3);
+		Blob blob = f.read(d3);
 		int n = blob.size();
 		for (int i = 0; i < n; i++) {
 			cpu0->write8(d2+i,blob[i]);
@@ -724,6 +724,11 @@ public:
 	void dupLock(){
 	}
 
+	void exnext() {
+		int d1 = cpu0->readRegister(1);//lock
+		int d2 = cpu0->readRegister(2);//fileinfo
+	}
+
 	void examine() {
 		int d1 = cpu0->readRegister(1);//lock
 		int d2 = cpu0->readRegister(2);//fileinfo
@@ -742,9 +747,6 @@ public:
 			success = 1;
 		}
 		cpu0->writeRegister(0, success);
-	}
-	void exnext() {
-
 	}
 	void info() {
 
@@ -962,8 +964,9 @@ public:
 		std::string s = cpu0->fetchString(a1);
 	}
 	void fakeTask() {
-		// to trap $ac(task) oblivion is looking for workbench pointers
-		cpu0->writeRegister(0, 0x801000);
+		// to trap $ac(task) oblivion and friends are looking for workbench pointers
+//		cpu0->writeRegister(0, 0x801000);
+		cpu0->writeRegister(0, 0x803000);
 	}
 	void getMsg() {
 		cpu0->writeRegister(0, 0);	// no message available
@@ -1422,18 +1425,20 @@ int main() {
 	std::cout << "skidtool 0.2" << std::endl;
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/devpac";	//cycle 4780
+//	const char* args = "test -b\n";
+
+//	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "e SkidMarksDemo.lha\n";
+//	const char* args = "e SkidMarksDemo.lha\n";
+
 //	const char* amiga_binary = "../../archive/game";
 //	const char* amiga_binary = "../../archive/virus";
-//	const char* amiga_binary = "../../archive/oblivion/oblivion";
 
-//	const char* amiga_binary = "../../archive/genam";	//expects a6 loaded??
-//	const char* amiga_binary = "../../archive/devpac";	//cycle 4780
-//	const char* amiga_binary = "../../archive/blitz2/blitz2";
+	const char* amiga_binary = "../archive/oblivion/oblivion";
 
-//	const char* args = "\n";
+//	const char* amiga_binary = "../archive/blitz2/blitz2";
+	const char* args = "\n";
 
 	loadHunk(amiga_binary,0x2000);
 

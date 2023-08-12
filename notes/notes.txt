@@ -57,6 +57,18 @@ oblivion shareware game
 
 1 hunk [code] with reloc32 0x14dea words
 
+
+After a successful check for command line host the code calls lock with D1 aimed at the aliens folder.
+
+Currently d1 points to memory that has the characters g, quotes, B and then y. 
+
+Yuck. Bad link in reloc32 loadhunk code suspected....
+
+dirname	dc.b	'aliens',0
+
+
+Prequel
+
 The warp.s source code is goldmine of well behaved bare metal behavior.
 
 The Amiga workbench sure did blow chunks.

@@ -202,6 +202,7 @@ enum enum_dos {
 	DOS_LOCK = -84,
 	DOS_UNLOCK = -90,
 	DOS_EXAMINE = -102,
+	DOS_EXNEXT = -108,
 	DOS_CREATEDIR = -120,
 	DOS_CURRENTDIR = -126,
 	DOS_ISINTERACTIVE = -216,
@@ -294,6 +295,9 @@ struct amiga16 : memory32{
 		case DOS_EXAMINE:
 			dos->examine();
 			break;
+		case DOS_EXNEXT:
+			dos->exnext();
+			break;
 		case DOS_CREATEDIR:
 			dos->createdir();
 			break;
@@ -364,9 +368,10 @@ struct amiga16 : memory32{
 		return 0;
 	}
 	virtual int read32(int address) {		
-		// trap $114(execbase) for apps looking for workbench pointers
+		// trap $114(execbase) for apps such as blitz2 looking for workbench pointers
 		if (address == (0x1000 + 0x114) ) {
-			return 0x801000;
+//			return 0x801000;
+			return 0x805000;
 		}
 		return address;
 //		writeData32(address);
