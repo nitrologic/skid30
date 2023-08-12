@@ -1160,7 +1160,7 @@ void loadHunk(std::string path,int physical) {
 				for (int i = 0; i < count; i++) {
 					u32 offset = fd.readBigInt();
 					u32 word = current + offset / 2;
-					u32 loc32=(chunk[word] << 16) | (chunk[word + 1]&0xfff);
+					u32 loc32=(chunk[word] << 16) | (chunk[word + 1]&0xffff);
 
 					std::cout << std::hex;
 					std::cout << "@" << (word * 4) << " " << (loc32) << " => " << (loc32 + reloc32) << std::endl;
@@ -1247,6 +1247,13 @@ void disassemble(int pc,int count)
 const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
 const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
+//const int SP_START = 0x6000;
+//const int ROM_START = 0x8000;
+
+const int SP_START = 0x1400;
+const int ROM_START = 0x2000;
+const int ARGS_START = 0x200;
+
 void debugRom(int pc24,const char *name,const char *args) {
 
 	acidexec *bass=new acidexec(&acid500);
@@ -1262,7 +1269,7 @@ void debugRom(int pc24,const char *name,const char *args) {
 	
 	const char* status = name;
 
-	acid500.qwrite32(0, 0x1400); //sp
+	acid500.qwrite32(0, SP_START); //sp
 //	acid500.qwrite32(4, 0xac1d0000); //exec
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
@@ -1279,10 +1286,12 @@ void debugRom(int pc24,const char *name,const char *args) {
 
 	int arglen = 0;
 	if (args) {
-		arglen=acid500.writes(0x200, args, 0x100);
+		arglen=acid500.writes(ARGS_START, args, 0x100);
 	}
+
+	// command line mode starts D0,A0 with arglen,args
 	acid500.writeRegister(0, arglen);
-	acid500.writeRegister(8, 0x200);
+	acid500.writeRegister(8, ARGS_START);
 
 	// refresh has 20 milli second sanity delay
 	int drawtime=millis();
@@ -1436,15 +1445,15 @@ int main() {
 //	const char* args = "e cv.lha\n";
 //	const char* args = "e SkidMarksDemo.lha\n";
 
-//	const char* amiga_binary = "../../archive/game";
-//	const char* amiga_binary = "../../archive/virus";
+//	const char* amiga_binary = "../archive/game";
+//	const char* amiga_binary = "../archive/virus";
 
 	const char* amiga_binary = "../archive/oblivion/oblivion";
 
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
 	const char* args = "\n";
 
-	loadHunk(amiga_binary,0x2000);
+	loadHunk(amiga_binary,ROM_START);
 
 #define pause
 #ifdef pause
@@ -1453,9 +1462,9 @@ int main() {
 	getchar();
 #endif
 
-	const char* name = "lha @ 0x2000";
+	const char* name = "lha @ ROM_START";
 
-	debugRom(0x2000, name, args);
+	debugRom(ROM_START, name, args);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);

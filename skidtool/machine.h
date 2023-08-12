@@ -371,9 +371,10 @@ struct amiga16 : memory32{
 		// trap $114(execbase) for apps such as blitz2 looking for workbench pointers
 		if (address == (0x1000 + 0x114) ) {
 //			return 0x801000;
-			return 0x805000;
+			return 0x807000;
 		}
-		return address;
+		return 0;	// all memtests from blitz2 check for 0 at the above address
+//		return address;
 //		writeData32(address);
 //		machineError=address;
 //		return shorts[address >> 1];
