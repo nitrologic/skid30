@@ -595,7 +595,8 @@ struct NativeFile {
 		int oldpos = ftell(fileHandle);
 		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
 		fseek(fileHandle, offset, origin);
-		return (int)oldpos;
+		int currentpos = ftell(fileHandle);
+		return (int)currentpos;
 	}
 };
 
@@ -700,8 +701,8 @@ public:
 		int d3 = cpu0->readRegister(3);//mode start,current,end  -1,0,1
 
 		NativeFile& f = fileMap[d1];
-		int oldpos=f.seek(d2, d3);
-		cpu0->writeRegister(0, oldpos);
+		int pos=f.seek(d2, d3);
+		cpu0->writeRegister(0, pos);
 	}
 	void deletefile(){
 	}

@@ -7,11 +7,21 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+class IEvent {
+public:
+	virtual std::string toString() = 0;
+};
+
 // physical address and mask == physical address
 // big endian byte order
 // flag 1 - logs reads
 // flag 2 - logs writes
 // flag 4 - star
+
+struct MachineEvent {
+	int time;
+	std::string detail;
+};
 
 typedef std::string logline;
 
@@ -321,7 +331,9 @@ struct amiga16 : memory32{
 			exec->closeLibrary();
 			break;
 		case SETEXCEPT:
+			break;
 		case SETSIGNAL:
+			break;
 		case SETTASKPRI:
 			break;
 		case FINDTASK:
