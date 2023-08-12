@@ -524,6 +524,8 @@ void ekopString(std::string s, char* dest, int maxlen) {
 	dest[(i & -4) | (3 - (i & 3))] = 0;
 }
 
+#include <filesystem>
+
 typedef std::vector<uint8_t> Blob;
 
 struct NativeFile {
@@ -531,6 +533,7 @@ struct NativeFile {
 	FILE *fileHandle;
 	struct stat fileStat;
 	int status;
+	std::filesystem::directory_iterator fileDir;
 
 	NativeFile(int h, std::string path) {
 		filePath = path;
@@ -554,6 +557,16 @@ struct NativeFile {
 
 	}
 	NativeFile(NativeFile&a) {
+	}
+
+	int nextEntry() {
+		if (status == 0) {
+			fileDir = std::filesystem::directory_iterator(filePath);
+
+
+			return 1;
+		}
+		return 0;
 	}
 
 	int open(int mode) {
@@ -727,6 +740,12 @@ public:
 	void exnext() {
 		int d1 = cpu0->readRegister(1);//lock
 		int d2 = cpu0->readRegister(2);//fileinfo
+		NativeFile& f = fileMap[d1];
+		int success = 0;
+		if (f.nextEntry()) {
+			success = 1;
+		}
+		cpu0->writeRegister(0, success);
 	}
 
 	void examine() {
@@ -739,10 +758,9 @@ public:
 			int mode = f.fileStat.st_mode & 7;
 			_fib.fib_Size = n;
 			_fib.fib_Protection = mode;
-
+			_fib.fib_DirEntryType = (f.fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
 //			pokeString(f.filePath,_fib.fib_FileName,108);
 			ekopString(f.filePath, _fib.fib_FileName, 108);
-
 			cpu0->writeMem(d2, &_fib, sizeof(_fib));
 			success = 1;
 		}
@@ -1148,7 +1166,6 @@ void loadHunk(std::string path,int physical) {
 		case 1004:	//RELOC32
 		{
 			std::cout << "HUNK_RELOC32" << std::endl;
-//			std::vector<u32>& hunk = hunks[index];
 			while (true) {
 				u32 count = fd.readBigInt();
 				if (count == 0)
@@ -1160,11 +1177,7 @@ void loadHunk(std::string path,int physical) {
 				for (int i = 0; i < count; i++) {
 					u32 offset = fd.readBigInt();
 					u32 word = current + offset / 2;
-					u32 loc32=(chunk[word] << 16) | (chunk[word + 1]&0xffff);
-
-					std::cout << std::hex;
-					std::cout << "@" << (word * 4) << " " << (loc32) << " => " << (loc32 + reloc32) << std::endl;
-
+					u32 loc32=(chunk[word] << 16) | (chunk[word + 1] & 0xffff);
 					loc32 = loc32 + reloc32;
 					chunk[word] = (loc32 >> 16);
 					chunk[word + 1] = loc32 & 0xffff;
