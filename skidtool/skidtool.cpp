@@ -529,15 +529,21 @@ void ekopString(std::string s, char* dest, int maxlen) {
 typedef std::vector<uint8_t> Blob;
 
 struct NativeFile {
+	int bcplLock;
 	std::string filePath;
 	FILE *fileHandle;
 	struct stat fileStat;
 	int status;
+	int isTemp;
+	int isDir;
 	std::filesystem::directory_iterator fileDir;
 
 	NativeFile(int h, std::string path) {
+		bcplLock = h;
 		filePath = path;
 		fileHandle = 0;
+		isTemp = 0;
+		isDir = 0;
 		if (path == "stdin") {
 			fileHandle = stdin;
 			fileStat = { 0 };
@@ -550,13 +556,30 @@ struct NativeFile {
 			status = 0;
 			return;
 		}
+		if (path == "T:") {
+			fileStat = { 0 };
+			status = 0;
+			isTemp = 1;
+			isDir = 1;
+			return;
+		}
 		int res = stat(path.c_str(), &fileStat);
 		status = res;
+		if (res == 0) {
+			isDir = ( fileStat.st_mode & _S_IFDIR )? 1:0;
+		}
+
 	}
+
 	NativeFile() {
 
 	}
-	NativeFile(NativeFile&a) {
+
+	NativeFile(NativeFile&f) {
+		filePath = f.filePath;
+		fileHandle = 0;
+		int res = stat(filePath.c_str(), &fileStat);
+		status = res;
 	}
 
 	int nextEntry() {
@@ -569,24 +592,29 @@ struct NativeFile {
 		return 0;
 	}
 
+	void unlock() {
+		status = -1;
+	}
+
 	int open(int mode) {
 //		if (status) return 0;
 		const char* m;
 		switch (mode) {
 		case 1005://MODE_OLDFILE
-			m = "r+";
+			m = "r+b";
 			break;
 		case 1006://MODE_NEWFILE
-			m = "w+";
+			m = "w+b";
 			break;
 		case 1004://MODE_READWRITE
-			m = "a+";
+			m = "a+b";
 			break;
 		}
 		// TODO: interpret amiga mode to fopen _Mode
 		fileHandle = fopen(filePath.c_str(), m);
 		return fileHandle?1:0;
 	}
+
 	void close() {
 		fclose(fileHandle);
 		fileHandle = 0;
@@ -722,6 +750,17 @@ public:
 	void rename(){
 	}
 	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0186.html
+
+	void currentdir() {
+		int d1 = cpu0->readRegister(1);	//name
+		NativeFile& f = fileMap[d1];
+
+		// d1=lock return d0=oldlock
+
+		cpu0->writeRegister(0, 0);
+	}
+
+
 	void lock(){
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
@@ -733,8 +772,20 @@ public:
 	}
 	void unLock(){
 		int d1 = cpu0->readRegister(1);//lock
+		NativeFile& f = fileMap[d1];
+		f.unlock();
 	}
 	void dupLock(){
+		int d1 = cpu0->readRegister(1);//lock
+		if (d1 == 0) {
+			cpu0->writeRegister(0, 0);
+			return;
+		}
+		NativeFile& f = fileMap[d1];
+		int lock = FILE_STREAM - (fileCount++);
+		fileMap[lock] = NativeFile(f);
+		int result = (fileMap[lock].status == 0) ? lock : 0;
+		cpu0->writeRegister(0, result);
 	}
 
 	void exnext() {
@@ -784,10 +835,6 @@ public:
 		}
 		cpu0->writeRegister(0, lock);
 	}
-	void currentdir() {
-		// d1=lock return d0=oldlock
-		cpu0->writeRegister(0, 0);
-	}
 	void ioerr() {
 
 	}
@@ -833,7 +880,7 @@ public:
 		}
 		else {
 			// todo: build a named map
-			r = -1;
+			r = 0;
 		}
 		cpu0->writeRegister(0, r);
 	}
@@ -987,6 +1034,7 @@ public:
 		cpu0->writeRegister(0, 0x803000);
 	}
 	void getMsg() {
+		int a0 = cpu0->readRegister(8);
 		cpu0->writeRegister(0, 0);	// no message available
 	}
 	void putMsg() {
@@ -1260,11 +1308,12 @@ void disassemble(int pc,int count)
 const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
 const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
-//const int SP_START = 0x6000;
-//const int ROM_START = 0x8000;
-
 const int SP_START = 0x1400;
 const int ROM_START = 0x2000;
+
+//const int SP_START = 0x5400;
+//const int ROM_START = 0x6000;
+
 const int ARGS_START = 0x200;
 
 void debugRom(int pc24,const char *name,const char *args) {
@@ -1283,7 +1332,6 @@ void debugRom(int pc24,const char *name,const char *args) {
 	const char* status = name;
 
 	acid500.qwrite32(0, SP_START); //sp
-//	acid500.qwrite32(4, 0xac1d0000); //exec
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
 
@@ -1454,17 +1502,15 @@ int main() {
 //	const char* amiga_binary = "../archive/devpac";	//cycle 4780
 //	const char* args = "test -b\n";
 
-//	const char* amiga_binary = "../archive/lha";
+	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-//	const char* args = "e SkidMarksDemo.lha\n";
+	const char* args = "e SkidMarksDemo.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-
-	const char* amiga_binary = "../archive/oblivion/oblivion";
-
+//	const char* amiga_binary = "../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
-	const char* args = "\n";
+//	const char* args = "\n";
 
 	loadHunk(amiga_binary,ROM_START);
 
@@ -1475,9 +1521,11 @@ int main() {
 	getchar();
 #endif
 
-	const char* name = "lha @ ROM_START";
+//	const char* name = "lha @ ROM_START";
 
-	debugRom(ROM_START, name, args);
+	std::string name = std::string("hunk:")+amiga_binary+" args:"+args;
+
+	debugRom(ROM_START, name.c_str(), args);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);

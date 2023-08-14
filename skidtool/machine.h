@@ -201,6 +201,7 @@ enum enum_dos {
 	DOS_SEEK = -66,
 	DOS_LOCK = -84,
 	DOS_UNLOCK = -90,
+	DOS_DUPLOCK = -96,
 	DOS_EXAMINE = -102,
 	DOS_EXNEXT = -108,
 	DOS_CREATEDIR = -120,
@@ -230,6 +231,11 @@ struct amiga16 : memory32{
 		dos = sub;
 	}
 	// pc has arrived with a negative offset from lib
+	// 
+	// low 12 bits are offset into 6 byte per entry jump table
+	// 
+	// library index is next few bits, currently mapping is
+	// 
 	// execbase ($801000)
 	// dosbase ($802000)
 	// 
@@ -291,6 +297,9 @@ struct amiga16 : memory32{
 			break;
 		case DOS_UNLOCK:
 			dos->unLock();
+			break;
+		case DOS_DUPLOCK:
+			dos->dupLock();
 			break;
 		case DOS_EXAMINE:
 			dos->examine();
@@ -368,13 +377,13 @@ struct amiga16 : memory32{
 		return 0;
 	}
 	virtual int read32(int address) {		
-		// trap $114(execbase) for apps such as blitz2 looking for workbench pointers
+		// trap $114(execbase) for apps such as blitz2 and lha looking for workbench pointers
 		if (address == (0x1000 + 0x114) ) {
 //			return 0x801000;
 			return 0x807000;
 		}
-		return 0;	// all memtests from blitz2 check for 0 at the above address
-//		return address;
+//		return 0;	// all memtests from blitz2 check for 0 at the above address
+		return address;
 //		writeData32(address);
 //		machineError=address;
 //		return shorts[address >> 1];
