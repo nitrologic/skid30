@@ -616,7 +616,12 @@ struct NativeFile {
 	}
 
 	void close() {
-		fclose(fileHandle);
+		if (fileHandle) {
+			fclose(fileHandle);
+		}
+		else {
+			//todo - lha needs help
+		}
 		fileHandle = 0;
 	}
 
@@ -630,6 +635,10 @@ struct NativeFile {
 			blob.push_back(c);
 		}
 		return blob;
+	}
+
+	void write(Blob blob) {
+
 	}
 
 	int seek(int offset, int mode) {
@@ -725,6 +734,7 @@ public:
 			systemLog("write", s);
 		}break;
 		default:
+			systemLog("write","blob");
 			break;
 		}
 		cpu0->writeRegister(0, d3);
