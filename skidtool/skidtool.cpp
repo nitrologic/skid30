@@ -674,6 +674,12 @@ typedef std::map<int, NativeFile> FileMap;
 class aciddos : public IDos {
 	int fileCount = 0;
 	FileMap fileMap;
+	std::stringstream doslog;
+
+	void emit() {
+		systemLog("dos", doslog.str());
+		doslog.clear();
+	}
 
 public:
 	
@@ -712,6 +718,9 @@ public:
 
 		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
+
+		doslog << "open "<<s<<" => "<<result;
+		emit();
 	}
 
 	void close(){
@@ -789,7 +798,6 @@ public:
 		cpu0->writeRegister(0, 0);
 	}
 
-
 	void lock(){
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
@@ -798,6 +806,8 @@ public:
 		fileMap[lock]=NativeFile(lock, s);
 		int result = (fileMap[lock].status == 0) ? lock : 0;
 		cpu0->writeRegister(0, result);
+		doslog << "lock " << s << " => " << result;
+		emit();
 	}
 	void unLock(){
 		int d1 = cpu0->readRegister(1);//lock
