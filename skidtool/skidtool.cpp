@@ -22,17 +22,18 @@ std::vector<logline> machineLog;
 
 // strips \n
 
-void systemLog(const char* tag, std::string s) {
+void systemLog(const char* tag, std::string line) {
 	std::stringstream ss;
-	std::replace(s.begin(), s.end(), '\n', '_');
-	ss << "[" << tag << "] " << s;
-	std::cout << ss.str() << std::endl;
-	machineLog.push_back(ss.str());
+	std::replace(line.begin(), line.end(), '\n', '_');
+	ss << "[" << tag << "] " << line;
+	std::string s = ss.str();
+	std::cout << s << std::endl;
+	machineLog.emplace_back(s);
 }
 
-void systemLog(const char* a, std::stringstream &ss) {
-	systemLog(a, ss.str());
-}
+//void systemLog(const char* a, std::stringstream &ss) {
+//	systemLog(a, ss.str());
+//}
 
 void flushLog() {
 	for (auto it : machineLog) {
@@ -546,7 +547,8 @@ void ekopString(std::string s, char* dest, int maxlen) {
 typedef std::vector<uint8_t> Blob;
 
 struct NativeFile {
-	int bcplLock;
+	std::vector<int> bcplLocks;
+	std::vector<int> bcplUnlocks;
 	std::string filePath;
 	FILE *fileHandle;
 	struct stat fileStat;
@@ -555,8 +557,22 @@ struct NativeFile {
 	int isDir;
 	std::filesystem::directory_iterator fileDir;
 
+	void addLock(int h) {
+		bcplLocks.push_back(h);
+	}
+
+	void newLock(int h, std::string path) {
+		// assert path==filePath
+		bcplLocks.push_back(h);
+		int res = stat(path.c_str(), &fileStat);
+		status = res;
+		if (res == 0) {
+			isDir = (fileStat.st_mode & _S_IFDIR) ? 1 : 0;
+		}
+	}
+
 	NativeFile(int h, std::string path) {
-		bcplLock = h;
+		addLock(h);
 		filePath = path;
 		fileHandle = 0;
 		isTemp = 0;
@@ -609,8 +625,9 @@ struct NativeFile {
 		return 0;
 	}
 
-	void unlock() {
-		status = -1;
+	void unlock(int lock) {
+		bcplUnlocks.emplace_back(lock);
+//		status = -1;
 	}
 
 	int open(int mode) {
@@ -669,15 +686,18 @@ struct NativeFile {
 
 #include <map>
 
-typedef std::map<int, NativeFile> FileMap;
+typedef std::map<std::string, NativeFile> FileMap;	// never removed
+typedef std::map<int, NativeFile*> FileLocks;  // sometimes collected
 
 class aciddos : public IDos {
 	int fileCount = 0;
 	FileMap fileMap;
+	FileLocks fileLocks;
 	std::stringstream doslog;
 
 	void emit() {
-		systemLog("dos", doslog.str());
+		std::string s = doslog.str();
+		systemLog("dos", s);
 		doslog.clear();
 	}
 
@@ -687,8 +707,11 @@ public:
 	aciddos(acid68000* cpu) {
 		cpu0 = cpu;
 
-		fileMap[INPUT_STREAM] = NativeFile(INPUT_STREAM, "stdin");
-		fileMap[OUTPUT_STREAM] = NativeFile(OUTPUT_STREAM, "stdout");
+		fileMap["stdin"] = NativeFile(INPUT_STREAM, "stdin");
+		fileMap["stdout"] = NativeFile(OUTPUT_STREAM, "stdout");
+
+		fileLocks[INPUT_STREAM] = &fileMap["stdin"];
+		fileLocks[OUTPUT_STREAM] = &fileMap["stdout"];
 	}
 
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0196.html
@@ -699,6 +722,8 @@ public:
 		int d4 = cpu0->readRegister(4);
 		std::string name = cpu0->fetchString(d1);
 		cpu0->writeRegister(0,-1); // not defined
+		doslog << "getvar(" << name << ") => " << -1;
+		emit();
 		return;
 	}
 
@@ -710,12 +735,18 @@ public:
 
 		std::replace(s.begin(),s.end(),'/','\\');
 
-		int lock = FILE_STREAM - (fileCount++)*4;	//document encoding or fix ffs
-		fileMap[lock] = NativeFile(lock,s);
+		int lock = nextLock();
 
-		NativeFile& f = fileMap[lock];
-		int success=f.open(d2);
+		if (fileMap.count(s)) {
+			fileMap[s].addLock(lock);
+		}
+		else {
+			fileMap[s] = NativeFile(lock, s);
+		}
+		NativeFile* f = &fileMap[s];
+		fileLocks[lock] = f;
 
+		int success=f->open(d2);
 		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
 
@@ -725,8 +756,8 @@ public:
 
 	void close(){
 		int d1 = cpu0->readRegister(1); //file
-		NativeFile& f = fileMap[d1];
-		f.close();
+		NativeFile* f = fileLocks[d1];
+		f->close();
 		cpu0->writeRegister(0, 0);	//RETURN_OK
 	}
 
@@ -734,8 +765,8 @@ public:
 		int d1 = cpu0->readRegister(1); //file
 		int d2 = cpu0->readRegister(2); //buffer physicalAddress
 		int d3 = cpu0->readRegister(3); //length
-		NativeFile& f = fileMap[d1];
-		Blob blob = f.read(d3);
+		NativeFile* f = fileLocks[d1];
+		Blob blob = f->read(d3);
 		int n = blob.size();
 		for (int i = 0; i < n; i++) {
 			cpu0->write8(d2+i,blob[i]);
@@ -779,8 +810,8 @@ public:
 		int d2 = cpu0->readRegister(2);//position	
 		int d3 = cpu0->readRegister(3);//mode start,current,end  -1,0,1
 
-		NativeFile& f = fileMap[d1];
-		int pos=f.seek(d2, d3);
+		NativeFile* f = fileLocks[d1];
+		int pos=f->seek(d2, d3);
 		cpu0->writeRegister(0, pos);
 	}
 	void deletefile(){
@@ -791,10 +822,8 @@ public:
 
 	void currentdir() {
 		int d1 = cpu0->readRegister(1);	//name
-		NativeFile& f = fileMap[d1];
-
+		NativeFile* f = fileLocks[d1];
 		// d1=lock return d0=oldlock
-
 		cpu0->writeRegister(0, 0);
 	}
 
@@ -802,17 +831,27 @@ public:
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
 		std::string s = cpu0->fetchString(d1);
-		int lock = FILE_STREAM-(fileCount++);
-		fileMap[lock]=NativeFile(lock, s);
-		int result = (fileMap[lock].status == 0) ? lock : 0;
+		int lock = nextLock();
+		if (fileMap.count(s)) {
+			fileMap[s].addLock(lock);
+		}
+		else {
+			fileMap[s] = NativeFile(lock, s);
+		}
+		NativeFile* file = &fileMap[s];
+		fileLocks[lock] = file;
+			
+		int result = (file->status == 0) ? lock : 0;
 		cpu0->writeRegister(0, result);
 		doslog << "lock " << s << " => " << result;
 		emit();
 	}
 	void unLock(){
 		int d1 = cpu0->readRegister(1);//lock
-		NativeFile& f = fileMap[d1];
-		f.unlock();
+		NativeFile* f = fileLocks[d1];
+		f->unlock(d1);
+		doslog << "unlock " << d1;
+		emit();
 	}
 	void dupLock(){
 		int d1 = cpu0->readRegister(1);//lock
@@ -820,19 +859,22 @@ public:
 			cpu0->writeRegister(0, 0);
 			return;
 		}
-		NativeFile& f = fileMap[d1];
+		NativeFile* f = fileLocks[d1];
 		int lock = FILE_STREAM - (fileCount++);
-		fileMap[lock] = NativeFile(f);
-		int result = (fileMap[lock].status == 0) ? lock : 0;
+		f->addLock(lock);
+		fileLocks[lock] = f;	// count first??
+
+//		NativeFile(f);
+		int result = (f->status == 0) ? lock : 0;
 		cpu0->writeRegister(0, result);
 	}
 
 	void exnext() {
 		int d1 = cpu0->readRegister(1);//lock
 		int d2 = cpu0->readRegister(2);//fileinfo
-		NativeFile& f = fileMap[d1];
+		NativeFile* f = fileLocks[d1];
 		int success = 0;
-		if (f.nextEntry()) {
+		if (f->nextEntry()) {
 			success = 1;
 		}
 		cpu0->writeRegister(0, success);
@@ -841,16 +883,16 @@ public:
 	void examine() {
 		int d1 = cpu0->readRegister(1);//lock
 		int d2 = cpu0->readRegister(2);//fileinfo
-		NativeFile& f = fileMap[d1];
+		NativeFile* f = fileLocks[d1];
 		int success = 0;
-		if (f.status == 0) {
-			int n = f.fileStat.st_size;
-			int mode = f.fileStat.st_mode & 7;
+		if (f->status == 0) {
+			int n = f->fileStat.st_size;
+			int mode = f->fileStat.st_mode & 7;
 			_fib.fib_Size = n;
 			_fib.fib_Protection = mode;
-			_fib.fib_DirEntryType = (f.fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
+			_fib.fib_DirEntryType = (f->fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
 //			pokeString(f.filePath,_fib.fib_FileName,108);
-			ekopString(f.filePath, _fib.fib_FileName, 108);
+			ekopString(f->filePath, _fib.fib_FileName, 108);
 			cpu0->writeMem(d2, &_fib, sizeof(_fib));
 			success = 1;
 		}
@@ -858,6 +900,9 @@ public:
 	}
 	void info() {
 
+	}
+	int nextLock() {
+		return FILE_STREAM - (fileCount++) * 4;
 	}
 	void createdir() {
 		int d1 = cpu0->readRegister(1);	//name
@@ -869,8 +914,15 @@ public:
 #endif
 		int lock = 0;
 		if (result == 0) {
-			int lock = FILE_STREAM - (fileCount++);
-			fileMap[lock] = NativeFile(lock, s);
+			lock = nextLock();
+			if (fileMap.count(s)) {
+				fileMap[s].newLock(lock, s);
+			}
+			else {
+				fileMap[s] = NativeFile(lock, s);
+			}
+			NativeFile* f = &fileMap[s];
+			fileLocks[lock] = f;
 		}
 		cpu0->writeRegister(0, lock);
 	}
@@ -1545,8 +1597,8 @@ int main() {
 
 	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-//	const char* args = "e SkidMarksDemo.lha\n";
-	const char* args = "l SkidMarksDemo.lha\n";
+	const char* args = "e SkidMarksDemo.lha\n";
+//	const char* args = "l SkidMarksDemo.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
