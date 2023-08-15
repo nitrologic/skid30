@@ -646,6 +646,7 @@ struct NativeFile {
 		}
 		// TODO: interpret amiga mode to fopen _Mode
 		fileHandle = fopen(filePath.c_str(), m);
+		status = (fileHandle) ? 0 : -1;
 		return fileHandle?1:0;
 	}
 
@@ -738,7 +739,7 @@ public:
 		int lock = nextLock();
 
 		if (fileMap.count(s)) {
-			fileMap[s].addLock(lock);
+			fileMap[s].newLock(lock,s);
 		}
 		else {
 			fileMap[s] = NativeFile(lock, s);
