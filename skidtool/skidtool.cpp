@@ -8,6 +8,7 @@
 #include <sstream>
 #include <vector>
 #include <set>
+#include <algorithm>
 
 #include "machine.h"
 
@@ -19,27 +20,42 @@
 
 std::vector<logline> machineLog;
 
+// strips \n
+
 void systemLog(const char* tag, std::string s) {
-	std::stringstream log;
-	log << "[" << tag << "] " << s;
-	std::cout << log.str() << std::endl;
-	machineLog.push_back(log.str());
+	std::stringstream ss;
+	std::replace(s.begin(), s.end(), '\n', '_');
+	ss << "[" << tag << "] " << s;
+	std::cout << ss.str() << std::endl;
+	machineLog.push_back(ss.str());
 }
 
 void systemLog(const char* a, std::stringstream &ss) {
 	systemLog(a, ss.str());
 }
 
-std::string rawString(std::vector<u8> raw) {
+void flushLog() {
+	for (auto it : machineLog) {
+		std::cout << it << std::endl;
+	}
+	machineLog.clear();
+
+}
+
+std::string rawString(std::vector<u8> raw,bool addhex) {
 	std::stringstream ss;
 	std::stringstream ss2;
 	int n = (int)raw.size();
-	ss << std::setfill('0') << std::setw(2) << std::right << std::hex;
+	ss << std::setfill('0')  << std::right << std::hex;
 	for (int i = 0; i < n; i++) {
-		ss << (int)raw[i] << " ";
+		ss << std::setw(2) << (int)raw[i] << " ";
 		ss2 << (char)raw[i];
 	}
-	return ss.str() + ss2.str();
+	if (addhex) {
+		ss2 << std::endl << ss.str();// std::endl + ss2.str();
+	}
+	return ss2.str();
+		
 }
 
 #include "loadiff.h"
@@ -395,6 +411,7 @@ struct acid68000 {
 			m68k_pulse_halt();
 			// TODO - emit message
 			machineError = 0;
+			flushLog();
 		}
 
 		if (qbits == 0) {
@@ -604,7 +621,7 @@ struct NativeFile {
 			m = "r+b";
 			break;
 		case 1006://MODE_NEWFILE
-			m = "w+b";
+			m = "wb";	// was w+b
 			break;
 		case 1004://MODE_READWRITE
 			m = "a+b";
@@ -685,8 +702,10 @@ public:
 
 		std::string s = cpu0->fetchString(d1);
 
+		std::replace(s.begin(),s.end(),'/','\\');
+
 		int lock = FILE_STREAM - (fileCount++)*4;	//document encoding or fix ffs
-		fileMap[lock] = NativeFile(lock, s);
+		fileMap[lock] = NativeFile(lock,s);
 
 		NativeFile& f = fileMap[lock];
 		int success=f.open(d2);
@@ -730,7 +749,7 @@ public:
 // file,buffer,length
 		switch (d1) {
 		case OUTPUT_STREAM: {
-			std::string s = rawString(raw);
+			std::string s = rawString(raw,false);
 			systemLog("write", s);
 		}break;
 		default:
@@ -918,7 +937,7 @@ public:
 		int a3 = cpu0->readRegister(11);//putchdata
 
 		std::string fmt = cpu0->fetchString(a0);
-		systemLog("fmt", fmt);
+//		systemLog("fmt", fmt);
 		std::stringstream ss;
 
 		for (auto i = 0; i < fmt.length(); i++) {
@@ -1345,6 +1364,8 @@ void debugRom(int pc24,const char *name,const char *args) {
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
 
+	acid500.qwrite32(0x1400, 0x807000); //pc
+
 //	acid500.writeRegister(16, pc24);
 
 	int pc = pc24;//acid500.readRegister(16);
@@ -1514,7 +1535,8 @@ int main() {
 
 	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "e SkidMarksDemo.lha\n";
+//	const char* args = "e SkidMarksDemo.lha\n";
+	const char* args = "l SkidMarksDemo.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
