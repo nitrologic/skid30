@@ -40,7 +40,6 @@ void flushLog() {
 		std::cout << it << std::endl;
 	}
 	machineLog.clear();
-
 }
 
 std::string rawString(std::vector<u8> raw,bool addhex) {
@@ -555,7 +554,7 @@ struct NativeFile {
 	int status;
 	int isTemp;
 	int isDir;
-	std::filesystem::directory_iterator fileDir;
+	std::filesystem::directory_iterator fileIterator;
 
 	void addLock(int h) {
 		bcplLocks.push_back(h);
@@ -617,9 +616,19 @@ struct NativeFile {
 
 	int nextEntry() {
 		if (status == 0) {
-			fileDir = std::filesystem::directory_iterator(filePath);
-
-
+			fileIterator = std::filesystem::directory_iterator(filePath);
+			status = 1;
+		}
+		if (status == 2) {
+			fileIterator++;
+			status = 1;
+		}
+		if(status==1){
+			if (fileIterator._At_end()) {
+				status = 3;
+				return 0;
+			}
+			status = 2;
 			return 1;
 		}
 		return 0;
@@ -733,7 +742,6 @@ public:
 		int d2 = cpu0->readRegister(2);//mode
 
 		std::string s = cpu0->fetchString(d1);
-
 		std::replace(s.begin(),s.end(),'/','\\');
 
 		int lock = nextLock();
@@ -766,13 +774,16 @@ public:
 		int d1 = cpu0->readRegister(1); //file
 		int d2 = cpu0->readRegister(2); //buffer physicalAddress
 		int d3 = cpu0->readRegister(3); //length
-		NativeFile* f = fileLocks[d1];
-		Blob blob = f->read(d3);
-		int n = blob.size();
-		for (int i = 0; i < n; i++) {
-			cpu0->write8(d2+i,blob[i]);
+		int result = 0;
+		if (d1) {
+			NativeFile* f = fileLocks[d1];
+			Blob blob = f->read(d3);
+			int n = blob.size();
+			for (int i = 0; i < n; i++) {
+				cpu0->write8(d2 + i, blob[i]);
+			}
+			result = n;
 		}
-		int result = n;			
 		cpu0->writeRegister(0, result);
 	}
 
@@ -832,6 +843,7 @@ public:
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
 		std::string s = cpu0->fetchString(d1);
+		std::replace(s.begin(),s.end(),'/','\\');
 		int lock = nextLock();
 		if (fileMap.count(s)) {
 			fileMap[s].addLock(lock);
@@ -841,10 +853,11 @@ public:
 		}
 		NativeFile* file = &fileMap[s];
 		fileLocks[lock] = file;
-			
-		int result = (file->status == 0) ? lock : 0;
+		// yeh nah what?
+		int success=(file->status == 0) || (d2 == -1);
+		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
-		doslog << "lock " << s << " => " << result;
+		doslog << "lock " << s << "," << d2 << " => " << result;
 		emit();
 	}
 	void unLock(){
@@ -861,7 +874,7 @@ public:
 			return;
 		}
 		NativeFile* f = fileLocks[d1];
-		int lock = FILE_STREAM - (fileCount++);
+		int lock = nextLock();
 		f->addLock(lock);
 		fileLocks[lock] = f;	// count first??
 
@@ -876,9 +889,27 @@ public:
 		NativeFile* f = fileLocks[d1];
 		int success = 0;
 		if (f->nextEntry()) {
+
+			const auto& entry = *(f->fileIterator);
+			std::filesystem::path p = entry.path();
+			std::string& s = p.filename().string();
+			//			std::filesystem::directory_entry &entry = fileIterator;
+			uint64_t size = entry.file_size();
+			bool isdir = entry.is_directory();
+
+			_fib.fib_Size = (int)size;
+			_fib.fib_Protection = 0x0f;	//rwxd
+			_fib.fib_DirEntryType = isdir ? 1 : -1;
+			//			pokeString(f.filePath,_fib.fib_FileName,108);
+//			ekopString(f->filePath, _fib.fib_FileName, 108);
+			ekopString(s, _fib.fib_FileName, 108);
+			cpu0->writeMem(d2, &_fib, sizeof(_fib));
+
 			success = 1;
 		}
 		cpu0->writeRegister(0, success);
+		doslog << "exnext(" << d1 << "," << d2 << ")=>" << success;
+		emit();
 	}
 
 	void examine() {
@@ -890,7 +921,7 @@ public:
 			int n = f->fileStat.st_size;
 			int mode = f->fileStat.st_mode & 7;
 			_fib.fib_Size = n;
-			_fib.fib_Protection = mode;
+			_fib.fib_Protection = 0x0f;
 			_fib.fib_DirEntryType = (f->fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
 //			pokeString(f.filePath,_fib.fib_FileName,108);
 			ekopString(f->filePath, _fib.fib_FileName, 108);
@@ -898,6 +929,8 @@ public:
 			success = 1;
 		}
 		cpu0->writeRegister(0, success);
+		doslog<<"examine("<<d1<<")";
+		emit();
 	}
 	void info() {
 
@@ -953,6 +986,13 @@ public:
 class acidexec : public IExec {
 public:
 	acid68000* cpu0;
+	std::stringstream execlog;
+
+	void emit() {
+		std::string s = execlog.str();
+		systemLog("exec", s);
+		execlog.clear();
+	}
 
 	acidexec(acid68000* cpu) {
 		cpu0 = cpu;
@@ -1115,6 +1155,8 @@ public:
 		for (int i = 0; i < d0; i++) {
 			cpu0->write8(a1 + i, cpu0->read8(a0 + i));
 		}
+		execlog << "copyMem";
+		emit();
 	}
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
@@ -1598,8 +1640,8 @@ int main() {
 
 	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "e SkidMarksDemo.lha\n";
-//	const char* args = "l SkidMarksDemo.lha\n";
+//	const char* args = "e SkidMarksDemo.lha\n";
+	const char* args = "l SkidMarksDemo.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
@@ -1609,7 +1651,7 @@ int main() {
 
 	loadHunk(amiga_binary,ROM_START);
 
-#define pause
+//#define pause
 #ifdef pause
 	writeString("enter to continue");
 	writeEOL();
