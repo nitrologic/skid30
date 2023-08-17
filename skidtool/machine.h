@@ -7,6 +7,20 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+typedef std::string logline;
+
+extern std::vector<logline> machineLog;
+
+void systemLog(const char* tag, std::string line) {
+	std::stringstream ss;
+	std::replace(line.begin(), line.end(), '\n', '_');
+	ss << "[" << tag << "] " << line;
+	std::string s = ss.str();
+	std::cout << s << std::endl;
+	machineLog.emplace_back(s);
+}
+
+
 class IEvent {
 public:
 	virtual std::string toString() = 0;
@@ -22,8 +36,6 @@ struct MachineEvent {
 	int time;
 	std::string detail;
 };
-
-typedef std::string logline;
 
 extern std::vector<logline> machineLog;
 
@@ -191,6 +203,10 @@ enum enum_exec {
 
 };
 
+enum enum_intuition {
+	INTUITION_CLOSEWORKBENCH = -78,
+};
+
 enum enum_dos {
 	DOS_OPEN = -30,
 	DOS_CLOSE = -36,
@@ -218,11 +234,16 @@ struct amiga16 : memory32{
 	std::vector<u16> shorts;	// deprecate me
 	IExec* exec;
 	IDos* dos;
+	IBench* bench;
 
 	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags=0;
 		dos = NULL;
 		exec = NULL;
+		bench = NULL;
+	}
+	void setBench(IBench* work) {
+		bench = work;
 	}
 	void setExec(IExec *bass) {
 		exec = bass;
@@ -255,6 +276,21 @@ struct amiga16 : memory32{
 		case 2:
 			machineError = callDos(offset);
 			break;
+		case 3:
+			machineError = callIntuition(offset);
+			break;
+		}
+		return 0x4e75;
+	}
+
+	int callIntuition(int offset) {
+		switch (offset) {
+		case INTUITION_CLOSEWORKBENCH:
+			bench->closeWorkBench();
+			break;
+		default:
+			machineState = std::to_string(offset) + "(intuitionBase) un supported";
+			return offset;
 		}
 		return 0x4e75;
 	}
@@ -339,16 +375,19 @@ struct amiga16 : memory32{
 		case OLDOPENLIBRARY: 
 		case OPENLIBRARY:
 			exec->openLibrary();
-//			machineError = address;
+			if (machineError) return 1;
 			break;
 		case CLOSELIBRARY:
 			exec->closeLibrary();
 			break;
 		case SETEXCEPT:
+			systemLog("exec", "setExcept");
 			break;
 		case SETSIGNAL:
+			exec->setSignal();
 			break;
 		case SETTASKPRI:
+			systemLog("exec", "setTaskPri");
 			break;
 		case FINDTASK:
 			exec->fakeTask();

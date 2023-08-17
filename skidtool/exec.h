@@ -13,8 +13,8 @@ public:
 	virtual void putMsg() = 0;
 	virtual void getMsg() = 0;
 	virtual void copyMem() = 0;
+	virtual void setSignal() = 0;
 };
-
 class IDos {
 public:
 	virtual void open()=0;
@@ -39,4 +39,8 @@ public:
 	virtual void exit() = 0;
 	virtual void isinteractive() = 0;
 	virtual void getvar() = 0;
+};
+class IBench {
+public:
+	virtual void closeWorkBench() = 0;
 };

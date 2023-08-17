@@ -18,18 +18,11 @@
 #include <unistd.h>
 #endif
 
+const int ASM_LINES = 32;
+
 std::vector<logline> machineLog;
 
 // strips \n
-
-void systemLog(const char* tag, std::string line) {
-	std::stringstream ss;
-	std::replace(line.begin(), line.end(), '\n', '_');
-	ss << "[" << tag << "] " << line;
-	std::string s = ss.str();
-	std::cout << s << std::endl;
-	machineLog.emplace_back(s);
-}
 
 //void systemLog(const char* a, std::stringstream &ss) {
 //	systemLog(a, ss.str());
@@ -694,6 +687,18 @@ struct NativeFile {
 	}
 };
 
+class acidbench : public IBench {
+	acid68000* cpu0;
+public:
+	acidbench(acid68000* cpu) {
+		cpu0 = cpu;
+	}
+	void closeWorkBench() {
+		cpu0->writeRegister(0, 1); // return true for success
+	}
+};
+
+
 #include <map>
 
 typedef std::map<std::string, NativeFile> FileMap;	// never removed
@@ -836,6 +841,7 @@ public:
 		int d1 = cpu0->readRegister(1);	//name
 		NativeFile* f = fileLocks[d1];
 		// d1=lock return d0=oldlock
+		// all paths lead to root - wtf LhA???
 		cpu0->writeRegister(0, 0);
 	}
 
@@ -959,6 +965,7 @@ public:
 			fileLocks[lock] = f;
 		}
 		cpu0->writeRegister(0, lock);
+		doslog << "createDir(" << s << ")=>" << lock; emit();
 	}
 	void ioerr() {
 
@@ -1008,13 +1015,23 @@ public:
 		std::string s = cpu0->fetchString(a1);
 		int r = 0;
 		if (s == "dos.library") {
-			r=0x802000;
+			r = 0x802000;
+		}
+		else if (s=="intuition.library"){
+			r = 0x803000;			
 		}
 		else {
 			// todo: build a named map
 			r = 0;
+			machineError = -1;
 		}
 		cpu0->writeRegister(0, r);
+	}
+
+	void setSignal() {
+		int d0 = cpu0->readRegister(8);//newbits
+		int d1 = cpu0->readRegister(9);//mask
+		cpu0->writeRegister(0, 0);
 	}
 	void closeLibrary() {
 	}
@@ -1142,6 +1159,7 @@ public:
 		int d1 = cpu0->readRegister(1);
 		int r = cpu0->allocate(d0, d1);
 		cpu0->writeRegister(0, r);
+		execlog << "allocMem(" << d0 << ")"; emit();
 	}
 
 	void waitPort() {
@@ -1155,8 +1173,7 @@ public:
 		for (int i = 0; i < d0; i++) {
 			cpu0->write8(a1 + i, cpu0->read8(a0 + i));
 		}
-		execlog << "copyMem";
-		emit();
+		execlog << "copyMem";emit();
 	}
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
@@ -1166,12 +1183,14 @@ public:
 		// to trap $ac(task) oblivion and friends are looking for workbench pointers
 //		cpu0->writeRegister(0, 0x801000);
 		cpu0->writeRegister(0, 0x803000);
+		execlog << "findTask"; emit();
 	}
 	void getMsg() {
 		int a0 = cpu0->readRegister(8);
 		cpu0->writeRegister(0, 0);	// no message available
 	}
 	void putMsg() {
+		execlog << "putMsg"; emit();
 	}
 };
 
@@ -1450,13 +1469,15 @@ const int ROM_START = 0x2000;
 
 const int ARGS_START = 0x200;
 
-void debugRom(int pc24,const char *name,const char *args) {
+void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 
 	acidexec *bass=new acidexec(&acid500);
 	aciddos* sub = new aciddos(&acid500);
+	acidbench* bench = new acidbench(&acid500);
 	
 	mig.setExec(bass);
 	mig.setDos(sub);
+	mig.setBench(bench);
 	
 	int key = 0;
 	int run = 0;
@@ -1470,6 +1491,11 @@ void debugRom(int pc24,const char *name,const char *args) {
 	acid500.qwrite32(8, pc24); //pc
 
 	acid500.qwrite32(0x1400, 0x807000); //pc
+
+	while (*nops) {
+		int a = *nops++;
+		acid500.qwrite16(a, 0x4e75); //pc
+	}
 
 //	acid500.writeRegister(16, pc24);
 
@@ -1536,7 +1562,7 @@ void debugRom(int pc24,const char *name,const char *args) {
 			}
 			writeEOL();
 
-			disassemble(pc, 6);
+			disassemble(pc, ASM_LINES);
 
 			acid500.dumplog(5);
 
@@ -1638,16 +1664,19 @@ int main() {
 //	const char* amiga_binary = "../archive/devpac";	//cycle 4780
 //	const char* args = "test -b\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
 //	const char* args = "e SkidMarksDemo.lha\n";
-	const char* args = "l SkidMarksDemo.lha\n";
+//	const char* args = "l SkidMarksDemo.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-//	const char* amiga_binary = "../archive/oblivion/oblivion";
+	const char* amiga_binary = "../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
-//	const char* args = "\n";
+	const char* args = "\n";
+
+//	const int nops[] = {0x63d6, 0};
+	const int nops[] = { 0 };
 
 	loadHunk(amiga_binary,ROM_START);
 
@@ -1662,7 +1691,7 @@ int main() {
 
 	std::string name = std::string("hunk:")+amiga_binary+" args:"+args;
 
-	debugRom(ROM_START, name.c_str(), args);
+	debugRom(ROM_START, name.c_str(), args, nops);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
