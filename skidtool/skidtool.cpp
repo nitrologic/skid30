@@ -711,9 +711,9 @@ class aciddos : public IDos {
 	std::stringstream doslog;
 
 	void emit() {
-		std::string s = doslog.str();
+		std::string s = std::string(doslog.str());
 		systemLog("dos", s);
-		doslog.clear();
+		doslog.str(std::string());
 	}
 
 public:
@@ -996,9 +996,10 @@ public:
 	std::stringstream execlog;
 
 	void emit() {
+//		std::string s = std::string(execlog.str());
 		std::string s = execlog.str();
 		systemLog("exec", s);
-		execlog.clear();
+		execlog.str(std::string());
 	}
 
 	acidexec(acid68000* cpu) {
@@ -1664,16 +1665,16 @@ int main() {
 //	const char* amiga_binary = "../archive/devpac";	//cycle 4780
 //	const char* args = "test -b\n";
 
-//	const char* amiga_binary = "../archive/lha";
+	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-//	const char* args = "e SkidMarksDemo.lha\n";
+	const char* args = "e SkidMarksDemo.lha\n";
 //	const char* args = "l SkidMarksDemo.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-	const char* amiga_binary = "../archive/oblivion/oblivion";
+//	const char* amiga_binary = "../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
-	const char* args = "\n";
+//	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };
