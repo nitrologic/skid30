@@ -403,6 +403,7 @@ struct acid68000 {
 			memoryError = machineError;
 			m68k_pulse_halt();
 			// TODO - emit message
+			systemLog("acid",machineState + std::to_string(machineError));
 			machineError = 0;
 			flushLog();
 		}
@@ -700,6 +701,45 @@ public:
 	}
 };
 
+class acidnonvolatile : public INonVolatile {
+	acid68000* cpu0;
+public:
+	acidnonvolatile(acid68000* cpu) {
+		cpu0 = cpu;
+	}
+	void alloc() {
+
+	}
+
+};
+
+
+class acidgraphics : public IGraphics {
+	std::stringstream gfxlog;
+	acid68000* cpu0;
+
+	void emit() {
+		std::string s = gfxlog.str();
+		systemLog("gfx", s);
+		gfxlog.str(std::string());
+	}
+
+public:
+	acidgraphics(acid68000* cpu) {
+		cpu0 = cpu;
+	}
+	void textLength() {
+
+	}
+	void loadView() {
+		int a1 = cpu0->readRegister(9);
+		gfxlog << "loadview " << a1; emit();
+	}
+	void waitTOF() {
+		gfxlog << "waitTOF "; emit();
+	}
+
+};
 
 #include <map>
 
@@ -1052,12 +1092,21 @@ public:
 		else if (s=="intuition.library"){
 			r = 0x803000;			
 		}
+		else if (s == "nonvolatile.library") {
+			r = 0x804000;
+		}
+		else if (s == "graphics.library") {
+			r = 0x805000;
+		}
 		else {
 			// todo: build a named map
 			r = 0;
 			machineError = -1;
 		}
 		cpu0->writeRegister(0, r);
+		
+		execlog << "openlibrary " << s << "," << r;
+		emit();
 	}
 
 	void setSignal() {
@@ -1083,6 +1132,25 @@ public:
 	// jsr (a2)
 	// 
 	// rts
+
+	void doIO() {
+		int a1 = cpu0->readRegister(9);//ioreq
+		int r = 0;
+		cpu0->writeRegister(0, r);
+		execlog << "doIO " << a1 << " <= " << r; emit();
+	}
+	void openDevice() {
+		int a0 = cpu0->readRegister(8);//name
+		int d0 = cpu0->readRegister(0);//unit
+		int a1 = cpu0->readRegister(9);//ioreq
+		int d1 = cpu0->readRegister(1);//flags
+		std::string devname = cpu0->fetchString(a0);
+
+		int r = -1;
+
+		cpu0->writeRegister(0, r);
+		execlog << "openDevice " << devname << "," << d0 << "," << a1 << "," << d1 << " <= " << r; emit();
+	}
 
 	void rawDoFmt() {
 		int a0 = cpu0->readRegister(8);//fmt
@@ -1509,10 +1577,14 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 	acidexec *bass=new acidexec(&acid500);
 	aciddos* sub = new aciddos(&acid500);
 	acidbench* bench = new acidbench(&acid500);
+	acidgraphics* gfx = new acidgraphics(&acid500);
+	acidnonvolatile* nvram = new acidnonvolatile(&acid500);
 	
 	mig.setExec(bass);
 	mig.setDos(sub);
 	mig.setBench(bench);
+	mig.setNonVolatile(nvram);
+	mig.setGraphics(gfx);
 	
 	int key = 0;
 	int run = 0;

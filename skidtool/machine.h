@@ -201,6 +201,11 @@ enum enum_exec {
 
 	OLDOPENLIBRARY=-408,
 	CLOSELIBRARY=-414,
+
+	OPENDEVICE=-444,
+
+	DOIO=-456,
+
 	RAWDOFMT=-522,
 	OPENLIBRARY=-552,
 
@@ -209,6 +214,16 @@ enum enum_exec {
 
 enum enum_intuition {
 	INTUITION_CLOSEWORKBENCH = -78,
+};
+
+enum enum_nonvolatile {
+	NV_ALLOC = -44
+};
+
+enum enum_graphics {
+	GFX_TEXTLENGTH = -54,
+	GFX_LOADVIEW = -222,
+	GFX_WAITTOF = -270
 };
 
 enum enum_dos {
@@ -239,12 +254,16 @@ struct amiga16 : memory32{
 	IExec* exec;
 	IDos* dos;
 	IBench* bench;
+	INonVolatile* nvram;
+	IGraphics* gfx;
 
 	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags=0;
 		dos = NULL;
 		exec = NULL;
 		bench = NULL;
+		nvram = NULL;
+		gfx = NULL;
 	}
 	void setBench(IBench* work) {
 		bench = work;
@@ -254,6 +273,12 @@ struct amiga16 : memory32{
 	}
 	void setDos(IDos* sub) {
 		dos = sub;
+	}
+	void setNonVolatile(INonVolatile* nv) {
+		nvram = nv;
+	}
+	void setGraphics(IGraphics* graphics) {
+		gfx = graphics;
 	}
 	// pc has arrived with a negative offset from lib
 	// 
@@ -283,6 +308,44 @@ struct amiga16 : memory32{
 		case 3:
 			machineError = callIntuition(offset);
 			break;
+		case 4:
+			machineError = callNonVolatile(offset);
+			break;
+		case 5:
+			machineError = callGraphics(offset);
+			break;
+		}
+		return 0x4e75;
+	}
+
+
+	int callGraphics(int offset) {
+		switch (offset) {
+		case GFX_TEXTLENGTH:
+			gfx->textLength();
+			break;
+		case GFX_LOADVIEW:
+			gfx->loadView();
+			break;
+		case GFX_WAITTOF:
+			gfx->waitTOF();
+			break;
+		default:
+			machineState = std::to_string(offset) + "(graphicsBase) un supported";
+			return offset;
+		}
+		return 0x4e75;
+	}
+
+
+	int callNonVolatile(int offset) {
+		switch (offset) {
+		case NV_ALLOC:
+			nvram->alloc();
+			break;
+		default:
+			machineState = std::to_string(offset) + "(nonvolatileBase) un supported";
+			return offset;
 		}
 		return 0x4e75;
 	}
@@ -362,7 +425,13 @@ struct amiga16 : memory32{
 		switch (offset) {
 		case SETINTVECTOR:
 			break;
-		case ADDINTSERVER:
+		case ADDINTSERVER://d0,d1 intnum,handler
+			break;
+		case DOIO:
+			exec->doIO();
+			break;
+		case OPENDEVICE:
+			exec->openDevice();
 			break;
 		case RAWDOFMT:
 			exec->rawDoFmt();
@@ -370,7 +439,6 @@ struct amiga16 : memory32{
 			break;
 		case ALLOCMEM:
 		case ALLOCATE:
-			machineState = "ALLOC";
 			exec->allocMem();
 			break;
 		case FREEMEM:
@@ -385,7 +453,8 @@ struct amiga16 : memory32{
 		case OLDOPENLIBRARY: 
 		case OPENLIBRARY:
 			exec->openLibrary();
-			if (machineError) return 1;
+			if (machineError) 
+				return 1;
 			break;
 		case CLOSELIBRARY:
 			exec->closeLibrary();

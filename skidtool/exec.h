@@ -12,6 +12,8 @@ public:
 	virtual void fakeTask() = 0;
 	virtual void openLibrary() = 0;
 	virtual void closeLibrary() = 0;
+	virtual void openDevice() = 0;
+	virtual void doIO() = 0;
 	virtual void rawDoFmt() = 0;
 	virtual void putMsg() = 0;
 	virtual void getMsg() = 0;
@@ -46,4 +48,14 @@ public:
 class IBench {
 public:
 	virtual void closeWorkBench() = 0;
+};
+class INonVolatile {
+public:
+	virtual void alloc() = 0;
+};
+class IGraphics {
+public:
+	virtual void textLength() = 0;
+	virtual void loadView() = 0;
+	virtual void waitTOF() = 0;
 };
