@@ -11,16 +11,14 @@ typedef std::string logline;
 
 extern std::vector<logline> machineLog;
 
-void systemLog(const char* tag, const std::string line) {
-	std::stringstream ss;
-	std::string s = line;
+void systemLog(const char* tag, std::string s) {
 	std::replace(s.begin(), s.end(), '\n', '_');
+	std::stringstream ss;
 	ss << "[" << tag << "] " << s;
-	std::string sss = ss.str();
-	std::cout << sss << std::endl;
-	machineLog.push_back(sss);
+	std::string line = ss.str();
+	std::cout << line << std::endl;
+	machineLog.push_back(line);
 }
-
 
 class IEvent {
 public:

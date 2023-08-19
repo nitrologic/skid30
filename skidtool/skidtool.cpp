@@ -637,7 +637,8 @@ struct NativeFile {
 		const char* m;
 		switch (mode) {
 		case 1005://MODE_OLDFILE
-			m = "r+b";
+//			m = "r+b";
+			m = "rb";
 			break;
 		case 1006://MODE_NEWFILE
 			m = "wb";	// was w+b
@@ -683,7 +684,8 @@ struct NativeFile {
 		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
 		fseek(fileHandle, offset, origin);
 		int currentpos = ftell(fileHandle);
-		return (int)currentpos;
+//		return (int)currentpos;
+		return oldpos;
 	}
 };
 
@@ -711,7 +713,7 @@ class aciddos : public IDos {
 	std::stringstream doslog;
 
 	void emit() {
-		std::string s = std::string(doslog.str());
+		std::string s = doslog.str();
 		systemLog("dos", s);
 		doslog.str(std::string());
 	}
@@ -737,7 +739,7 @@ public:
 		int d4 = cpu0->readRegister(4);
 		std::string name = cpu0->fetchString(d1);
 		cpu0->writeRegister(0,-1); // not defined
-		doslog << "getvar(" << name << ") => " << -1;
+		doslog << "getvar " << name << " => " << -1;
 		emit();
 		return;
 	}
@@ -773,6 +775,8 @@ public:
 		NativeFile* f = fileLocks[d1];
 		f->close();
 		cpu0->writeRegister(0, 0);	//RETURN_OK
+		doslog << "close " << d1 << " => 0";
+		emit();
 	}
 
 	void read(){
@@ -808,7 +812,8 @@ public:
 		case OUTPUT_STREAM: {
 			std::string s = rawString(raw,false);
 			systemLog("write", s);
-		}break;
+			break;
+		}
 		default:
 			systemLog("write","blob");
 			break;
@@ -830,6 +835,8 @@ public:
 		NativeFile* f = fileLocks[d1];
 		int pos=f->seek(d2, d3);
 		cpu0->writeRegister(0, pos);
+		doslog << "seek " << d2 << "," << d3 << " => " << pos;
+		emit();
 	}
 	void deletefile(){
 	}
@@ -843,6 +850,8 @@ public:
 		// d1=lock return d0=oldlock
 		// all paths lead to root - wtf LhA???
 		cpu0->writeRegister(0, 0);
+		doslog << "currentDir " << d1;
+		emit();
 	}
 
 	void lock(){
@@ -914,7 +923,7 @@ public:
 			success = 1;
 		}
 		cpu0->writeRegister(0, success);
-		doslog << "exnext(" << d1 << "," << d2 << ")=>" << success;
+		doslog << "exnext " << d1 << "," << d2 << " => " << success;
 		emit();
 	}
 
@@ -965,7 +974,7 @@ public:
 			fileLocks[lock] = f;
 		}
 		cpu0->writeRegister(0, lock);
-		doslog << "createDir(" << s << ")=>" << lock; emit();
+		doslog << "createDir " << s << " => " << lock; emit();
 	}
 	void ioerr() {
 
@@ -996,7 +1005,6 @@ public:
 	std::stringstream execlog;
 
 	void emit() {
-//		std::string s = std::string(execlog.str());
 		std::string s = execlog.str();
 		systemLog("exec", s);
 		execlog.str(std::string());
@@ -1160,7 +1168,7 @@ public:
 		int d1 = cpu0->readRegister(1);
 		int r = cpu0->allocate(d0, d1);
 		cpu0->writeRegister(0, r);
-		execlog << "allocMem(" << d0 << ")"; emit();
+		execlog << "allocMem " << d0; emit();
 	}
 
 	void waitPort() {
@@ -1174,7 +1182,8 @@ public:
 		for (int i = 0; i < d0; i++) {
 			cpu0->write8(a1 + i, cpu0->read8(a0 + i));
 		}
-		execlog << "copyMem";emit();
+		execlog << "copyMem " << d0;
+		emit();
 	}
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
@@ -1667,8 +1676,9 @@ int main() {
 
 	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "e SkidMarksDemo.lha\n";
+//	const char* args = "e SkidMarksDemo.lha\n";
 //	const char* args = "l SkidMarksDemo.lha\n";
+	const char* args = "e cv.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
