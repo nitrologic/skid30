@@ -999,6 +999,29 @@ public:
 	}
 };
 
+// notes copied from public web for reference purposes only
+
+/*
+
+addintserver
+
+intNum - the Paula interrupt bit number (0 through 14). Processor
+			 level seven interrupts (NMI) are encoded as intNum 15.
+			 The PORTS, COPER, VERTB, EXTER and NMI interrupts are
+			 set up as server chains.
+	interrupt - pointer to an Interrupt structure.
+			 By convention, the LN_NAME of the interrupt structure must
+			 point a descriptive string so that other users may
+			 identify who currently has control of the interrupt.
+
+BUGS
+	The graphics library's VBLANK server, and some user code, currently
+	assume that address register A0 will contain a pointer to the custom
+	chips. If you add a server at a priority of 10 or greater, you must
+	compensate for this by providing the expected value ($DFF000).
+
+*/
+
 class acidexec : public IExec {
 public:
 	acid68000* cpu0;
@@ -1041,6 +1064,8 @@ public:
 		int d0 = cpu0->readRegister(8);//newbits
 		int d1 = cpu0->readRegister(9);//mask
 		cpu0->writeRegister(0, 0);
+		execlog << "setsignal " << d0 << "," << d1;
+		emit();
 	}
 	void closeLibrary() {
 	}
@@ -1674,17 +1699,17 @@ int main() {
 //	const char* amiga_binary = "../archive/devpac";	//cycle 4780
 //	const char* args = "test -b\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
 //	const char* args = "e SkidMarksDemo.lha\n";
 //	const char* args = "l SkidMarksDemo.lha\n";
-	const char* args = "e cv.lha\n";
+//	const char* args = "e cv.lha\n";
 
-//	const char* amiga_binary = "../archive/game";
+	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
 //	const char* amiga_binary = "../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
-//	const char* args = "\n";
+	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };

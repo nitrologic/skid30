@@ -1,5 +1,8 @@
 #pragma once
 
+// bespoke computer interface based on public amiga interfaces 
+// (C) 2023 Simon Armstrong
+
 class IExec{
 public:
 	virtual void allocMem() = 0;

@@ -176,6 +176,10 @@ const int DBIT = 0x40000000;
 const std::string execNames[] = {"ReplyMsg","WaitPort"}; // just guessing here, please step slowly
 
 enum enum_exec {
+
+	SETINTVECTOR = -162,
+	ADDINTSERVER = -168,
+
 	ALLOCATE = -186,
 	DEALLOCATE = -192,
 	ALLOCMEM = -198,
@@ -186,6 +190,8 @@ enum enum_exec {
 	SETSIGNAL=-306,
 	SETEXCEPT=-312,
 	WAIT=-318,
+
+	ALLOCSIGNAL=-330,
 
 	REMPORT=-360,
 	PUTMSG=-366,
@@ -198,8 +204,7 @@ enum enum_exec {
 	RAWDOFMT=-522,
 	OPENLIBRARY=-552,
 
-	COPYMEM=-624
-
+	COPYMEM=-624,
 };
 
 enum enum_intuition {
@@ -355,6 +360,10 @@ struct amiga16 : memory32{
 
 	int callExec(int offset){
 		switch (offset) {
+		case SETINTVECTOR:
+			break;
+		case ADDINTSERVER:
+			break;
 		case RAWDOFMT:
 			exec->rawDoFmt();
 //			return 1;
@@ -368,6 +377,8 @@ struct amiga16 : memory32{
 			exec->freeMem();
 			break;
 		case DEALLOCATE:
+			break;
+		case ALLOCSIGNAL:
 			break;
 		case WAIT:
 			break;
