@@ -236,6 +236,8 @@ struct acid68000 {
 		return p;
 	}
 
+	// address is 24 bit physical with qbit signals in high bits
+
 	void log_bus(int readwritefetch, int byteshortint, int address, int value) {
 		bool enable=(readwritefetch==1)?(mem->flags&2):(mem->flags&1);
 		int star=(mem->flags&4)?1:0;
@@ -380,6 +382,9 @@ struct acid68000 {
 		return value;
 	}
 
+	// only cpu pc fetch has bit 31 of a32 set
+	// only debugger fetch has bit 30 of a32 set 
+
 	int read16(int a32) {
 		int qbits = a32 & 0xc0000000;	// instruction or debugger fetch
 		int physicalAddress = a32 & 0xffffff;
@@ -403,9 +408,11 @@ struct acid68000 {
 			memoryError = machineError;
 			m68k_pulse_halt();
 			// TODO - emit message
-			systemLog("acid",machineState + std::to_string(machineError));
+			systemLog("acid",machineState + std::to_string(qbits) + std::to_string(machineError));
 			machineError = 0;
 			flushLog();
+
+			log_bus(qbits?2:0, 1, physicalAddress, 0);
 		}
 
 		if (qbits == 0) {

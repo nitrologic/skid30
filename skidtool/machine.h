@@ -315,6 +315,9 @@ struct amiga16 : memory32{
 			machineError = callGraphics(offset);
 			break;
 		}
+		if (machineError) {
+			return 0x4e75;
+		}
 		return 0x4e75;
 	}
 
@@ -334,7 +337,7 @@ struct amiga16 : memory32{
 			machineState = std::to_string(offset) + "(graphicsBase) un supported";
 			return offset;
 		}
-		return 0x4e75;
+		return 0;
 	}
 
 
@@ -347,7 +350,7 @@ struct amiga16 : memory32{
 			machineState = std::to_string(offset) + "(nonvolatileBase) un supported";
 			return offset;
 		}
-		return 0x4e75;
+		return 0;
 	}
 
 	int callIntuition(int offset) {
@@ -359,7 +362,7 @@ struct amiga16 : memory32{
 			machineState = std::to_string(offset) + "(intuitionBase) un supported";
 			return offset;
 		}
-		return 0x4e75;
+		return 0;
 	}
 
 	int callDos(int offset) {
