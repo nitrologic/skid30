@@ -75,7 +75,7 @@ void dayminticks(int *dmt) {
 	SystemTimeToVariantTime(&time,&v1);
 	dmt[0] = (v1-v0);
 	dmt[1] = time.wHour * 60 + time.wMinute;
-	dmt[2] = 0;
+	dmt[2] = time.wSecond * 50 + (time.wMilliSeconds/20);
 }
 
 int getch2() {
