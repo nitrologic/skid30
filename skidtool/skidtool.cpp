@@ -684,7 +684,8 @@ struct NativeFile {
 	}
 
 	void write(Blob blob) {
-
+		int size = blob.size();
+		int n = fwrite(blob.data(), 1, size, fileHandle);
 	}
 
 	int seek(int offset, int mode) {
@@ -902,9 +903,12 @@ public:
 			systemLog("write", s);
 			break;
 		}
-		default:
-			systemLog("write","blob");
+		default: {
+			NativeFile* f = fileLocks[d1];
+			f->write(raw);
+			systemLog("write", "blob");
 			break;
+		}
 		}
 		cpu0->writeRegister(0, d3);
 	}
@@ -1875,7 +1879,7 @@ int main() {
 //	const char* args = "-c test.bb\n";
 
 	const char* amiga_binary = "../archive/genam";
-	const char* args = "test.s -b\n";
+	const char* args = "test.s\n";
 
 //	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
