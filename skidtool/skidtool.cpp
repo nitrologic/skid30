@@ -916,11 +916,21 @@ public:
 	}
 	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0186.html
 
+	void unloadseg() {
+		doslog << "unloadseg "; emit();
+	}
 
 	void loadseg() {
 		int d1 = cpu0->readRegister(1);
 		std::string segname = cpu0->fetchString(d1);
 		int seglist = 0;
+		int physical = 0x050000;
+		Chunk chunk = loadChunk(segname, physical);
+		int n = chunk.size();
+		for (int i = 0; i < n; i++) {
+			acid500.qwrite16(physical + i * 2, chunk[i]);
+		}
+		seglist = physical >> 2;
 		cpu0->writeRegister(0, seglist);
 		doslog << "loadseg " << segname;
 		emit();
@@ -1383,11 +1393,6 @@ unsigned int cpu_read_long_dasm(unsigned int address)
 {
 	return acid500.read32(address | 0x40000000);
 }
-
-
-
-
-typedef std::vector<u16> Chunk;
 
 // write to acid500
 

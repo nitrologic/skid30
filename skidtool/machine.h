@@ -2,6 +2,8 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
+#include <sstream>
 
 #include "exec.h"
 #include "monitor.h"
@@ -11,14 +13,10 @@ typedef std::string logline;
 
 extern std::vector<logline> machineLog;
 
-void systemLog(const char* tag, std::string s) {
-	std::replace(s.begin(), s.end(), '\n', '_');
-	std::stringstream ss;
-	ss << "[" << tag << "] " << s;
-	std::string line = ss.str();
-	std::cout << line << std::endl;
-	machineLog.push_back(line);
-}
+void systemLog(const char* tag, std::string s);
+
+Chunk loadChunk(std::string path, int physical);
+
 
 class IEvent {
 public:
@@ -38,9 +36,9 @@ struct MachineEvent {
 
 extern std::vector<logline> machineLog;
 
-int machineError;
+extern int machineError;
 
-std::string machineState="";
+extern std::string machineState;
 
 struct memory32 {
 	u32 physical;
@@ -253,6 +251,7 @@ enum enum_dos {
 	DOS_CREATEDIR = -120,
 	DOS_CURRENTDIR = -126,
 	DOS_LOADSEG=-150,
+	DOS_UNLOADSEG=-156,
 	DOS_ISINTERACTIVE = -216,
 	DOS_GETVAR = -906
 };
@@ -405,6 +404,9 @@ struct amiga16 : memory32{
 		case DOS_LOADSEG:
 			dos->loadseg();
 			return 1;
+			break;
+		case DOS_UNLOADSEG:
+			dos->unloadseg();
 			break;
 		case DOS_READ:
 			dos->read();
