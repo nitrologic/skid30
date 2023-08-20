@@ -315,9 +315,9 @@ struct amiga16 : memory32{
 		int lib = (address + 4095) >> 12;
 		int offset = address | (-1 << 12);
 
-		std::stringstream ss;
-		ss << "address:" << address << " offset:" << offset << " lib:" << lib;
-		systemLog("MIG", ss.str());
+//		std::stringstream ss;
+//		ss << "address:" << address << " offset:" << offset << " lib:" << lib;
+//		systemLog("MIG", ss.str());
 
 		if (flags & QBIT) {
 			//		log_bus(0, 1, physicalAddress, 0);

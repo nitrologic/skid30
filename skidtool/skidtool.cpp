@@ -1894,11 +1894,11 @@ int main() {
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
 //	const char* args = "-c test.bb\n";
 
-	const char* amiga_binary = "../archive/genam";
-	const char* args = "test.s -S -P\n";
+//	const char* amiga_binary = "../archive/genam";
+//	const char* args = "test.s -S -P\n";
 
-//	const char* amiga_binary = "../archive/lha";
-//	const char* args = "e cv.lha\n";
+	const char* amiga_binary = "../archive/lha";
+	const char* args = "e cv.lha\n";
 //	const char* args = "e SkidMarksDemo.lha\n";
 //	const char* args = "l SkidMarksDemo.lha\n";
 //	const char* args = "e cv.lha\n";
