@@ -1,0 +1,16 @@
+HiSoft GenAm 680x0 Macro Assembler v3.01   Aug 20 2023  Page 1
+test.s
+
+
+    1 00.00000000 2C7900000004             move.l 4,a6
+    2 00.00000006 4E75                     rts
+    3 00.00000008                      
+    4 00.00000008                          
+
+	GLOBAL SYMBOLS
+
+
+	MODULE TEST.S	
+
+
+

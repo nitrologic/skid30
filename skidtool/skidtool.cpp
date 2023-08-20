@@ -65,6 +65,19 @@ std::string rawString(std::vector<u8> raw,bool addhex) {
 #include <conio.h>
 #include <synchapi.h>
 
+SYSTEMTIME epoch = { 1978,1,0,1 };
+
+void dayminticks(int *dmt) {
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+	double v0,v1;
+	SystemTimeToVariantTime(&epoch,&v0);
+	SystemTimeToVariantTime(&time,&v1);
+	dmt[0] = (v1-v0);
+	dmt[1] = time.wHour * 60 + time.wMinute;
+	dmt[2] = 0;
+}
+
 int getch2() {
 	if (_kbhit()) {
 		return getch();
@@ -939,9 +952,12 @@ public:
 	void datestamp() {
 		int d1 = cpu0->readRegister(1);//{day,min,ticks}
 
-		cpu0->write32(d1 + 0, 0);
-		cpu0->write32(d1 + 4, 0);
-		cpu0->write32(d1 + 8, 0);
+		int dmt[3];
+		dayminticks(dmt);
+
+		cpu0->write32(d1 + 0, dmt[0]);
+		cpu0->write32(d1 + 4, dmt[1]);
+		cpu0->write32(d1 + 8, dmt[2]);
 
 		cpu0->writeRegister(0, d1);
 
@@ -1879,7 +1895,7 @@ int main() {
 //	const char* args = "-c test.bb\n";
 
 	const char* amiga_binary = "../archive/genam";
-	const char* args = "test.s\n";
+	const char* args = "test.s -S -P\n";
 
 //	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
