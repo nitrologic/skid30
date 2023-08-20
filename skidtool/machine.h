@@ -177,6 +177,9 @@ const std::string execNames[] = {"ReplyMsg","WaitPort"}; // just guessing here, 
 
 enum enum_exec {
 
+	FORBID = -132,
+	PERMIT = -138,
+
 	SETINTVECTOR = -162,
 	ADDINTSERVER = -168,
 
@@ -217,13 +220,21 @@ enum enum_intuition {
 };
 
 enum enum_nonvolatile {
-	NV_ALLOC = -44
+	NV_GETCOPY = -30,
+	NV_FREEDATA = -36,
+	NV_STORE=-42,
+	NV_DELETE=-48,
+	NV_GETINFO=-54,
+	NV_GETLIST=-60,
+	NV_SETPROTECTION=-66
 };
 
 enum enum_graphics {
 	GFX_TEXTLENGTH = -54,
 	GFX_LOADVIEW = -222,
-	GFX_WAITTOF = -270
+	GFX_WAITTOF = -270,
+	GFX_OWNBLITTER = -456,
+	GFX_DISOWNBLITTER = -462
 };
 
 enum enum_dos {
@@ -241,6 +252,7 @@ enum enum_dos {
 	DOS_EXNEXT = -108,
 	DOS_CREATEDIR = -120,
 	DOS_CURRENTDIR = -126,
+	DOS_LOADSEG=-150,
 	DOS_ISINTERACTIVE = -216,
 	DOS_GETVAR = -906
 };
@@ -333,6 +345,12 @@ struct amiga16 : memory32{
 		case GFX_WAITTOF:
 			gfx->waitTOF();
 			break;
+		case GFX_OWNBLITTER:
+			gfx->ownBlitter();
+			break;
+		case GFX_DISOWNBLITTER:
+			gfx->disownBlitter();
+			break;
 		default:
 			machineState = std::to_string(offset) + "(graphicsBase) un supported";
 			return offset;
@@ -343,8 +361,8 @@ struct amiga16 : memory32{
 
 	int callNonVolatile(int offset) {
 		switch (offset) {
-		case NV_ALLOC:
-			nvram->alloc();
+		case NV_GETCOPY:
+			nvram->getCopy();
 			break;
 		default:
 			machineState = std::to_string(offset) + "(nonvolatileBase) un supported";
@@ -382,6 +400,10 @@ struct amiga16 : memory32{
 			break;
 		case DOS_CURRENTDIR:
 			dos->currentdir();
+			return 1;
+			break;
+		case DOS_LOADSEG:
+			dos->loadseg();
 			return 1;
 			break;
 		case DOS_READ:
@@ -426,6 +448,10 @@ struct amiga16 : memory32{
 
 	int callExec(int offset){
 		switch (offset) {
+		case FORBID:
+			break;
+		case PERMIT:
+			break;
 		case SETINTVECTOR:
 			break;
 		case ADDINTSERVER://d0,d1 intnum,handler

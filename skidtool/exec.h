@@ -19,6 +19,8 @@ public:
 	virtual void getMsg() = 0;
 	virtual void copyMem() = 0;
 	virtual void setSignal() = 0;
+	virtual void forbid() = 0;
+	virtual void permit() = 0;
 };
 class IDos {
 public:
@@ -44,6 +46,7 @@ public:
 	virtual void exit() = 0;
 	virtual void isinteractive() = 0;
 	virtual void getvar() = 0;
+	virtual void loadseg() = 0;
 };
 class IBench {
 public:
@@ -51,11 +54,13 @@ public:
 };
 class INonVolatile {
 public:
-	virtual void alloc() = 0;
+	virtual void getCopy() = 0;
 };
 class IGraphics {
 public:
 	virtual void textLength() = 0;
 	virtual void loadView() = 0;
 	virtual void waitTOF() = 0;
+	virtual void ownBlitter() = 0;
+	virtual void disownBlitter() = 0;
 };

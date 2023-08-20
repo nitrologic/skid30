@@ -708,14 +708,34 @@ public:
 	}
 };
 
+
+
 class acidnonvolatile : public INonVolatile {
+	std::stringstream nvlog;
 	acid68000* cpu0;
+
+	void emit() {
+		std::string s = nvlog.str();
+		systemLog("nv", s);
+		nvlog.str(std::string());
+	}
+
+
 public:
 	acidnonvolatile(acid68000* cpu) {
 		cpu0 = cpu;
 	}
-	void alloc() {
-
+	//appName, itemName, killRequesters a0,a1,d1
+	void getCopy() {
+		int a0 = cpu0->readRegister(8);
+		int a1 = cpu0->readRegister(9);
+		int d1 = cpu0->readRegister(1);
+		std::string app= cpu0->fetchString(a0);
+		std::string item= cpu0->fetchString(a1);
+		int data = 0;
+		cpu0->writeRegister(0, data);
+		nvlog << "getCopy " << app << "," << item << "," << d1;
+		emit();
 	}
 
 };
@@ -745,7 +765,12 @@ public:
 	void waitTOF() {
 		gfxlog << "waitTOF "; emit();
 	}
-
+	void ownBlitter() {
+		gfxlog << "ownBlitter"; emit();
+	}
+	void disownBlitter() {
+		gfxlog << "disownBlitter"; emit();
+	}
 };
 
 #include <map>
@@ -891,6 +916,16 @@ public:
 	}
 	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0186.html
 
+
+	void loadseg() {
+		int d1 = cpu0->readRegister(1);
+		std::string segname = cpu0->fetchString(d1);
+		int seglist = 0;
+		cpu0->writeRegister(0, seglist);
+		doslog << "loadseg " << segname;
+		emit();
+
+	}
 	void currentdir() {
 		int d1 = cpu0->readRegister(1);	//name
 		NativeFile* f = fileLocks[d1];
@@ -1083,9 +1118,9 @@ public:
 	acidexec(acid68000* cpu) {
 		cpu0 = cpu;
 	}
-	void waitMsg() {
-
-	}
+	void forbid(){}
+	void permit() {}
+	void waitMsg() {}
 
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0222.html
 
