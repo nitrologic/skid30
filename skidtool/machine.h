@@ -185,6 +185,7 @@ enum enum_exec {
 	DEALLOCATE = -192,
 	ALLOCMEM = -198,
 	FREEMEM=-210,
+	AVAILMEM=-216,
 
 	FINDTASK=-294,
 	SETTASKPRI=-300,
@@ -252,6 +253,7 @@ enum enum_dos {
 	DOS_CURRENTDIR = -126,
 	DOS_LOADSEG=-150,
 	DOS_UNLOADSEG=-156,
+	DOS_DATESTAMP=-192,
 	DOS_DELAY=-198,
 	DOS_ISINTERACTIVE = -216,
 	DOS_GETVAR = -906
@@ -268,6 +270,7 @@ struct amiga16 : memory32{
 	IBench* bench;
 	INonVolatile* nvram;
 	IGraphics* gfx;
+	IFFPMath* math;
 
 	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags=0;
@@ -292,6 +295,9 @@ struct amiga16 : memory32{
 	void setGraphics(IGraphics* graphics) {
 		gfx = graphics;
 	}
+	void setMath(IFFPMath * ffpMath){
+		math = ffpMath;
+	}
 	// pc has arrived with a negative offset from lib
 	// 
 	// low 12 bits are offset into 6 byte per entry jump table
@@ -300,10 +306,19 @@ struct amiga16 : memory32{
 	// 
 	// execbase ($801000)
 	// dosbase ($802000)
-	// 
+	// intuition
+	// nonvolatile
+	// graphics
+	// ffpmath
+
 	virtual int read16(int address, int flags) {
 		int lib = (address + 4095) >> 12;
 		int offset = address | (-1 << 12);
+
+		std::stringstream ss;
+		ss << "address:" << address << " offset:" << offset << " lib:" << lib;
+		systemLog("MIG", ss.str());
+
 		if (flags & QBIT) {
 			//		log_bus(0, 1, physicalAddress, 0);
 		}
@@ -326,6 +341,9 @@ struct amiga16 : memory32{
 		case 5:
 			machineError = callGraphics(offset);
 			break;
+		case 6:
+			machineError = callMath(offset);
+			break;
 		}
 		if (machineError) {
 			return 0x4e75;
@@ -333,6 +351,14 @@ struct amiga16 : memory32{
 		return 0x4e75;
 	}
 
+	int callMath(int offset) {
+		switch (offset) {
+		default:
+			machineState = std::to_string(offset) + "(ffpmathBase) un supported";
+			return offset;
+		}
+		return 0;
+	}
 
 	int callGraphics(int offset) {
 		switch (offset) {
@@ -409,6 +435,9 @@ struct amiga16 : memory32{
 		case DOS_UNLOADSEG:
 			dos->unloadseg();
 			break;
+		case DOS_DATESTAMP:
+			dos->datestamp();
+			break;
 		case DOS_DELAY:
 			dos->delay();
 			break;
@@ -417,6 +446,7 @@ struct amiga16 : memory32{
 			break;
 		case DOS_WRITE:
 			dos->write();
+			return 1;
 			break;
 		case DOS_INPUT:
 			dos->input();
@@ -478,6 +508,9 @@ struct amiga16 : memory32{
 			break;
 		case FREEMEM:
 			exec->freeMem();
+			break;
+		case AVAILMEM:
+			exec->availMem();
 			break;
 		case DEALLOCATE:
 			break;

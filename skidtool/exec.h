@@ -7,6 +7,7 @@ class IExec{
 public:
 	virtual void allocMem() = 0;
 	virtual void freeMem() = 0;
+	virtual void availMem() = 0;
 	virtual void waitPort() = 0;
 	virtual void replyMsg() = 0;
 	virtual void fakeTask() = 0;
@@ -49,6 +50,7 @@ public:
 	virtual void loadseg() = 0;
 	virtual void unloadseg() = 0;
 	virtual void delay() = 0;
+	virtual void datestamp() = 0;
 };
 class IBench {
 public:
@@ -65,4 +67,7 @@ public:
 	virtual void waitTOF() = 0;
 	virtual void ownBlitter() = 0;
 	virtual void disownBlitter() = 0;
+};
+class IFFPMath {
+public:
 };

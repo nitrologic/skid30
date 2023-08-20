@@ -9,7 +9,7 @@ void systemLog(const char* tag, std::string s) {
 	std::stringstream ss;
 	ss << "[" << tag << "] " << s;
 	std::string line = ss.str();
-	std::cout << line << std::endl;
+//	std::cout << line << std::endl;
 	machineLog.push_back(line);
 }
 
@@ -76,6 +76,9 @@ void writeCC4Big(int tag) {
 
 
 Chunk loadChunk(std::string path,int physical) {
+
+	std::replace(path.begin(),path.end(),':','\\');
+
 	writeString("Reading Hunk from ");
 	writeString(path);
 	writeEOL();

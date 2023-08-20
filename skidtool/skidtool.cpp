@@ -18,7 +18,8 @@
 #include <unistd.h>
 #endif
 
-const int ASM_LINES = 32;
+const int ASM_LINES = 6;
+const int LOG_LINES = 24;
 
 std::vector<logline> machineLog;
 
@@ -408,11 +409,10 @@ struct acid68000 {
 			memoryError = machineError;
 			m68k_pulse_halt();
 			// TODO - emit message
-			systemLog("acid",machineState + std::to_string(qbits) + std::to_string(machineError));
+//			systemLog("acid",machineState + std::to_string(qbits) + std::to_string(machineError));
 			machineError = 0;
-			flushLog();
-
-			log_bus(qbits?2:0, 1, physicalAddress, 0);
+//			flushLog();
+//			log_bus(qbits?2:0, 1, physicalAddress, 0);
 		}
 
 		if (qbits == 0) {
@@ -771,6 +771,24 @@ public:
 	}
 };
 
+class acidfastmath : public IFFPMath {
+	std::stringstream mathlog;
+	void emit() {
+		std::string s = mathlog.str();
+		systemLog("math", s);
+		mathlog.str(std::string());
+	}
+
+public:
+
+	acid68000* cpu0;
+	acidfastmath(acid68000* cpu) {
+		cpu0 = cpu;
+	}
+
+
+};
+
 #include <map>
 
 typedef std::map<std::string, NativeFile> FileMap;	// never removed
@@ -914,6 +932,18 @@ public:
 	}
 	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0186.html
 
+	void datestamp() {
+		int d1 = cpu0->readRegister(1);//{day,min,ticks}
+
+		cpu0->write32(d1 + 0, 0);
+		cpu0->write32(d1 + 4, 0);
+		cpu0->write32(d1 + 8, 0);
+
+		cpu0->writeRegister(0, d1);
+
+		doslog << "datestamp " << d1;
+		emit();
+	}
 	void unloadseg() {
 		doslog << "unloadseg "; emit();
 	}
@@ -931,9 +961,9 @@ public:
 		for (int i = 0; i < n; i++) {
 			acid500.qwrite16(physical + i * 2, chunk[i]);
 		}
-		seglist = physical >> 2;
+		seglist = (n==0)?0:physical >> 2;
 		cpu0->writeRegister(0, seglist);
-		doslog << "loadseg " << segname;
+		doslog << "loadseg " << segname << " => " << seglist;
 		emit();
 
 	}
@@ -1151,6 +1181,9 @@ public:
 		else if (s == "graphics.library") {
 			r = 0x805000;
 		}
+		else if (s == "mathffp.library") {
+			r = 0x806000;
+		}
 		else {
 			// todo: build a named map
 			r = 0;
@@ -1169,6 +1202,7 @@ public:
 		execlog << "setsignal " << d0 << "," << d1;
 		emit();
 	}
+
 	void closeLibrary() {
 	}
 
@@ -1198,9 +1232,7 @@ public:
 		int a1 = cpu0->readRegister(9);//ioreq
 		int d1 = cpu0->readRegister(1);//flags
 		std::string devname = cpu0->fetchString(a0);
-
 		int r = -1;
-
 		cpu0->writeRegister(0, r);
 		execlog << "openDevice " << devname << "," << d0 << "," << a1 << "," << d1 << " <= " << r; emit();
 	}
@@ -1302,6 +1334,13 @@ public:
 
 // TODO heap symantics
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node0332.html
+
+	void availMem() {
+		int d1 = cpu0->readRegister(1);	//attributes
+		int bytes = 0x400000;
+		cpu0->writeRegister(0, bytes);
+		execlog << "availMem " << d1 << " => " << bytes; emit();
+	}
 
 	void freeMem() {
 		int a1 = cpu0->readRegister(9);
@@ -1620,6 +1659,16 @@ const int ROM_START = 0x2000;
 
 const int ARGS_START = 0x200;
 
+void displayLogLines(int count) {
+	int n = machineLog.size();
+	for (int i = n - count; i < n; i++) {
+		if (i >= 0) {
+			std::cout << machineLog[i];
+		}
+		writeEOL();
+	}
+}
+
 void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 
 	acidexec *bass=new acidexec(&acid500);
@@ -1627,12 +1676,14 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 	acidbench* bench = new acidbench(&acid500);
 	acidgraphics* gfx = new acidgraphics(&acid500);
 	acidnonvolatile* nvram = new acidnonvolatile(&acid500);
+	acidfastmath* math = new acidfastmath(&acid500);
 	
 	mig.setExec(bass);
 	mig.setDos(sub);
 	mig.setBench(bench);
 	mig.setNonVolatile(nvram);
 	mig.setGraphics(gfx);
+	mig.setMath(math);
 	
 	int key = 0;
 	int run = 0;
@@ -1717,9 +1768,12 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 			}
 			writeEOL();
 
+
 			disassemble(pc, ASM_LINES);
 
-			acid500.dumplog(5);
+			displayLogLines(LOG_LINES);
+
+//			acid500.dumplog(5);
 
 			writeString(help);
 			writeEOL();
@@ -1816,8 +1870,12 @@ int main() {
 	std::cout << "skidtool 0.2" << std::endl;
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
-//	const char* amiga_binary = "../archive/devpac";	//cycle 4780
-//	const char* args = "test -b\n";
+
+//	const char* amiga_binary = "../archive/blitz2/blitz2";
+//	const char* args = "-c test.bb\n";
+
+	const char* amiga_binary = "../archive/genam";
+	const char* args = "test.s -b\n";
 
 //	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
@@ -1827,9 +1885,8 @@ int main() {
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-	const char* amiga_binary = "../archive/oblivion/oblivion";
-//	const char* amiga_binary = "../archive/blitz2/blitz2";
-	const char* args = "\n";
+//	const char* amiga_binary = "../archive/oblivion/oblivion";
+//	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };
