@@ -48,6 +48,7 @@ public:
 	virtual void getvar() = 0;
 	virtual void loadseg() = 0;
 	virtual void unloadseg() = 0;
+	virtual void delay() = 0;
 };
 class IBench {
 public:

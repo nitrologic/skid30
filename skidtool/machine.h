@@ -252,6 +252,7 @@ enum enum_dos {
 	DOS_CURRENTDIR = -126,
 	DOS_LOADSEG=-150,
 	DOS_UNLOADSEG=-156,
+	DOS_DELAY=-198,
 	DOS_ISINTERACTIVE = -216,
 	DOS_GETVAR = -906
 };
@@ -407,6 +408,9 @@ struct amiga16 : memory32{
 			break;
 		case DOS_UNLOADSEG:
 			dos->unloadseg();
+			break;
+		case DOS_DELAY:
+			dos->delay();
 			break;
 		case DOS_READ:
 			dos->read();

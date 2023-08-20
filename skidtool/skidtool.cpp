@@ -708,8 +708,6 @@ public:
 	}
 };
 
-
-
 class acidnonvolatile : public INonVolatile {
 	std::stringstream nvlog;
 	acid68000* cpu0;
@@ -918,6 +916,9 @@ public:
 
 	void unloadseg() {
 		doslog << "unloadseg "; emit();
+	}
+	void delay() {
+		doslog << "delay "; emit();
 	}
 
 	void loadseg() {
@@ -1824,9 +1825,9 @@ int main() {
 //	const char* args = "l SkidMarksDemo.lha\n";
 //	const char* args = "e cv.lha\n";
 
-	const char* amiga_binary = "../archive/game";
+//	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-//	const char* amiga_binary = "../archive/oblivion/oblivion";
+	const char* amiga_binary = "../archive/oblivion/oblivion";
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
 	const char* args = "\n";
 
