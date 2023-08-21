@@ -75,7 +75,7 @@ void dayminticks(int *dmt) {
 	SystemTimeToVariantTime(&time,&v1);
 	dmt[0] = (v1-v0);
 	dmt[1] = time.wHour * 60 + time.wMinute;
-	dmt[2] = time.wSecond * 50 + (time.wMilliSeconds/20);
+	dmt[2] = time.wSecond * 50 + (time.wMilliseconds/20);
 }
 
 int getch2() {
@@ -812,12 +812,12 @@ class aciddos : public IDos {
 	int fileCount = 0;
 	FileMap fileMap;
 	FileLocks fileLocks;
-	std::stringstream doslog;
+	acidlog doslog;
 
 	void emit() {
 		std::string s = doslog.str();
 		systemLog("dos", s);
-		doslog.str(std::string());
+		doslog.clr();
 	}
 
 public:
@@ -825,6 +825,7 @@ public:
 	acid68000* cpu0;
 	aciddos(acid68000* cpu) {
 		cpu0 = cpu;
+		doslog.clr();
 
 		fileMap["stdin"] = NativeFile(INPUT_STREAM, "stdin");
 		fileMap["stdout"] = NativeFile(OUTPUT_STREAM, "stdout");
@@ -1165,20 +1166,23 @@ BUGS
 
 */
 
+
 class acidexec : public IExec {
 public:
 	acid68000* cpu0;
-	std::stringstream execlog;
+	acidlog execlog;
 
 	void emit() {
 		std::string s = execlog.str();
 		systemLog("exec", s);
-		execlog.str(std::string());
+		execlog.clr();
 	}
 
 	acidexec(acid68000* cpu) {
 		cpu0 = cpu;
+		execlog.clr();
 	}
+
 	void forbid(){}
 	void permit() {}
 	void waitMsg() {}

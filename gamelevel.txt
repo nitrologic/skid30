@@ -1,19 +1,56 @@
-Fields of Food MMMMMMM
-* wall
-M mushroom
-& apple
+Angry Mob Version M
 ***********************************
-*                               X *
-*      M                          *
 *                                 *
-* M      %                   %    *
+*      M                    *     *
+*           *               *     *
+* M                               *
 *                                 *
+*         *                       *
+*         *                       *
+*     M   *   M        ****       *
+*         *                       *
 *                                 *
-*                                 *
-*     MMM                         *
-*                                 *
-*      %                          *
-*                                 *
-*                          U      *
-*                                 *
+*     *            *              *
+*     *                           *
 ***********************************
+
+* - wall
+M - mob
+
+struct mob{    
+    int dir;
+    int x,y;
+    int pause;
+};
+
+
+# THIS IS ALL JUST IDEAS FOR ELABORATION ON A THE CONCEPTS WE WILL DEVELOP AND HAVE.
+Player will forage in dungeon style levels. These levels will be randomly generated from a pool of:
+ - Mob types/agression
+ - Coins
+ - Assorted loot
+ - Dopamine producing loot boxes with a wheel loot allocation feature.
+ - Style and structures of the biomes, landscapes and perhaps related debuffs/buffs - Could be item specific/mob specific.
+    - With this in mind, we can effectively reskin enemies easily by just relation to the areas in which they are found.
+ - Colourful, friendly and basic graphics utilizing a majority of bold and engaging colour pallets.
+ # To travel from area to area there should be requirements. 
+  - In some areas as mentioned there will be different mobs, effects, loot and so forth.
+  - Some areas will be allocated safe zones.
+    - Campfire from darksouls esq idea for travel?
+  - Some areas will be allocated exploration zones.
+  - Perhaps some areas will be arenas where you will be battling another player/npc that has a similar power score as yourself.
+  - Some areas will have waves of enemies that you must beat to proceed, providing loot.
+  - There will be boss battles that will drop good loot.
+  
+
+
+   1 1 
+0  0 0 
+1  0 1
+2  1 0
+3  1 1
+4
+5
+6
+7
+8

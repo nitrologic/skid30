@@ -15,6 +15,17 @@ extern std::vector<logline> machineLog;
 
 void systemLog(const char* tag, std::string s);
 
+
+class acidlog : public std::stringstream {
+
+public:
+	void clr() {
+		str(std::string());
+		*this << std::hex;
+	}
+};
+
+
 Chunk loadChunk(std::string path, int physical);
 
 
