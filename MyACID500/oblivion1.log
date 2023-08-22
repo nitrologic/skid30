@@ -1,0 +1,297 @@
+[mem] 00000000 R l 000000 00001400 000004
+[exec] findTask
+[exec] openlibrary dos.library,802000
+[dos] lock aliens,fffffffe => ffffffe8
+[dos] examine(ffffffe8)
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens1 => ffffffe4
+[exec] allocMem bf36
+[dos] close ffffffe4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens10 => ffffffe0
+[exec] allocMem 64a
+[dos] close ffffffe0 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens11 => ffffffdc
+[exec] allocMem 14b4
+[dos] close ffffffdc => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens12 => ffffffd8
+[exec] allocMem 2ca
+[dos] close ffffffd8 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens13 => ffffffd4
+[exec] allocMem 5ae
+[dos] close ffffffd4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens14 => ffffffd0
+[exec] allocMem 432
+[dos] close ffffffd0 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens2 => ffffffcc
+[exec] allocMem 16e6
+[dos] close ffffffcc => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens3 => ffffffc8
+[exec] allocMem 5aa
+[dos] close ffffffc8 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens4 => ffffffc4
+[exec] allocMem 12ec
+[dos] close ffffffc4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens5 => ffffffc0
+[exec] allocMem 17d8
+[dos] close ffffffc0 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens6 => ffffffbc
+[exec] allocMem 69c
+[dos] close ffffffbc => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens7 => ffffffb8
+[exec] allocMem 131e
+[dos] close ffffffb8 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens8 => ffffffb4
+[exec] allocMem 40a
+[dos] close ffffffb4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens9 => ffffffb0
+[exec] allocMem 62e
+[dos] close ffffffb0 => 0
+[dos] exnext ffffffe8,16a10 => 0
+[dos] unlock ffffffe8
+[exec] openlibrary dos.library,802000
+[dos] open oblivion.heroes => 0
+[exec] allocMem 9a00
+[exec] allocMem 11880
+[exec] allocMem 38
+[exec] allocMem 2580
+[exec] allocMem 6000
+[exec] allocMem 1380
+[exec] openlibrary intuition.library,803000
+[exec] openlibrary dos.library,802000
+[dos] delay 1
+[mem] 0000582c W s dff180 0063
+[dos] delay 1
+[mem] 0000582c W s dff180 0062
+[dos] delay 1
+[mem] 0000582c W s dff180 0061
+[dos] delay 1
+[mem] 0000582c W s dff180 0060
+[dos] delay 1
+[mem] 0000582c W s dff180 005f
+[dos] delay 1
+[mem] 00005c2c W s dff180 005e
+[dos] delay 1
+[mem] 00005c2c W s dff180 005d
+[dos] delay 1
+[mem] 00005c2c W s dff180 005c
+[dos] delay 1
+[mem] 00005c2c W s dff180 005b
+[dos] delay 1
+[mem] 00005c2c W s dff180 005a
+[dos] delay 1
+[mem] 00005c2c W s dff180 0059
+[dos] delay 1
+[mem] 00005c2c W s dff180 0058
+[dos] delay 1
+[mem] 00005c2c W s dff180 0057
+[dos] delay 1
+[mem] 00005c2c W s dff180 0056
+[dos] delay 1
+[mem] 00006032 W s dff180 0055
+[dos] delay 1
+[mem] 00006032 W s dff180 0054
+[dos] delay 1
+[mem] 00006032 W s dff180 0053
+[dos] delay 1
+[mem] 00006032 W s dff180 0052
+[dos] delay 1
+[mem] 00006032 W s dff180 0051
+[dos] delay 1
+[mem] 00006032 W s dff180 0050
+[dos] delay 1
+[mem] 00006032 W s dff180 004f
+[dos] delay 1
+[mem] 00006032 W s dff180 004e
+[dos] delay 1
+[mem] 00006032 W s dff180 004d
+[dos] delay 1
+[mem] 0000643c W s dff180 004c
+[dos] delay 1
+[mem] 0000643c W s dff180 004b
+[dos] delay 1
+[mem] 0000643c W s dff180 004a
+[dos] delay 1
+[mem] 0000643c W s dff180 0049
+[dos] delay 1
+[mem] 0000643c W s dff180 0048
+[dos] delay 1
+[mem] 0000643c W s dff180 0047
+[dos] delay 1
+[mem] 0000643c W s dff180 0046
+[dos] delay 1
+[mem] 0000643c W s dff180 0045
+[dos] delay 1
+[mem] 0000643c W s dff180 0044
+[dos] delay 1
+[mem] 0000643c W s dff180 0043
+[dos] delay 1
+[mem] 0000684c W s dff180 0042
+[dos] delay 1
+[mem] 0000684c W s dff180 0041
+[dos] delay 1
+[mem] 0000684c W s dff180 0040
+[dos] delay 1
+[mem] 0000684c W s dff180 003f
+[dos] delay 1
+[mem] 0000684c W s dff180 003e
+[dos] delay 1
+[mem] 0000684c W s dff180 003d
+[dos] delay 1
+[mem] 0000684c W s dff180 003c
+[dos] delay 1
+[mem] 0000684c W s dff180 003b
+[dos] delay 1
+[mem] 0000684c W s dff180 003a
+[dos] delay 1
+[mem] 00006c56 W s dff180 0039
+[dos] delay 1
+[mem] 00006c56 W s dff180 0038
+[dos] delay 1
+[mem] 00006c56 W s dff180 0037
+[dos] delay 1
+[mem] 00006c56 W s dff180 0036
+[dos] delay 1
+[mem] 00006c56 W s dff180 0035
+[dos] delay 1
+[mem] 00006c56 W s dff180 0034
+[dos] delay 1
+[mem] 00006c56 W s dff180 0033
+[dos] delay 1
+[mem] 00006c56 W s dff180 0032
+[dos] delay 1
+[mem] 00006c56 W s dff180 0031
+[dos] delay 1
+[mem] 00006c56 W s dff180 0030
+[dos] delay 1
+[mem] 0000705e W s dff180 002f
+[dos] delay 1
+[mem] 0000705e W s dff180 002e
+[dos] delay 1
+[mem] 0000705e W s dff180 002d
+[dos] delay 1
+[mem] 0000705e W s dff180 002c
+[dos] delay 1
+[mem] 0000705e W s dff180 002b
+[dos] delay 1
+[mem] 0000705e W s dff180 002a
+[dos] delay 1
+[mem] 0000705e W s dff180 0029
+[dos] delay 1
+[mem] 0000705e W s dff180 0028
+[dos] delay 1
+[mem] 0000705e W s dff180 0027
+[dos] delay 1
+[mem] 00007464 W s dff180 0026
+[dos] delay 1
+[mem] 00007464 W s dff180 0025
+[dos] delay 1
+[mem] 00007464 W s dff180 0024
+[dos] delay 1
+[mem] 00007464 W s dff180 0023
+[dos] delay 1
+[mem] 00007464 W s dff180 0022
+[dos] delay 1
+[mem] 00007464 W s dff180 0021
+[dos] delay 1
+[mem] 00007464 W s dff180 0020
+[dos] delay 1
+[mem] 00007464 W s dff180 001f
+[dos] delay 1
+[mem] 00007464 W s dff180 001e
+[dos] delay 1
+[mem] 0000786e W s dff180 001d
+[dos] delay 1
+[mem] 0000786e W s dff180 001c
+[dos] delay 1
+[mem] 0000786e W s dff180 001b
+[dos] delay 1
+[mem] 0000786e W s dff180 001a
+[dos] delay 1
+[mem] 0000786e W s dff180 0019
+[dos] delay 1
+[mem] 0000786e W s dff180 0018
+[dos] delay 1
+[mem] 0000786e W s dff180 0017
+[dos] delay 1
+[mem] 0000786e W s dff180 0016
+[dos] delay 1
+[mem] 0000786e W s dff180 0015
+[dos] delay 1
+[mem] 0000786e W s dff180 0014
+[dos] delay 1
+[mem] 00007c7e W s dff180 0013
+[dos] delay 1
+[mem] 00007c7e W s dff180 0012
+[dos] delay 1
+[mem] 00007c7e W s dff180 0011
+[dos] delay 1
+[mem] 00007c7e W s dff180 0010
+[dos] delay 1
+[mem] 00007c7e W s dff180 000f
+[dos] delay 1
+[mem] 00007c7e W s dff180 000e
+[dos] delay 1
+[mem] 00007c7e W s dff180 000d
+[dos] delay 1
+[mem] 00007c7e W s dff180 000c
+[dos] delay 1
+[mem] 00007c7e W s dff180 000b
+[dos] delay 1
+[mem] 00008088 W s dff180 000a
+[dos] delay 1
+[mem] 00008088 W s dff180 0009
+[dos] delay 1
+[mem] 00008088 W s dff180 0008
+[dos] delay 1
+[mem] 00008088 W s dff180 0007
+[dos] delay 1
+[mem] 00008088 W s dff180 0006
+[dos] delay 1
+[mem] 00008088 W s dff180 0005
+[dos] delay 1
+[mem] 00008088 W s dff180 0004
+[dos] delay 1
+[mem] 00008088 W s dff180 0003
+[dos] delay 1
+[mem] 00008088 W s dff180 0002
+[dos] delay 1
+[mem] 00008088 W s dff180 0001
+[dos] delay 1
+[mem] 00008490 W s dff180 0000
+[mem] 00008490 R s dff01c 0000
+[mem] 00008490 W s dff09a 3fff
+[mem] 00008490 W s dff096 0400
+[mem] 00008490 W b bfed01 7f 006322
+[mem] 00008490 W b bfdd00 7f 00632a
+[mem] 00008490 W b bfed01 89 006332
+[mem] 00008490 W b bfee01 08 00633a
+[mem] 00008490 W b bfe401 40 006342
+[mem] 00008490 W b bfe501 00 00634a
+[mem] 00008490 W s dff09c 3fff
+[mem] 00008490 W s dff09a c008
+[mem] 00008490 W s dff042 0000
+[mem] 00008490 W s dff096 000f
+[mem] 00008490 W s dff0d8 0000
+[mem] 00008490 W s dff0d6 027f
+[mem] 00008490 W s dff0d4 03a2
+[mem] 00008490 W l dff0d0 00023ec0
+[mem] 00008490 W s dff096 8068
+[mem] 0017d9c2 W s dff098 1041
+[mem] 0017d9c2 W s dff09a 0020
+[mem] 0017d9c2 W s dff09c 0020
+[mem] 0017d9c2 R b dff01f 00
+[mem] 0017d9c2 R b dff01f 00
+[mem] 0017d9c2 R b dff01f 00

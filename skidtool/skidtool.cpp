@@ -208,15 +208,16 @@ struct Stream {
 };
 
 const char readwrite[] = { 'R','W' };
-const char intshortbyte[] = { 'l','s','b','?' };
+const char intshortbyte[] = { 'l','w','b','?' };
 
 struct MemEvent : Stream {
 	int time;
-	int address; // bit31 - R=0 W=1 bit 30-29 - byte,short,int 
+	int address; // bits 31:star  30-29:R,W,F 28-27 - long,short,byte
 	int data;
 	int pc;
 
-	MemEvent(int t32,int a32, int d32, int pc32) :time(t32), address(a32), data(d32), pc(pc32) {}
+	MemEvent(int t32,int a32, int d32, int pc32) :time(t32), address(a32), data(d32), pc(pc32) {
+	}
 
 	std::string toString() {
 
@@ -228,8 +229,8 @@ struct MemEvent : Stream {
 		int pc32 = pc;
 		
 		int star = (a32 >> 31) & 1;
-		int rw = (a32 >> 30) & 1;
-		int opsize = (a32 >> 28) & 3;
+		int rw = (a32 >> 29) & 3;
+		int opsize = (a32 >> 27) & 3;
 		int a24 = a32 & 0xffffff;
 
 		// tick: R/W l/s/b address data 
@@ -330,7 +331,7 @@ struct acid68000 {
 		return p;
 	}
 
-	// address is 24 bit physical with qbit signals in high bits
+	// input address is 24 bit physical with qbit signals in high bits
 
 	void log_bus(int readwritefetch, int byteshortint, int address, int value) {
 		bool enable=(readwritefetch==1)?(mem->flags&2):(mem->flags&1);
