@@ -9,6 +9,8 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+const int ChipsetFlags = 3;
+
 typedef std::string logline;
 
 extern std::vector<logline> machineLog;
@@ -59,9 +61,9 @@ struct memory32 {
 	memory32(u32 phys, u32 bits) : physical(phys), mask(bits), flags(0) {
 	}
 
-	// address interface is local with physical bits already removed
+	// address interface is local with physical page bits and qbits already removed
 
-	virtual int read16(int address, int flags) {
+	virtual int read16(int address, int bits) {
 		return 0;
 	}
 
@@ -152,7 +154,7 @@ struct ram16 : memory32 {
 struct chipset16 : memory32 {
 	std::vector<u16> shorts;
 	chipset16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
-		flags=0;
+		flags = ChipsetFlags;
 	}
 	virtual void write16(int address, int value) {
 		shorts[address >> 1] = value;

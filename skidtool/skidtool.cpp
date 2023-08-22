@@ -9,6 +9,7 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <fstream>
 
 #include "machine.h"
 
@@ -172,21 +173,100 @@ extern "C" {
 #include "musashi/m68kops.h"
 }
 
-struct MemEvent {
+
+
+struct Stream {
+	std::stringstream out;
+
+	void writeLong(int b) {
+		out << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
+	}
+
+	void writeSpace() {
+		out << " ";
+	}
+	void writeChar(int c) {
+		out << (char)c;
+	}
+	void writeAddress(int b) {
+		out << std::setfill('0') << std::setw(6) << std::right << std::hex << (b & 0xffffff) << std::dec;
+	}
+	void writeWord(int b) {
+		out << std::setfill('0') << std::setw(4) << std::right << std::hex << (b & 0xffff) << std::dec;
+	}
+	void writeByte(int b) {
+		out << std::setfill('0') << std::setw(2) << std::right << std::hex << (b & 0xff) << std::dec;
+	}
+	std::string flush() {
+		std::string s = out.str();
+		out.str("");
+		return s;
+	}
+	void clear() {
+		out.str("");
+	}
+};
+
+const char readwrite[] = { 'R','W' };
+const char intshortbyte[] = { 'l','s','b','?' };
+
+struct MemEvent : Stream {
 	int time;
 	int address; // bit31 - R=0 W=1 bit 30-29 - byte,short,int 
 	int data;
 	int pc;
 
 	MemEvent(int t32,int a32, int d32, int pc32) :time(t32), address(a32), data(d32), pc(pc32) {}
+
+	std::string toString() {
+
+		out.clear();
+
+		int t32 = time;
+		int a32 = address;
+		int d32 = data;
+		int pc32 = pc;
+		
+		int star = (a32 >> 31) & 1;
+		int rw = (a32 >> 30) & 1;
+		int opsize = (a32 >> 28) & 3;
+		int a24 = a32 & 0xffffff;
+
+		// tick: R/W l/s/b address data 
+
+		writeLong(t32);
+		writeSpace();
+		writeChar(readwrite[rw]);
+		writeSpace();
+		writeChar(intshortbyte[opsize]);
+		writeSpace();
+		writeAddress(a24);
+		writeSpace();
+
+		switch (opsize) {
+		case 0:
+			writeLong(d32);
+			break;
+		case 1:
+			writeWord(d32);
+			break;
+		case 2:
+			writeByte(d32);
+			break;
+		}
+		if (star) {
+			writeSpace();
+			writeAddress(pc32);
+		}
+		writeEOL();
+
+		return flush();
+	}
 };
 
 typedef std::vector<MemEvent> MemEvents;
 
 //int m68k_execute(int num_cycles)
-
-const char readwrite[] = { 'R','W' };
-const char intshortbyte[] = {'l','s','b','?'};
 
 const int DumpLimit=5000;
 
@@ -261,18 +341,22 @@ struct acid68000 {
 			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortint << 27) | (address & 0xffffff);
 			int pc=readRegister(16);
 			memlog.emplace_back(cycle, a32, value, pc);
-//			std::stringstream ss;
-//			dumpEvent(ss, memlog.end());
-			// readwritefetch
-//			ss << "op:" << readwrite[readwritefetch & 1] << " src:";
-//			ss << a32;
-//			ss << " val:" << value << " pc:" << pc;
-//			systemLog("mem", ss);
+
+			std::string s=memlog.back().toString();
+			systemLog("mem", s);
 		}
 	}
 
 //	void dumpEvent(std:stringstream & out, MemEvent& e) {
 //	}
+
+	void writeLog(std::string path) {
+		std::ofstream fout(path);
+		for (auto m : machineLog) {
+			fout << m << std::endl;
+		}
+		fout.close();
+	}
 
 	void dumplog(int max) {
 		int n = memlog.size();
@@ -969,7 +1053,12 @@ public:
 		doslog << "unloadseg "; emit();
 	}
 	void delay() {
-		doslog << "delay "; emit();
+		int d1 = cpu0->readRegister(1);//{ticks}
+
+		int ms = d1 * 20;
+		Sleep(ms);
+
+		doslog << "delay " << d1; emit();
 	}
 
 	void loadseg() {
@@ -1864,7 +1953,14 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 
 //		usleep(1000);
 	}
-	acid500.dumplog(0);
+
+
+	std::cout << std::endl << std::endl << "Write log to disk? (y/N)";
+
+	acid500.writeLog("skidtool.log");
+
+
+//	acid500.dumplog(0);
 }
 
 int convertFiles() {
@@ -1901,16 +1997,16 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-	const char* amiga_binary = "../archive/lha";
-	const char* args = "e cv.lha\n";
+//	const char* amiga_binary = "../archive/lha";
+//	const char* args = "e cv.lha\n";
 //	const char* args = "e SkidMarksDemo.lha\n";
 //	const char* args = "l SkidMarksDemo.lha\n";
 //	const char* args = "e cv.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-//	const char* amiga_binary = "../archive/oblivion/oblivion";
-//	const char* args = "\n";
+	const char* amiga_binary = "../archive/oblivion/oblivion";
+	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };

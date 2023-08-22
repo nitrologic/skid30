@@ -1,0 +1,157 @@
+[mem] 00000000 R l 000000 00001400 000004
+[exec] findTask
+[exec] openlibrary dos.library,802000
+[dos] lock aliens,fffffffe => ffffffe8
+[dos] examine(ffffffe8)
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens1 => ffffffe4
+[exec] allocMem bf36
+[dos] close ffffffe4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens10 => ffffffe0
+[exec] allocMem 64a
+[dos] close ffffffe0 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens11 => ffffffdc
+[exec] allocMem 14b4
+[dos] close ffffffdc => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens12 => ffffffd8
+[exec] allocMem 2ca
+[dos] close ffffffd8 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens13 => ffffffd4
+[exec] allocMem 5ae
+[dos] close ffffffd4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens14 => ffffffd0
+[exec] allocMem 432
+[dos] close ffffffd0 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens2 => ffffffcc
+[exec] allocMem 16e6
+[dos] close ffffffcc => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens3 => ffffffc8
+[exec] allocMem 5aa
+[dos] close ffffffc8 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens4 => ffffffc4
+[exec] allocMem 12ec
+[dos] close ffffffc4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens5 => ffffffc0
+[exec] allocMem 17d8
+[dos] close ffffffc0 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens6 => ffffffbc
+[exec] allocMem 69c
+[dos] close ffffffbc => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens7 => ffffffb8
+[exec] allocMem 131e
+[dos] close ffffffb8 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens8 => ffffffb4
+[exec] allocMem 40a
+[dos] close ffffffb4 => 0
+[dos] exnext ffffffe8,16a10 => 1
+[dos] open aliens\aliens9 => ffffffb0
+[exec] allocMem 62e
+[dos] close ffffffb0 => 0
+[dos] exnext ffffffe8,16a10 => 0
+[dos] unlock ffffffe8
+[exec] openlibrary dos.library,802000
+[dos] open oblivion.heroes => 0
+[exec] allocMem 9a00
+[exec] allocMem 11880
+[exec] allocMem 38
+[exec] allocMem 2580
+[exec] allocMem 6000
+[exec] allocMem 1380
+[exec] openlibrary intuition.library,803000
+[exec] openlibrary dos.library,802000
+[dos] delay 1
+[mem] 0000582c R b dff180 63
+[dos] delay 1
+[mem] 0000582c R b dff180 62
+[dos] delay 1
+[mem] 0000582c R b dff180 61
+[dos] delay 1
+[mem] 0000582c R b dff180 60
+[dos] delay 1
+[mem] 0000582c R b dff180 5f
+[dos] delay 1
+[mem] 00005c2c R b dff180 5e
+[dos] delay 1
+[mem] 00005c2c R b dff180 5d
+[dos] delay 1
+[mem] 00005c2c R b dff180 5c
+[dos] delay 1
+[mem] 00005c2c R b dff180 5b
+[dos] delay 1
+[mem] 00005c2c R b dff180 5a
+[dos] delay 1
+[mem] 00005c2c R b dff180 59
+[dos] delay 1
+[mem] 00005c2c R b dff180 58
+[dos] delay 1
+[mem] 00005c2c R b dff180 57
+[dos] delay 1
+[mem] 00005c2c R b dff180 56
+[dos] delay 1
+[mem] 00006032 R b dff180 55
+[dos] delay 1
+[mem] 00006032 R b dff180 54
+[dos] delay 1
+[mem] 00006032 R b dff180 53
+[dos] delay 1
+[mem] 00006032 R b dff180 52
+[dos] delay 1
+[mem] 00006032 R b dff180 51
+[dos] delay 1
+[mem] 00006032 R b dff180 50
+[dos] delay 1
+[mem] 00006032 R b dff180 4f
+[dos] delay 1
+[mem] 00006032 R b dff180 4e
+[dos] delay 1
+[mem] 00006032 R b dff180 4d
+[dos] delay 1
+[mem] 0000643c R b dff180 4c
+[dos] delay 1
+[mem] 0000643c R b dff180 4b
+[dos] delay 1
+[mem] 0000643c R b dff180 4a
+[dos] delay 1
+[mem] 0000643c R b dff180 49
+[dos] delay 1
+[mem] 0000643c R b dff180 48
+[dos] delay 1
+[mem] 0000643c R b dff180 47
+[dos] delay 1
+[mem] 0000643c R b dff180 46
+[dos] delay 1
+[mem] 0000643c R b dff180 45
+[dos] delay 1
+[mem] 0000643c R b dff180 44
+[dos] delay 1
+[mem] 0000643c R b dff180 43
+[dos] delay 1
+[mem] 0000684c R b dff180 42
+[dos] delay 1
+[mem] 0000684c R b dff180 41
+[dos] delay 1
+[mem] 0000684c R b dff180 40
+[dos] delay 1
+[mem] 0000684c R b dff180 3f
+[dos] delay 1
+[mem] 0000684c R b dff180 3e
+[dos] delay 1
+[mem] 0000684c R b dff180 3d
+[dos] delay 1
+[mem] 0000684c R b dff180 3c
+[dos] delay 1
+[mem] 0000684c R b dff180 3b
+[dos] delay 1
+[mem] 0000684c R b dff180 3a
