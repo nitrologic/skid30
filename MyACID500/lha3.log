@@ -1,0 +1,311 @@
+[mem] 00000000 R l 000000 00001400 000004
+[exec] allocMem 1dbc
+[exec] setsignal 200,0
+[exec] openlibrary dos.library,802000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask
+[dos] getvar LHAOPTS => ffffffff
+[exec] findTask
+[dos] lock T:,fffffffe => ffffffe8
+[dos] unlock ffffffe8
+[exec] setsignal 60c94,0
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setsignal 618a0,4a
+[write] Registered to 
+[exec] setsignal 61898,e
+[write] _
+[exec] setsignal 61894,1
+[write] [0 p
+[exec] setsignal 618a8,5
+[exec] allocMem 110
+[dos] lock skid.lha,fffffffe => ffffffe4
+[dos] examine(ffffffe4)
+[dos] unlock ffffffe4
+[exec] setsignal 60c94,61bb1
+[exec] allocMem 2c
+[exec] allocMem d
+[exec] allocMem 3ecc
+[exec] allocMem 800c
+[exec] allocMem a10c
+[write]  archive '':_
+[exec] setsignal 61898,d
+[exec] allocMem 3e
+[exec] allocMem 800c
+[dos] open skid.lha => ffffffe0
+[exec] allocMem 15
+[exec] setsignal 780d8,780d8
+[dos] seek 0,ffffffff => 0
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\.info,fffffffe => 0
+[dos] open Skid\.info => 0
+[dos] lock Skid,fffffffe => 0
+[dos] createDir Skid => ffffffd0
+[dos] unlock ffffffd0
+[exec] setsignal 60c94,601c4
+[dos] open Skid\.info => ffffffcc
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\cars.palette,fffffffe => 0
+[dos] open Skid\gfx\cars.palette => 0
+[dos] lock Skid,fffffffe => ffffffc0
+[dos] unlock ffffffc0
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\gfx,fffffffe => 0
+[dos] createDir Skid/gfx => ffffffb8
+[dos] unlock ffffffb8
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\cars.palette => ffffffb4
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\engine.iff,fffffffe => 0
+[dos] open Skid\gfx\engine.iff => ffffffac
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\flag.iff,fffffffe => 0
+[dos] open Skid\gfx\flag.iff => ffffffa4
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\impact.iff,fffffffe => 0
+[dos] open Skid\gfx\impact.iff => ffffff9c
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 13
+[exec] allocMem 1d
+[exec] allocMem 14
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\num.iff,fffffffe => 0
+[dos] open Skid\gfx\num.iff => ffffff94
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 18
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\results.iff,fffffffe => 0
+[dos] open Skid\gfx\results.iff => ffffff8c
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\skid.iff,fffffffe => 0
+[dos] open Skid\gfx\skid.iff => ffffff84
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 19
+[exec] allocMem 23
+[exec] allocMem 1a
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\skidmarks.med,fffffffe => 0
+[dos] open Skid\gfx\skidmarks.med => ffffff7c
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek d73b,ffffffff => 8000
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\maps\format.iff,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff74
+[dos] unlock ffffff74
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\maps,fffffffe => 0
+[dos] createDir Skid/maps => ffffff6c
+[dos] unlock ffffff6c
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek 25468,ffffffff => 1573b
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\maps\format.map,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff64
+[dos] unlock ffffff64
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\maps,fffffffe => 0
+[dos] createDir Skid/maps => 0
+[write] [0m
+[exec] setsignal 61718,4
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem c
+[exec] allocMem 16
+[exec] allocMem 11
+[exec] allocMem 11
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\skid,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff58
+[dos] unlock ffffff58
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek 43ce1,ffffffff => 2d468
+[exec] setsignal 780d8,780d8
+[dos] close ffffffe0 => 0
+[write] 3 files 
+[exec] setsignal 61704,9
+[write] , 3 files failed
+[exec] setsignal 61708,10
+[write] .[K__
+[exec] setsignal 6170c,6
+[write] Operation not entirely successful._
+[exec] setsignal 618ac,23
+[dos] currentDir 7098
+[dos] close ffffffcc => 0
+[dos] close ffffffb4 => 0
+[dos] close ffffffac => 0
+[dos] close ffffffa4 => 0
+[dos] close ffffff9c => 0
+[dos] close ffffff94 => 0
+[dos] close ffffff8c => 0
+[dos] close ffffff84 => 0
+[dos] close ffffff7c => 0
+[write] [ p[0m
+[exec] setTaskPri
+[mem] 00094dbc R w 000000 0000 000002
+[mem] 00098dca W w fffffe 0658 002060
+[mem] 00098dca W w fffffc 0006 002060
+[mem] 00098dca W w fffffa 0000 002060
+[mem] 00098dca W w fffff8 0006 002060
+[mem] 00098dca W w fffff6 8554 002060
+[mem] 00098dca W w fffff4 0000 002060

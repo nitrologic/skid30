@@ -1,0 +1,10 @@
+lha1 - fails with wrong filename in argument
+
+lha2 - creates skeleton but fucks up
+
+[dos] lock Skid\maps,fffffffe => 0
+[dos] createDir Skid/maps => ffffff6c
+
+lha3 - from 
+
+lha4 - fix for lha2 - still calling currentdir with non negative lock :()

@@ -9,6 +9,8 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+//#define STOP_ON_WRITE
+
 const int ChipsetFlags = 3;
 
 typedef std::string logline;
@@ -459,7 +461,9 @@ struct amiga16 : memory32{
 			break;
 		case DOS_WRITE:
 			dos->write();
+#ifdef STOP_ON_WRITE
 			return 1;
+#endif
 			break;
 		case DOS_INPUT:
 			dos->input();

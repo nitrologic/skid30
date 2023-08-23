@@ -1,0 +1,1562 @@
+[mem] 00000000 R l 000000 00001400 000004
+[exec] allocMem 1dbc
+[exec] setsignal 200,0
+[exec] openlibrary dos.library,802000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask
+[dos] getvar LHAOPTS => ffffffff
+[exec] findTask
+[dos] lock T:,fffffffe => ffffffe8
+[dos] unlock ffffffe8
+[exec] setsignal 60c94,0
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setsignal 618a0,4a
+[write] Registered to 
+[exec] setsignal 61898,e
+[write] _
+[exec] setsignal 61894,1
+[write] [0 p
+[exec] setsignal 618a8,5
+[exec] allocMem 110
+[dos] lock skid.lha,fffffffe => ffffffe4
+[dos] examine(ffffffe4)
+[dos] unlock ffffffe4
+[exec] setsignal 60c94,61bb1
+[exec] allocMem 2c
+[exec] allocMem d
+[exec] allocMem 3ecc
+[exec] allocMem 800c
+[exec] allocMem a10c
+[write]  archive '':_
+[exec] setsignal 61898,d
+[exec] allocMem 3e
+[exec] allocMem 800c
+[dos] open skid.lha => ffffffe0
+[exec] allocMem 15
+[exec] setsignal 780d8,780d8
+[dos] seek 0,ffffffff => 0
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\.info,fffffffe => 0
+[dos] open Skid\.info => 0
+[dos] lock Skid,fffffffe => 0
+[dos] createDir Skid => ffffffd0
+[dos] unlock ffffffd0
+[exec] setsignal 60c94,601c4
+[dos] open Skid\.info => ffffffcc
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\cars.palette,fffffffe => 0
+[dos] open Skid\gfx\cars.palette => 0
+[dos] lock Skid,fffffffe => ffffffc0
+[dos] unlock ffffffc0
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\gfx,fffffffe => 0
+[dos] createDir Skid/gfx => ffffffb8
+[dos] unlock ffffffb8
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\cars.palette => ffffffb4
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\engine.iff,fffffffe => 0
+[dos] open Skid\gfx\engine.iff => ffffffac
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\flag.iff,fffffffe => 0
+[dos] open Skid\gfx\flag.iff => ffffffa4
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\impact.iff,fffffffe => 0
+[dos] open Skid\gfx\impact.iff => ffffff9c
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 13
+[exec] allocMem 1d
+[exec] allocMem 14
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\num.iff,fffffffe => 0
+[dos] open Skid\gfx\num.iff => ffffff94
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 18
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\results.iff,fffffffe => 0
+[dos] open Skid\gfx\results.iff => ffffff8c
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\skid.iff,fffffffe => 0
+[dos] open Skid\gfx\skid.iff => ffffff84
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 19
+[exec] allocMem 23
+[exec] allocMem 1a
+[exec] allocMem 15
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\skidmarks.med,fffffffe => 0
+[dos] open Skid\gfx\skidmarks.med => ffffff7c
+[write] [K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek d73b,ffffffff => 8000
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\maps\format.iff,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff74
+[dos] unlock ffffff74
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\maps,fffffffe => 0
+[dos] createDir Skid/maps => ffffff6c
+[dos] unlock ffffff6c
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek 25468,ffffffff => 1573b
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\maps\format.map,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff64
+[dos] unlock ffffff64
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\maps,fffffffe => 0
+[dos] createDir Skid/maps => 0
+[write] [0m
+[exec] setsignal 61718,4
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem c
+[exec] allocMem 16
+[exec] allocMem 11
+[exec] allocMem 11
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\skid,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff58
+[dos] unlock ffffff58
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek 43ce1,ffffffff => 2d468
+[exec] setsignal 780d8,780d8
+[dos] close ffffffe0 => 0
+[write] 3 files 
+[exec] setsignal 61704,9
+[write] , 3 files failed
+[exec] setsignal 61708,10
+[write] .[K__
+[exec] setsignal 6170c,6
+[write] Operation not entirely successful._
+[exec] setsignal 618ac,23
+[dos] currentDir 7098
+[dos] close ffffffcc => 0
+[dos] close ffffffb4 => 0
+[dos] close ffffffac => 0
+[dos] close ffffffa4 => 0
+[dos] close ffffff9c => 0
+[dos] close ffffff94 => 0
+[dos] close ffffff8c => 0
+[dos] close ffffff84 => 0
+[dos] close ffffff7c => 0
+[write] [ p[0m
+[exec] setTaskPri
+[mem] 00094ea2 R w 000000 0000 000002
+[mem] 00098eaa W w fffffe 0658 002060
+[mem] 00098eaa W w fffffc 0006 002060
+[mem] 00098eaa W w fffffa 0000 002060
+[mem] 00098eaa W w fffff8 0006 002060
+[mem] 00098eaa W w fffff6 8554 002060
+[mem] 00098eaa W w fffff4 0000 002060
+[mem] 000990ba W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00099570 R l fffff0 00000000 800f3c
+[mem] 00099580 R w 000000 2098 000002
+[mem] 0009d594 W w fffffe 0658 002060
+[mem] 0009d594 W w fffffc 0006 002060
+[mem] 0009d594 W w fffffa 0000 002060
+[mem] 0009d594 W w fffff8 0006 002060
+[mem] 0009d594 W w fffff6 c2b8 002060
+[mem] 0009d594 W w fffff4 0001 002060
+[mem] 0009da24 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0009deea R l fffff0 00000000 800f3c
+[mem] 0009defa R w 000000 2098 000002
+[mem] 000a1f0e W w fffffe 0658 002060
+[mem] 000a1f0e W w fffffc 0006 002060
+[mem] 000a1f0e W w fffffa 0000 002060
+[mem] 000a1f0e W w fffff8 0006 002060
+[mem] 000a1f0e W w fffff6 c2b8 002060
+[mem] 000a1f0e W w fffff4 0001 002060
+[mem] 000a239e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000a2864 R l fffff0 00000000 800f3c
+[mem] 000a2874 R w 000000 2098 000002
+[mem] 000a6888 W w fffffe 0658 002060
+[mem] 000a6888 W w fffffc 0006 002060
+[mem] 000a6888 W w fffffa 0000 002060
+[mem] 000a6888 W w fffff8 0006 002060
+[mem] 000a6888 W w fffff6 c2b8 002060
+[mem] 000a6888 W w fffff4 0001 002060
+[mem] 000a6d18 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000a71de R l fffff0 00000000 800f3c
+[mem] 000a71ee R w 000000 2098 000002
+[mem] 000ab202 W w fffffe 0658 002060
+[mem] 000ab202 W w fffffc 0006 002060
+[mem] 000ab202 W w fffffa 0000 002060
+[mem] 000ab202 W w fffff8 0006 002060
+[mem] 000ab202 W w fffff6 c2b8 002060
+[mem] 000ab202 W w fffff4 0001 002060
+[mem] 000ab692 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000abb58 R l fffff0 00000000 800f3c
+[mem] 000abb68 R w 000000 2098 000002
+[mem] 000afb7c W w fffffe 0658 002060
+[mem] 000afb7c W w fffffc 0006 002060
+[mem] 000afb7c W w fffffa 0000 002060
+[mem] 000afb7c W w fffff8 0006 002060
+[mem] 000afb7c W w fffff6 c2b8 002060
+[mem] 000afb7c W w fffff4 0001 002060
+[mem] 000b000c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000b04d2 R l fffff0 00000000 800f3c
+[mem] 000b04e2 R w 000000 2098 000002
+[mem] 000b44f6 W w fffffe 0658 002060
+[mem] 000b44f6 W w fffffc 0006 002060
+[mem] 000b44f6 W w fffffa 0000 002060
+[mem] 000b44f6 W w fffff8 0006 002060
+[mem] 000b44f6 W w fffff6 c2b8 002060
+[mem] 000b44f6 W w fffff4 0001 002060
+[mem] 000b4986 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000b4e4c R l fffff0 00000000 800f3c
+[mem] 000b4e5c R w 000000 2098 000002
+[mem] 000b8e70 W w fffffe 0658 002060
+[mem] 000b8e70 W w fffffc 0006 002060
+[mem] 000b8e70 W w fffffa 0000 002060
+[mem] 000b8e70 W w fffff8 0006 002060
+[mem] 000b8e70 W w fffff6 c2b8 002060
+[mem] 000b8e70 W w fffff4 0001 002060
+[mem] 000b9300 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000b97c6 R l fffff0 00000000 800f3c
+[mem] 000b97d6 R w 000000 2098 000002
+[mem] 000bd7ea W w fffffe 0658 002060
+[mem] 000bd7ea W w fffffc 0006 002060
+[mem] 000bd7ea W w fffffa 0000 002060
+[mem] 000bd7ea W w fffff8 0006 002060
+[mem] 000bd7ea W w fffff6 c2b8 002060
+[mem] 000bd7ea W w fffff4 0001 002060
+[mem] 000bdc7a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000be140 R l fffff0 00000000 800f3c
+[mem] 000be150 R w 000000 2098 000002
+[mem] 000c2164 W w fffffe 0658 002060
+[mem] 000c2164 W w fffffc 0006 002060
+[mem] 000c2164 W w fffffa 0000 002060
+[mem] 000c2164 W w fffff8 0006 002060
+[mem] 000c2164 W w fffff6 c2b8 002060
+[mem] 000c2164 W w fffff4 0001 002060
+[mem] 000c25f4 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000c2aba R l fffff0 00000000 800f3c
+[mem] 000c2aca R w 000000 2098 000002
+[mem] 000c6ade W w fffffe 0658 002060
+[mem] 000c6ade W w fffffc 0006 002060
+[mem] 000c6ade W w fffffa 0000 002060
+[mem] 000c6ade W w fffff8 0006 002060
+[mem] 000c6ade W w fffff6 c2b8 002060
+[mem] 000c6ade W w fffff4 0001 002060
+[mem] 000c6f6e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000c7434 R l fffff0 00000000 800f3c
+[mem] 000c7444 R w 000000 2098 000002
+[mem] 000cb458 W w fffffe 0658 002060
+[mem] 000cb458 W w fffffc 0006 002060
+[mem] 000cb458 W w fffffa 0000 002060
+[mem] 000cb458 W w fffff8 0006 002060
+[mem] 000cb458 W w fffff6 c2b8 002060
+[mem] 000cb458 W w fffff4 0001 002060
+[mem] 000cb8e8 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000cbdae R l fffff0 00000000 800f3c
+[mem] 000cbdbe R w 000000 2098 000002
+[mem] 000cfdd2 W w fffffe 0658 002060
+[mem] 000cfdd2 W w fffffc 0006 002060
+[mem] 000cfdd2 W w fffffa 0000 002060
+[mem] 000cfdd2 W w fffff8 0006 002060
+[mem] 000cfdd2 W w fffff6 c2b8 002060
+[mem] 000cfdd2 W w fffff4 0001 002060
+[mem] 000d0262 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000d0728 R l fffff0 00000000 800f3c
+[mem] 000d0738 R w 000000 2098 000002
+[mem] 000d474c W w fffffe 0658 002060
+[mem] 000d474c W w fffffc 0006 002060
+[mem] 000d474c W w fffffa 0000 002060
+[mem] 000d474c W w fffff8 0006 002060
+[mem] 000d474c W w fffff6 c2b8 002060
+[mem] 000d474c W w fffff4 0001 002060
+[mem] 000d4bdc W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000d50a2 R l fffff0 00000000 800f3c
+[mem] 000d50b2 R w 000000 2098 000002
+[mem] 000d90c6 W w fffffe 0658 002060
+[mem] 000d90c6 W w fffffc 0006 002060
+[mem] 000d90c6 W w fffffa 0000 002060
+[mem] 000d90c6 W w fffff8 0006 002060
+[mem] 000d90c6 W w fffff6 c2b8 002060
+[mem] 000d90c6 W w fffff4 0001 002060
+[mem] 000d9556 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000d9a1c R l fffff0 00000000 800f3c
+[mem] 000d9a2c R w 000000 2098 000002
+[mem] 000dda40 W w fffffe 0658 002060
+[mem] 000dda40 W w fffffc 0006 002060
+[mem] 000dda40 W w fffffa 0000 002060
+[mem] 000dda40 W w fffff8 0006 002060
+[mem] 000dda40 W w fffff6 c2b8 002060
+[mem] 000dda40 W w fffff4 0001 002060
+[mem] 000dded0 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000de396 R l fffff0 00000000 800f3c
+[mem] 000de3a6 R w 000000 2098 000002
+[mem] 000e23ba W w fffffe 0658 002060
+[mem] 000e23ba W w fffffc 0006 002060
+[mem] 000e23ba W w fffffa 0000 002060
+[mem] 000e23ba W w fffff8 0006 002060
+[mem] 000e23ba W w fffff6 c2b8 002060
+[mem] 000e23ba W w fffff4 0001 002060
+[mem] 000e284a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000e2d10 R l fffff0 00000000 800f3c
+[mem] 000e2d20 R w 000000 2098 000002
+[mem] 000e6d34 W w fffffe 0658 002060
+[mem] 000e6d34 W w fffffc 0006 002060
+[mem] 000e6d34 W w fffffa 0000 002060
+[mem] 000e6d34 W w fffff8 0006 002060
+[mem] 000e6d34 W w fffff6 c2b8 002060
+[mem] 000e6d34 W w fffff4 0001 002060
+[mem] 000e71c4 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000e768a R l fffff0 00000000 800f3c
+[mem] 000e769a R w 000000 2098 000002
+[mem] 000eb6ae W w fffffe 0658 002060
+[mem] 000eb6ae W w fffffc 0006 002060
+[mem] 000eb6ae W w fffffa 0000 002060
+[mem] 000eb6ae W w fffff8 0006 002060
+[mem] 000eb6ae W w fffff6 c2b8 002060
+[mem] 000eb6ae W w fffff4 0001 002060
+[mem] 000ebb3e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000ec004 R l fffff0 00000000 800f3c
+[mem] 000ec014 R w 000000 2098 000002
+[mem] 000f0028 W w fffffe 0658 002060
+[mem] 000f0028 W w fffffc 0006 002060
+[mem] 000f0028 W w fffffa 0000 002060
+[mem] 000f0028 W w fffff8 0006 002060
+[mem] 000f0028 W w fffff6 c2b8 002060
+[mem] 000f0028 W w fffff4 0001 002060
+[mem] 000f04b8 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000f097e R l fffff0 00000000 800f3c
+[mem] 000f098e R w 000000 2098 000002
+[mem] 000f49a2 W w fffffe 0658 002060
+[mem] 000f49a2 W w fffffc 0006 002060
+[mem] 000f49a2 W w fffffa 0000 002060
+[mem] 000f49a2 W w fffff8 0006 002060
+[mem] 000f49a2 W w fffff6 c2b8 002060
+[mem] 000f49a2 W w fffff4 0001 002060
+[mem] 000f4e32 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000f52f8 R l fffff0 00000000 800f3c
+[mem] 000f5308 R w 000000 2098 000002
+[mem] 000f931c W w fffffe 0658 002060
+[mem] 000f931c W w fffffc 0006 002060
+[mem] 000f931c W w fffffa 0000 002060
+[mem] 000f931c W w fffff8 0006 002060
+[mem] 000f931c W w fffff6 c2b8 002060
+[mem] 000f931c W w fffff4 0001 002060
+[mem] 000f97ac W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000f9c72 R l fffff0 00000000 800f3c
+[mem] 000f9c82 R w 000000 2098 000002
+[mem] 000fdc96 W w fffffe 0658 002060
+[mem] 000fdc96 W w fffffc 0006 002060
+[mem] 000fdc96 W w fffffa 0000 002060
+[mem] 000fdc96 W w fffff8 0006 002060
+[mem] 000fdc96 W w fffff6 c2b8 002060
+[mem] 000fdc96 W w fffff4 0001 002060
+[mem] 000fe126 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 000fe5ec R l fffff0 00000000 800f3c
+[mem] 000fe5fc R w 000000 2098 000002
+[mem] 00102610 W w fffffe 0658 002060
+[mem] 00102610 W w fffffc 0006 002060
+[mem] 00102610 W w fffffa 0000 002060
+[mem] 00102610 W w fffff8 0006 002060
+[mem] 00102610 W w fffff6 c2b8 002060
+[mem] 00102610 W w fffff4 0001 002060
+[mem] 00102aa0 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00102f66 R l fffff0 00000000 800f3c
+[mem] 00102f76 R w 000000 2098 000002
+[mem] 00106f8a W w fffffe 0658 002060
+[mem] 00106f8a W w fffffc 0006 002060
+[mem] 00106f8a W w fffffa 0000 002060
+[mem] 00106f8a W w fffff8 0006 002060
+[mem] 00106f8a W w fffff6 c2b8 002060
+[mem] 00106f8a W w fffff4 0001 002060
+[mem] 0010741a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001078e0 R l fffff0 00000000 800f3c
+[mem] 001078f0 R w 000000 2098 000002
+[mem] 0010b904 W w fffffe 0658 002060
+[mem] 0010b904 W w fffffc 0006 002060
+[mem] 0010b904 W w fffffa 0000 002060
+[mem] 0010b904 W w fffff8 0006 002060
+[mem] 0010b904 W w fffff6 c2b8 002060
+[mem] 0010b904 W w fffff4 0001 002060
+[mem] 0010bd94 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0010c25a R l fffff0 00000000 800f3c
+[mem] 0010c26a R w 000000 2098 000002
+[mem] 0011027e W w fffffe 0658 002060
+[mem] 0011027e W w fffffc 0006 002060
+[mem] 0011027e W w fffffa 0000 002060
+[mem] 0011027e W w fffff8 0006 002060
+[mem] 0011027e W w fffff6 c2b8 002060
+[mem] 0011027e W w fffff4 0001 002060
+[mem] 0011070e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00110bd4 R l fffff0 00000000 800f3c
+[mem] 00110be4 R w 000000 2098 000002
+[mem] 00114bf8 W w fffffe 0658 002060
+[mem] 00114bf8 W w fffffc 0006 002060
+[mem] 00114bf8 W w fffffa 0000 002060
+[mem] 00114bf8 W w fffff8 0006 002060
+[mem] 00114bf8 W w fffff6 c2b8 002060
+[mem] 00114bf8 W w fffff4 0001 002060
+[mem] 00115088 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0011554e R l fffff0 00000000 800f3c
+[mem] 0011555e R w 000000 2098 000002
+[mem] 00119572 W w fffffe 0658 002060
+[mem] 00119572 W w fffffc 0006 002060
+[mem] 00119572 W w fffffa 0000 002060
+[mem] 00119572 W w fffff8 0006 002060
+[mem] 00119572 W w fffff6 c2b8 002060
+[mem] 00119572 W w fffff4 0001 002060
+[mem] 00119a02 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00119ec8 R l fffff0 00000000 800f3c
+[mem] 00119ed8 R w 000000 2098 000002
+[mem] 0011deec W w fffffe 0658 002060
+[mem] 0011deec W w fffffc 0006 002060
+[mem] 0011deec W w fffffa 0000 002060
+[mem] 0011deec W w fffff8 0006 002060
+[mem] 0011deec W w fffff6 c2b8 002060
+[mem] 0011deec W w fffff4 0001 002060
+[mem] 0011e37c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0011e842 R l fffff0 00000000 800f3c
+[mem] 0011e852 R w 000000 2098 000002
+[mem] 00122866 W w fffffe 0658 002060
+[mem] 00122866 W w fffffc 0006 002060
+[mem] 00122866 W w fffffa 0000 002060
+[mem] 00122866 W w fffff8 0006 002060
+[mem] 00122866 W w fffff6 c2b8 002060
+[mem] 00122866 W w fffff4 0001 002060
+[mem] 00122cf6 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001231bc R l fffff0 00000000 800f3c
+[mem] 001231cc R w 000000 2098 000002
+[mem] 001271e0 W w fffffe 0658 002060
+[mem] 001271e0 W w fffffc 0006 002060
+[mem] 001271e0 W w fffffa 0000 002060
+[mem] 001271e0 W w fffff8 0006 002060
+[mem] 001271e0 W w fffff6 c2b8 002060
+[mem] 001271e0 W w fffff4 0001 002060
+[mem] 00127670 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00127b36 R l fffff0 00000000 800f3c
+[mem] 00127b46 R w 000000 2098 000002
+[mem] 0012bb5a W w fffffe 0658 002060
+[mem] 0012bb5a W w fffffc 0006 002060
+[mem] 0012bb5a W w fffffa 0000 002060
+[mem] 0012bb5a W w fffff8 0006 002060
+[mem] 0012bb5a W w fffff6 c2b8 002060
+[mem] 0012bb5a W w fffff4 0001 002060
+[mem] 0012bfea W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0012c4b0 R l fffff0 00000000 800f3c
+[mem] 0012c4c0 R w 000000 2098 000002
+[mem] 001304d4 W w fffffe 0658 002060
+[mem] 001304d4 W w fffffc 0006 002060
+[mem] 001304d4 W w fffffa 0000 002060
+[mem] 001304d4 W w fffff8 0006 002060
+[mem] 001304d4 W w fffff6 c2b8 002060
+[mem] 001304d4 W w fffff4 0001 002060
+[mem] 00130964 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00130e2a R l fffff0 00000000 800f3c
+[mem] 00130e3a R w 000000 2098 000002
+[mem] 00134e4e W w fffffe 0658 002060
+[mem] 00134e4e W w fffffc 0006 002060
+[mem] 00134e4e W w fffffa 0000 002060
+[mem] 00134e4e W w fffff8 0006 002060
+[mem] 00134e4e W w fffff6 c2b8 002060
+[mem] 00134e4e W w fffff4 0001 002060
+[mem] 001352de W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001357a4 R l fffff0 00000000 800f3c
+[mem] 001357b4 R w 000000 2098 000002
+[mem] 001397c8 W w fffffe 0658 002060
+[mem] 001397c8 W w fffffc 0006 002060
+[mem] 001397c8 W w fffffa 0000 002060
+[mem] 001397c8 W w fffff8 0006 002060
+[mem] 001397c8 W w fffff6 c2b8 002060
+[mem] 001397c8 W w fffff4 0001 002060
+[mem] 00139c58 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0013a11e R l fffff0 00000000 800f3c
+[mem] 0013a12e R w 000000 2098 000002
+[mem] 0013e142 W w fffffe 0658 002060
+[mem] 0013e142 W w fffffc 0006 002060
+[mem] 0013e142 W w fffffa 0000 002060
+[mem] 0013e142 W w fffff8 0006 002060
+[mem] 0013e142 W w fffff6 c2b8 002060
+[mem] 0013e142 W w fffff4 0001 002060
+[mem] 0013e5d2 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0013ea98 R l fffff0 00000000 800f3c
+[mem] 0013eaa8 R w 000000 2098 000002
+[mem] 00142abc W w fffffe 0658 002060
+[mem] 00142abc W w fffffc 0006 002060
+[mem] 00142abc W w fffffa 0000 002060
+[mem] 00142abc W w fffff8 0006 002060
+[mem] 00142abc W w fffff6 c2b8 002060
+[mem] 00142abc W w fffff4 0001 002060
+[mem] 00142f4c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00143412 R l fffff0 00000000 800f3c
+[mem] 00143422 R w 000000 2098 000002
+[mem] 00147436 W w fffffe 0658 002060
+[mem] 00147436 W w fffffc 0006 002060
+[mem] 00147436 W w fffffa 0000 002060
+[mem] 00147436 W w fffff8 0006 002060
+[mem] 00147436 W w fffff6 c2b8 002060
+[mem] 00147436 W w fffff4 0001 002060
+[mem] 001478c6 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00147d8c R l fffff0 00000000 800f3c
+[mem] 00147d9c R w 000000 2098 000002
+[mem] 0014bdb0 W w fffffe 0658 002060
+[mem] 0014bdb0 W w fffffc 0006 002060
+[mem] 0014bdb0 W w fffffa 0000 002060
+[mem] 0014bdb0 W w fffff8 0006 002060
+[mem] 0014bdb0 W w fffff6 c2b8 002060
+[mem] 0014bdb0 W w fffff4 0001 002060
+[mem] 0014c240 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0014c706 R l fffff0 00000000 800f3c
+[mem] 0014c716 R w 000000 2098 000002
+[mem] 0015072a W w fffffe 0658 002060
+[mem] 0015072a W w fffffc 0006 002060
+[mem] 0015072a W w fffffa 0000 002060
+[mem] 0015072a W w fffff8 0006 002060
+[mem] 0015072a W w fffff6 c2b8 002060
+[mem] 0015072a W w fffff4 0001 002060
+[mem] 00150bba W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00151080 R l fffff0 00000000 800f3c
+[mem] 00151090 R w 000000 2098 000002
+[mem] 001550a4 W w fffffe 0658 002060
+[mem] 001550a4 W w fffffc 0006 002060
+[mem] 001550a4 W w fffffa 0000 002060
+[mem] 001550a4 W w fffff8 0006 002060
+[mem] 001550a4 W w fffff6 c2b8 002060
+[mem] 001550a4 W w fffff4 0001 002060
+[mem] 00155534 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001559fa R l fffff0 00000000 800f3c
+[mem] 00155a0a R w 000000 2098 000002
+[mem] 00159a1e W w fffffe 0658 002060
+[mem] 00159a1e W w fffffc 0006 002060
+[mem] 00159a1e W w fffffa 0000 002060
+[mem] 00159a1e W w fffff8 0006 002060
+[mem] 00159a1e W w fffff6 c2b8 002060
+[mem] 00159a1e W w fffff4 0001 002060
+[mem] 00159eae W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0015a374 R l fffff0 00000000 800f3c
+[mem] 0015a384 R w 000000 2098 000002
+[mem] 0015e398 W w fffffe 0658 002060
+[mem] 0015e398 W w fffffc 0006 002060
+[mem] 0015e398 W w fffffa 0000 002060
+[mem] 0015e398 W w fffff8 0006 002060
+[mem] 0015e398 W w fffff6 c2b8 002060
+[mem] 0015e398 W w fffff4 0001 002060
+[mem] 0015e828 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0015ecee R l fffff0 00000000 800f3c
+[mem] 0015ecfe R w 000000 2098 000002
+[mem] 00162d12 W w fffffe 0658 002060
+[mem] 00162d12 W w fffffc 0006 002060
+[mem] 00162d12 W w fffffa 0000 002060
+[mem] 00162d12 W w fffff8 0006 002060
+[mem] 00162d12 W w fffff6 c2b8 002060
+[mem] 00162d12 W w fffff4 0001 002060
+[mem] 001631a2 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00163668 R l fffff0 00000000 800f3c
+[mem] 00163678 R w 000000 2098 000002
+[mem] 0016768c W w fffffe 0658 002060
+[mem] 0016768c W w fffffc 0006 002060
+[mem] 0016768c W w fffffa 0000 002060
+[mem] 0016768c W w fffff8 0006 002060
+[mem] 0016768c W w fffff6 c2b8 002060
+[mem] 0016768c W w fffff4 0001 002060
+[mem] 00167b1c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00167fe2 R l fffff0 00000000 800f3c
+[mem] 00167ff2 R w 000000 2098 000002
+[mem] 0016c006 W w fffffe 0658 002060
+[mem] 0016c006 W w fffffc 0006 002060
+[mem] 0016c006 W w fffffa 0000 002060
+[mem] 0016c006 W w fffff8 0006 002060
+[mem] 0016c006 W w fffff6 c2b8 002060
+[mem] 0016c006 W w fffff4 0001 002060
+[mem] 0016c496 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0016c95c R l fffff0 00000000 800f3c
+[mem] 0016c96c R w 000000 2098 000002
+[mem] 00170980 W w fffffe 0658 002060
+[mem] 00170980 W w fffffc 0006 002060
+[mem] 00170980 W w fffffa 0000 002060
+[mem] 00170980 W w fffff8 0006 002060
+[mem] 00170980 W w fffff6 c2b8 002060
+[mem] 00170980 W w fffff4 0001 002060
+[mem] 00170e10 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001712d6 R l fffff0 00000000 800f3c
+[mem] 001712e6 R w 000000 2098 000002
+[mem] 001752fa W w fffffe 0658 002060
+[mem] 001752fa W w fffffc 0006 002060
+[mem] 001752fa W w fffffa 0000 002060
+[mem] 001752fa W w fffff8 0006 002060
+[mem] 001752fa W w fffff6 c2b8 002060
+[mem] 001752fa W w fffff4 0001 002060
+[mem] 0017578a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00175c50 R l fffff0 00000000 800f3c
+[mem] 00175c60 R w 000000 2098 000002
+[mem] 00179c74 W w fffffe 0658 002060
+[mem] 00179c74 W w fffffc 0006 002060
+[mem] 00179c74 W w fffffa 0000 002060
+[mem] 00179c74 W w fffff8 0006 002060
+[mem] 00179c74 W w fffff6 c2b8 002060
+[mem] 00179c74 W w fffff4 0001 002060
+[mem] 0017a104 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0017a5ca R l fffff0 00000000 800f3c
+[mem] 0017a5da R w 000000 2098 000002
+[mem] 0017e5ee W w fffffe 0658 002060
+[mem] 0017e5ee W w fffffc 0006 002060
+[mem] 0017e5ee W w fffffa 0000 002060
+[mem] 0017e5ee W w fffff8 0006 002060
+[mem] 0017e5ee W w fffff6 c2b8 002060
+[mem] 0017e5ee W w fffff4 0001 002060
+[mem] 0017ea7e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0017ef44 R l fffff0 00000000 800f3c
+[mem] 0017ef54 R w 000000 2098 000002
+[mem] 00182f68 W w fffffe 0658 002060
+[mem] 00182f68 W w fffffc 0006 002060
+[mem] 00182f68 W w fffffa 0000 002060
+[mem] 00182f68 W w fffff8 0006 002060
+[mem] 00182f68 W w fffff6 c2b8 002060
+[mem] 00182f68 W w fffff4 0001 002060
+[mem] 001833f8 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001838be R l fffff0 00000000 800f3c
+[mem] 001838ce R w 000000 2098 000002
+[mem] 001878e2 W w fffffe 0658 002060
+[mem] 001878e2 W w fffffc 0006 002060
+[mem] 001878e2 W w fffffa 0000 002060
+[mem] 001878e2 W w fffff8 0006 002060
+[mem] 001878e2 W w fffff6 c2b8 002060
+[mem] 001878e2 W w fffff4 0001 002060
+[mem] 00187d72 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00188238 R l fffff0 00000000 800f3c
+[mem] 00188248 R w 000000 2098 000002
+[mem] 0018c25c W w fffffe 0658 002060
+[mem] 0018c25c W w fffffc 0006 002060
+[mem] 0018c25c W w fffffa 0000 002060
+[mem] 0018c25c W w fffff8 0006 002060
+[mem] 0018c25c W w fffff6 c2b8 002060
+[mem] 0018c25c W w fffff4 0001 002060
+[mem] 0018c6ec W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0018cbb2 R l fffff0 00000000 800f3c
+[mem] 0018cbc2 R w 000000 2098 000002
+[mem] 00190bd6 W w fffffe 0658 002060
+[mem] 00190bd6 W w fffffc 0006 002060
+[mem] 00190bd6 W w fffffa 0000 002060
+[mem] 00190bd6 W w fffff8 0006 002060
+[mem] 00190bd6 W w fffff6 c2b8 002060
+[mem] 00190bd6 W w fffff4 0001 002060
+[mem] 00191066 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0019152c R l fffff0 00000000 800f3c
+[mem] 0019153c R w 000000 2098 000002
+[mem] 00195550 W w fffffe 0658 002060
+[mem] 00195550 W w fffffc 0006 002060
+[mem] 00195550 W w fffffa 0000 002060
+[mem] 00195550 W w fffff8 0006 002060
+[mem] 00195550 W w fffff6 c2b8 002060
+[mem] 00195550 W w fffff4 0001 002060
+[mem] 001959e0 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00195ea6 R l fffff0 00000000 800f3c
+[mem] 00195eb6 R w 000000 2098 000002
+[mem] 00199eca W w fffffe 0658 002060
+[mem] 00199eca W w fffffc 0006 002060
+[mem] 00199eca W w fffffa 0000 002060
+[mem] 00199eca W w fffff8 0006 002060
+[mem] 00199eca W w fffff6 c2b8 002060
+[mem] 00199eca W w fffff4 0001 002060
+[mem] 0019a35a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0019a820 R l fffff0 00000000 800f3c
+[mem] 0019a830 R w 000000 2098 000002
+[mem] 0019e844 W w fffffe 0658 002060
+[mem] 0019e844 W w fffffc 0006 002060
+[mem] 0019e844 W w fffffa 0000 002060
+[mem] 0019e844 W w fffff8 0006 002060
+[mem] 0019e844 W w fffff6 c2b8 002060
+[mem] 0019e844 W w fffff4 0001 002060
+[mem] 0019ecd4 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0019f19a R l fffff0 00000000 800f3c
+[mem] 0019f1aa R w 000000 2098 000002
+[mem] 001a31be W w fffffe 0658 002060
+[mem] 001a31be W w fffffc 0006 002060
+[mem] 001a31be W w fffffa 0000 002060
+[mem] 001a31be W w fffff8 0006 002060
+[mem] 001a31be W w fffff6 c2b8 002060
+[mem] 001a31be W w fffff4 0001 002060
+[mem] 001a364e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001a3b14 R l fffff0 00000000 800f3c
+[mem] 001a3b24 R w 000000 2098 000002
+[mem] 001a7b38 W w fffffe 0658 002060
+[mem] 001a7b38 W w fffffc 0006 002060
+[mem] 001a7b38 W w fffffa 0000 002060
+[mem] 001a7b38 W w fffff8 0006 002060
+[mem] 001a7b38 W w fffff6 c2b8 002060
+[mem] 001a7b38 W w fffff4 0001 002060
+[mem] 001a7fc8 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001a848e R l fffff0 00000000 800f3c
+[mem] 001a849e R w 000000 2098 000002
+[mem] 001ac4b2 W w fffffe 0658 002060
+[mem] 001ac4b2 W w fffffc 0006 002060
+[mem] 001ac4b2 W w fffffa 0000 002060
+[mem] 001ac4b2 W w fffff8 0006 002060
+[mem] 001ac4b2 W w fffff6 c2b8 002060
+[mem] 001ac4b2 W w fffff4 0001 002060
+[mem] 001ac942 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001ace08 R l fffff0 00000000 800f3c
+[mem] 001ace18 R w 000000 2098 000002
+[mem] 001b0e2c W w fffffe 0658 002060
+[mem] 001b0e2c W w fffffc 0006 002060
+[mem] 001b0e2c W w fffffa 0000 002060
+[mem] 001b0e2c W w fffff8 0006 002060
+[mem] 001b0e2c W w fffff6 c2b8 002060
+[mem] 001b0e2c W w fffff4 0001 002060
+[mem] 001b12bc W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001b1782 R l fffff0 00000000 800f3c
+[mem] 001b1792 R w 000000 2098 000002
+[mem] 001b57a6 W w fffffe 0658 002060
+[mem] 001b57a6 W w fffffc 0006 002060
+[mem] 001b57a6 W w fffffa 0000 002060
+[mem] 001b57a6 W w fffff8 0006 002060
+[mem] 001b57a6 W w fffff6 c2b8 002060
+[mem] 001b57a6 W w fffff4 0001 002060
+[mem] 001b5c36 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001b60fc R l fffff0 00000000 800f3c
+[mem] 001b610c R w 000000 2098 000002
+[mem] 001ba120 W w fffffe 0658 002060
+[mem] 001ba120 W w fffffc 0006 002060
+[mem] 001ba120 W w fffffa 0000 002060
+[mem] 001ba120 W w fffff8 0006 002060
+[mem] 001ba120 W w fffff6 c2b8 002060
+[mem] 001ba120 W w fffff4 0001 002060
+[mem] 001ba5b0 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001baa76 R l fffff0 00000000 800f3c
+[mem] 001baa86 R w 000000 2098 000002
+[mem] 001bea9a W w fffffe 0658 002060
+[mem] 001bea9a W w fffffc 0006 002060
+[mem] 001bea9a W w fffffa 0000 002060
+[mem] 001bea9a W w fffff8 0006 002060
+[mem] 001bea9a W w fffff6 c2b8 002060
+[mem] 001bea9a W w fffff4 0001 002060
+[mem] 001bef2a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001bf3f0 R l fffff0 00000000 800f3c
+[mem] 001bf400 R w 000000 2098 000002
+[mem] 001c3414 W w fffffe 0658 002060
+[mem] 001c3414 W w fffffc 0006 002060
+[mem] 001c3414 W w fffffa 0000 002060
+[mem] 001c3414 W w fffff8 0006 002060
+[mem] 001c3414 W w fffff6 c2b8 002060
+[mem] 001c3414 W w fffff4 0001 002060
+[mem] 001c38a4 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001c3d6a R l fffff0 00000000 800f3c
+[mem] 001c3d7a R w 000000 2098 000002
+[mem] 001c7d8e W w fffffe 0658 002060
+[mem] 001c7d8e W w fffffc 0006 002060
+[mem] 001c7d8e W w fffffa 0000 002060
+[mem] 001c7d8e W w fffff8 0006 002060
+[mem] 001c7d8e W w fffff6 c2b8 002060
+[mem] 001c7d8e W w fffff4 0001 002060
+[mem] 001c821e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001c86e4 R l fffff0 00000000 800f3c
+[mem] 001c86f4 R w 000000 2098 000002
+[mem] 001cc708 W w fffffe 0658 002060
+[mem] 001cc708 W w fffffc 0006 002060
+[mem] 001cc708 W w fffffa 0000 002060
+[mem] 001cc708 W w fffff8 0006 002060
+[mem] 001cc708 W w fffff6 c2b8 002060
+[mem] 001cc708 W w fffff4 0001 002060
+[mem] 001ccb98 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001cd05e R l fffff0 00000000 800f3c
+[mem] 001cd06e R w 000000 2098 000002
+[mem] 001d1082 W w fffffe 0658 002060
+[mem] 001d1082 W w fffffc 0006 002060
+[mem] 001d1082 W w fffffa 0000 002060
+[mem] 001d1082 W w fffff8 0006 002060
+[mem] 001d1082 W w fffff6 c2b8 002060
+[mem] 001d1082 W w fffff4 0001 002060
+[mem] 001d1512 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001d19d8 R l fffff0 00000000 800f3c
+[mem] 001d19e8 R w 000000 0000 000002
+[mem] 001d59f4 W w fffffe 0658 002060
+[mem] 001d59f4 W w fffffc 0006 002060
+[mem] 001d59f4 W w fffffa 0000 002060
+[mem] 001d59f4 W w fffff8 0006 002060
+[mem] 001d59f4 W w fffff6 c2b4 002060
+[mem] 001d59f4 W w fffff4 0001 002060
+[mem] 001d5e7c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001d6342 R l fffff0 00000000 800f3c
+[mem] 001d6352 R w 000000 2098 000002
+[mem] 001da366 W w fffffe 0658 002060
+[mem] 001da366 W w fffffc 0006 002060
+[mem] 001da366 W w fffffa 0000 002060
+[mem] 001da366 W w fffff8 0006 002060
+[mem] 001da366 W w fffff6 c2b8 002060
+[mem] 001da366 W w fffff4 0001 002060
+[mem] 001da7f6 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001dacbc R l fffff0 00000000 800f3c
+[mem] 001daccc R w 000000 2098 000002
+[mem] 001dece0 W w fffffe 0658 002060
+[mem] 001dece0 W w fffffc 0006 002060
+[mem] 001dece0 W w fffffa 0000 002060
+[mem] 001dece0 W w fffff8 0006 002060
+[mem] 001dece0 W w fffff6 c2b8 002060
+[mem] 001dece0 W w fffff4 0001 002060
+[mem] 001df170 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001df636 R l fffff0 00000000 800f3c
+[mem] 001df646 R w 000000 2098 000002
+[mem] 001e365a W w fffffe 0658 002060
+[mem] 001e365a W w fffffc 0006 002060
+[mem] 001e365a W w fffffa 0000 002060
+[mem] 001e365a W w fffff8 0006 002060
+[mem] 001e365a W w fffff6 c2b8 002060
+[mem] 001e365a W w fffff4 0001 002060
+[mem] 001e3aea W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001e3fb0 R l fffff0 00000000 800f3c
+[mem] 001e3fc0 R w 000000 2098 000002
+[mem] 001e7fd4 W w fffffe 0658 002060
+[mem] 001e7fd4 W w fffffc 0006 002060
+[mem] 001e7fd4 W w fffffa 0000 002060
+[mem] 001e7fd4 W w fffff8 0006 002060
+[mem] 001e7fd4 W w fffff6 c2b8 002060
+[mem] 001e7fd4 W w fffff4 0001 002060
+[mem] 001e8464 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001e892a R l fffff0 00000000 800f3c
+[mem] 001e893a R w 000000 2098 000002
+[mem] 001ec94e W w fffffe 0658 002060
+[mem] 001ec94e W w fffffc 0006 002060
+[mem] 001ec94e W w fffffa 0000 002060
+[mem] 001ec94e W w fffff8 0006 002060
+[mem] 001ec94e W w fffff6 c2b8 002060
+[mem] 001ec94e W w fffff4 0001 002060
+[mem] 001ecdde W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001ed2a4 R l fffff0 00000000 800f3c
+[mem] 001ed2b4 R w 000000 2098 000002
+[mem] 001f12c8 W w fffffe 0658 002060
+[mem] 001f12c8 W w fffffc 0006 002060
+[mem] 001f12c8 W w fffffa 0000 002060
+[mem] 001f12c8 W w fffff8 0006 002060
+[mem] 001f12c8 W w fffff6 c2b8 002060
+[mem] 001f12c8 W w fffff4 0001 002060
+[mem] 001f1758 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001f1c1e R l fffff0 00000000 800f3c
+[mem] 001f1c2e R w 000000 2098 000002
+[mem] 001f5c42 W w fffffe 0658 002060
+[mem] 001f5c42 W w fffffc 0006 002060
+[mem] 001f5c42 W w fffffa 0000 002060
+[mem] 001f5c42 W w fffff8 0006 002060
+[mem] 001f5c42 W w fffff6 c2b8 002060
+[mem] 001f5c42 W w fffff4 0001 002060
+[mem] 001f60d2 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001f6598 R l fffff0 00000000 800f3c
+[mem] 001f65a8 R w 000000 2098 000002
+[mem] 001fa5bc W w fffffe 0658 002060
+[mem] 001fa5bc W w fffffc 0006 002060
+[mem] 001fa5bc W w fffffa 0000 002060
+[mem] 001fa5bc W w fffff8 0006 002060
+[mem] 001fa5bc W w fffff6 c2b8 002060
+[mem] 001fa5bc W w fffff4 0001 002060
+[mem] 001faa4c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001faf12 R l fffff0 00000000 800f3c
+[mem] 001faf22 R w 000000 2098 000002
+[mem] 001fef36 W w fffffe 0658 002060
+[mem] 001fef36 W w fffffc 0006 002060
+[mem] 001fef36 W w fffffa 0000 002060
+[mem] 001fef36 W w fffff8 0006 002060
+[mem] 001fef36 W w fffff6 c2b8 002060
+[mem] 001fef36 W w fffff4 0001 002060
+[mem] 001ff3c6 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 001ff88c R l fffff0 00000000 800f3c
+[mem] 001ff89c R w 000000 2098 000002
+[mem] 002038b0 W w fffffe 0658 002060
+[mem] 002038b0 W w fffffc 0006 002060
+[mem] 002038b0 W w fffffa 0000 002060
+[mem] 002038b0 W w fffff8 0006 002060
+[mem] 002038b0 W w fffff6 c2b8 002060
+[mem] 002038b0 W w fffff4 0001 002060
+[mem] 00203d40 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00204206 R l fffff0 00000000 800f3c
+[mem] 00204216 R w 000000 2098 000002
+[mem] 0020822a W w fffffe 0658 002060
+[mem] 0020822a W w fffffc 0006 002060
+[mem] 0020822a W w fffffa 0000 002060
+[mem] 0020822a W w fffff8 0006 002060
+[mem] 0020822a W w fffff6 c2b8 002060
+[mem] 0020822a W w fffff4 0001 002060
+[mem] 002086ba W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00208b80 R l fffff0 00000000 800f3c
+[mem] 00208b90 R w 000000 2098 000002
+[mem] 0020cba4 W w fffffe 0658 002060
+[mem] 0020cba4 W w fffffc 0006 002060
+[mem] 0020cba4 W w fffffa 0000 002060
+[mem] 0020cba4 W w fffff8 0006 002060
+[mem] 0020cba4 W w fffff6 c2b8 002060
+[mem] 0020cba4 W w fffff4 0001 002060
+[mem] 0020d034 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0020d4fa R l fffff0 00000000 800f3c
+[mem] 0020d50a R w 000000 2098 000002
+[mem] 0021151e W w fffffe 0658 002060
+[mem] 0021151e W w fffffc 0006 002060
+[mem] 0021151e W w fffffa 0000 002060
+[mem] 0021151e W w fffff8 0006 002060
+[mem] 0021151e W w fffff6 c2b8 002060
+[mem] 0021151e W w fffff4 0001 002060
+[mem] 002119ae W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00211e74 R l fffff0 00000000 800f3c
+[mem] 00211e84 R w 000000 2098 000002
+[mem] 00215e98 W w fffffe 0658 002060
+[mem] 00215e98 W w fffffc 0006 002060
+[mem] 00215e98 W w fffffa 0000 002060
+[mem] 00215e98 W w fffff8 0006 002060
+[mem] 00215e98 W w fffff6 c2b8 002060
+[mem] 00215e98 W w fffff4 0001 002060
+[mem] 00216328 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002167ee R l fffff0 00000000 800f3c
+[mem] 002167fe R w 000000 2098 000002
+[mem] 0021a812 W w fffffe 0658 002060
+[mem] 0021a812 W w fffffc 0006 002060
+[mem] 0021a812 W w fffffa 0000 002060
+[mem] 0021a812 W w fffff8 0006 002060
+[mem] 0021a812 W w fffff6 c2b8 002060
+[mem] 0021a812 W w fffff4 0001 002060
+[mem] 0021aca2 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0021b168 R l fffff0 00000000 800f3c
+[mem] 0021b178 R w 000000 2098 000002
+[mem] 0021f18c W w fffffe 0658 002060
+[mem] 0021f18c W w fffffc 0006 002060
+[mem] 0021f18c W w fffffa 0000 002060
+[mem] 0021f18c W w fffff8 0006 002060
+[mem] 0021f18c W w fffff6 c2b8 002060
+[mem] 0021f18c W w fffff4 0001 002060
+[mem] 0021f61c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0021fae2 R l fffff0 00000000 800f3c
+[mem] 0021faf2 R w 000000 2098 000002
+[mem] 00223b06 W w fffffe 0658 002060
+[mem] 00223b06 W w fffffc 0006 002060
+[mem] 00223b06 W w fffffa 0000 002060
+[mem] 00223b06 W w fffff8 0006 002060
+[mem] 00223b06 W w fffff6 c2b8 002060
+[mem] 00223b06 W w fffff4 0001 002060
+[mem] 00223f96 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0022445c R l fffff0 00000000 800f3c
+[mem] 0022446c R w 000000 2098 000002
+[mem] 00228480 W w fffffe 0658 002060
+[mem] 00228480 W w fffffc 0006 002060
+[mem] 00228480 W w fffffa 0000 002060
+[mem] 00228480 W w fffff8 0006 002060
+[mem] 00228480 W w fffff6 c2b8 002060
+[mem] 00228480 W w fffff4 0001 002060
+[mem] 00228910 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00228dd6 R l fffff0 00000000 800f3c
+[mem] 00228de6 R w 000000 2098 000002
+[mem] 0022cdfa W w fffffe 0658 002060
+[mem] 0022cdfa W w fffffc 0006 002060
+[mem] 0022cdfa W w fffffa 0000 002060
+[mem] 0022cdfa W w fffff8 0006 002060
+[mem] 0022cdfa W w fffff6 c2b8 002060
+[mem] 0022cdfa W w fffff4 0001 002060
+[mem] 0022d28a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0022d750 R l fffff0 00000000 800f3c
+[mem] 0022d760 R w 000000 2098 000002
+[mem] 00231774 W w fffffe 0658 002060
+[mem] 00231774 W w fffffc 0006 002060
+[mem] 00231774 W w fffffa 0000 002060
+[mem] 00231774 W w fffff8 0006 002060
+[mem] 00231774 W w fffff6 c2b8 002060
+[mem] 00231774 W w fffff4 0001 002060
+[mem] 00231c04 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002320ca R l fffff0 00000000 800f3c
+[mem] 002320da R w 000000 2098 000002
+[mem] 002360ee W w fffffe 0658 002060
+[mem] 002360ee W w fffffc 0006 002060
+[mem] 002360ee W w fffffa 0000 002060
+[mem] 002360ee W w fffff8 0006 002060
+[mem] 002360ee W w fffff6 c2b8 002060
+[mem] 002360ee W w fffff4 0001 002060
+[mem] 0023657e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00236a44 R l fffff0 00000000 800f3c
+[mem] 00236a54 R w 000000 2098 000002
+[mem] 0023aa68 W w fffffe 0658 002060
+[mem] 0023aa68 W w fffffc 0006 002060
+[mem] 0023aa68 W w fffffa 0000 002060
+[mem] 0023aa68 W w fffff8 0006 002060
+[mem] 0023aa68 W w fffff6 c2b8 002060
+[mem] 0023aa68 W w fffff4 0001 002060
+[mem] 0023aef8 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0023b3be R l fffff0 00000000 800f3c
+[mem] 0023b3ce R w 000000 2098 000002
+[mem] 0023f3e2 W w fffffe 0658 002060
+[mem] 0023f3e2 W w fffffc 0006 002060
+[mem] 0023f3e2 W w fffffa 0000 002060
+[mem] 0023f3e2 W w fffff8 0006 002060
+[mem] 0023f3e2 W w fffff6 c2b8 002060
+[mem] 0023f3e2 W w fffff4 0001 002060
+[mem] 0023f872 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0023fd38 R l fffff0 00000000 800f3c
+[mem] 0023fd48 R w 000000 2098 000002
+[mem] 00243d5c W w fffffe 0658 002060
+[mem] 00243d5c W w fffffc 0006 002060
+[mem] 00243d5c W w fffffa 0000 002060
+[mem] 00243d5c W w fffff8 0006 002060
+[mem] 00243d5c W w fffff6 c2b8 002060
+[mem] 00243d5c W w fffff4 0001 002060
+[mem] 002441ec W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002446b2 R l fffff0 00000000 800f3c
+[mem] 002446c2 R w 000000 2098 000002
+[mem] 002486d6 W w fffffe 0658 002060
+[mem] 002486d6 W w fffffc 0006 002060
+[mem] 002486d6 W w fffffa 0000 002060
+[mem] 002486d6 W w fffff8 0006 002060
+[mem] 002486d6 W w fffff6 c2b8 002060
+[mem] 002486d6 W w fffff4 0001 002060
+[mem] 00248b66 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0024902c R l fffff0 00000000 800f3c
+[mem] 0024903c R w 000000 2098 000002
+[mem] 0024d050 W w fffffe 0658 002060
+[mem] 0024d050 W w fffffc 0006 002060
+[mem] 0024d050 W w fffffa 0000 002060
+[mem] 0024d050 W w fffff8 0006 002060
+[mem] 0024d050 W w fffff6 c2b8 002060
+[mem] 0024d050 W w fffff4 0001 002060
+[mem] 0024d4e0 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0024d9a6 R l fffff0 00000000 800f3c
+[mem] 0024d9b6 R w 000000 2098 000002
+[mem] 002519ca W w fffffe 0658 002060
+[mem] 002519ca W w fffffc 0006 002060
+[mem] 002519ca W w fffffa 0000 002060
+[mem] 002519ca W w fffff8 0006 002060
+[mem] 002519ca W w fffff6 c2b8 002060
+[mem] 002519ca W w fffff4 0001 002060
+[mem] 00251e5a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00252320 R l fffff0 00000000 800f3c
+[mem] 00252330 R w 000000 2098 000002
+[mem] 00256344 W w fffffe 0658 002060
+[mem] 00256344 W w fffffc 0006 002060
+[mem] 00256344 W w fffffa 0000 002060
+[mem] 00256344 W w fffff8 0006 002060
+[mem] 00256344 W w fffff6 c2b8 002060
+[mem] 00256344 W w fffff4 0001 002060
+[mem] 002567d4 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00256c9a R l fffff0 00000000 800f3c
+[mem] 00256caa R w 000000 2098 000002
+[mem] 0025acbe W w fffffe 0658 002060
+[mem] 0025acbe W w fffffc 0006 002060
+[mem] 0025acbe W w fffffa 0000 002060
+[mem] 0025acbe W w fffff8 0006 002060
+[mem] 0025acbe W w fffff6 c2b8 002060
+[mem] 0025acbe W w fffff4 0001 002060
+[mem] 0025b14e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0025b614 R l fffff0 00000000 800f3c
+[mem] 0025b624 R w 000000 2098 000002
+[mem] 0025f638 W w fffffe 0658 002060
+[mem] 0025f638 W w fffffc 0006 002060
+[mem] 0025f638 W w fffffa 0000 002060
+[mem] 0025f638 W w fffff8 0006 002060
+[mem] 0025f638 W w fffff6 c2b8 002060
+[mem] 0025f638 W w fffff4 0001 002060
+[mem] 0025fac8 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0025ff8e R l fffff0 00000000 800f3c
+[mem] 0025ff9e R w 000000 2098 000002
+[mem] 00263fb2 W w fffffe 0658 002060
+[mem] 00263fb2 W w fffffc 0006 002060
+[mem] 00263fb2 W w fffffa 0000 002060
+[mem] 00263fb2 W w fffff8 0006 002060
+[mem] 00263fb2 W w fffff6 c2b8 002060
+[mem] 00263fb2 W w fffff4 0001 002060
+[mem] 00264052 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00264508 R l fffff0 00000000 800f3c
+[mem] 00264518 R w 000000 2098 000002
+[mem] 0026852c W w fffffe 0658 002060
+[mem] 0026852c W w fffffc 0006 002060
+[mem] 0026852c W w fffffa 0000 002060
+[mem] 0026852c W w fffff8 0006 002060
+[mem] 0026852c W w fffff6 c2b8 002060
+[mem] 0026852c W w fffff4 0001 002060
+[mem] 002689bc W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00268e82 R l fffff0 00000000 800f3c
+[mem] 00268e92 R w 000000 2098 000002
+[mem] 0026cea6 W w fffffe 0658 002060
+[mem] 0026cea6 W w fffffc 0006 002060
+[mem] 0026cea6 W w fffffa 0000 002060
+[mem] 0026cea6 W w fffff8 0006 002060
+[mem] 0026cea6 W w fffff6 c2b8 002060
+[mem] 0026cea6 W w fffff4 0001 002060
+[mem] 0026d336 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0026d7fc R l fffff0 00000000 800f3c
+[mem] 0026d80c R w 000000 2098 000002
+[mem] 00271820 W w fffffe 0658 002060
+[mem] 00271820 W w fffffc 0006 002060
+[mem] 00271820 W w fffffa 0000 002060
+[mem] 00271820 W w fffff8 0006 002060
+[mem] 00271820 W w fffff6 c2b8 002060
+[mem] 00271820 W w fffff4 0001 002060
+[mem] 00271cb0 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00272176 R l fffff0 00000000 800f3c
+[mem] 00272186 R w 000000 2098 000002
+[mem] 0027619a W w fffffe 0658 002060
+[mem] 0027619a W w fffffc 0006 002060
+[mem] 0027619a W w fffffa 0000 002060
+[mem] 0027619a W w fffff8 0006 002060
+[mem] 0027619a W w fffff6 c2b8 002060
+[mem] 0027619a W w fffff4 0001 002060
+[mem] 0027662a W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00276af0 R l fffff0 00000000 800f3c
+[mem] 00276b00 R w 000000 2098 000002
+[mem] 0027ab14 W w fffffe 0658 002060
+[mem] 0027ab14 W w fffffc 0006 002060
+[mem] 0027ab14 W w fffffa 0000 002060
+[mem] 0027ab14 W w fffff8 0006 002060
+[mem] 0027ab14 W w fffff6 c2b8 002060
+[mem] 0027ab14 W w fffff4 0001 002060
+[mem] 0027afa4 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0027b46a R l fffff0 00000000 800f3c
+[mem] 0027b47a R w 000000 2098 000002
+[mem] 0027f48e W w fffffe 0658 002060
+[mem] 0027f48e W w fffffc 0006 002060
+[mem] 0027f48e W w fffffa 0000 002060
+[mem] 0027f48e W w fffff8 0006 002060
+[mem] 0027f48e W w fffff6 c2b8 002060
+[mem] 0027f48e W w fffff4 0001 002060
+[mem] 0027f91e W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0027fde4 R l fffff0 00000000 800f3c
+[mem] 0027fdf4 R w 000000 2098 000002
+[mem] 00283e08 W w fffffe 0658 002060
+[mem] 00283e08 W w fffffc 0006 002060
+[mem] 00283e08 W w fffffa 0000 002060
+[mem] 00283e08 W w fffff8 0006 002060
+[mem] 00283e08 W w fffff6 c2b8 002060
+[mem] 00283e08 W w fffff4 0001 002060
+[mem] 00284298 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0028475e R l fffff0 00000000 800f3c
+[mem] 0028476e R w 000000 2098 000002
+[mem] 00288782 W w fffffe 0658 002060
+[mem] 00288782 W w fffffc 0006 002060
+[mem] 00288782 W w fffffa 0000 002060
+[mem] 00288782 W w fffff8 0006 002060
+[mem] 00288782 W w fffff6 c2b8 002060
+[mem] 00288782 W w fffff4 0001 002060
+[mem] 00288c12 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002890d8 R l fffff0 00000000 800f3c
+[mem] 002890e8 R w 000000 2098 000002
+[mem] 0028d0fc W w fffffe 0658 002060
+[mem] 0028d0fc W w fffffc 0006 002060
+[mem] 0028d0fc W w fffffa 0000 002060
+[mem] 0028d0fc W w fffff8 0006 002060
+[mem] 0028d0fc W w fffff6 c2b8 002060
+[mem] 0028d0fc W w fffff4 0001 002060
+[mem] 0028d58c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0028da52 R l fffff0 00000000 800f3c
+[mem] 0028da62 R w 000000 2098 000002
+[mem] 00291a76 W w fffffe 0658 002060
+[mem] 00291a76 W w fffffc 0006 002060
+[mem] 00291a76 W w fffffa 0000 002060
+[mem] 00291a76 W w fffff8 0006 002060
+[mem] 00291a76 W w fffff6 c2b8 002060
+[mem] 00291a76 W w fffff4 0001 002060
+[mem] 00291f06 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002923cc R l fffff0 00000000 800f3c
+[mem] 002923dc R w 000000 2098 000002
+[mem] 002963f0 W w fffffe 0658 002060
+[mem] 002963f0 W w fffffc 0006 002060
+[mem] 002963f0 W w fffffa 0000 002060
+[mem] 002963f0 W w fffff8 0006 002060
+[mem] 002963f0 W w fffff6 c2b8 002060
+[mem] 002963f0 W w fffff4 0001 002060
+[mem] 00296880 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 00296d46 R l fffff0 00000000 800f3c
+[mem] 00296d56 R w 000000 2098 000002
+[mem] 0029ad6a W w fffffe 0658 002060
+[mem] 0029ad6a W w fffffc 0006 002060
+[mem] 0029ad6a W w fffffa 0000 002060
+[mem] 0029ad6a W w fffff8 0006 002060
+[mem] 0029ad6a W w fffff6 c2b8 002060
+[mem] 0029ad6a W w fffff4 0001 002060
+[mem] 0029b1fa W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 0029b6c0 R l fffff0 00000000 800f3c
+[mem] 0029b6d0 R w 000000 2098 000002
+[mem] 0029f6e4 W w fffffe 0658 002060
+[mem] 0029f6e4 W w fffffc 0006 002060
+[mem] 0029f6e4 W w fffffa 0000 002060
+[mem] 0029f6e4 W w fffff8 0006 002060
+[mem] 0029f6e4 W w fffff6 c2b8 002060
+[mem] 0029f6e4 W w fffff4 0001 002060
+[mem] 0029fb74 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002a003a R l fffff0 00000000 800f3c
+[mem] 002a004a R w 000000 2098 000002
+[mem] 002a405e W w fffffe 0658 002060
+[mem] 002a405e W w fffffc 0006 002060
+[mem] 002a405e W w fffffa 0000 002060
+[mem] 002a405e W w fffff8 0006 002060
+[mem] 002a405e W w fffff6 c2b8 002060
+[mem] 002a405e W w fffff4 0001 002060
+[mem] 002a44ee W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002a49b4 R l fffff0 00000000 800f3c
+[mem] 002a49c4 R w 000000 2098 000002
+[mem] 002a89d8 W w fffffe 0658 002060
+[mem] 002a89d8 W w fffffc 0006 002060
+[mem] 002a89d8 W w fffffa 0000 002060
+[mem] 002a89d8 W w fffff8 0006 002060
+[mem] 002a89d8 W w fffff6 c2b8 002060
+[mem] 002a89d8 W w fffff4 0001 002060
+[mem] 002a8e68 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002a932e R l fffff0 00000000 800f3c
+[mem] 002a933e R w 000000 2098 000002
+[mem] 002ad352 W w fffffe 0658 002060
+[mem] 002ad352 W w fffffc 0006 002060
+[mem] 002ad352 W w fffffa 0000 002060
+[mem] 002ad352 W w fffff8 0006 002060
+[mem] 002ad352 W w fffff6 c2b8 002060
+[mem] 002ad352 W w fffff4 0001 002060
+[mem] 002ad7e2 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002adca8 R l fffff0 00000000 800f3c
+[mem] 002adcb8 R w 000000 2098 000002
+[mem] 002b1ccc W w fffffe 0658 002060
+[mem] 002b1ccc W w fffffc 0006 002060
+[mem] 002b1ccc W w fffffa 0000 002060
+[mem] 002b1ccc W w fffff8 0006 002060
+[mem] 002b1ccc W w fffff6 c2b8 002060
+[mem] 002b1ccc W w fffff4 0001 002060
+[mem] 002b215c W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002b2622 R l fffff0 00000000 800f3c
+[mem] 002b2632 R w 000000 2098 000002
+[mem] 002b6646 W w fffffe 0658 002060
+[mem] 002b6646 W w fffffc 0006 002060
+[mem] 002b6646 W w fffffa 0000 002060
+[mem] 002b6646 W w fffff8 0006 002060
+[mem] 002b6646 W w fffff6 c2b8 002060
+[mem] 002b6646 W w fffff4 0001 002060
+[mem] 002b6ad6 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002b6f9c R l fffff0 00000000 800f3c
+[mem] 002b6fac R w 000000 2098 000002
+[mem] 002bafc0 W w fffffe 0658 002060
+[mem] 002bafc0 W w fffffc 0006 002060
+[mem] 002bafc0 W w fffffa 0000 002060
+[mem] 002bafc0 W w fffff8 0006 002060
+[mem] 002bafc0 W w fffff6 c2b8 002060
+[mem] 002bafc0 W w fffff4 0001 002060
+[mem] 002bb450 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002bb916 R l fffff0 00000000 800f3c
+[mem] 002bb926 R w 000000 2098 000002
+[mem] 002bf93a W w fffffe 0658 002060
+[mem] 002bf93a W w fffffc 0006 002060
+[mem] 002bf93a W w fffffa 0000 002060
+[mem] 002bf93a W w fffff8 0006 002060
+[mem] 002bf93a W w fffff6 c2b8 002060
+[mem] 002bf93a W w fffff4 0001 002060
+[mem] 002bfdca W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002c0290 R l fffff0 00000000 800f3c
+[mem] 002c02a0 R w 000000 2098 000002
+[mem] 002c42b4 W w fffffe 0658 002060
+[mem] 002c42b4 W w fffffc 0006 002060
+[mem] 002c42b4 W w fffffa 0000 002060
+[mem] 002c42b4 W w fffff8 0006 002060
+[mem] 002c42b4 W w fffff6 c2b8 002060
+[mem] 002c42b4 W w fffff4 0001 002060
+[mem] 002c4744 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002c4c0a R l fffff0 00000000 800f3c
+[mem] 002c4c1a R w 000000 2098 000002
+[mem] 002c8c2e W w fffffe 0658 002060
+[mem] 002c8c2e W w fffffc 0006 002060
+[mem] 002c8c2e W w fffffa 0000 002060
+[mem] 002c8c2e W w fffff8 0006 002060
+[mem] 002c8c2e W w fffff6 c2b8 002060
+[mem] 002c8c2e W w fffff4 0001 002060
+[mem] 002c90be W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002c9584 R l fffff0 00000000 800f3c
+[mem] 002c9594 R w 000000 2098 000002
+[mem] 002cd5a8 W w fffffe 0658 002060
+[mem] 002cd5a8 W w fffffc 0006 002060
+[mem] 002cd5a8 W w fffffa 0000 002060
+[mem] 002cd5a8 W w fffff8 0006 002060
+[mem] 002cd5a8 W w fffff6 c2b8 002060
+[mem] 002cd5a8 W w fffff4 0001 002060
+[mem] 002cda38 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002cdefe R l fffff0 00000000 800f3c
+[mem] 002cdf0e R w 000000 2098 000002
+[mem] 002d1f22 W w fffffe 0658 002060
+[mem] 002d1f22 W w fffffc 0006 002060
+[mem] 002d1f22 W w fffffa 0000 002060
+[mem] 002d1f22 W w fffff8 0006 002060
+[mem] 002d1f22 W w fffff6 c2b8 002060
+[mem] 002d1f22 W w fffff4 0001 002060
+[mem] 002d23b2 W l fffff0 00002098 002098
+[exec] allocMem 1dbc
+[mem] 002d2878 R l fffff0 00000000 800f3c
+[mem] 002d2888 R w 000000 2098 000002
+[mem] 002d689c W w fffffe 0658 002060
+[mem] 002d689c W w fffffc 0006 002060
+[mem] 002d689c W w fffffa 0000 002060
+[mem] 002d689c W w fffff8 0006 002060
+[mem] 002d689c W w fffff6 c2b8 002060
+[mem] 002d689c W w fffff4 0001 002060
+[mem] 002d6d2c W l fffff0 00002098 002098

@@ -296,6 +296,12 @@ struct acid68000 {
 		return ss.str();
 	}
 
+	std::string fetchPath(int a1) {
+		std::string s=fetchString(a1);
+		std::replace(s.begin(),s.end(),'/','\\');
+		return s;
+	}
+
 	std::vector<u8> fetchBytes(int a1, int d0) {
 		int n = d0;
 		std::vector<u8> result(n);
@@ -935,12 +941,8 @@ public:
 	void open() {
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//mode
-
-		std::string s = cpu0->fetchString(d1);
-		std::replace(s.begin(),s.end(),'/','\\');
-
+		std::string s = cpu0->fetchPath(d1);
 		int lock = nextLock();
-
 		if (fileMap.count(s)) {
 			fileMap[s].newLock(lock,s);
 		}
@@ -1064,7 +1066,7 @@ public:
 
 	void loadseg() {
 		int d1 = cpu0->readRegister(1);
-		std::string segname = cpu0->fetchString(d1);
+		std::string segname = cpu0->fetchPath(d1);
 		int seglist = 0;
 		int physical = 0x050000;
 		Chunk chunk = loadChunk(segname, physical);
@@ -1091,8 +1093,7 @@ public:
 	void lock(){
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
-		std::string s = cpu0->fetchString(d1);
-		std::replace(s.begin(),s.end(),'/','\\');
+		std::string s = cpu0->fetchPath(d1);
 		int lock = nextLock();
 		if (fileMap.count(s)) {
 			fileMap[s].addLock(lock);
@@ -1189,7 +1190,7 @@ public:
 	}
 	void createdir() {
 		int d1 = cpu0->readRegister(1);	//name
-		std::string s = cpu0->fetchString(d1);
+		std::string s = cpu0->fetchPath(d1);
 #ifdef _WIN32	
 		int result=mkdir(s.c_str());
 #else
@@ -1998,16 +1999,16 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-//	const char* amiga_binary = "../archive/lha";
+	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-//	const char* args = "e SkidMarksDemo.lha\n";
-//	const char* args = "l SkidMarksDemo.lha\n";
+	const char* args = "e skid.lha\n";
+//	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-	const char* amiga_binary = "../archive/oblivion/oblivion";
-	const char* args = "\n";
+//	const char* amiga_binary = "../archive/oblivion/oblivion";
+//	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };

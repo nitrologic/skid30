@@ -1,0 +1,27 @@
+[mem] 00000000 R l 000000 00001400 000004
+[exec] allocMem 1dbc
+[exec] setsignal 200,0
+[exec] openlibrary dos.library,802000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask
+[dos] getvar LHAOPTS => ffffffff
+[exec] findTask
+[dos] lock T:,fffffffe => ffffffe8
+[dos] unlock ffffffe8
+[exec] setsignal 60c94,0
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setsignal 618a0,4a
+[write] Registered to 
+[exec] setsignal 61898,e
+[write] _
+[exec] setsignal 61894,1
+[write] [0 p
+[exec] setsignal 618a8,5
+[exec] allocMem 110
+[dos] lock SkidMarksDemo.lha,fffffffe => 0
+[write]  Unable to open archive!__
+[exec] setsignal 618ac,1a
+[write] Operation failed._
+[exec] setsignal 618ac,12
+[dos] currentDir 7098
