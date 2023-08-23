@@ -8,6 +8,7 @@
 #include <sstream>
 #include <vector>
 #include <set>
+#include <map>
 #include <algorithm>
 #include <fstream>
 
@@ -182,6 +183,9 @@ struct Stream {
 		out << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
 	}
 
+	void writeString(std::string s) {
+		out << s;
+	}
 	void writeSpace() {
 		out << " ";
 	}
@@ -210,13 +214,135 @@ struct Stream {
 const char readwrite[] = { 'R','W' };
 const char intshortbyte[] = { 'l','w','b','?' };
 
+typedef std::map<std::string, std::string> Dictionary;
+typedef std::map<int, std::string> AddressMap;
+
+/*
+
+
+CIAA Address Map
+----------------
+ Byte    Register               Data bits
+Address    Name    7     6     5    4    3     2     1    0
+------------------------------------------------------------------
+BFE001    pra      /FIR1 /FIR0 /RDY /TK0 /WPRO /CHNG /LED OVL
+BFE101    prb      Parallel port
+BFE201    ddra     Direction for port A (BFE001);1 output (set to 0x03)
+BFE301    ddrb     Direction for port B (BFE101);1 output (can be in/out)
+BFE401    talo     CIAA timer A low byte (.715909 Mhz NTSC; .709379 Mhz PAL)
+BFE501    tahi     CIAA timer A high byte
+BFE601    tblo     CIAA timer B low byte (.715909 Mhz NTSC; .709379 Mhz PAL)
+BFE701    tbhi     CIAA timer B high byte
+BFE801    todlo    50/60 Hz event counter bits  7-0 (VSync or line tick)
+BFE901    todmid   50/60 Hz event counter bits 15-8
+BFEA01    todhi    50/60 Hz event counter bits 23-16
+BFEB01             not used
+BFEC01    sdr      CIAA serial data register (connected to keyboard)
+BFED01    icr      CIAA interrupt control register
+BFEE01    cra      CIAA control register A
+BFEF01    crb      CIAA control register B
+
+Note: CIAA can generate interrupt INT2.
+
+CIAB Address Map
+----------------
+Byte Register Data bits
+Address   Name     7    6     5     4     3     2     1    0
+-------------------------------------------------------------------
+BFD000    pra      /DTR /RTS  /CD   /CTS  /DSR  SEL   POUT BUSY
+BFD100    prb      /MTR /SEL3 /SEL2 /SEL1 /SEL0 /SIDE DIR  /STEP
+BFD200    ddra     Direction for Port A (BFD000);1 = output (set to 0xFF)
+BFD300    ddrb     Direction for Port B (BFD100);1 - output (set to 0xFF)
+BFD400    talo     CIAB timer A low byte (.715909 Mhz NTSC; .709379 Mhz PAL)
+BFD500    tahi     CIAB timer A high byte
+BFD600    tblo     CIAB timer B low byte (.715909 Mhz NTSC; .709379 Mhz PAL)
+BFD700    tbhi     CIAB timer B high byte
+BFD800    todlo    Horizontal sync event counter bits 7-0
+BFD900    todmid   Horizontal sync event counter bits 15-8
+BFDA00    todhi    Horizontal sync event counter bits 23-16
+BFDB00             not used
+BFDC00    dr       CIAB serial data register (unused)
+BFDD00    icr      CIAB interrupt control register
+BFDE00    cra      CIAB Control register A
+BFDF00    crb      CIAB Control register B
+
+Note: CIAB can generate INT6.
+
+
+[mem] 00008490 R w dff01c  0000
+[mem] 0017d9c2 R b dff01f  00
+[mem] 00008490 W w dff042  0000
+[mem] 00008490 W w dff096  0400
+[mem] 00008490 W w dff096  000f
+[mem] 00008490 W w dff096  8068
+[mem] 0017d9c2 W w dff098  1041
+[mem] 00008490 W w dff09c  3fff
+[mem] 00008490 W w dff09a  3fff
+[mem] 00008490 W w dff09a  c008
+[mem] 0017d9c2 W w dff09a  0020
+[mem] 0017d9c2 W w dff09c  0020
+[mem] 00008490 W l dff0d0  00023ec0
+[mem] 00008490 W w dff0d4  03a2
+[mem] 00008490 W w dff0d6  027f
+[mem] 00008490 W w dff0d8  0000
+
+
+*/
+
+AddressMap addressMap = {
+	{0,"ZERO"},
+	{0xdff180,"COLOR0"},
+	{0xbfe401,"TALO-A"},
+	{0xbfe501,"TAHI-A"},
+	{0xbfed01,"ICR-A"},
+	{0xbfee01,"CRA-A"},
+	{0xbfdd00,"ICR-B" },
+	{0xdff01c,"INTENA"},
+	{0xdff01e,"INTREQ"},
+	{0xdff01f,"INTREQ1"},
+
+	{0xdff040,"BLTCON0"},
+	{0xdff042,"BLTCON1"},
+	{0xdff092,"DMACONR"},
+	{0xdff096,"DMACON"},
+	{0xdff098,"CLXCON"},
+	{0xdff09c,"INTREQR"},
+	{0xdff09a,"INTENAR"},
+
+	{0xdff0a0,"AUD0HI"},
+	{0xdff0a2,"AUD0LO"},
+	{0xdff0a4,"AUD0LEN"},
+	{0xdff0a6,"AUD0PER"},
+	{0xdff0a8,"AUD0VOL"},
+
+	{0xdff0b0,"AUD1HI"},
+	{0xdff0b2,"AUD1LO"},
+	{0xdff0b4,"AUD1LEN"},
+	{0xdff0b6,"AUD1PER"},
+	{0xdff0b8,"AUD1VOL"},
+
+	{0xdff0c0,"AUD2HI"},
+	{0xdff0c2,"AUD2LO"},
+	{0xdff0c4,"AUD2LEN"},
+	{0xdff0c6,"AUD2PER"},
+	{0xdff0c8,"AUD2VOL"},
+
+	{0xdff0d0,"AUD3HI"},
+	{0xdff0d2,"AUD3LO"},
+	{0xdff0d4,"AUD3LEN"},
+	{0xdff0d6,"AUD3PER"},
+	{0xdff0d8,"AUD3VOL"},
+
+};
+
 struct MemEvent : Stream {
 	int time;
 	int address; // bits 31:star  30-29:R,W,F 28-27 - long,short,byte
 	int data;
 	int pc;
+	std::string label;
 
-	MemEvent(int t32,int a32, int d32, int pc32) :time(t32), address(a32), data(d32), pc(pc32) {
+	MemEvent(int t32, int a32, int d32, int pc32, std::string label0) :time(t32), address(a32), data(d32), pc(pc32), label(label0) {
 	}
 
 	std::string toString() {
@@ -259,6 +385,10 @@ struct MemEvent : Stream {
 			writeSpace();
 			writeAddress(pc32);
 		}
+
+		writeSpace();
+		writeString(label);
+
 		writeEOL();
 
 		return flush();
@@ -347,7 +477,13 @@ struct acid68000 {
 			// low 24 bits are physical address
 			int a32 = ((star|err) << 31) | (readwritefetch << 29) | (byteshortint << 27) | (address & 0xffffff);
 			int pc=readRegister(16);
-			memlog.emplace_back(cycle, a32, value, pc);
+
+			std::string label;
+			if (addressMap.count(address)) {
+				label = addressMap[address];
+			}
+
+			memlog.emplace_back(cycle, a32, value, pc, label);
 
 			std::string s=memlog.back().toString();
 			systemLog("mem", s);
@@ -1257,7 +1393,6 @@ BUGS
 
 */
 
-
 class acidexec : public IExec {
 public:
 	acid68000* cpu0;
@@ -1999,16 +2134,16 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "e skid.lha\n";
+//	const char* args = "e skid.lha\n";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
 //	const char* amiga_binary = "../archive/virus";
-//	const char* amiga_binary = "../archive/oblivion/oblivion";
-//	const char* args = "\n";
+	const char* amiga_binary = "../archive/oblivion/oblivion";
+	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };
