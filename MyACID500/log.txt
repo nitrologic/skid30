@@ -1,10 +1,17 @@
-lha1 - fails with wrong filename in argument
+guardian1 - needs cd.device and nonvolatile.library support
+
+oblivion2 - plays a sample with AUD3 registers and polls INTREQ1
+
+lha4 - fix for lha2 - first error is line 248 *** Error on file '' : 
+
+lha3 - still calling currentdir with non negative lock :()
 
 lha2 - creates skeleton but fucks up
 
 [dos] lock Skid\maps,fffffffe => 0
 [dos] createDir Skid/maps => ffffff6c
 
-lha3 - from 
+lha1 - fails with wrong filename in argument
 
-lha4 - fix for lha2 - still calling currentdir with non negative lock :()
+
+

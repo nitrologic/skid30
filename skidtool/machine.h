@@ -445,7 +445,7 @@ struct amiga16 : memory32{
 			break;
 		case DOS_LOADSEG:
 			dos->loadseg();
-			return 1;
+//			return 1;
 			break;
 		case DOS_UNLOADSEG:
 			dos->unloadseg();

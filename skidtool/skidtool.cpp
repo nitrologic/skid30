@@ -292,22 +292,32 @@ Note: CIAB can generate INT6.
 AddressMap addressMap = {
 	{0,"ZERO"},
 	{0xdff180,"COLOR0"},
+
 	{0xbfe401,"TALO-A"},
 	{0xbfe501,"TAHI-A"},
 	{0xbfed01,"ICR-A"},
 	{0xbfee01,"CRA-A"},
 	{0xbfdd00,"ICR-B" },
-	{0xdff01c,"INTENA"},
+
+	{0xdff002,"DMACONR"},
+
+	{0xdff01c,"INTENAR"},
 	{0xdff01e,"INTREQ"},
 	{0xdff01f,"INTREQ1"},
 
 	{0xdff040,"BLTCON0"},
 	{0xdff042,"BLTCON1"},
-	{0xdff092,"DMACONR"},
+
+	{0xdff044,"BLTAFWM"},
+	{0xdff046,"BLTALWM"},
+
+	{0xdff092,"DDFSTRT"},
+	{0xdff094,"DDFSTOP"},
+
 	{0xdff096,"DMACON"},
 	{0xdff098,"CLXCON"},
 	{0xdff09c,"INTREQR"},
-	{0xdff09a,"INTENAR"},
+	{0xdff09a,"POTINP"},
 
 	{0xdff0a0,"AUD0HI"},
 	{0xdff0a2,"AUD0LO"},
@@ -1214,8 +1224,8 @@ public:
 		cpu0->writeRegister(0, seglist);
 		doslog << "loadseg " << segname << " => " << seglist;
 		emit();
-
 	}
+
 	void currentdir() {
 		int d1 = cpu0->readRegister(1);	//name
 		NativeFile* f = fileLocks[d1];
@@ -2126,7 +2136,6 @@ int main() {
 
 	std::cout << "skidtool 0.2" << std::endl;
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
-
 
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
 //	const char* args = "-c test.bb\n";

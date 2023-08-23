@@ -104,6 +104,9 @@ ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool 
+    freeaudio.cpp
+    freeaudio.h
+    mmdevice.cpp
     skidtool.cpp 
     machine.cpp
     machine.h 
@@ -113,7 +116,7 @@ ADD_EXECUTABLE(skidtool
     loadiff.h
 )
 
-target_link_libraries(skidtool musashi zlib libpng)
+target_link_libraries(skidtool musashi zlib libpng winmm)
 #curses
 # m68kmake
 

@@ -1,0 +1,55 @@
+[mem] 00000000 R l 000000 00001400 000004 ZERO
+[exec] allocMem 5b8
+[exec] allocMem 9a
+[exec] openDevice cd.device,0,605e2,0 <= ffffffff
+[exec] doIO 605e2 <= 0
+[exec] doIO 605e2 <= 0
+[exec] allocMem 9a
+[exec] openDevice cd.device,0,6067e,0 <= ffffffff
+[exec] openlibrary nonvolatile.library,804000
+[exec] openlibrary dos.library,802000
+[exec] openlibrary graphics.library,805000
+[gfx] loadview 0
+[gfx] waitTOF 
+[gfx] waitTOF 
+[mem] 00000be4 W w dff096 81a0 DMACON
+[gfx] ownBlitter
+[mem] 00000be4 R b dff002 00 DMACONR
+[mem] 00000be4 R b dff002 00 DMACONR
+[mem] 00000be4 W w dff042 0000 BLTCON1
+[mem] 00000be4 W l dff044 ffff0000 BLTAFWM
+[mem] 00000be4 W w dff096 8400 DMACON
+[mem] 00000be4 W w dff096 8020 DMACON
+[exec] allocMem 2008
+[exec] allocMem 6008
+[exec] allocMem 1688
+[exec] allocMem 4408
+[exec] allocMem 4408
+[exec] allocMem 4748
+[exec] allocMem 808
+[exec] allocMem 2008
+[exec] allocMem 1008
+[exec] allocMem 9008
+[exec] allocMem 328
+[exec] allocMem aa08
+[exec] allocMem 6008
+[exec] allocMem 4008
+[exec] allocMem 408
+[exec] allocMem 408
+[exec] allocMem 4008
+[exec] allocMem 4008
+[exec] allocMem 1e08
+[exec] allocMem 27108
+[mem] 0000a8ec R b dff002 00 DMACONR
+[mem] 0000a8ec R b dff002 00 DMACONR
+[gfx] disownBlitter
+[nv] getCopy Guardian,Heroes,-1
+[dos] loadseg gameinfo => 14000
+[gfx] ownBlitter
+[mem] 0000a8ec R b dff002 00 DMACONR
+[mem] 0000a8ec R b dff002 00 DMACONR
+[mem] 0000a8ec W w dff042 0000 BLTCON1
+[mem] 0000a8ec W l dff044 ffff0000 BLTAFWM
+[mem] 0000a8ec W w dff096 8400 DMACON
+[mem] 0000a8ec W w dff096 8020 DMACON
+[mem] 00011e8a R w e0ff60 0000 00f35e 
