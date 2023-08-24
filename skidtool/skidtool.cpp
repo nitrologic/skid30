@@ -297,6 +297,8 @@ AddressMap addressMap = {
 	{0xbfe501,"TAHI-A"},
 	{0xbfed01,"ICR-A"},
 	{0xbfee01,"CRA-A"},
+
+	{0xbfd100,"PRB-B"},
 	{0xbfdd00,"ICR-B" },
 
 	{0xdff002,"DMACONR"},
@@ -305,11 +307,19 @@ AddressMap addressMap = {
 	{0xdff01e,"INTREQ"},
 	{0xdff01f,"INTREQ1"},
 
+	{0xdff036,"JOYTEST"},
+
 	{0xdff040,"BLTCON0"},
 	{0xdff042,"BLTCON1"},
 
 	{0xdff044,"BLTAFWM"},
 	{0xdff046,"BLTALWM"},
+
+	{0xdff080,"COP1LCH"},
+	{0xdff082,"COP1LCL"},
+
+	{0xdff088,"COPJMP1"},
+	{0xdff08a,"COPJMP2"},
 
 	{0xdff092,"DDFSTRT"},
 	{0xdff094,"DDFSTOP"},
@@ -343,6 +353,22 @@ AddressMap addressMap = {
 	{0xdff0d6,"AUD3PER"},
 	{0xdff0d8,"AUD3VOL"},
 
+	{0xDFF144,"SPR0DATA"},//	Sprite 0 image data register A
+	{0xDFF146,"SPR0DATB"},//	Sprite 0 image data register B
+	{0xDFF14C,"SPR1DATA"},//	Sprite 1 image data register A
+	{0xDFF14E,"SPR1DATB"},//	Sprite 1 image data register B
+	{0xDFF154,"SPR2DATA"},//	Sprite 2 image data register A
+	{0xDFF156,"SPR2DATB"},//	Sprite 2 image data register B
+	{0xDFF15C,"SPR3DATA"},//	Sprite 3 image data register A
+	{0xDFF15E,"SPR3DATB"},//	Sprite 3 image data register B
+	{0xDFF164,"SPR4DATA"},//	Sprite 4 image data register A
+	{0xDFF166,"SPR4DATB"},//	Sprite 4 image data register B
+	{0xDFF16C,"SPR5DATA"},//	Sprite 5 image data register A
+	{0xDFF16E,"SPR5DATB"},//	Sprite 5 image data register B
+	{0xDFF174,"SPR6DATA"},//	Sprite 6 image data register A
+	{0xDFF176,"SPR6DATB"},//	Sprite 6 image data register B
+	{0xDFF17C,"SPR7DATA"},//	Sprite 7 image data register A
+	{0xDFF17E,"SPR7DATB"},//	Sprite 7 image data register B
 };
 
 struct MemEvent : Stream {
@@ -1419,9 +1445,15 @@ public:
 		execlog.clr();
 	}
 
-	void forbid(){}
-	void permit() {}
-	void waitMsg() {}
+	void forbid(){
+		execlog << "forbid";emit();
+	}
+	void permit() {
+		execlog << "permit";emit();
+	}
+	void waitMsg() {
+		execlog << "waitmsg";emit();
+	}
 
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0222.html
 
@@ -1464,6 +1496,7 @@ public:
 	}
 
 	void closeLibrary() {
+		execlog << "closeLibrary";emit();
 	}
 
 // http://www.amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node036C.html
@@ -1606,6 +1639,7 @@ public:
 		int a1 = cpu0->readRegister(9);
 		int d0 = cpu0->readRegister(0);
 		// a1,d0
+		execlog << "freemem";emit();
 	}
 
 	void allocMem() {
@@ -1619,6 +1653,7 @@ public:
 	void waitPort() {
 		int a0 = cpu0->readRegister(8);
 		cpu0->writeRegister(0, 0);	// no message available
+		execlog << "waitPort";emit();
 	}
 	void copyMem() {
 		int a0 = cpu0->readRegister(8); //src
@@ -1633,6 +1668,7 @@ public:
 	void replyMsg() {
 		int a1 = cpu0->readRegister(9);
 		std::string s = cpu0->fetchString(a1);
+		execlog << "replyMsg";emit();
 	}
 	void fakeTask() {
 		// to trap $ac(task) oblivion and friends are looking for workbench pointers
@@ -1643,6 +1679,7 @@ public:
 	void getMsg() {
 		int a0 = cpu0->readRegister(8);
 		cpu0->writeRegister(0, 0);	// no message available
+		execlog << "getMsg";emit();
 	}
 	void putMsg() {
 		execlog << "putMsg"; emit();
@@ -2143,16 +2180,16 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-//	const char* amiga_binary = "../archive/lha";
+	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-//	const char* args = "e skid.lha\n";
+	const char* args = "e skid.lha\n";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
-	const char* amiga_binary = "../archive/virus";
+//	const char* amiga_binary = "../archive/virus";
 //	const char* amiga_binary = "../archive/oblivion/oblivion";
-	const char* args = "\n";
+//	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };

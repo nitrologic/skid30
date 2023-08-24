@@ -1,0 +1,438 @@
+[exec] setsignal 616f8,f
+[dos] lock Skid\maps\format.iff,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff90
+[dos] unlock ffffff90
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\maps,fffffffe => ffffff8c
+[dos] unlock ffffff8c
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] 
+*** Error on file '' : 
+[exec] setsignal 61718,18
+
+
+[mem] 00000000 R l 000000 00001400 000004 ZERO
+[exec] allocMem 1dbc
+[exec] setsignal 200,0
+[exec] openlibrary dos.library,802000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask
+[dos] getvar LHAOPTS => ffffffff
+[exec] findTask
+[dos] lock T:,fffffffe => ffffffe8
+[dos] unlock ffffffe8
+[exec] setsignal 60c94,0
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setsignal 618a0,4a
+[write] Registered to 
+[exec] setsignal 61898,e
+[write] _
+[exec] setsignal 61894,1
+[write] [0 p
+[exec] setsignal 618a8,5
+[exec] allocMem 110
+[dos] lock skid.lha,fffffffe => ffffffe4
+[dos] examine(ffffffe4)
+[dos] unlock ffffffe4
+[exec] setsignal 60c94,61bb1
+[exec] allocMem 2c
+[exec] allocMem d
+[exec] freemem
+[exec] allocMem 3ecc
+[exec] allocMem 800c
+[exec] allocMem a10c
+[write]  archive '':_
+[exec] setsignal 61898,d
+[exec] allocMem 3e
+[exec] allocMem 800c
+[dos] open skid.lha => ffffffe0
+[exec] allocMem 15
+[exec] setsignal 780d8,780d8
+[dos] seek 0,ffffffff => 0
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\.info,fffffffe => ffffffdc
+[dos] unlock ffffffdc
+[exec] setsignal 60c94,601c4
+[write] _ (Y/N/A/S/Q): [K
+[exec] setsignal 6157c,12
+[write] [ p
+[exec] setsignal 61564,4
+[exec] findTask
+[exec] findTask
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[exec] findTask
+[exec] findTask
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[write] [0 p
+[exec] setsignal 61564,5
+[write] [ p
+[exec] setsignal 61564,4
+[exec] findTask
+[exec] findTask
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[exec] findTask
+[exec] findTask
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[write] [0 p
+[exec] setsignal 61564,5
+[write] [ p
+[exec] setsignal 61564,4
+[exec] findTask
+[exec] findTask
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[exec] findTask
+[exec] findTask
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[write] [0 p
+[exec] setsignal 61564,5
+[write] 
+[K
+[exec] setsignal 61580,5
+[dos] open Skid\.info => ffffffd8
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\cars.palette,fffffffe => ffffffd4
+[dos] unlock ffffffd4
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\cars.palette => ffffffd0
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\engine.iff,fffffffe => ffffffcc
+[dos] unlock ffffffcc
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\engine.iff => ffffffc8
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\flag.iff,fffffffe => ffffffc4
+[dos] unlock ffffffc4
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\flag.iff => ffffffc0
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\impact.iff,fffffffe => ffffffbc
+[dos] unlock ffffffbc
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\impact.iff => ffffffb8
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 13
+[exec] allocMem 1d
+[exec] allocMem 14
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\num.iff,fffffffe => ffffffb4
+[dos] unlock ffffffb4
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\num.iff => ffffffb0
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 18
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\results.iff,fffffffe => ffffffac
+[dos] unlock ffffffac
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\results.iff => ffffffa8
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\skid.iff,fffffffe => ffffffa4
+[dos] unlock ffffffa4
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\skid.iff => ffffffa0
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 19
+[exec] allocMem 23
+[exec] allocMem 1a
+[exec] allocMem 15
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\gfx\skidmarks.med,fffffffe => ffffff9c
+[dos] unlock ffffff9c
+[exec] setsignal 60c94,601c4
+[dos] open Skid\gfx\skidmarks.med => ffffff98
+[write] 
+[K
+[exec] setsignal 6171c,4
+[write] [0m
+[exec] setsignal 61718,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek d73b,ffffffff => 8000
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\maps\format.iff,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff90
+[dos] unlock ffffff90
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\maps,fffffffe => ffffff8c
+[dos] unlock ffffff8c
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] 
+*** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek 25468,ffffffff => 1573b
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\maps\format.map,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff84
+[dos] unlock ffffff84
+[exec] setsignal 60c94,601c4
+[dos] lock Skid\maps,fffffffe => ffffff80
+[dos] unlock ffffff80
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] 
+*** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[exec] setsignal 780d8,61909
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d
+[exec] copyMem c
+[exec] allocMem 16
+[exec] allocMem 11
+[exec] allocMem 11
+[exec] freemem
+[write] 
+: (-80/0)  [K
+[exec] setsignal 616f8,f
+[dos] lock Skid\skid,fffffffe => 0
+[dos] lock Skid,fffffffe => ffffff78
+[dos] unlock ffffff78
+[exec] setsignal 60c94,601c4
+[write] [0m
+[exec] setsignal 61718,4
+[write] 
+*** Error on file '' : 
+[exec] setsignal 61718,18
+[write] [K_
+[exec] setsignal 61700,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,4
+[exec] setsignal 780d8,780d8
+[dos] seek 43ce1,ffffffff => 2d468
+[exec] setsignal 780d8,780d8
+[dos] close ffffffe0 => 0
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+3 files 
+[exec] setsignal 61704,9
+[write] , 3 files failed
+[exec] setsignal 61708,10
+[write] .[K__
+[exec] setsignal 6170c,6
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] Operation not entirely successful._
+[exec] setsignal 618ac,23
+[dos] currentDir 7098
