@@ -1,3 +1,5 @@
+zarch1 - goat
+
 guardian1 - needs cd.device and nonvolatile.library support
 
 oblivion2 - plays a sample with AUD3 registers and polls INTREQ1

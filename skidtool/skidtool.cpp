@@ -2150,8 +2150,8 @@ int main() {
 //	const char* args = "e cv.lha\n";
 
 //	const char* amiga_binary = "../archive/game";
-//	const char* amiga_binary = "../archive/virus";
-	const char* amiga_binary = "../archive/oblivion/oblivion";
+	const char* amiga_binary = "../archive/virus";
+//	const char* amiga_binary = "../archive/oblivion/oblivion";
 	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
