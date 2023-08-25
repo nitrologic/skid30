@@ -20,6 +20,50 @@
 #include <unistd.h>
 #endif
 
+#define SIGB_ABORT	0
+#define SIGB_CHILD	1
+#define SIGB_BLIT	4	/* Note: same as SINGLE */
+#define SIGB_SINGLE	4	/* Note: same as BLIT */
+#define SIGB_INTUITION	5
+#define	SIGB_NET	7
+#define SIGB_DOS	8
+
+#define SIGF_ABORT	(1L<<0)
+#define SIGF_CHILD	(1L<<1)
+#define SIGF_BLIT	(1L<<4)
+#define SIGF_SINGLE	(1L<<4)
+#define SIGF_INTUITION	(1L<<5)
+#define	SIGF_NET	(1L<<7)
+#define SIGF_DOS	(1L<<8)
+
+std::string sigbits(int sig){
+	std::stringstream ss;
+	if(sig&0x1<<0) ss<<"_ABORT";
+	if(sig&0x1<<1) ss<<"_CHILD";
+	if(sig&0x1<<2) ss<<"_SIG2";
+	if(sig&0x1<<3) ss<<"_SIG3";
+	if(sig&0x1<<4) ss<<"_SINGLE";
+	if(sig&0x1<<5) ss<<"_INTUITION";
+	if(sig&0x1<<6) ss<<"_NET";
+	if(sig&0x1<<7) ss<<"_DOS";
+	if (sig & 0x1 << 8) ss << "_SIG8";
+	if (sig & 0x1 << 9) ss << "_SIG9";
+	if (sig & 0x1 << 10) ss << "_SIG10";
+	if (sig & 0x1 << 11) ss << "_SIG11";
+	if(sig&0x1<<12) ss<<"_CTRL_C";
+	if(sig&0x1<<13) ss<<"_CTRL_D";
+	if(sig&0x1<<14) ss<<"_CTRL_E";
+	if(sig&0x1<<15) ss<<"_CTRL_F";
+	return ss.str();
+}
+std::string str_tolower(std::string s)
+{
+	std::transform(s.begin(), s.end(), s.begin(),
+		[](unsigned char c) { return std::tolower(c); }
+	);
+	return s;
+}
+
 const int ASM_LINES = 6;
 const int LOG_LINES = 24;
 
@@ -465,6 +509,7 @@ struct acid68000 {
 	std::string fetchPath(int a1) {
 		std::string s=fetchString(a1);
 		std::replace(s.begin(),s.end(),'/','\\');
+		s = str_tolower(s);
 		return s;
 	}
 
@@ -501,6 +546,15 @@ struct acid68000 {
 			}
 		}
 		return p;
+	}
+
+	int sigbits=0;
+
+	int setSignal(int newbits,int setbits){
+		sigbits &= ~setbits;
+		newbits &= setbits;
+		sigbits |= newbits;
+		return sigbits;
 	}
 
 	// input address is 24 bit physical with qbit signals in high bits
@@ -795,6 +849,15 @@ struct FileInfoBlock {
 
 	char	  fib_Reserved[32];
 }; /* FileInfoBlock */
+
+/* FIBB are bit definitions, FIBF are field definitions */
+#define FIBB_SCRIPT    6	/* program is a script (execute) file */
+#define FIBB_PURE      5	/* program is reentrant and rexecutable */
+#define FIBB_ARCHIVE   4	/* cleared whenever file is changed */
+#define FIBB_READ      3	/* ignored by old filesystem */
+#define FIBB_WRITE     2	/* ignored by old filesystem */
+#define FIBB_EXECUTE   1	/* ignored by system, used by Shell */
+#define FIBB_DELETE    0	/* prevent file from being deleted */
 
 FileInfoBlock _fib = { 0 };
 
@@ -1156,6 +1219,9 @@ public:
 			result = n;
 		}
 		cpu0->writeRegister(0, result);
+
+		doslog << "read " << d1 << " , " << d2 << " , " << d3 << " => " << result;
+		emit();
 	}
 
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node01D1.html
@@ -1187,9 +1253,13 @@ public:
 	}
 	void input(){
 		cpu0->writeRegister(0, INPUT_STREAM);
+		doslog << "input";
+		emit();
 	}
 	void output(){
 		cpu0->writeRegister(0, OUTPUT_STREAM);
+		doslog << "output";
+		emit();
 	}
 
 	void seek(){
@@ -1204,8 +1274,10 @@ public:
 		emit();
 	}
 	void deletefile(){
+		doslog << "deletefile";emit();
 	}
 	void rename(){
+		doslog << "rename"; emit();
 	}
 	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0186.html
 
@@ -1248,6 +1320,7 @@ public:
 		}
 		seglist = (n==0)?0:physical >> 2;
 		cpu0->writeRegister(0, seglist);
+
 		doslog << "loadseg " << segname << " => " << seglist;
 		emit();
 	}
@@ -1258,6 +1331,7 @@ public:
 		// d1=lock return d0=oldlock
 		// all paths lead to root - wtf LhA???
 		cpu0->writeRegister(0, 0);
+
 		doslog << "currentDir " << d1;
 		emit();
 	}
@@ -1303,6 +1377,7 @@ public:
 //		NativeFile(f);
 		int result = (f->status == 0) ? lock : 0;
 		cpu0->writeRegister(0, result);
+		doslog << "duplock"; emit();
 	}
 
 	void exnext() {
@@ -1355,7 +1430,7 @@ public:
 		emit();
 	}
 	void info() {
-
+		doslog << "info"; emit();
 	}
 	int nextLock() {
 		return FILE_STREAM - (fileCount++) * 4;
@@ -1384,13 +1459,14 @@ public:
 		doslog << "createDir " << s << " => " << lock; emit();
 	}
 	void ioerr() {
-
+		doslog << "ioErr"; emit();
 	}
 	void createproc() {
+		doslog << "createProc"; emit();
 
 	}
 	void exit() {
-
+		doslog << "exit"; emit();
 	}
 
 	void isinteractive() {
@@ -1403,6 +1479,7 @@ public:
 			break;
 		}
 		cpu0->writeRegister(0, d0);
+		doslog << "isInteractive"; emit();
 	}
 };
 
@@ -1490,8 +1567,11 @@ public:
 	void setSignal() {
 		int d0 = cpu0->readRegister(8);//newbits
 		int d1 = cpu0->readRegister(9);//mask
-		cpu0->writeRegister(0, 0);
+		int bits=cpu0->setSignal(d0,d1);
+		cpu0->writeRegister(0, bits);
 		execlog << "setsignal " << d0 << "," << d1;
+		execlog << " " << sigbits(d0) << " " << sigbits(d1);
+		execlog << " <= " << bits;
 		emit();
 	}
 

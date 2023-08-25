@@ -1,0 +1,387 @@
+[mem] 00000000 R l 000000 00001400 000004 ZERO
+[exec] allocMem 1dbc
+[exec] setsignal 200,0 _SIG9  <= 0
+[exec] openlibrary dos.library,802000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask
+[dos] getvar LHAOPTS => ffffffff
+[dos] input
+[dos] isInteractive
+[exec] findTask
+[dos] lock t:,fffffffe => 0
+[dos] output
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setsignal 618a0,4a _INTUITION_DOS_SIG11_CTRL_C _CHILD_SIG3_NET <= 0
+[dos] output
+[write] Registered to 
+[exec] setsignal 61898,e _SIG3_SINGLE_DOS_SIG11_CTRL_C _CHILD_SIG2_SIG3 <= 8
+[dos] output
+[write] _
+[exec] setsignal 61894,1 _SIG2_SINGLE_DOS_SIG11_CTRL_C _ABORT <= 8
+[dos] output
+[write] [0 p
+[exec] setsignal 618a8,5 _SIG3_INTUITION_DOS_SIG11_CTRL_C _ABORT_SIG2 <= 8
+[exec] allocMem 110
+[dos] lock skid.lha,fffffffe => ffffffe4
+[dos] examine(ffffffe4)
+[dos] unlock ffffffe4
+[exec] setsignal 60c94,61bb1 _SIG2_SINGLE_DOS_SIG10_SIG11 _ABORT_SINGLE_INTUITION_DOS_SIG8_SIG9_SIG11_CTRL_C <= 60898
+[exec] allocMem 2c
+[exec] allocMem d
+[exec] freemem
+[exec] allocMem 3ecc
+[exec] allocMem 800c
+[exec] allocMem a10c
+[dos] output
+[write]  archive '':_
+[exec] setsignal 61898,d _SIG3_SINGLE_DOS_SIG11_CTRL_C _ABORT_SIG2_SIG3 <= 60898
+[exec] allocMem 3e
+[exec] allocMem 800c
+[dos] open skid.lha => ffffffe0
+[exec] allocMem 15
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 788d8
+[dos] seek 0,ffffffff => 0
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 788d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\.info,fffffffe => 0
+[dos] open skid\.info => 0
+[dos] lock skid,fffffffe => 0
+[dos] createDir skid => ffffffd0
+[dos] unlock ffffffd0
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] open skid\.info => ffffffcc
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 7809c
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 78098
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\cars.palette,fffffffe => 0
+[dos] open skid\gfx\cars.palette => 0
+[dos] lock skid,fffffffe => ffffffc0
+[dos] unlock ffffffc0
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] lock skid\gfx,fffffffe => 0
+[dos] createDir skid\gfx => ffffffb8
+[dos] unlock ffffffb8
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] open skid\gfx\cars.palette => ffffffb4
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 7809c
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 78098
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\engine.iff,fffffffe => 0
+[dos] open skid\gfx\engine.iff => ffffffac
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780dc
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\flag.iff,fffffffe => 0
+[dos] open skid\gfx\flag.iff => ffffffa4
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780dc
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\impact.iff,fffffffe => 0
+[dos] open skid\gfx\impact.iff => ffffff9c
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780dc
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 13
+[exec] allocMem 1d
+[exec] allocMem 14
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\num.iff,fffffffe => 0
+[dos] open skid\gfx\num.iff => ffffff94
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780dc
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 18
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\results.iff,fffffffe => 0
+[dos] open skid\gfx\results.iff => ffffff8c
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780dc
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\skid.iff,fffffffe => 0
+[dos] open skid\gfx\skid.iff => ffffff84
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780dc
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 19
+[exec] allocMem 23
+[exec] allocMem 1a
+[exec] allocMem 15
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\gfx\skidmarks.med,fffffffe => 0
+[dos] open skid\gfx\skidmarks.med => ffffff7c
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 _SIG2_SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780dc
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 780d8
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[dos] seek d73b,ffffffff => 8000
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\maps\format.iff,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff74
+[dos] unlock ffffff74
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] lock skid\maps,fffffffe => 0
+[dos] createDir skid\maps => ffffff6c
+[dos] unlock ffffff6c
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[dos] output
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG3_SINGLE <= 78098
+[dos] output
+[write] [K_
+[exec] setsignal 61700,4 _SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 78098
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 78098
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[dos] seek 25468,ffffffff => 1573b
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\maps\format.map,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff64
+[dos] unlock ffffff64
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] lock skid\maps,fffffffe => ffffff60
+[dos] unlock ffffff60
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[dos] output
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG3_SINGLE <= 78098
+[dos] output
+[write] [K_
+[exec] setsignal 61700,4 _SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 78098
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[exec] setsignal 780d8,61909 _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG3_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d _SIG3_SINGLE_NET_DOS_CTRL_F _ABORT_SIG2_SIG3_SINGLE_SIG8_SIG11_CTRL_C <= 780d8
+[exec] copyMem c
+[exec] allocMem 16
+[exec] allocMem 11
+[exec] allocMem 11
+[exec] freemem
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f _SIG3_SINGLE_INTUITION_NET_DOS_SIG9_SIG10_CTRL_C _ABORT_CHILD_SIG2_SIG3 <= 780d8
+[dos] lock skid\skid,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff58
+[dos] unlock ffffff58
+[exec] setsignal 60c94,601c4 _SIG2_SINGLE_DOS_SIG10_SIG11 _SIG2_NET_DOS_SIG8 <= 7809c
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[dos] output
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18 _SIG3_SINGLE_SIG8_SIG9_SIG10_CTRL_C _SIG3_SINGLE <= 78098
+[dos] output
+[write] [K_
+[exec] setsignal 61700,4 _SIG8_SIG9_SIG10_CTRL_C _SIG2 <= 78098
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 78098
+[exec] setsignal 780d8,4 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG2 <= 78098
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[dos] seek 43ce1,ffffffff => 2d468
+[dos] read ffffffe0 , 78118 , 8000 => 1
+[exec] setsignal 780d8,780d8 _SIG3_SINGLE_NET_DOS_CTRL_F _SIG3_SINGLE_NET_DOS_CTRL_F <= 780d8
+[dos] close ffffffe0 => 0
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[dos] output
+[write] 3 files 
+[exec] setsignal 61704,9 _SIG2_SIG8_SIG9_SIG10_CTRL_C _ABORT_SIG3 <= 780d0
+[dos] output
+[write] , 3 files failed
+[exec] setsignal 61708,10 _SIG3_SIG8_SIG9_SIG10_CTRL_C _SINGLE <= 780c0
+[dos] output
+[write] .[K__
+[exec] setsignal 6170c,6 _SIG2_SIG3_SIG8_SIG9_SIG10_CTRL_C _CHILD_SIG2 <= 780c4
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[dos] output
+[write] Operation not entirely successful._
+[exec] setsignal 618ac,23 _SIG2_SIG3_INTUITION_DOS_SIG11_CTRL_C _ABORT_CHILD_INTUITION <= 780e4
+[dos] currentDir 7098
