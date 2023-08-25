@@ -1,0 +1,492 @@
+[mem] 00000000 R l 000000 00001400 000004 ZERO
+[exec] allocMem 1dbc
+[exec] setsignal 200,0 #SIG_9  => 0 
+[exec] openlibrary dos.library,802000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask <= 803000
+[dos] getvar LHAOPTS => ffffffff
+[dos] input
+[dos] isInteractive
+[exec] findTask <= 803000
+[dos] lock t:,fffffffe => 0
+[exec] fmt LhA V%ld.%02ldr - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._ => LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[dos] output
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setsignal 618a0,4a #INTUITION#DOS#SIG_11#CTRL_C#SIG_17 #CHILD#SIG_3#NET => 0 
+[exec] fmt Registered to %s => Registered to 
+[dos] output
+[write] Registered to 
+[exec] setsignal 61898,e #SIG_3#SINGLE#DOS#SIG_11#CTRL_C#SIG_17 #CHILD#SIG_2#SIG_3 => 8 #SIG_3
+[exec] fmt _ => _
+[dos] output
+[write] _
+[exec] setsignal 61894,1 #SIG_2#SINGLE#DOS#SIG_11#CTRL_C#SIG_17 #ABORT => 8 #SIG_3
+[exec] fmt [0 p => [0 p
+[dos] output
+[write] [0 p
+[exec] setsignal 618a8,5 #SIG_3#INTUITION#DOS#SIG_11#CTRL_C#SIG_17 #ABORT#SIG_2 => 8 #SIG_3
+[exec] allocMem 110
+[dos] lock skid.lha,fffffffe => ffffffe4
+[dos] examine(ffffffe4)
+[dos] unlock ffffffe4
+[exec] setsignal 60c94,61bb1 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #ABORT#SINGLE#INTUITION#DOS#SIG_8#SIG_9#SIG_11#CTRL_C#SIG_17 => 60898 #SIG_3#SINGLE#DOS#SIG_11#SIG_17
+[exec] allocMem 2c
+[exec] allocMem d
+[exec] freemem
+[exec] fmt %s files %s =>  files 
+[exec] allocMem 3ecc
+[exec] allocMem 800c
+[exec] allocMem a10c
+[exec] fmt %s archive '%s':_ =>  archive '':_
+[dos] output
+[write]  archive '':_
+[exec] setsignal 61898,d #SIG_3#SINGLE#DOS#SIG_11#CTRL_C#SIG_17 #ABORT#SIG_2#SIG_3 => 60898 #SIG_3#SINGLE#DOS#SIG_11#SIG_17
+[exec] allocMem 3e
+[exec] allocMem 800c
+[dos] open skid.lha => ffffffe0
+[exec] allocMem 15
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 788d8 #SIG_3#SINGLE#NET#DOS#SIG_11#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] seek 0,ffffffff => 0
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 788d8 #SIG_3#SINGLE#NET#DOS#SIG_11#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\.info,fffffffe => 0
+[dos] open skid\.info => 0
+[dos] lock skid,fffffffe => 0
+[dos] createDir skid => ffffffd0
+[dos] unlock ffffffd0
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] open skid\.info => ffffffcc
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7801c #SIG_2#SIG_3#SINGLE#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78018 #SIG_3#SINGLE#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78018 #SIG_3#SINGLE#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\cars.palette,fffffffe => 0
+[dos] open skid\gfx\cars.palette => 0
+[dos] lock skid,fffffffe => ffffffc0
+[dos] unlock ffffffc0
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx,fffffffe => 0
+[dos] createDir skid\gfx => ffffffb8
+[dos] unlock ffffffb8
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] open skid\gfx\cars.palette => ffffffb4
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7801c #SIG_2#SIG_3#SINGLE#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78018 #SIG_3#SINGLE#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78018 #SIG_3#SINGLE#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\engine.iff,fffffffe => 0
+[dos] open skid\gfx\engine.iff => ffffffac
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7805c #SIG_2#SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\flag.iff,fffffffe => 0
+[dos] open skid\gfx\flag.iff => ffffffa4
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7805c #SIG_2#SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\impact.iff,fffffffe => 0
+[dos] open skid\gfx\impact.iff => ffffff9c
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7805c #SIG_2#SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 13
+[exec] allocMem 1d
+[exec] allocMem 14
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\num.iff,fffffffe => 0
+[dos] open skid\gfx\num.iff => ffffff94
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7805c #SIG_2#SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 18
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\results.iff,fffffffe => 0
+[dos] open skid\gfx\results.iff => ffffff8c
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7805c #SIG_2#SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\skid.iff,fffffffe => 0
+[dos] open skid\gfx\skid.iff => ffffff84
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7805c #SIG_2#SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 19
+[exec] allocMem 23
+[exec] allocMem 1a
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\gfx\skidmarks.med,fffffffe => 0
+[dos] open skid\gfx\skidmarks.med => ffffff7c
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setsignal 6171c,4 #SIG_2#SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 7805c #SIG_2#SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78058 #SIG_3#SINGLE#NET#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] seek d73b,ffffffff => 8000
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\maps\format.iff,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff74
+[dos] unlock ffffff74
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\maps,fffffffe => 0
+[dos] createDir skid\maps => ffffff6c
+[dos] unlock ffffff6c
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt *** Error on file '%s' :  => *** Error on file '' : 
+[dos] output
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_3#SINGLE => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt %s[K_ => [K_
+[dos] output
+[write] [K_
+[exec] setsignal 61700,4 #SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] seek 25468,ffffffff => 1573b
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\maps\format.map,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff64
+[dos] unlock ffffff64
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\maps,fffffffe => ffffff60
+[dos] unlock ffffff60
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt *** Error on file '%s' :  => *** Error on file '' : 
+[dos] output
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_3#SINGLE => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt %s[K_ => [K_
+[dos] output
+[write] [K_
+[exec] setsignal 61700,4 #SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,61909 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_3#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setsignal 780d8,6191d #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #ABORT#SIG_2#SIG_3#SINGLE#SIG_8#SIG_11#CTRL_C#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] copyMem c
+[exec] allocMem 16
+[exec] allocMem 11
+[exec] allocMem 11
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setsignal 616f8,f #SIG_3#SINGLE#INTUITION#NET#DOS#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#CHILD#SIG_2#SIG_3 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] lock skid\skid,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff58
+[dos] unlock ffffff58
+[exec] setsignal 60c94,601c4 #SIG_2#SINGLE#DOS#SIG_10#SIG_11#SIG_17 #SIG_2#NET#DOS#SIG_8#SIG_17 => 7809c #SIG_2#SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setsignal 61718,4 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt *** Error on file '%s' :  => *** Error on file '' : 
+[dos] output
+[write] *** Error on file '' : 
+[exec] setsignal 61718,18 #SIG_3#SINGLE#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_3#SINGLE => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt %s[K_ => [K_
+[dos] output
+[write] [K_
+[exec] setsignal 61700,4 #SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,4 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_2 => 78098 #SIG_3#SINGLE#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] seek 43ce1,ffffffff => 2d468
+[dos] read ffffffe0 , 78118 , 8000 => 1
+[exec] setsignal 780d8,780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17 => 780d8 #SIG_3#SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] close ffffffe0 => 0
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] fmt %ld files %s => 3 files 
+[dos] output
+[write] 3 files 
+[exec] setsignal 61704,9 #SIG_2#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #ABORT#SIG_3 => 780d0 #SINGLE#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt , %ld files failed => , 3 files failed
+[dos] output
+[write] , 3 files failed
+[exec] setsignal 61708,10 #SIG_3#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #SINGLE => 780c0 #NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] fmt .[K__ => .[K__
+[dos] output
+[write] .[K__
+[exec] setsignal 6170c,6 #SIG_2#SIG_3#SIG_8#SIG_9#SIG_10#CTRL_C#SIG_17 #CHILD#SIG_2 => 780c4 #SIG_2#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] fmt Operation not entirely successful._ => Operation not entirely successful._
+[dos] output
+[write] Operation not entirely successful._
+[exec] setsignal 618ac,23 #SIG_2#SIG_3#INTUITION#DOS#SIG_11#CTRL_C#SIG_17 #ABORT#CHILD#INTUITION => 780e4 #SIG_2#INTUITION#NET#DOS#CTRL_F#CTRL_F#SIG_16#SIG_17
+[dos] currentDir 7098
+[dos] close ffffffcc => 0
+[dos] close ffffffb4 => 0
+[dos] close ffffffac => 0
+[dos] close ffffffa4 => 0
+[dos] close ffffff9c => 0
+[dos] close ffffff94 => 0
+[dos] close ffffff8c => 0
+[dos] close ffffff84 => 0
+[dos] close ffffff7c => 0
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[dos] output
+[write] [ p[0m
+[exec] setTaskPri
+[exec] closeLibrary
+[exec] freemem
+[mem] 000951a4 R w 000000 0000 000002 ZERO
+[mem] 000991b2 W w fffffe 0658 002060 
+[mem] 000991b2 W w fffffc 0006 002060 
+[mem] 000991b2 W w fffffa 0000 002060 
+[mem] 000991b2 W w fffff8 0006 002060 
+[mem] 000991b2 W w fffff6 8554 002060 
+[mem] 000991b2 W w fffff4 0000 002060 
+[mem] 00099892 W l fffff0 00002098 002098 
+[exec] allocMem 1dbc
+[mem] 00099d58 R l fffff0 00000000 800f3c 
+[mem] 00099d68 R w 000000 2098 000002 ZERO
+[mem] 0009dd7c W w fffffe 0658 002060 
+[mem] 0009dd7c W w fffffc 0006 002060 
+[mem] 0009dd7c W w fffffa 0000 002060 
+[mem] 0009dd7c W w fffff8 0006 002060 
+[mem] 0009dd7c W w fffff6 c2b8 002060 
+[mem] 0009dd7c W w fffff4 0001 002060 
+[mem] 0009e20c W l fffff0 00002098 002098 
+[exec] allocMem 1dbc
+[mem] 0009e6d2 R l fffff0 00000000 800f3c 
+[mem] 0009e6e2 R w 000000 2098 000002 ZERO
+[mem] 000a26f6 W w fffffe 0658 002060 
+[mem] 000a26f6 W w fffffc 0006 002060 
+[mem] 000a26f6 W w fffffa 0000 002060 
+[mem] 000a26f6 W w fffff8 0006 002060 
+[mem] 000a26f6 W w fffff6 c2b8 002060 
+[mem] 000a26f6 W w fffff4 0001 002060 
+[mem] 000a2b86 W l fffff0 00002098 002098 
+[exec] allocMem 1dbc
+[mem] 000a304c R l fffff0 00000000 800f3c 
+[mem] 000a305c R w 000000 2098 000002 ZERO
+[mem] 000a7070 W w fffffe 0658 002060 
+[mem] 000a7070 W w fffffc 0006 002060 
+[mem] 000a7070 W w fffffa 0000 002060 
+[mem] 000a7070 W w fffff8 0006 002060 
+[mem] 000a7070 W w fffff6 c2b8 002060 
+[mem] 000a7070 W w fffff4 0001 002060 
+[mem] 000a7500 W l fffff0 00002098 002098 

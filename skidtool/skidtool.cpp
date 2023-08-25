@@ -38,22 +38,25 @@
 
 std::string sigbits(int sig){
 	std::stringstream ss;
-	if(sig&0x1<<0) ss<<"_ABORT";
-	if(sig&0x1<<1) ss<<"_CHILD";
-	if(sig&0x1<<2) ss<<"_SIG2";
-	if(sig&0x1<<3) ss<<"_SIG3";
-	if(sig&0x1<<4) ss<<"_SINGLE";
-	if(sig&0x1<<5) ss<<"_INTUITION";
-	if(sig&0x1<<6) ss<<"_NET";
-	if(sig&0x1<<7) ss<<"_DOS";
-	if (sig & 0x1 << 8) ss << "_SIG8";
-	if (sig & 0x1 << 9) ss << "_SIG9";
-	if (sig & 0x1 << 10) ss << "_SIG10";
-	if (sig & 0x1 << 11) ss << "_SIG11";
-	if(sig&0x1<<12) ss<<"_CTRL_C";
-	if(sig&0x1<<13) ss<<"_CTRL_D";
-	if(sig&0x1<<14) ss<<"_CTRL_E";
-	if(sig&0x1<<15) ss<<"_CTRL_F";
+	if(sig&0x1<<0) ss<<"#ABORT";
+	if(sig&0x1<<1) ss<<"#CHILD";
+	if(sig&0x1<<2) ss<<"#SIG_2";
+	if(sig&0x1<<3) ss<<"#SIG_3";
+	if(sig&0x1<<4) ss<<"#SINGLE";
+	if(sig&0x1<<5) ss<<"#INTUITION";
+	if(sig&0x1<<6) ss<<"#NET";
+	if(sig&0x1<<7) ss<<"#DOS";
+	if (sig & 0x1 << 8) ss << "#SIG_8";
+	if (sig & 0x1 << 9) ss << "#SIG_9";
+	if (sig & 0x1 << 10) ss << "#SIG_10";
+	if (sig & 0x1 << 11) ss << "#SIG_11";
+	if(sig&0x1<<12) ss<<"#CTRL_C";
+	if(sig&0x1<<13) ss<<"#CTRL_D";
+	if(sig&0x1<<14) ss<<"#CTRL_E";
+	if(sig&0x1<<15) ss<<"#CTRL_F";
+	if(sig&0x1<<15) ss<<"#CTRL_F";
+	if (sig & 0x1 << 16) ss << "#SIG_16";
+	if (sig & 0x1 << 17) ss << "#SIG_17";
 	return ss.str();
 }
 std::string str_tolower(std::string s)
@@ -1580,7 +1583,7 @@ public:
 		cpu0->writeRegister(0, bits);
 		execlog << "setsignal " << d0 << "," << d1;
 		execlog << " " << sigbits(d0) << " " << sigbits(d1);
-		execlog << " <= " << bits;
+		execlog << " => " << bits << " " << sigbits(bits);
 		emit();
 	}
 
@@ -1765,8 +1768,9 @@ public:
 	void fakeTask() {
 		// to trap $ac(task) oblivion and friends are looking for workbench pointers
 //		cpu0->writeRegister(0, 0x801000);
-		cpu0->writeRegister(0, 0x803000);
-		execlog << "findTask"; emit();
+		int task = 0x803000;
+		cpu0->writeRegister(0, task);
+		execlog << "findTask <= " << task; emit();
 	}
 	void getMsg() {
 		int a0 = cpu0->readRegister(8);

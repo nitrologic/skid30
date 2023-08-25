@@ -530,10 +530,13 @@ struct amiga16 : memory32{
 			exec->availMem();
 			break;
 		case DEALLOCATE:
+			systemLog("exec", "dellocate");
 			break;
 		case ALLOCSIGNAL:
+			systemLog("exec", "allocsignal");
 			break;
 		case WAIT:
+			systemLog("exec", "wait");
 			break;
 		case OLDOPENLIBRARY: 
 		case OPENLIBRARY:
