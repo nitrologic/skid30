@@ -1,19 +1,15 @@
-zarch1 - goat
+Summary of ACID500 log file analysis
 
-guardian1 - needs cd.device and nonvolatile.library support
+test.lst - HiSoft GenAm assembler output of test.s with correct date
 
-oblivion2 - plays a sample with AUD3 registers and polls INTREQ1
+guardian1.log - needs cd.device and nonvolatile.library support
 
-lha4 - fix for lha2 - first error is line 248 *** Error on file '' : 
+oblivion2.log - plays a sample with AUD3 registers and polls INTREQ1
 
-lha3 - still calling currentdir with non negative lock :()
+lha9.log - extra setsignal logging
+lha4.log - fix for lha2 - first error is line 248 *** Error on file '' : 
+lha3.log - still calling currentdir with non negative lock :()
+lha2.log - creates skeleton but with unmodified path separator
+lha1.log - fails with wrong filename in argument
 
-lha2 - creates skeleton but fucks up
-
-[dos] lock Skid\maps,fffffffe => 0
-[dos] createDir Skid/maps => ffffff6c
-
-lha1 - fails with wrong filename in argument
-
-
-
+zarch1.log - goat

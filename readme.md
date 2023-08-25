@@ -8,4 +8,4 @@ Active progress on this project includes the use of the lha command line archivi
 
 The ACID500 is designed to boot and execute a selection of classic amiga binaries without the need of a proprietary Kickstart ROM. Exec and dos.library are both implemented on native side of the emulation architecture.
 
-[test notes](notes/notes.txt)
+[test logs](MyACID500/log.txt)
