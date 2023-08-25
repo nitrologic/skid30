@@ -481,6 +481,10 @@ typedef std::vector<MemEvent> MemEvents;
 
 const int DumpLimit=5000;
 
+enum Signals {
+	DOS_BIT = 0x0080
+};
+
 struct acid68000 {
 
 	int step=0;
@@ -1188,6 +1192,11 @@ public:
 		fileLocks[lock] = f;
 
 		int success=f->open(d2);
+
+		if (success) {
+//			cpu0->setSignal(DOS_BIT, DOS_BIT);
+			cpu0->setSignal(0, DOS_BIT);
+		}
 		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
 
@@ -1697,6 +1706,9 @@ public:
 		cpu0->write16(scratch + n * 4, 0x4e75);
 
 		cpu0->push(scratch);
+
+		execlog << "fmt " << fmt << " => " << s;
+		emit();
 
 //		machineError = scratch;
 //		cpu0->memoryError = scratch;

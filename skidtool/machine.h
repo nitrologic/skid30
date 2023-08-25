@@ -427,7 +427,7 @@ struct amiga16 : memory32{
 	int callDos(int offset) {
 		switch (offset) {
 		case DOS_OPEN:
-			dos->open();
+			dos->open();			
 			break;
 		case DOS_CLOSE:
 			dos->close();
@@ -549,6 +549,7 @@ struct amiga16 : memory32{
 			break;
 		case SETSIGNAL:
 			exec->setSignal();
+			return 1;
 			break;
 		case SETTASKPRI:
 			systemLog("exec", "setTaskPri");
