@@ -9,6 +9,20 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+enum ami_mem_map {
+	AMI_BASE = 0x800000,
+	EXEC_BASE = 0x801000,
+	DOS_BASE = 0x802000,
+	INTUITION_BASE = 0x803000,
+	NONVOLATILE_BASE = 0x804000,
+	GRAPHICS_BASE = 0x805000,
+	MATHFFP_BASE = 0x806000,
+	WORKBENCH_BASE = 0x80c000,
+	TASK_BASE = 0x80e000
+};
+
+std::string addressString(int b);
+
 //#define STOP_ON_WRITE
 
 const int ChipsetFlags = 3;
@@ -313,26 +327,30 @@ struct amiga16 : memory32{
 	void setMath(IFFPMath * ffpMath){
 		math = ffpMath;
 	}
+
+	// read only memory, writing causes machineError
+
+	virtual void write16(int offset, int value) {
+		int address = AMI_BASE | offset;
+		systemLog("write16", addressString(address));
+//		machineError = address;
+	}
+
 	// pc has arrived with a negative offset from lib
 	// 
 	// low 12 bits are offset into 6 byte per entry jump table
 	// 
-	// library index is next few bits, currently mapping is
-	// 
-	// execbase ($801000)
-	// dosbase ($802000)
-	// intuition
-	// nonvolatile
-	// graphics
-	// ffpmath
+	// library index is next few bits, see ami_mem_map
 
 	virtual int read16(int address, int flags) {
 		int lib = (address + 4095) >> 12;
 		int offset = address | (-1 << 12);
 
-//		std::stringstream ss;
-//		ss << "address:" << address << " offset:" << offset << " lib:" << lib;
-//		systemLog("MIG", ss.str());
+		if (flags == 0) {
+			std::stringstream ss;
+			ss << addressString(AMI_BASE | address) << " offset:" << offset << " lib:" << lib;
+			systemLog("read16", ss.str());
+		}
 
 		if (flags & QBIT) {
 			//		log_bus(0, 1, physicalAddress, 0);
@@ -584,16 +602,30 @@ struct amiga16 : memory32{
 		}
 		return 0;
 	}
-	virtual int read32(int address) {		
+	virtual int read32(int offset) {		
+		int address=AMI_BASE|offset;
+		systemLog("read32", addressString(address));
+
 		// trap $114(execbase) for apps such as blitz2 and lha looking for workbench pointers
-		if (address == (0x1000 + 0x114) ) {
-//			return 0x801000;
-			return 0x807000;
+
+		if (address == (EXEC_BASE + 0x114) ) {
+			return WORKBENCH_BASE;
 		}
-//		return 0;	// all memtests from blitz2 check for 0 at the above address
+		if (address == (WORKBENCH_BASE + 0xac)) {
+			return offset;
+		}
+		if (address == (WORKBENCH_BASE + 0x98)) {
+			return 0;	// SYSTEM ROOT LOCK
+		}
+		if (address == (DOS_BASE + 0x22)) {
+			return offset;
+		}
+		if (address == (TASK_BASE + 0xb8)) {
+			return 0xdeadbeef;
+		}
+		if (address == (TASK_BASE + 0xa4)) {
+			return 6789;
+		}
 		return address;
-//		writeData32(address);
-//		machineError=address;
-//		return shorts[address >> 1];
 	}
 };

@@ -27,3 +27,4 @@ void writeString(std::string s);
 void writeNamedString(std::string n, std::string s);
 void writeIndex(int i);
 void writeCC4Big(int tag);
+

@@ -20,7 +20,6 @@
 #include <exec/lists.h>
 #endif /* EXEC_LISTS_H */
 
-
 /* Please use Exec functions to modify task structure fields, where available.
  */
 struct Task {

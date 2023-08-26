@@ -56,9 +56,9 @@ std::string sigbits(int sig){
 	if(sig&0x1<<13) ss<<"#CTRL_D";
 	if(sig&0x1<<14) ss<<"#CTRL_E";
 	if(sig&0x1<<15) ss<<"#CTRL_F";
-	if(sig&0x1<<15) ss<<"#CTRL_F";
-	if (sig & 0x1 << 16) ss << "#SIG_16";
-	if (sig & 0x1 << 17) ss << "#SIG_17";
+	if (sig & 0xffffff00) {
+		ss << "#SIGH_" << std::to_string(sig);
+	}
 	return ss.str();
 }
 std::string str_tolower(std::string s)
@@ -1590,19 +1590,19 @@ public:
 		std::string s = cpu0->fetchString(a1);
 		int r = 0;
 		if (s == "dos.library") {
-			r = 0x802000;
+			r = DOS_BASE;
 		}
 		else if (s=="intuition.library"){
-			r = 0x803000;			
+			r = INTUITION_BASE;			
 		}
 		else if (s == "nonvolatile.library") {
-			r = 0x804000;
+			r = NONVOLATILE_BASE;
 		}
 		else if (s == "graphics.library") {
-			r = 0x805000;
+			r = GRAPHICS_BASE;
 		}
 		else if (s == "mathffp.library") {
-			r = 0x806000;
+			r = MATHFFP_BASE;
 		}
 		else {
 			// todo: build a named map
@@ -1620,9 +1620,8 @@ public:
 		int d1 = cpu0->readRegister(9);//mask
 		int bits=cpu0->setSignal(d0,d1);
 		cpu0->writeRegister(0, bits);
-		execlog << "setsignal " << d0 << "," << d1;
-		execlog << " " << sigbits(d0) << " " << sigbits(d1);
-		execlog << " => " << bits << " " << sigbits(bits);
+		execlog << "setsignal " << d0 << "," << d1 << " <= " << bits;
+		execlog << " ; "<< sigbits(d0) << " , " << sigbits(d1) << " <= " << sigbits(bits);
 		emit();
 	}
 
@@ -1807,7 +1806,7 @@ public:
 	void fakeTask() {
 		// to trap $ac(task) oblivion and friends are looking for workbench pointers
 //		cpu0->writeRegister(0, 0x801000);
-		int task = 0x803000;
+		int task = TASK_BASE;	// 0x80c000;
 		cpu0->writeRegister(0, task);
 		execlog << "findTask <= " << task; emit();
 	}
@@ -1821,7 +1820,12 @@ public:
 	}
 };
 
+// node: "Succ,Pred,type,pri,Name" 0,4,8,9,10
 
+// task: node, 
+// "flags,state,id,td,Alloc,Wait,Recvd,Except,
+// _trapAlloc,_trapEnable,ExceptData,ExceptCode,TrapData,TrapCode,
+// StackPointer,StackFloor,StackCeil,Switch,Launch,ListMem,User"
 
 // musashi entry points to acid cpu address bus
 

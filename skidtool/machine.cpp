@@ -13,6 +13,13 @@ void systemLog(const char* tag, std::string s) {
 	machineLog.push_back(line);
 }
 
+std::string addressString(int b) {
+	std::stringstream ss;
+	ss << std::setfill('0') << std::setw(6) << std::right << std::hex << (b & 0xffffff) << std::dec;
+	return ss.str();
+}
+
+
 void writeByte(int b) {
 	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
 }
