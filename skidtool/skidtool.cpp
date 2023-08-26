@@ -67,8 +67,9 @@ std::string str_tolower(std::string s)
 	return s;
 }
 
-const int ASM_LINES = 6;
-const int LOG_LINES = 24;
+const int PREV_LINES = 6;
+const int ASM_LINES = 12;
+const int LOG_LINES = 20;
 
 std::vector<logline> machineLog;
 
@@ -499,9 +500,33 @@ struct acid68000 {
 	memory32* mem;
 	MemEvents memlog;
 
+	std::vector<int> history;
+	int prevPC = 0;
+	int prevTick = 0;
+
 	int heapPointer = 0x60000;
 
 	std::set<std::uint32_t> breakpoints;
+
+	void programCounter(int physicalAddress) {
+
+		int ppc = readRegister(M68K_REG_PPC); //m68k_get_reg(NULL, M68K_REG_PPC);
+
+//		int pc = readRegister(16);
+//		int tick = readCounter();
+		if (ppc != prevPC) {
+			history.push_back(ppc);
+			prevPC = ppc;
+		}
+	}
+
+	int previousPC(int age) {
+		int n = (int)history.size();
+		if (n > age) {
+			return history[n-age];
+		}
+		return 0;
+	}
 
 	std::string fetchString(int a1) {
 		std::stringstream ss;
@@ -727,12 +752,13 @@ struct acid68000 {
 		int qbits = a32 & 0xc0000000;	// instruction or debugger fetch
 		int physicalAddress = a32 & 0xffffff;
 
-		if (qbits & 0x80000000) {	// pc is on the bus, check breakpoints
+		if (qbits & QBIT) { // 0x80000000 pc is on the bus, check breakpoints
 			if (breakpoints.count(a32)) {
 				memoryError = physicalAddress;
 				m68k_pulse_halt();
 				return 0;
 			}
+			programCounter(physicalAddress);
 		}
 		int address = decode(physicalAddress);
 		if (address < 0) {
@@ -819,7 +845,7 @@ struct acid68000 {
 	}
 
 	void breakpoint(int address) {
-		breakpoints.insert(address|0x80000000);
+		breakpoints.insert(address | QBIT);// 0x80000000);
 	}
 };
 
@@ -2038,7 +2064,6 @@ void disassemble(int pc,int count)
 		printf("%06x: %-20s: %s \033[K\n", pc, buff2, buff);
 		pc += instr_size;
 	}
-	writeEOL();
 }
 
 const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
@@ -2161,8 +2186,21 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 			}
 			writeEOL();
 
+			for (int i = 0; i < PREV_LINES; i++) {
+				int index = (PREV_LINES - i);
+				int pc2 = acid500.previousPC(index);
+				if (pc2) {
+					disassemble(pc2, 1);
+				}
+				else {
+					writeEOL();
+				}
+
+			}
+			writeEOL();
 
 			disassemble(pc, ASM_LINES);
+			writeEOL();
 
 			displayLogLines(LOG_LINES);
 

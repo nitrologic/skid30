@@ -1147,8 +1147,8 @@ static inline uint m68ki_read_16_fc(uint address, uint fc)
 	if (PMMU_ENABLED)
 	    address = pmmu_translate_addr(address);
 #endif
-
-	return m68k_read_memory_16(ADDRESS_68K(address));
+	// simon was here
+	return m68k_read_memory_16(ADDRESS_68K(address) | 0x80000000);
 }
 static inline uint m68ki_read_32_fc(uint address, uint fc)
 {
