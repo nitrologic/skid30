@@ -19,6 +19,7 @@ public:
 	virtual void putMsg() = 0;
 	virtual void getMsg() = 0;
 	virtual void copyMem() = 0;
+	virtual void allocSignal() = 0;
 	virtual void setSignal() = 0;
 	virtual void forbid() = 0;
 	virtual void permit() = 0;

@@ -1616,12 +1616,23 @@ public:
 	}
 
 	void setSignal() {
-		int d0 = cpu0->readRegister(8);//newbits
-		int d1 = cpu0->readRegister(9);//mask
+		int d0 = cpu0->readRegister(0);//newbits
+		int d1 = cpu0->readRegister(1);//mask
 		int bits=cpu0->setSignal(d0,d1);
 		cpu0->writeRegister(0, bits);
-		execlog << "setsignal " << d0 << "," << d1 << " <= " << bits;
+		execlog << "setSignal " << d0 << "," << d1 << " <= " << bits;
 		execlog << " ; "<< sigbits(d0) << " , " << sigbits(d1) << " <= " << sigbits(bits);
+		emit();
+	}
+
+	int nextSignal = 16;
+
+	void allocSignal() {
+		int d0 = cpu0->readRegister(0);//preferebce
+		int signum=(d0>0)?d0:nextSignal++;
+//		bits=1<<
+		cpu0->writeRegister(0, signum);
+		execlog << "allocSignal " << d0 << " <= " << signum;
 		emit();
 	}
 
@@ -2344,16 +2355,16 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "e skid.lha\n";
+//	const char* args = "e skid.lha\n";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
-//	const char* amiga_binary = "../archive/game";
+	const char* amiga_binary = "../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
 //	const char* amiga_binary = "../archive/oblivion/oblivion";
-//	const char* args = "\n";
+	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
 	const int nops[] = { 0 };

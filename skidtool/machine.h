@@ -520,12 +520,16 @@ struct amiga16 : memory32{
 	int callExec(int offset){
 		switch (offset) {
 		case FORBID:
+			systemLog("exec", "forbid");
 			break;
 		case PERMIT:
+			systemLog("exec", "permit");
 			break;
 		case SETINTVECTOR:
+			systemLog("exec", "setintvector");
 			break;
 		case ADDINTSERVER://d0,d1 intnum,handler
+			systemLog("exec", "addintserver");
 			break;
 		case DOIO:
 			exec->doIO();
@@ -551,7 +555,8 @@ struct amiga16 : memory32{
 			systemLog("exec", "dellocate");
 			break;
 		case ALLOCSIGNAL:
-			systemLog("exec", "allocsignal");
+//			systemLog("exec", "allocsignal");
+			exec->allocSignal();
 			break;
 		case WAIT:
 			systemLog("exec", "wait");
