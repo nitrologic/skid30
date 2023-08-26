@@ -1,1 +1,1 @@
-[test logs](MyACID500/log.txt)
+[test logs](../MyACID500/log.txt)
