@@ -1,4 +1,5 @@
-#ACID500
+ACID500
+=======
 
 No kickstart required.
 
@@ -8,6 +9,7 @@ This project contains the Musashi 68K emulator (Copyright 1998-2002 Karl Steneru
 
 The memory address AMI_BASE drives chip select on ami16 virtual system on a chip.
 
+```
 enum ami_mem_map {
 	AMI_BASE = 0x800000,
 	EXEC_BASE = 0x801000,
@@ -19,6 +21,7 @@ enum ami_mem_map {
 	WORKBENCH_BASE = 0x80c000,
 	TASK_BASE = 0x80e000
 };
+```
 
 The ami16 class decodes library bits and maps a skeleton of their API to ACID500 native implementations.
 
