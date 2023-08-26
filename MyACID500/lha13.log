@@ -1,0 +1,525 @@
+[mem] 00000000 R l 000000 00001400 000004 ZERO
+[read32] 801114
+[read32] 80c0ac
+[exec] allocMem 1dbc
+[exec] setSignal 0,3000 <= 0 ;  , #CTRL_C#CTRL_D#SIGH_12288 <= 
+[exec] openlibrary dos.library,802000
+[read32] 802022
+[read32] 801114
+[read32] 80c098
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask <= 80e000
+[read32] 80e0b8
+[write16] 80e0b8
+[write16] 80e0ba
+[dos] getvar LHAOPTS => ffffffff
+[dos] input
+[dos] isInteractive
+[exec] findTask <= 80e000
+[read32] 80e0b8
+[write16] 80e0b8
+[write16] 80e0ba
+[dos] lock t:,fffffffe => 0
+[write16] 80e0b8
+[write16] 80e0ba
+[exec] fmt LhA V%ld.%02ldr - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._ => LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[dos] output
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt Registered to %s => Registered to 
+[dos] output
+[write] Registered to 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt _ => _
+[dos] output
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0 p => [0 p
+[dos] output
+[write] [0 p
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] allocMem 110
+[dos] lock skid.lha,fffffffe => ffffffe4
+[dos] examine(ffffffe4)
+[dos] unlock ffffffe4
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] allocMem 2c
+[exec] allocMem d
+[exec] freemem
+[exec] fmt %s files %s =>  files 
+[exec] allocMem 3ecc
+[exec] allocMem 800c
+[exec] allocMem a10c
+[exec] fmt %s archive '%s':_ =>  archive '':_
+[dos] output
+[write]  archive '':_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] allocMem 3e
+[exec] allocMem 800c
+[dos] open skid.lha => ffffffe0
+[exec] allocMem 15
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] seek 0,ffffffff => 0
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\.info,fffffffe => ffffffdc
+[dos] unlock ffffffdc
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[exec] fmt _%s (Y/N/A/S/Q): [K => _ (Y/N/A/S/Q): [K
+[dos] output
+[write] _ (Y/N/A/S/Q): [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [ p => [ p
+[dos] output
+[write] [ p
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] findTask <= 80e000
+[read32] 80e0a4
+[read32] 80e0a4
+[exec] findTask <= 80e000
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[dos] input
+[dos] read fffffffc , 61983 , 1 => 1
+[exec] findTask <= 80e000
+[read32] 80e0a4
+[read32] 80e0a4
+[exec] findTask <= 80e000
+[exec] allocMem 50
+[exec] putMsg
+[exec] waitPort
+[exec] getMsg
+[exec] freemem
+[exec] fmt [0 p => [0 p
+[dos] output
+[write] [0 p
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open skid\.info => ffffffd8
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\cars.palette,fffffffe => ffffffd4
+[dos] unlock ffffffd4
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\cars.palette => ffffffd0
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\engine.iff,fffffffe => ffffffcc
+[dos] unlock ffffffcc
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\engine.iff => ffffffc8
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\flag.iff,fffffffe => ffffffc4
+[dos] unlock ffffffc4
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\flag.iff => ffffffc0
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 16
+[exec] allocMem 20
+[exec] allocMem 17
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\impact.iff,fffffffe => ffffffbc
+[dos] unlock ffffffbc
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\impact.iff => ffffffb8
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 13
+[exec] allocMem 1d
+[exec] allocMem 14
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\num.iff,fffffffe => ffffffb4
+[dos] unlock ffffffb4
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\num.iff => ffffffb0
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 18
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\results.iff,fffffffe => ffffffac
+[dos] unlock ffffffac
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\results.iff => ffffffa8
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] allocMem 1e
+[exec] allocMem 15
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\skid.iff,fffffffe => ffffffa4
+[dos] unlock ffffffa4
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\skid.iff => ffffffa0
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 19
+[exec] allocMem 23
+[exec] allocMem 1a
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\gfx\skidmarks.med,fffffffe => ffffff9c
+[dos] unlock ffffff9c
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt '%s' already exists, overwrite? => '' already exists, overwrite?
+[dos] open skid\gfx\skidmarks.med => ffffff98
+[exec] fmt [K => [K
+[dos] output
+[write] [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] seek d73b,ffffffff => 8000
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\maps\format.iff,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff90
+[dos] unlock ffffff90
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\maps,fffffffe => ffffff8c
+[dos] unlock ffffff8c
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt *** Error on file '%s' :  => *** Error on file '' : 
+[dos] output
+[write] *** Error on file '' : 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt %s[K_ => [K_
+[dos] output
+[write] [K_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] seek 25468,ffffffff => 1573b
+[dos] read ffffffe0 , 78118 , 8000 => 8000
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 17
+[exec] allocMem 21
+[exec] allocMem 17
+[exec] allocMem 16
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\maps\format.map,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff84
+[dos] unlock ffffff84
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\maps,fffffffe => ffffff80
+[dos] unlock ffffff80
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt *** Error on file '%s' :  => *** Error on file '' : 
+[dos] output
+[write] *** Error on file '' : 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt %s[K_ => [K_
+[dos] output
+[write] [K_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem c
+[exec] allocMem 16
+[exec] allocMem 11
+[exec] allocMem 11
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => : (-80/0)  [K
+[dos] output
+[write] : (-80/0)  [K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock skid\skid,fffffffe => 0
+[dos] lock skid,fffffffe => ffffff78
+[dos] unlock ffffff78
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt *** Error on file '%s' :  => *** Error on file '' : 
+[dos] output
+[write] *** Error on file '' : 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt %s[K_ => [K_
+[dos] output
+[write] [K_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] seek 43ce1,ffffffff => 2d468
+[dos] read ffffffe0 , 78118 , 8000 => 1
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] close ffffffe0 => 0
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] fmt %ld files %s => 3 files 
+[dos] output
+[write] 3 files 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt , %ld files failed => , 3 files failed
+[dos] output
+[write] , 3 files failed
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt .[K__ => .[K__
+[dos] output
+[write] .[K__
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] fmt Operation not entirely successful._ => Operation not entirely successful._
+[dos] output
+[write] Operation not entirely successful._
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] currentDir 0
+[dos] close ffffffd8 => 0
+[dos] close ffffffd0 => 0
+[dos] close ffffffc8 => 0
+[dos] close ffffffc0 => 0
+[dos] close ffffffb8 => 0
+[dos] close ffffffb0 => 0
+[dos] close ffffffa8 => 0
+[dos] close ffffffa0 => 0
+[dos] close ffffff98 => 0
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[dos] output
+[write] [ p[0m
+[read32] 801114
+[exec] setTaskPri
+[exec] closeLibrary
+[exec] freemem
+[write16] 803f02
+[write16] 803f04
+[mem] 000a004a W w fffffe 0658 002060 
+[mem] 000a004a W w fffffc 0006 002060 
+[mem] 000a004a W w fffffa 0000 002060 
+[mem] 000a004a W w fffff8 0006 002060 
+[mem] 000a004a W w fffff6 8554 002060 
+[mem] 000a004a W w fffff4 0000 002060 

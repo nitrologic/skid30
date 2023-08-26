@@ -104,9 +104,9 @@ ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool 
-    freeaudio.cpp
-    freeaudio.h
-    mmdevice.cpp
+    freeaudio/freeaudio.cpp
+    freeaudio/freeaudio.h
+    freeaudio/mmdevice.cpp
     skidtool.cpp 
     machine.cpp
     machine.h 

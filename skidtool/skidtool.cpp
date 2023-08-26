@@ -2357,7 +2357,7 @@ int main() {
 
 	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "ef skid.lha\n";
+	const char* args = "e skid.lha\n";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
