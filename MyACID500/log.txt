@@ -6,6 +6,7 @@ guardian1.log - needs cd.device and nonvolatile.library support
 
 oblivion2.log - plays a sample with AUD3 registers and polls INTREQ1
 
+lha11.log - fixed setsignal register mapping typo
 lha10.log - extra mem logging for ami_base activity at 0x800000
 lha9.log - extra setsignal logging
 lha4.log - fix for lha2 - first error is line 248 *** Error on file '' : 
