@@ -36,6 +36,8 @@
 #define	SIGF_NET	(1L<<7)
 #define SIGF_DOS	(1L<<8)
 
+std::string disassembleLine(int pc);
+
 std::string sigbits(int sig){
 	std::stringstream ss;
 	if(sig&0x1<<0) ss<<"#ABORT";
@@ -69,7 +71,7 @@ std::string str_tolower(std::string s)
 
 const int PREV_LINES = 6;
 const int ASM_LINES = 12;
-const int LOG_LINES = 20;
+const int LOG_LINES = 15;
 
 std::vector<logline> machineLog;
 
@@ -614,6 +616,17 @@ struct acid68000 {
 
 //	void dumpEvent(std:stringstream & out, MemEvent& e) {
 //	}
+
+	void writeTrace(std::string path) {
+		std::ofstream fout(path);
+		int n = history.size();
+		for (int i = 0; i < n; i++) {
+			int pc = history[i];
+			std::string dis = disassembleLine(pc);
+			fout << dis << std::endl;
+		}
+		fout.close();
+	}
 
 	void writeLog(std::string path) {
 		std::ofstream fout(path);
@@ -2051,6 +2064,18 @@ void make_hex(char* buff, unsigned int pc, unsigned int length)
 			*ptr++ = ' ';
 	}
 }
+
+std::string disassembleLine(int pc) {
+	char buff[100];
+	char buff2[100];
+	char buff3[100];
+//	std::stringstream ss;
+	int instr_size = m68k_disassemble(buff, pc, M68K_CPU_TYPE_68000);
+	make_hex(buff2, pc, instr_size);
+	int n=snprintf(buff3,100,"%06x: %-20s: %s", pc, buff2, buff);
+	return std::string(buff3, n);
+}
+
 void disassemble(int pc,int count)
 {
 	unsigned int instr_size;
@@ -2277,6 +2302,7 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 
 	acid500.writeLog("skidtool.log");
 
+	acid500.writeTrace("trace.log");
 
 //	acid500.dumplog(0);
 }

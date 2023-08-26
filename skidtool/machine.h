@@ -552,7 +552,7 @@ struct amiga16 : memory32{
 			break;
 		case SETSIGNAL:
 			exec->setSignal();
-			return 1;
+//			return 1;
 			break;
 		case SETTASKPRI:
 			systemLog("exec", "setTaskPri");
