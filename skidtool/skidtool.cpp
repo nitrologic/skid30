@@ -11,6 +11,7 @@
 #include <map>
 #include <algorithm>
 #include <fstream>
+#include <chrono>
 
 #include "machine.h"
 
@@ -178,6 +179,39 @@ uint64_t millis(){
 	return (spec.tv_sec*1000)+(spec.tv_nsec/1e6);
 }
 #endif
+
+
+#ifdef NO_TM
+struct tm {
+	int	tm_sec;		/* seconds after the minute [0-60] */
+	int	tm_min;		/* minutes after the hour [0-59] */
+	int	tm_hour;	/* hours since midnight [0-23] */
+	int	tm_mday;	/* day of the month [1-31] */
+	int	tm_mon;		/* months since January [0-11] */
+	int	tm_year;	/* years since 1900 */
+	int	tm_wday;	/* days since Sunday [0-6] */
+	int	tm_yday;	/* days since January 1 [0-365] */
+	int	tm_isdst;	/* Daylight Savings Time flag */
+	long	tm_gmtoff;	/* offset from UTC in seconds */
+	char	*tm_zone;	/* timezone abbreviation */
+};
+#endif
+
+void dayminticks(int *dmt) {
+	std::time_t t = std::time(0);   // get time now
+    std::tm* now = std::localtime(&t);
+	int days=0;
+	int mins=now->tm_hour*60+now->tm_min;
+	int ticks=0;
+    dmt[0]=days;
+	dmt[1]=mins;
+	dmt[2]=ticks;
+}
+
+void Sleep(int ms){
+	usleep(ms*1e3);
+}
+
 #endif
 
 
@@ -952,7 +986,8 @@ struct NativeFile {
 		int res = stat(path.c_str(), &fileStat);
 		status = res;
 		if (res == 0) {
-			isDir = (fileStat.st_mode & _S_IFDIR) ? 1 : 0;
+//			isDir = (fileStat.st_mode & _S_IFDIR) ? 1 : 0;
+			isDir = (fileStat.st_mode & S_IFDIR) ? 1 : 0;
 		}
 	}
 
@@ -984,7 +1019,8 @@ struct NativeFile {
 		int res = stat(path.c_str(), &fileStat);
 		status = res;
 		if (res == 0) {
-			isDir = ( fileStat.st_mode & _S_IFDIR )? 1:0;
+//			isDir = ( fileStat.st_mode & _S_IFDIR )? 1:0;
+			isDir = ( fileStat.st_mode & S_IFDIR )? 1:0;
 		}
 
 	}
@@ -993,7 +1029,7 @@ struct NativeFile {
 
 	}
 
-	NativeFile(NativeFile&f) {
+	NativeFile(const NativeFile&f) {
 		filePath = f.filePath;
 		fileHandle = 0;
 		int res = stat(filePath.c_str(), &fileStat);
@@ -1010,7 +1046,8 @@ struct NativeFile {
 			status = 1;
 		}
 		if(status==1){
-			if (fileIterator._At_end()) {
+			if (fileIterator==std::filesystem::directory_iterator()) {
+//			if (fileIterator._At_end()) {
 				status = 3;
 				return 0;
 			}
@@ -1195,6 +1232,7 @@ class aciddos : public IDos {
 public:
 	
 	acid68000* cpu0;
+
 	aciddos(acid68000* cpu) {
 		cpu0 = cpu;
 		doslog.clr();
@@ -1440,8 +1478,10 @@ public:
 
 			const auto& entry = *(f->fileIterator);
 			std::filesystem::path p = entry.path();
-			std::string& s = p.filename().string();
+
+			std::string s = p.filename().string();
 			//			std::filesystem::directory_entry &entry = fileIterator;
+
 			uint64_t size = entry.file_size();
 			bool isdir = entry.is_directory();
 
@@ -1470,7 +1510,8 @@ public:
 			int mode = f->fileStat.st_mode & 7;
 			_fib.fib_Size = n;
 			_fib.fib_Protection = 0x0f;
-			_fib.fib_DirEntryType = (f->fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
+//			_fib.fib_DirEntryType = (f->fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
+			_fib.fib_DirEntryType = (f->fileStat.st_mode& S_IFDIR ) ? 1 : -1 ;
 //			pokeString(f.filePath,_fib.fib_FileName,108);
 			ekopString(f->filePath, _fib.fib_FileName, 108);
 			cpu0->writeMem(d2, &_fib, sizeof(_fib));
