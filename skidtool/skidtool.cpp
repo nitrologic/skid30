@@ -11,7 +11,7 @@
 #include <map>
 #include <algorithm>
 #include <fstream>
-#include <chrono>
+#include <ctime>
 
 #include "machine.h"
 
@@ -197,11 +197,14 @@ struct tm {
 };
 #endif
 
+struct std::tm jan1978 = {0,0,0,1,1,78};
+
 void dayminticks(int *dmt) {
-	std::time_t t = std::time(0);   // get time now
-    std::tm* now = std::localtime(&t);
-	int days=0;
-	int mins=now->tm_hour*60+now->tm_min;
+	std::time_t epoch = std::mktime(&jan1978);   // get time now
+	std::time_t now = std::time(0);   // get time now
+	std::tm* time = std::localtime(&now);
+	int days=std::difftime(now, epoch) / (60 * 60 * 24);;
+	int mins=time->tm_hour*60+time->tm_min;
 	int ticks=0;
     dmt[0]=days;
 	dmt[1]=mins;
