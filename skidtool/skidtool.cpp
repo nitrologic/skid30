@@ -1078,8 +1078,8 @@ struct NativeFile {
 		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
 		fseek(fileHandle, offset, origin);
 		int currentpos = ftell(fileHandle);
-//		return (int)currentpos;
-		return oldpos;
+		return (int)currentpos;
+//		return oldpos;
 	}
 };
 
