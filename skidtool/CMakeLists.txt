@@ -16,8 +16,11 @@ include_directories(
   zlib
   libpng
   musashi
+  steam/sdk/public
 )
-
+link_directories(
+    steam/sdk/redistributable_bin/win64
+)
 set(musashi_src
     musashi/m68kcpu.c
     musashi/m68kdasm.c
@@ -104,6 +107,8 @@ ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool 
+    steamstub.cpp
+    steamstub.h
     freeaudio/freeaudio.cpp
     freeaudio/freeaudio.h
     freeaudio/mmdevice.cpp
@@ -116,7 +121,7 @@ ADD_EXECUTABLE(skidtool
     loadiff.h
 )
 
-target_link_libraries(skidtool musashi zlib libpng winmm)
+target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
 #curses
 # m68kmake
 
