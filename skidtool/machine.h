@@ -18,7 +18,8 @@ enum ami_mem_map {
 	GRAPHICS_BASE = 0x805000,
 	MATHFFP_BASE = 0x806000,
 	WORKBENCH_BASE = 0x80c000,
-	TASK_BASE = 0x80e000
+	TASK_BASE = 0x80e000,
+	BAD_BASE = 0x80f000
 };
 
 std::string addressString(int b);
@@ -609,9 +610,8 @@ struct amiga16 : memory32{
 		}
 		return 0;
 	}
-	virtual int read32(int offset) {		
-		int address=AMI_BASE|offset;
-		systemLog("read32", addressString(address));
+	
+	int readAddress(int address) {		
 
 		// trap $114(execbase) for apps such as blitz2 and lha looking for workbench pointers
 
@@ -619,20 +619,29 @@ struct amiga16 : memory32{
 			return WORKBENCH_BASE;
 		}
 		if (address == (WORKBENCH_BASE + 0xac)) {
-			return offset;
+			return BAD_BASE;	// offset;
 		}
 		if (address == (WORKBENCH_BASE + 0x98)) {
 			return 0;	// SYSTEM ROOT LOCK
 		}
 		if (address == (DOS_BASE + 0x22)) {
-			return offset;
+			return BAD_BASE;
+//			return offset;
 		}
 		if (address == (TASK_BASE + 0xb8)) {
 			return 0xdeadbeef;
 		}
 		if (address == (TASK_BASE + 0xa4)) {
-			return 6789;
+			return 0xb00bcafe;
 		}
 		return address;
 	}
+
+	virtual int read32(int offset) {		
+		int address=AMI_BASE|offset;
+		int value32=readAddress(address);
+		systemLog("read32", addressString(address)+","+hexValue32(value32));
+		return value32;
+	}
+
 };
