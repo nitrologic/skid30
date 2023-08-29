@@ -1,16 +1,35 @@
-#include <iostream>
+﻿#include <iostream>
 #include <windows.h>
 #include <conio.h>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <stdlib.h>
 
-
-int mainDelay=80;
+int mainDelay=2;
 int counter=0;
 int key = 0;
 int monsterCount = 0;
 
+int joy0 = 0;
+int joy1 = 0;
+
+enum joy_dir {
+	UP = 1,
+	DOWN = 2,
+	LEFT = 4,
+	RIGHT = 8,
+	FIRE = 16
+};
+
+int random = timeGetTime(); // 0x62348123;
+
+// mersienne
+
+int getRandom() {
+	random = random ^ (random >> 3) ^ (random << 7);
+	return random;
+}
 
 int keyboardKey() {
 	if (_kbhit()) {
@@ -46,11 +65,13 @@ struct monstermap {
 	}
 
 	void set(int x, int y, int m) {
-		data[x + y * cols] = m;
+		int index = x + y * cols;
+		data[index] = m;
 	}
 
 	int get(int x, int y) {
-		return data[x + y * cols];
+		int index = x + y * cols;
+		return data[index];
 	}
 
 	std::string getRow(int row) {
@@ -71,6 +92,8 @@ struct monster {
 	int dir;
 	int x, y;
 	int delay;
+	int step;
+	int pace;
 	
 	monster(int x0, int y0) {
 		x = x0;
@@ -78,6 +101,8 @@ struct monster {
 		int count = monsterCount++;
 		dir = count & 3;
 		delay = 10;
+		pace = 0;
+		step = 0;
 	}
 
 	void move() {
@@ -85,6 +110,15 @@ struct monster {
 			delay--;
 			return;
 		}
+
+		pace++;
+		if (pace > 3) {
+			walk();
+			pace = 0;
+		}
+	}
+
+	void walk(){
 		int x0 = x; int y0 = y;
 
 		switch (dir&3) {
@@ -94,16 +128,29 @@ struct monster {
 		case 3:x0--; break;
 		}
 
+		int cols = map0->cols;
+		int rows = map0->rows;
+		x0 = (x0 + cols) % cols;
+		y0 = (y0 + rows) % rows;
+
+		int steps=step++;
+
 		int tile=map0->get(x0, y0);
-		if (tile == 0) {			
+		if (tile == 0 && steps<5) {			
 			map0->set(x, y, 0);
 			x = x0;
 			y = y0;
 			map0->set(x, y, 2);
 		}
 		else {
-			delay = 10;
-			dir--;
+			// collision with something (tile!=0)
+			int r = getRandom();
+			delay = 5 + (r & 7);
+			if(r&1)
+				dir++;
+			else
+				dir--;
+			step = 0;
 		}
 	}
 };
@@ -129,6 +176,9 @@ void moveMonsters() {
 int main() {
 
 	SetConsoleOutputCP(CP_UTF8);
+
+	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	SetConsoleMode(hStdin, 0);
 
 // READ LEVEL FROM FILE
 
@@ -159,7 +209,7 @@ int main() {
 
 			if (c == 32) continue;
 
-			if (c == '*') {
+			if (c == '*' || c=='█') {
 				map0->set(j, i, WALL);				
 			}
 
@@ -172,9 +222,13 @@ int main() {
 	}
 
 // MAIN LOOP	
+	bool escape = false;
 
 	while (true) {
 		// home the cursor
+
+//		std::cout << "\033[0;0f" << std::flush;
+
 		std::cout << "\033[0;0f" << std::flush;
 
 		std::cout << title << std::endl << std::endl;
@@ -190,6 +244,8 @@ int main() {
 
 		std::cout << "key:" << key << "  " << std::endl;
 		
+		std::cout << joy0 << "   " << joy1 << "   " << std::endl;
+
 		Sleep(mainDelay);
 
         counter++;
@@ -198,9 +254,29 @@ int main() {
 
 		if (key == KEY_ESC) break;
 
+		if (key == 224) {
+			escape = true;
+		}
+
 		if (keycode > -1) key = keycode;
 
+		int bits;
+		// read joy0
+		bits = 0;
+		if (GetKeyState(VK_DOWN)) bits |= DOWN;
+		if (GetKeyState(VK_UP)) bits |= UP;
+		if (GetKeyState(VK_LEFT)) bits |= LEFT;
+		if (GetKeyState(VK_RIGHT)) bits |= RIGHT;
+		joy0 = bits;
+
+		//read joy1
+		bits = 0;
+		if (GetKeyState('S')) bits |= DOWN;
+		if (GetKeyState('W')) bits |= UP;
+		if (GetKeyState('A')) bits |= LEFT;
+		if (GetKeyState('D')) bits |= RIGHT;
+		joy1 = bits;
 	}
 
-	std::cout << "mob game" << std::endl;
+	std::cout << "You have been playing mob game!" << std::endl;
 }

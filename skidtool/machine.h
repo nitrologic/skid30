@@ -22,6 +22,9 @@ enum ami_mem_map {
 };
 
 std::string addressString(int b);
+std::string hexValue32(int b);
+std::string hexValue16(int b);
+std::string hexValue8(int b);
 
 //#define STOP_ON_WRITE
 
@@ -332,7 +335,7 @@ struct amiga16 : memory32{
 
 	virtual void write16(int offset, int value) {
 		int address = AMI_BASE | offset;
-		systemLog("write16", addressString(address));
+		systemLog("write16", addressString(address)+","+hexValue16(value));
 //		machineError = address;
 	}
 

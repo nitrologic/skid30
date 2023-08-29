@@ -183,19 +183,20 @@ void SteamStub::OnCount(NumberOfCurrentPlayers_t *n){
 	steamlog.append(buffer);
 }
 
-void SteamStub::OnUserStatsReceived( UserStatsReceived_t *pCallback )
+void SteamStub::OnUserStatsReceived( UserStatsReceived_t *stats )
 {
+	uint64_t who = m_GameID.ToUint64();
 	// we may get callbacks for other games' stats arriving, ignore them
-	if ( m_GameID.ToUint64() == pCallback->m_nGameID )
+	if (  who == stats->m_nGameID )
 	{
-		if ( k_EResultOK == pCallback->m_eResult )
+		if ( k_EResultOK == stats->m_eResult )
 		{
 			steamlog.append("stats received!");
 		}
 		else
 		{
 			char buffer[128];
-			_snprintf( buffer, 128, "stats failed %d!", pCallback->m_eResult );
+			_snprintf( buffer, 128, "stats failed %d!", stats->m_eResult );
 			steamlog.append( buffer );
 		}
 	}
@@ -381,12 +382,17 @@ BBDECL int OpenSteam(int gameID){
 //	SteamUserStats()->SetStat("Player hatched",50);
 //	SteamUserStats()->StoreStats();
 
+//	auto* friends = SteamFriends();
+//	friends->ActivateGameOverlay("Stats");
+
 	return loggedon?1:0;
 }
+
 
 BBDECL void CloseSteam(){
 	SteamAPI_Shutdown();
 }
+
 
 #ifdef nothanks
 BBDECL SteamEvent *GetSteamEvent(){

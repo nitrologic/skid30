@@ -4,6 +4,10 @@
 // 
 // all rights reserved 2023
 
+const int PREV_LINES = 4;
+const int ASM_LINES = 6;
+const int LOG_LINES = 4;
+
 #include <assert.h>
 #include <sstream>
 #include <vector>
@@ -13,9 +17,9 @@
 #include <fstream>
 #include <ctime>
 #include <sys/types.h>
-#include <sys/time.h>
 
 #include "machine.h"
+#include "steamstub.h"
 
 #ifdef _WIN32
 #include <direct.h>
@@ -71,10 +75,6 @@ std::string str_tolower(std::string s)
 	);
 	return s;
 }
-
-const int PREV_LINES = 6;
-const int ASM_LINES = 12;
-const int LOG_LINES = 15;
 
 std::vector<logline> machineLog;
 
@@ -166,6 +166,7 @@ int mouseOn() {
 #include <sys/ioctl.h>
 
 #include <termios.h>
+#include <sys/time.h>
 
 void screenSize(int &row,int &col){
 	winsize w;
@@ -1893,13 +1894,20 @@ public:
 		execlog << "putMsg"; emit();
 	}
 };
-
-// node: "Succ,Pred,type,pri,Name" 0,4,8,9,10
-
-// task: node, 
-// "flags,state,id,td,Alloc,Wait,Recvd,Except,
-// _trapAlloc,_trapEnable,ExceptData,ExceptCode,TrapData,TrapCode,
-// StackPointer,StackFloor,StackCeil,Switch,Launch,ListMem,User"
+// b8 184
+#ifdef _structcode
+// structcode in which 
+// long offsets are capitalized 
+// byte offsets are underscored
+structcode taskStruct({
+// node: 
+	{"Succ,Pred,type,pri,Name",{0,4,8,10,12}},
+// task: 
+	{"flags,state,id,td, Alloc,Wait,Recvd,Except,",{16,18,20,22, 24,28,32,36}},
+	{"_trapAlloc,_trapEnable,ExceptData,ExceptCode,TrapData,TrapCode,",{40,41, 42,46,50,54}},
+	{"StackPointer,StackFloor,StackCeil,Switch,Launch,ListMem,User",{58,62,66,70,74,78,82}}	
+});
+#endif
 
 // musashi entry points to acid cpu address bus
 
@@ -2311,6 +2319,7 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 
 			writeString(help);
 			writeEOL();
+			writeEOL();
 
 			drawtime=millis();
 			refresh=false;
@@ -2394,7 +2403,43 @@ int convertFiles() {
 	return 0;
 }
 
+
+// main entry point
+
+
 int main() {
+
+	std::cout << "skidtool 0.2" << std::endl;
+/*
+	COORD rect;
+	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleDisplayMode(out, CONSOLE_FULLSCREEN_MODE, &rect);
+*/
+	int loggedOn = OpenSteam(768030);
+	std::cout << "Steam " << ((loggedOn) ? "Logged In" : "Offline") << std::endl;
+
+	if (loggedOn>0) {
+
+#ifdef STATS
+		while (true) {
+			const char* s = ReadSteam();
+
+			if (s && *s) {
+				std::cout << "[steam]" << s << std::endl;
+
+				std::string line(s);
+				if (line == "stats received!") {
+					int games_played = GetSteamStat("games_played");
+					std::cout << "games_played=" << games_played << std::endl;
+				}
+			}
+
+			Sleep(100);
+		}
+#endif
+	}
+
+
 	int rows, cols;
 	screenSize(rows, cols);
 //	mouseOn();
@@ -2409,7 +2454,6 @@ int main() {
 	timeout(200);
 #endif
 
-	std::cout << "skidtool 0.2" << std::endl;
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
 //	const char* amiga_binary = "../archive/blitz2/blitz2";

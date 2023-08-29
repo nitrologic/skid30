@@ -6,6 +6,8 @@ BBDECL int OpenSteam(int gameID);
 BBDECL void *GetSteamEvent();
 BBDECL void CloseSteam();
 
+BBDECL char* ReadSteam();
+
 BBDECL void FindNumberOfCurrentPlayers();
 
 BBDECL int GetSteamStat(const char *id);
@@ -17,6 +19,7 @@ BBDECL int GetSteamAchievementIcon(const char *pchName);
 BBDECL const char *GetAchievementDisplayAttribute( const char *pchName, const char *pchKey );
 
 /*
+* 
 BBDECL int IndicateAchievementProgress( const char *pchName, uint32 nCurProgress, uint32 nMaxProgress );
 BBDECL void FindOrCreateLeaderboard( char *name, ELeaderboardSortMethod sortmethod, ELeaderboardDisplayType displaytype );
 BBDECL void FindLeaderboard( char *name );

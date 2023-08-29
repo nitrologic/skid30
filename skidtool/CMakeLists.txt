@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.18)
 
 project(skidtool)
 
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
 
 if(WIN32)
 add_definitions( -DWIN32 )
@@ -107,8 +107,8 @@ ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool 
-#    steamstub.cpp
-#    steamstub.h
+    steamstub.cpp
+    steamstub.h
     freeaudio/freeaudio.cpp
     freeaudio/freeaudio.h
     freeaudio/mmdevice.cpp
@@ -121,19 +121,13 @@ ADD_EXECUTABLE(skidtool
     loadiff.h
 )
 
-#target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
+# bootstrap that generates m68kops sources
+# ADD_EXECUTABLE(make68k musashi/m68kmake.c)
 
-target_link_libraries(skidtool musashi zlib libpng)
+target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
 
-
-#curses
-# m68kmake
-
-set(make68k_src
-    musashi/m68kmake.c
-)
-
-ADD_EXECUTABLE(make68k ${make68k_src})
+#macos here
+#target_link_libraries(skidtool musashi zlib libpng)
 
 #ADD_EXECUTABLE(test test.cpp)
 #target_link_libraries(test musashi zlib libpng)

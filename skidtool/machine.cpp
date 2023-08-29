@@ -19,6 +19,21 @@ std::string addressString(int b) {
 	return ss.str();
 }
 
+std::string hexValue32(int v32) {
+	std::stringstream ss;
+	ss << std::setfill('0') << std::setw(8) << std::right << std::hex << v32 << std::dec;
+	return ss.str();
+}
+std::string hexValue16(int v16) {
+	std::stringstream ss;
+	ss << std::setfill('0') << std::setw(4) << std::right << std::hex << (v16&0xffff) << std::dec;
+	return ss.str();
+}
+std::string hexValue8(int v8) {
+	std::stringstream ss;
+	ss << std::setfill('0') << std::setw(2) << std::right << std::hex << (v8&0xff) << std::dec;
+	return ss.str();
+}
 
 void writeByte(int b) {
 	std::cout << "0x" << std::setfill('0') << std::setw(2) << std::right << std::hex << b << std::dec;
@@ -41,11 +56,13 @@ void writeData16(int b) {
 void writeData8(int b) {
 	std::cout << std::setfill('0') << std::setw(2) << std::right << std::hex << (b & 0xff) << std::dec;
 }
+
 void writeHome() {
-	std::cout << "\033[0;0f" << std::flush;
-	//	std::cout << "\033[0;0H" << std::flush;
+//	std::cout << "\033[0;0f" << std::flush;
+	std::cout << "\033[0;0H" << std::flush;
 	//	std::cout << "\033[H" << std::flush;
 }
+
 void writeClear() {
 	std::cout << "\033[2J" << "\033[H" << std::flush;
 }

@@ -5,4 +5,4 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
 
 ADD_EXECUTABLE(mob mob.cpp)
 
-
+target_link_libraries(mob winmm)
