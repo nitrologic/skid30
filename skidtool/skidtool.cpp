@@ -567,6 +567,8 @@ struct acid68000 {
 
 	std::set<std::uint32_t> breakpoints;
 
+	std::string homePath;
+
 	void programCounter(int physicalAddress) {
 
 		int ppc = readRegister(M68K_REG_PPC); //m68k_get_reg(NULL, M68K_REG_PPC);
@@ -597,10 +599,15 @@ struct acid68000 {
 		return ss.str();
 	}
 
+	void setHome(std::string path) {
+		homePath = path + "\\";
+	}
+
 	std::string fetchPath(int a1) {
 		std::string s=fetchString(a1);
 		std::replace(s.begin(),s.end(),'/','\\');
-		s = str_tolower(s);
+//		s = str_tolower(s);
+		s = homePath + s;
 		return s;
 	}
 
@@ -2201,7 +2208,7 @@ void displayLogLines(int count) {
 	}
 }
 
-void debugRom(int pc24,const char *name,const char *args,const int *nops) {
+void debugRom(int pc24,const char *name,const char *args,const char *home) {
 
 	acidexec *bass=new acidexec(&acid500);
 	aciddos* sub = new aciddos(&acid500);
@@ -2224,18 +2231,20 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 	
 	const char* status = name;
 
+	acid500.setHome(home);
+
 	acid500.qwrite32(0, SP_START); //sp
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
 
 // top of stack hack
 //	acid500.qwrite32(0x1400, 0x807000); //pc
-
+#ifdef HAS_NOPS
 	while (*nops) {
 		int a = *nops++;
 		acid500.qwrite16(a, 0x4e75); //pc
 	}
-
+#endif
 //	acid500.writeRegister(16, pc24);
 
 	int pc = pc24;//acid500.readRegister(16);
@@ -2474,10 +2483,14 @@ int main() {
 
 //	const char* amiga_binary = "../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
-	const char* amiga_binary = "../archive/oblivion/oblivion";
-//	const char* args = "\n";
+//	const char* amiga_binary = "../archive/oblivion/oblivion";
 
 //	const int nops[] = {0x63d6, 0};
+
+	const char* amiga_binary = "oblivion/oblivion";
+	const char* amiga_home = "oblivion";
+	const char* amiga_args = "\n";
+
 	const int nops[] = { 0 };
 
 	loadHunk(amiga_binary,ROM_START);
@@ -2491,9 +2504,9 @@ int main() {
 
 //	const char* name = "lha @ ROM_START";
 
-	std::string name = std::string("hunk:")+amiga_binary+" args:"+args;
+	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
-	debugRom(ROM_START, name.c_str(), args, nops);
+	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
