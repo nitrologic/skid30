@@ -1898,14 +1898,17 @@ public:
 #ifdef _structcode
 // structcode in which 
 // long offsets are capitalized 
-// byte offsets are underscored
+// word offsets are underscored
 structcode taskStruct({
+// list:
+	{"Head,Tail,Pred,type,pad",{0,4,8,12,13},
 // node: 
-	{"Succ,Pred,type,pri,Name",{0,4,8,10,12}},
+	{"Succ,Pred,type,pri,Name",{0,4,8,9,10}},
 // task: 
-	{"flags,state,id,td, Alloc,Wait,Recvd,Except,",{16,18,20,22, 24,28,32,36}},
-	{"_trapAlloc,_trapEnable,ExceptData,ExceptCode,TrapData,TrapCode,",{40,41, 42,46,50,54}},
-	{"StackPointer,StackFloor,StackCeil,Switch,Launch,ListMem,User",{58,62,66,70,74,78,82}}	
+	{"Node,flags,state,id,td, Alloc,Wait,Recvd,Except,",{0,14,15,16,17, 18,22,26,30}},
+	{"_trapAlloc,_trapEnable,ExceptData,ExceptCode,TrapData,TrapCode,",{34,36, 38,42,46,50}},
+	{"StackPointer,StackFloor,StackCeil,Switch,Launch",{54,58,62,66,70}},
+	{"MemList,User",{74,88}
 });
 #endif
 
@@ -2225,7 +2228,8 @@ void debugRom(int pc24,const char *name,const char *args,const int *nops) {
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
 
-	acid500.qwrite32(0x1400, 0x807000); //pc
+// top of stack hack
+//	acid500.qwrite32(0x1400, 0x807000); //pc
 
 	while (*nops) {
 		int a = *nops++;
@@ -2443,6 +2447,7 @@ int main() {
 	int rows, cols;
 	screenSize(rows, cols);
 //	mouseOn();
+	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
 #ifdef WIN32
 	SetConsoleOutputCP(CP_UTF8);
@@ -2454,7 +2459,6 @@ int main() {
 	timeout(200);
 #endif
 
-	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
 
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
 //	const char* args = "-c test.bb\n";

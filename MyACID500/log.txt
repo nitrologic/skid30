@@ -1,14 +1,15 @@
 Summary of ACID500 log file analysis
 
-test.lst - HiSoft GenAm assembler output of test.s with correct date
-
-guardian1.log - needs cd.device and nonvolatile.library support
-
-oblivion2.log - plays a sample with AUD3 registers and polls INTREQ1
-
+lha19.log - more logging none of it good
 lha11.log - fixed setsignal register mapping typo
 lha10.log - extra mem logging for ami_base activity at 0x800000
 lha2.log - creates skeleton but with unmodified path separator
 lha1.log - fails with wrong filename in argument
 
 zarch1.log - goat
+
+guardian1.log - needs cd.device and nonvolatile.library support
+
+oblivion2.log - plays a sample with AUD3 registers and polls INTREQ1
+
+test.lst - HiSoft GenAm assembler output of test.s with correct date

@@ -19,7 +19,8 @@ enum ami_mem_map {
 	MATHFFP_BASE = 0x806000,
 	WORKBENCH_BASE = 0x80c000,
 	TASK_BASE = 0x80e000,
-	BAD_BASE = 0x80f000
+	BAD_BASE = 0x80f000,
+	SAD_BASE = 0x810000
 };
 
 std::string addressString(int b);
@@ -337,6 +338,7 @@ struct amiga16 : memory32{
 	virtual void write16(int offset, int value) {
 		int address = AMI_BASE | offset;
 		systemLog("write16", addressString(address)+","+hexValue16(value));
+		// simon come here
 //		machineError = address;
 	}
 
@@ -352,8 +354,10 @@ struct amiga16 : memory32{
 
 		if (flags == 0) {
 			std::stringstream ss;
-			ss << addressString(AMI_BASE | address) << " offset:" << offset << " lib:" << lib;
+			ss << addressString(AMI_BASE | address) << " flags:0 <= -1";
+			// << " offset:" << offset << " lib:" << lib
 			systemLog("read16", ss.str());
+			return -1;
 		}
 
 		if (flags & QBIT) {
@@ -619,7 +623,7 @@ struct amiga16 : memory32{
 			return WORKBENCH_BASE;
 		}
 		if (address == (WORKBENCH_BASE + 0xac)) {
-			return BAD_BASE;	// offset;
+			return SAD_BASE;	// offset;
 		}
 		if (address == (WORKBENCH_BASE + 0x98)) {
 			return 0;	// SYSTEM ROOT LOCK
@@ -632,6 +636,9 @@ struct amiga16 : memory32{
 			return 0xdeadbeef;
 		}
 		if (address == (TASK_BASE + 0xa4)) {
+			return 0xb00bcafe;
+		}
+		if (address == (TASK_BASE + 0xac)) {	//oblivion
 			return 0xb00bcafe;
 		}
 		return address;
