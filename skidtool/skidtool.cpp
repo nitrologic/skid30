@@ -2466,15 +2466,15 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-	const char* args = "e skid.lha\n";
+//	const char* args = "e skid.lha\n";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
 //	const char* amiga_binary = "../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
-//	const char* amiga_binary = "../archive/oblivion/oblivion";
+	const char* amiga_binary = "../archive/oblivion/oblivion";
 //	const char* args = "\n";
 
 //	const int nops[] = {0x63d6, 0};
