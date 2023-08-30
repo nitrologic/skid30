@@ -259,7 +259,8 @@ mainbit	;
 	move.l	d2,stackfuck
 	bra	actualbegin
 	;
-	include	options2.src.new
+
+;	include	options2_src_new
 	;
 tsthead	dc.l	$3f3,0,1,0,0
 tstsize1	dc.l	256,$3e9

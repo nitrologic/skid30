@@ -618,6 +618,9 @@ struct amiga16 : memory32{
 	int readAddress(int address) {		
 
 		// trap $114(execbase) for apps such as blitz2 and lha looking for workbench pointers
+		if (address == (EXEC_BASE)) {
+			return 0;
+		}
 
 		if (address == (EXEC_BASE + 0x114) ) {
 			return WORKBENCH_BASE;

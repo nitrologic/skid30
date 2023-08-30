@@ -1,0 +1,238 @@
+[mem] 00000000 R l 000000 00001400 000004 ZERO
+[exec] allocMem 1122
+[exec] openlibrary dos.library,802000
+[dos] datestamp 13ec
+[exec] allocMem 2808
+[exec] allocMem 1f48
+[exec] allocMem c
+[exec] allocMem c
+[dos] open blitz2/src\genam.opts => 0
+[dos] open blitz2/src\ENV:devpac\genam.opts => 0
+[dos] output
+[write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] All Rights Reserved - version 3.01_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2/src\blitz2.lst => ffffffe0
+[dos] open blitz2/src\blitz2.s => ffffffdc
+[dos] lock blitz2/src\blitz2.s,fffffffe => ffffffd8
+[dos] examine(ffffffd8)
+[dos] unlock ffffffd8
+[exec] availMem 20001 => 400000
+[exec] allocMem 3af3c
+[dos] read ffffffdc , 65894 , 3af34 => 3af32
+[exec] allocMem 19e
+[exec] allocMem 2c
+[write] Assembling blitz2.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] Pass 1_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2/src\MYOFFS.gs => 0
+[dos] open blitz2/src\MYOFFS => ffffffd0
+[dos] lock blitz2/src\MYOFFS,fffffffe => ffffffcc
+[dos] examine(ffffffcc)
+[dos] unlock ffffffcc
+[exec] availMem 20001 => 400000
+[exec] allocMem 2234
+[dos] read ffffffd0 , a099c , 222c => 2229
+[exec] allocMem 2808
+[exec] allocMem 1390
+[dos] close ffffffd0 => 0
+[dos] open blitz2/src\WBHEADER.gs => 0
+[dos] open blitz2/src\WBHEADER => ffffffc4
+[dos] lock blitz2/src\WBHEADER,fffffffe => ffffffc0
+[dos] examine(ffffffc0)
+[dos] unlock ffffffc0
+[exec] availMem 20001 => 400000
+[exec] allocMem 750
+[dos] read ffffffc4 , a6768 , 748 => 746
+[dos] close ffffffc4 => 0
+[dos] open blitz2/src\OPTIONS2.SRC.gs => 0
+[dos] open blitz2/src\OPTIONS2.SRC.NEW => 0
+[dos] open blitz2/src\OPTIONS2.SRC.gs => 0
+[dos] open blitz2/src\OPTIONS2.SRC.NEW => 0
+[write] Error file not found at line 262 in file blitz2.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] close ffffffe0 => 0
+[dos] close ffffffdc => 0
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 1 error found_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 728 lines assembled into 554 bytes, Amiga executable position-independent code_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 290476 bytes used_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] closeLibrary
+[exec] freemem
+[read32] 801000,00000000
+[read32] 801004,00801004
+[read32] 801008,00801008
+[read32] 80100c,0080100c
+[read32] 801010,00801010
+[read32] 801014,00801014
+[read32] 801018,00801018
+[read32] 80101c,0080101c
+[read32] 801020,00801020
+[read32] 801024,00801024
+[read32] 801028,00801028
+[read32] 80102c,0080102c
+[read32] 801030,00801030
+[exec] allocMem 1122
+[exec] openlibrary dos.library,802000
+[dos] datestamp 13a8
+[exec] allocMem 2808
+[exec] allocMem 1f48
+[exec] allocMem c
+[exec] allocMem c
+[dos] open blitz2/src\genam.opts => 0
+[dos] open blitz2/src\ENV:devpac\genam.opts => 0
+[dos] output
+[write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] All Rights Reserved - version 3.01_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2/src\code.s => 0
+[dos] open blitz2/src\code.s => 0
+[write] Could not open file code.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 22666 bytes used_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] closeLibrary
+[exec] freemem
+[read32] 801000,00000000
+[read32] 801004,00801004
+[read32] 801008,00801008
+[read32] 80100c,0080100c
+[read32] 801010,00801010
+[read32] 801014,00801014
+[read32] 801018,00801018
+[read32] 80101c,0080101c
+[read32] 801020,00801020
+[exec] allocMem 1122
+[exec] openlibrary dos.library,802000
+[dos] datestamp 137c
+[exec] allocMem 2808
+[exec] allocMem 1f48
+[exec] allocMem c
+[exec] allocMem c
+[dos] open blitz2/src\genam.opts => 0
+[dos] open blitz2/src\ENV:devpac\genam.opts => 0
+[dos] output
+[write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] All Rights Reserved - version 3.01_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2/src\1985-91.s => 0
+[dos] open blitz2/src\1985-91.s => 0
+[write] Could not open file 1985-91.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 22666 bytes used_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] closeLibrary
+[exec] freemem
+[read32] 801000,00000000
+[read32] 801004,00801004
+[read32] 801008,00801008
+[read32] 80100c,0080100c
+[read32] 801010,00801010
+[read32] 801014,00801014
+[read32] 801018,00801018
+[exec] allocMem 1122
+[exec] openlibrary dos.library,802000
+[dos] datestamp 1352
+[exec] allocMem 2808
+[exec] allocMem 1f48
+[exec] allocMem c
+[exec] allocMem c
+[dos] open blitz2/src\genam.opts => 0
+[dos] open blitz2/src\ENV:devpac\genam.opts => 0
+[dos] output
+[write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] All Rights Reserved - version 3.01_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2/src\1985-91.s => 0
+[dos] open blitz2/src\1985-91.s => 0
+[write] Could not open file 1985-91.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 22666 bytes used_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] closeLibrary
+[exec] freemem
+[exec] allocMem 1122
+[exec] openlibrary dos.library,802000
+[dos] datestamp 1328
+[exec] allocMem 2808
+[exec] allocMem 1f48
+[exec] allocMem c
+[exec] allocMem c
+[dos] open blitz2/src\genam.opts => 0
+[dos] open blitz2/src\ENV:devpac\genam.opts => 0
+[dos] output
+[write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] All Rights Reserved - version 3.01_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2/src\1985-91.s => 0
+[dos] open blitz2/src\1985-91.s => 0
+[write] Could not open file 1985-91.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 22666 bytes used_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] closeLibrary
+[exec] freemem
+[read32] 801000,00000000
+[read32] 801004,00801004
+[read32] 801008,00801008
+[read32] 80100c,0080100c
+[read32] 801010,00801010
+[read32] 801014,00801014
+[read32] 801018,00801018

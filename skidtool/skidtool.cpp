@@ -2400,7 +2400,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 
 	std::cout << std::endl << std::endl << "Write log to disk? (y/N)";
 
-	acid500.writeLog("skidtool.log");
+	acid500.writeLog("log\\skidtool.log");
 
 	acid500.writeTrace("trace.log");
 
@@ -2487,9 +2487,17 @@ int main() {
 
 //	const int nops[] = {0x63d6, 0};
 
-	const char* amiga_binary = "oblivion/oblivion";
-	const char* amiga_home = "oblivion";
-	const char* amiga_args = "\n";
+	const char* amiga_binary = "../archive/genam";
+	const char* amiga_home = "blitz2\\src";
+	const char* amiga_args = "blitz2.s -S -P\n";
+
+
+//	const char* amiga_binary = "skidaf/skid";
+//	const char* amiga_home = "skidaf";
+//	const char* amiga_args = "\n";
+
+//	const char* amiga_binary = "oblivion/oblivion";
+//	const char* amiga_home = "oblivion";
 
 	const int nops[] = { 0 };
 
