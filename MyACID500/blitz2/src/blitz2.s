@@ -4,7 +4,7 @@
 ;	Source code to BLITZ BASIC ][	   ;
 ;			   ;
 ;           You dudes out there had better         ;
-;        like this, or I'm gonna start doing       ; 
+;        like this, or I am gonna start doing       ; 
 ;         something drastic with my life...        ;
 ;                like... GET A JOB!	   ;
 ;			   ;

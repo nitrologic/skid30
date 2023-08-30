@@ -1,0 +1,192 @@
+[mem] 00000000 R l 000000 00001400 000004 ZERO
+[exec] allocMem 1122
+[exec] openlibrary dos.library,802000
+[dos] datestamp 13ec
+[exec] allocMem 2808
+[exec] allocMem 1f48
+[exec] allocMem c
+[exec] allocMem c
+[dos] open blitz2\src\genam.opts => 0
+[dos] open blitz2\src\ENV:devpac\genam.opts => 0
+[dos] output
+[write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] All Rights Reserved - version 3.01_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2\src\blitz2.lst => ffffffe0
+[dos] open blitz2\src\blitz2.s => ffffffdc
+[dos] lock blitz2\src\blitz2.s,fffffffe => ffffffd8
+[dos] examine(ffffffd8)
+[dos] unlock ffffffd8
+[exec] availMem 20001 => 400000
+[exec] allocMem 3af40
+[dos] read ffffffdc , 65894 , 3af38 => 3af35
+[exec] allocMem 19e
+[exec] allocMem 2c
+[write] Assembling blitz2.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] Pass 1_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2\src\MYOFFS.gs => 0
+[dos] open blitz2\src\MYOFFS => ffffffd0
+[dos] lock blitz2\src\MYOFFS,fffffffe => ffffffcc
+[dos] examine(ffffffcc)
+[dos] unlock ffffffcc
+[exec] availMem 20001 => 400000
+[exec] allocMem 2234
+[dos] read ffffffd0 , a09a0 , 222c => 2229
+[exec] allocMem 2808
+[exec] allocMem 1390
+[dos] close ffffffd0 => 0
+[dos] open blitz2\src\WBHEADER.gs => 0
+[dos] open blitz2\src\WBHEADER => ffffffc4
+[dos] lock blitz2\src\WBHEADER,fffffffe => ffffffc0
+[dos] examine(ffffffc0)
+[dos] unlock ffffffc0
+[exec] availMem 20001 => 400000
+[exec] allocMem 750
+[dos] read ffffffc4 , a676c , 748 => 746
+[dos] close ffffffc4 => 0
+[dos] open blitz2\src\ASMMAC.gs => 0
+[dos] open blitz2\src\ASMMAC => ffffffb8
+[dos] lock blitz2\src\ASMMAC,fffffffe => ffffffb4
+[dos] examine(ffffffb4)
+[dos] unlock ffffffb4
+[exec] availMem 20001 => 400000
+[exec] allocMem 2760
+[dos] read ffffffb8 , a6ebc , 2758 => 2755
+[exec] allocMem 2808
+[dos] close ffffffb8 => 0
+[exec] allocMem 2808
+[exec] allocMem 2808
+[exec] allocMem 2808
+[exec] allocMem 2808
+[dos] open blitz2\src\OBJ.INFO => ffffffb0
+[dos] lock blitz2\src\OBJ.INFO,fffffffe => ffffffac
+[dos] examine(ffffffac)
+[dos] unlock ffffffac
+[dos] close ffffffb0 => 0
+[exec] allocMem 2808
+[exec] allocMem 2808
+[exec] allocMem 2808
+[exec] allocMem 2808
+[dos] open blitz2\src\TYPEREQ.gs => 0
+[dos] open blitz2\src\TYPEREQ => ffffffa4
+[dos] lock blitz2\src\TYPEREQ,fffffffe => ffffffa0
+[dos] examine(ffffffa0)
+[dos] unlock ffffffa0
+[exec] availMem 20001 => 400000
+[exec] allocMem 140a
+[dos] read ffffffa4 , bfe64 , 1402 => 1400
+[dos] close ffffffa4 => 0
+[exec] allocMem 2808
+[dos] open blitz2\src\OPTIONS.gs => 0
+[dos] open blitz2\src\OPTIONS.SRC => ffffff98
+[dos] lock blitz2\src\OPTIONS.SRC,fffffffe => ffffff94
+[dos] examine(ffffff94)
+[dos] unlock ffffff94
+[exec] availMem 20001 => 400000
+[exec] allocMem 3108
+[dos] read ffffff98 , c3a78 , 3100 => 30fe
+[dos] close ffffff98 => 0
+[dos] open blitz2\src\CALCREQ.gs => 0
+[dos] open blitz2\src\CALCREQ => ffffff8c
+[dos] lock blitz2\src\CALCREQ,fffffffe => ffffff88
+[dos] examine(ffffff88)
+[dos] unlock ffffff88
+[exec] availMem 20001 => 400000
+[exec] allocMem b2e
+[dos] read ffffff8c , c6b80 , b26 => b24
+[exec] allocMem 2808
+[dos] close ffffff8c => 0
+[dos] close ffffffdc => 0
+[exec] allocMem 11824
+[write] Pass 2_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] blob
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] Error during listing output at line 6 in file blitz2.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] blob
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] close ffffffe0 => 0
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 1 error found_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 5 lines assembled into 0 bytes, Amiga executable position-independent code_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 505548 bytes used_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] closeLibrary
+[exec] freemem
+[exec] allocMem 1122
+[exec] openlibrary dos.library,802000
+[dos] datestamp 1378
+[exec] allocMem 2808
+[exec] allocMem 1f48
+[exec] allocMem c
+[exec] allocMem c
+[dos] open blitz2\src\genam.opts => 0
+[dos] open blitz2\src\ENV:devpac\genam.opts => 0
+[dos] output
+[write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] All Rights Reserved - version 3.01_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open blitz2\src\code.s => 0
+[dos] open blitz2\src\code.s => 0
+[write] Could not open file code.s_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write] 22666 bytes used_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[write] 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] closeLibrary
+[exec] freemem
+[read32] 801000,00000000
+[read32] 801004,00801004
+[read32] 801008,00801008
+[read32] 80100c,0080100c
+[read32] 801010,00801010
+[read32] 801014,00801014
+[read32] 801018,00801018
+[read32] 80101c,0080101c
+[mem] 08375706 W b 6f6562 00 00c26e 

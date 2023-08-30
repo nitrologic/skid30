@@ -1,5 +1,7 @@
 Summary of ACID500 log file analysis
 
+genamblitz2.log - Error during listing output at line 6 in file blitz2.s_
+
 lha19.log - more logging none of it good
 lha11.log - fixed setsignal register mapping typo
 lha10.log - extra mem logging for ami_base activity at 0x800000
