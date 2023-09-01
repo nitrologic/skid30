@@ -563,7 +563,7 @@ struct acid68000 {
 	int prevPC = 0;
 	int prevTick = 0;
 
-	int heapPointer = 0x60000;
+	int heapPointer = 0x40000;
 
 	std::set<std::uint32_t> breakpoints;
 
@@ -589,12 +589,15 @@ struct acid68000 {
 		return 0;
 	}
 
+	// note to ami - fetchString reply is not null terminated
+	// todo - log when a1 parameter is null
+
 	std::string fetchString(int a1) {
 		std::stringstream ss;
 		while (a1) {
 			int byte = read8(a1++);
 			if (byte == 0) break;
-			ss << (char)byte;
+			ss << (char)(byte&255);
 		}
 		return ss.str();
 	}
@@ -760,11 +763,11 @@ struct acid68000 {
 		m68k_set_reg((m68k_register_t)reg, (unsigned int)value);
 	}
 
-	void writeMem(int physicalAddress, void *src, size_t size) {
-		int n = size / 4;
+	void writeEndianMem(int physicalAddress, void *src, size_t size) {
+		int n = (size + 3) / 4;
 		uint32_t* l = (uint32_t *)src;
 		for (int i = 0; i < n; i++) {
-			write32(physicalAddress+i*4, l[i]); // good endian?
+			write32(physicalAddress+i*4, l[i]);
 		}
 	}
 
@@ -878,7 +881,9 @@ struct acid68000 {
 	void write8(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		log_bus(1, 2, physicalAddress, value);
-		if(!memoryError) mem->write8(address, value);
+		if (!memoryError) {
+			mem->write8(address, value);
+		}
 	}
 
 	void push(int physicalAddress) {
@@ -913,9 +918,9 @@ struct acid68000 {
 
 	void qwrite32(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
-//		address|=QBIT;
 		mem->write32(address, value);
 	}
+
 	void qwrite16(int physicalAddress, int value) {
 		int address = decode(physicalAddress);
 		mem->write16(address, value);
@@ -1152,8 +1157,8 @@ struct NativeFile {
 		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
 		fseek(fileHandle, offset, origin);
 		int currentpos = ftell(fileHandle);
-		return (int)currentpos;
-//		return oldpos;
+//		return (int)currentpos;
+		return oldpos;
 	}
 };
 
@@ -1396,7 +1401,7 @@ public:
 		NativeFile* f = fileLocks[d1];
 		int pos=f->seek(d2, d3);
 		cpu0->writeRegister(0, pos);
-		doslog << "seek " << d2 << "," << d3 << " => " << pos;
+		doslog << "seek " << d1 << "," << d2 << "," << d3 << " => " << pos;
 		emit();
 	}
 	void deletefile(){
@@ -1523,12 +1528,13 @@ public:
 			bool isdir = entry.is_directory();
 
 			_fib.fib_Size = (int)size;
+			_fib.fib_NumBlocks = (size + 1023) / 1024;
 			_fib.fib_Protection = 0x0f;	//rwxd
 			_fib.fib_DirEntryType = isdir ? 1 : -1;
 			//			pokeString(f.filePath,_fib.fib_FileName,108);
 //			ekopString(f->filePath, _fib.fib_FileName, 108);
 			ekopString(s, _fib.fib_FileName, 108);
-			cpu0->writeMem(d2, &_fib, sizeof(_fib));
+			cpu0->writeEndianMem(d2, &_fib, sizeof(_fib));
 
 			success = 1;
 		}
@@ -1546,12 +1552,13 @@ public:
 			int n = f->fileStat.st_size;
 			int mode = f->fileStat.st_mode & 7;
 			_fib.fib_Size = n;
+			_fib.fib_NumBlocks = (n+1023)/1024;
 			_fib.fib_Protection = 0x0f;
 //			_fib.fib_DirEntryType = (f->fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
 			_fib.fib_DirEntryType = (f->fileStat.st_mode& S_IFDIR ) ? 1 : -1 ;
 //			pokeString(f.filePath,_fib.fib_FileName,108);
 			ekopString(f->filePath, _fib.fib_FileName, 108);
-			cpu0->writeMem(d2, &_fib, sizeof(_fib));
+			cpu0->writeEndianMem(d2, &_fib, sizeof(_fib));
 			success = 1;
 		}
 		cpu0->writeRegister(0, success);
@@ -1743,6 +1750,7 @@ public:
 		int d0 = cpu0->readRegister(0);//unit
 		int a1 = cpu0->readRegister(9);//ioreq
 		int d1 = cpu0->readRegister(1);//flags
+		// TODO: use with fetchPath
 		std::string devname = cpu0->fetchString(a0);
 		int r = -1;
 		cpu0->writeRegister(0, r);
@@ -1766,10 +1774,12 @@ public:
 				int d = 0;
 				int decode = 1;
 				int dec = 0;
+				char pad = 0;
 				std::string s;
 				while(decode){
 					char d = fmt[++i];
 					if (d >= '0' && d <= '9') {
+						if (d == 0) pad = '0';
 						dec = dec * 10 + (int)(d - '0');
 						continue;
 					}
@@ -1779,7 +1789,8 @@ public:
 							decode = 0;
 							break;
 						case 's':
-							if (a1) s = cpu0->fetchString(a1);
+							s = cpu0->fetchString(a1);
+							a1 += 4;
 							ss << s;
 							decode = 0;
 							break;
@@ -1821,6 +1832,7 @@ public:
 
 		}
 
+		ss << '\0';
 		std::string s = ss.str();
 		int n = s.length();
 
@@ -1979,6 +1991,9 @@ void loadHunk(std::string path,int physical) {
 	writeString("Reading Hunk from ");
 	writeString(path);
 	writeEOL();
+
+	std::filesystem::path p(path);
+	std::string filename=p.filename().string();
 
 	filedecoder fd(path);
 
@@ -2145,6 +2160,10 @@ void loadHunk(std::string path,int physical) {
 		}
 
 	}
+
+	std::stringstream ss;
+	ss<<filename<<" start:"<<addressString(physical)<<" end:" << addressString(physical+totalWords*2);
+	systemLog("hunk", ss.str());
 
 	writeString("hunks parsed");
 	writeEOL();
@@ -2490,8 +2509,8 @@ int main() {
 //	const char* args = "test.s -S -P\n";
 
 	const char* amiga_binary = "../archive/lha";
-//	const char* args = "e cv.lha\n";
-	const char* amiga_args = "e skid.lha\n";
+	const char* amiga_args= "e cv.lha\n";
+//	const char* amiga_args = "e skid.lha\n";
 	const char* amiga_home = ".";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";

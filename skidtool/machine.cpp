@@ -6,6 +6,7 @@ std::string machineState = "";
 
 void systemLog(const char* tag, std::string s) {
 	std::replace(s.begin(), s.end(), '\n', '_');
+	std::replace(s.begin(), s.end(), '\0', '|');
 	std::stringstream ss;
 	ss << "[" << tag << "] " << s;
 	std::string line = ss.str();

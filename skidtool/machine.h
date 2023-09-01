@@ -115,11 +115,12 @@ struct memory32 {
 	}
 
 	virtual void write8(int address, int value) {
+		value &= 0xff;
 		int odd = address & 1;
 		address -= odd;
 		int word = read16(address,0);
 		if (odd) {
-			word = (word & 0xff00) | (value & 0xff);
+			word = (word & 0xff00) | value;
 		}
 		else 
 		{
