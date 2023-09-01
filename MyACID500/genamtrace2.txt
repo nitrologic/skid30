@@ -1,0 +1,1138 @@
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad48: 4e75                : rts
+00a18a: 7200                : moveq   #$0, D1
+00a18c: 322e 0258           : move.w  ($258,A6), D1
+00a190: 6100 082c           : bsr     $a9be
+00a9be: 45fa ff92           : lea     (-$6e,PC), A2; ($a952)
+00a9c2: 41fa 0032           : lea     ($32,PC), A0; ($a9f6)
+00a9c6: 7401                : moveq   #$1, D2
+00a9c8: 7008                : moveq   #$8, D0
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9ca: 7600                : moveq   #$0, D3
+00a9cc: b298                : cmp.l   (A0)+, D1
+00a9ce: 650c                : bcs     $a9dc
+00a9dc: 4a02                : tst.b   D2
+00a9de: 6a0c                : bpl     $a9ec
+00a9ec: 51c8 ffdc           : dbra    D0, $a9ca
+00a9f0: 0601 0030           : addi.b  #$30, D1
+00a9f4: 4ed2                : jmp     (A2)
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a194: 4aae 01c0           : tst.l   ($1c0,A6)
+00a198: 6720                : beq     $a1ba
+00a19a: 700b                : moveq   #$b, D0
+00a19c: 6100 0796           : bsr     $a934
+00a934: 41fa 0566           : lea     ($566,PC), A0; ($ae9c)
+00a938: 4a40                : tst.w   D0
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a93e: 4a18                : tst.b   (A0)+
+00a940: 66fc                : bne     $a93e
+00a942: 5340                : subq.w  #1, D0
+00a944: 60f4                : bra     $a93a
+00a93a: 6700 0400           : beq     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad40: 2f08                : move.l  A0, -(A7)
+00ad42: 61ee                : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00ad44: 205f                : movea.l (A7)+, A0
+00ad46: 60f4                : bra     $ad3c
+00ad3c: 1218                : move.b  (A0)+, D1
+00ad3e: 6708                : beq     $ad48
+00ad48: 4e75                : rts
+00a1a0: 226e 01c0           : movea.l ($1c0,A6), A1
+00a1a4: 7400                : moveq   #$0, D2
+00a1a6: 1429 0016           : move.b  ($16,A1), D2
+00a1aa: 5502                : subq.b  #2, D2
+00a1ac: 43e9 0017           : lea     ($17,A1), A1
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1b0: 1219                : move.b  (A1)+, D1
+00a1b2: 6100 079e           : bsr     $a952
+00a952: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00a956: 6100 03da           : bsr     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c212: 4e75                : rts
+00a95a: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00a95e: 4e75                : rts
+00a1b6: 51ca fff8           : dbra    D2, $a1b0
+00a1ba: 6100 078a           : bsr     $a946
+00a946: 720a                : moveq   #$a, D1
+00a948: 6000 03e8           : bra     $ad32
+00ad32: 4a2e 096d           : tst.b   ($96d,A6)
+00ad36: 66ac                : bne     $ace4
+00ad38: 6000 14bc           : bra     $c1f6
+00c1f6: 0c6e 0082 0e08      : cmpi.w  #$82, ($e08,A6)
+00c1fc: 6716                : beq     $c214
+00c1fe: 206e 0e0a           : movea.l ($e0a,A6), A0
+00c202: 10c1                : move.b  D1, (A0)+
+00c204: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c208: 526e 0e08           : addq.w  #1, ($e08,A6)
+00c20c: b23c 000a           : cmp.b   #$a, D1
+00c210: 67aa                : beq     $c1bc
+00c1bc: 2f03                : move.l  D3, -(A7)
+00c1be: 222e 0cf4           : move.l  ($cf4,A6), D1
+00c1c2: 660c                : bne     $c1d0
+00c1d0: 41ee 0e10           : lea     ($e10,A6), A0
+00c1d4: 2408                : move.l  A0, D2
+00c1d6: 7600                : moveq   #$0, D3
+00c1d8: 362e 0e08           : move.w  ($e08,A6), D3
+00c1dc: 70d0                : moveq   #-$30, D0
+00c1de: 6100 0756           : bsr     $c936
+00c936: 2f0e                : move.l  A6, -(A7)
+00c938: 4aae 01e0           : tst.l   ($1e0,A6)
+00c93c: 6712                : beq     $c950
+00c950: 2c6e 0cf0           : movea.l ($cf0,A6), A6
+00c954: 4eb6 0000           : jsr     (A6,D0.w)
+801fd0: 4e75                : rts
+00c958: 2c5f                : movea.l (A7)+, A6
+00c95a: 4e75                : rts
+00c1e2: 261f                : move.l  (A7)+, D3
+00c1e4: 6100 02a6           : bsr     $c48c
+00c48c: 48e7 e0e0           : movem.l D0-D2/A0-A2, -(A7)
+00c490: 7000                : moveq   #$0, D0
+00c492: 7200                : moveq   #$0, D1
+00c494: 2f0e                : move.l  A6, -(A7)
+00c496: 2c78 0004           : movea.l $4.w, A6
+
+00c49a: 4eae fece           : jsr     (-$132,A6)    //EXEC-0X132= -306
+800ece: 4e75                : rts
+00c49e: 2c5f                : movea.l (A7)+, A6
+00c4a0: 0800 000c           : btst    #$c, D0
+00c4a4: 671a                : beq     $c4c0
+00c4c0: 4cdf 0707           : movem.l (A7)+, D0-D2/A0-A2
+00c4c4: 4e75                : rts
+00c1e8: 426e 0e08           : clr.w   ($e08,A6)
+00c1ec: 41ee 0e10           : lea     ($e10,A6), A0
+00c1f0: 2d48 0e0a           : move.l  A0, ($e0a,A6)
+00c1f4: 4e75                : rts
+00a1be: 50ee 0104           : st      ($104,A6)
+00a1c2: 4cdf 0f0e           : movem.l (A7)+, D1-D3/A0-A3
+00a1c6: 4e75                : rts
+00a0ec: 6000 8288           : bra     $2376
+002376: 51ee 096d           : sf      ($96d,A6)
+00237a: 4eb9 0000 ac0a      : jsr     $ac0a.l
+00ac0a: 4aae 096e           : tst.l   ($96e,A6)
+00ac0e: 670a                : beq     $ac1a
+00ac10: 6100 184a           : bsr     $c45c
+00c45c: 4a6e 0b80           : tst.w   ($b80,A6)
+00c460: 6b28                : bmi     $c48a
+00c462: 720a                : moveq   #$a, D1
+00c464: 6100 e7c8           : bsr     $ac2e
+00ac2e: 206e 0b72           : movea.l ($b72,A6), A0
+00ac32: b1ee 0b76           : cmpa.l  ($b76,A6), A0
+00ac36: 6708                : beq     $ac40
+00ac38: 10c1                : move.b  D1, (A0)+
+00ac3a: 2d48 0b72           : move.l  A0, ($b72,A6)
+00ac3e: 4e75                : rts
+00c468: 222e 096e           : move.l  ($96e,A6), D1
+00c46c: b2ae 0cf4           : cmp.l   ($cf4,A6), D1
+00c470: 670e                : beq     $c480
+00c472: 0c6e 2a00 07a8      : cmpi.w  #$2a00, ($7a8,A6)
+00c478: 6706                : beq     $c480
+00c47a: 720c                : moveq   #$c, D1
+00c47c: 6100 e7b0           : bsr     $ac2e
+00ac2e: 206e 0b72           : movea.l ($b72,A6), A0
+00ac32: b1ee 0b76           : cmpa.l  ($b76,A6), A0
+00ac36: 6708                : beq     $ac40
+00ac38: 10c1                : move.b  D1, (A0)+
+00ac3a: 2d48 0b72           : move.l  A0, ($b72,A6)
+00ac3e: 4e75                : rts
+00c480: 426e 0b7e           : clr.w   ($b7e,A6)
+00c484: 3d7c ffff 0b80      : move.w  #$ffff, ($b80,A6)
+00c48a: 4e75                : rts
+00ac14: 6100 003a           : bsr     $ac50
+00ac50: 2f03                : move.l  D3, -(A7)
+00ac52: 262e 096e           : move.l  ($96e,A6), D3
+00ac56: 41ee 0972           : lea     ($972,A6), A0
+00ac5a: 222e 0b72           : move.l  ($b72,A6), D1
+00ac5e: 9288                : sub.l   A0, D1
+00ac60: 670c                : beq     $ac6e
+00ac62: 43ee 0972           : lea     ($972,A6), A1
+00ac66: 2d49 0b72           : move.l  A1, ($b72,A6)
+00ac6a: 6100 15d8           : bsr     $c244
+00c244: 2f01                : move.l  D1, -(A7)
+00c246: c741                : exg     D3, D1
+00c248: 2408                : move.l  A0, D2
+00c24a: 70d0                : moveq   #-$30, D0
+00c24c: 6100 06e8           : bsr     $c936
+00c936: 2f0e                : move.l  A6, -(A7)
+00c938: 4aae 01e0           : tst.l   ($1e0,A6)
+00c93c: 6712                : beq     $c950
+00c950: 2c6e 0cf0           : movea.l ($cf0,A6), A6
+00c954: 4eb6 0000           : jsr     (A6,D0.w)
+801fd0: 4e75                : rts

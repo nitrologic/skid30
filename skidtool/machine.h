@@ -9,6 +9,8 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+//#define STOP_ON_WRITE
+
 enum ami_mem_map {
 	AMI_BASE = 0x800000,
 	EXEC_BASE = 0x801000,
@@ -27,8 +29,6 @@ std::string addressString(int b);
 std::string hexValue32(int b);
 std::string hexValue16(int b);
 std::string hexValue8(int b);
-
-//#define STOP_ON_WRITE
 
 const int ChipsetFlags = 3;
 

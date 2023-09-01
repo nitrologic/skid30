@@ -1130,14 +1130,21 @@ struct NativeFile {
 			int n = fread(&c, 1, 1, fileHandle);
 			if (n == 0) 
 				break;
+			if (n < 0) {
+				break;
+			}
 			blob.push_back(c);
 		}
 		return blob;
 	}
 
-	void write(Blob blob) {
+	int write(Blob blob) {
+		if (fileHandle == 0) {
+			return -1;
+		}
 		int size = blob.size();
 		int n = fwrite(blob.data(), 1, size, fileHandle);
+		return n;
 	}
 
 	int seek(int offset, int mode) {
@@ -1363,7 +1370,7 @@ public:
 		}
 		default: {
 			NativeFile* f = fileLocks[d1];
-			f->write(raw);
+			d3=f->write(raw);
 			systemLog("write", "blob");
 			break;
 		}
@@ -1922,10 +1929,14 @@ structcode taskStruct({
 // musashi entry points to acid cpu address bus
 
 unsigned int mmu_read_byte(unsigned int address){
-	return acid500.read8(address);
+	int v8=acid500.read8(address);
+	if (v8&128) v8 |= -256;
+	return v8;
 }
 unsigned int mmu_read_word(unsigned int address){
-	return acid500.read16(address);
+	int v16=acid500.read16(address);
+//	if (v16&32768) v16 |= -65536;
+	return v16;
 }
 unsigned int mmu_read_long(unsigned int address){
 	return acid500.read32(address);
@@ -2190,7 +2201,7 @@ void disassemble(int pc,int count)
 const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
 const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
-const int SP_START = 0x1400;
+const int SP_START = 0x1600;
 const int ROM_START = 0x2000;
 
 //const int SP_START = 0x5400;
@@ -2400,9 +2411,11 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 
 	std::cout << std::endl << std::endl << "Write log to disk? (y/N)";
 
-	acid500.writeLog("log\\skidtool.log");
+	acid500.writeLog("skidtool.log");
 
+#ifdef trace_log
 	acid500.writeTrace("trace.log");
+#endif
 
 //	acid500.dumplog(0);
 }
