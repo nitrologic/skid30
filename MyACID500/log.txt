@@ -1,12 +1,8 @@
 Summary of ACID500 log file analysis
 
-genamblitz2.log - Error during listing output at line 6 in file blitz2.s_
+blitz2/src/blitz2.lst - listing from running genam blitz2.s -S -P
 
-lha19.log - more logging none of it good
-lha11.log - fixed setsignal register mapping typo
-lha10.log - extra mem logging for ami_base activity at 0x800000
-lha2.log - creates skeleton but with unmodified path separator
-lha1.log - fails with wrong filename in argument
+lha20skid - latest with signed bytes does this [exec] WARNING: Skipping corrupt/extraneous data
 
 zarch1.log - goat
 

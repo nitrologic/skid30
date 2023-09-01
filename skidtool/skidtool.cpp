@@ -1935,7 +1935,7 @@ unsigned int mmu_read_byte(unsigned int address){
 }
 unsigned int mmu_read_word(unsigned int address){
 	int v16=acid500.read16(address);
-//	if (v16&32768) v16 |= -65536;
+	v16 &= 0xffff;
 	return v16;
 }
 unsigned int mmu_read_long(unsigned int address){
@@ -2481,16 +2481,18 @@ int main() {
 	timeout(200);
 #endif
 
-
+// amiga_binary
+// 
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
 //	const char* args = "-c test.bb\n";
 
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-//	const char* amiga_binary = "../archive/lha";
+	const char* amiga_binary = "../archive/lha";
 //	const char* args = "e cv.lha\n";
-//	const char* args = "e skid.lha\n";
+	const char* amiga_args = "e skid.lha\n";
+	const char* amiga_home = ".";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
@@ -2500,10 +2502,9 @@ int main() {
 
 //	const int nops[] = {0x63d6, 0};
 
-	const char* amiga_binary = "../archive/genam";
-	const char* amiga_home = "blitz2\\src";
-	const char* amiga_args = "blitz2.s -S -P\n";
-
+//	const char* amiga_binary = "../archive/genam";
+//	const char* amiga_home = "blitz2\\src";
+//	const char* amiga_args = "blitz2.s -S -P\n";
 
 //	const char* amiga_binary = "skidaf/skid";
 //	const char* amiga_home = "skidaf";
