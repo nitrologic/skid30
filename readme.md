@@ -2,7 +2,7 @@ A project to celebrate 30th anniversary of original Skidmarks game.
 
 The Musashi M68000 emulator has a new home in the ACID500 console.
 
-![acid500 monitor tool](media/acid500lha.png)
+![ACID500 monitor tool](media/sig12.jpg)
 
 Active progress on this project includes the use of the lha command line archiving tool as most useful utility to have running.
 

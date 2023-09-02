@@ -12,6 +12,7 @@
 //#define STOP_ON_WRITE
 
 enum ami_mem_map {
+//	ARGS_BASE = 0x200,
 	AMI_BASE = 0x800000,
 	EXEC_BASE = 0x801000,
 	DOS_BASE = 0x802000,

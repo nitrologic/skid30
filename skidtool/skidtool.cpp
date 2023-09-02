@@ -1,8 +1,12 @@
-// acid500 
+// acid500 monitor
 // 
-// monitor aka skidtool by simon
+// by simon
 // 
 // all rights reserved 2023
+
+// https://github.com/nitrologic/skid30
+
+// $50NZ reward bounty per critical issue reported
 
 const int PREV_LINES = 4;
 const int ASM_LINES = 6;
@@ -2263,6 +2267,9 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 
 	acid500.setHome(home);
 
+	systemLog("args", args);
+	systemLog("home", home);
+
 	acid500.qwrite32(0, SP_START); //sp
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
@@ -2454,7 +2461,7 @@ int convertFiles() {
 
 int main() {
 
-	std::cout << "skidtool 0.2" << std::endl;
+	std::cout << "ACID500 skidtool 0.3" << std::endl;
 /*
 	COORD rect;
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -2509,8 +2516,8 @@ int main() {
 //	const char* args = "test.s -S -P\n";
 
 	const char* amiga_binary = "../archive/lha";
-	const char* amiga_args= "e cv.lha\n";
-//	const char* amiga_args = "e skid.lha\n";
+//	const char* amiga_args= "e cv.lha\n";
+	const char* amiga_args = "e skid.lha\n";
 	const char* amiga_home = ".";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
