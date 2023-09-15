@@ -612,9 +612,12 @@ struct acid68000 {
 
 	std::string fetchPath(int a1) {
 		std::string s=fetchString(a1);
-		std::replace(s.begin(),s.end(),'/','\\');
 //		s = str_tolower(s);
-		s = homePath + s;
+		std::replace(s.begin(),s.end(),'/','\\');
+		int p = s.find_first_of(':');
+		if (p<0) {
+			s = homePath + s;
+		}
 		return s;
 	}
 
@@ -1004,8 +1007,11 @@ void ekopString(std::string s, char* dest, int maxlen) {
 
 typedef std::vector<uint8_t> Blob;
 
+int fileCount=0;
+
 struct NativeFile {
 	std::vector<int> bcplLocks;
+	int exclusiveLock;
 	std::vector<int> bcplUnlocks;
 	std::string filePath;
 	FILE *fileHandle;
@@ -1015,8 +1021,20 @@ struct NativeFile {
 	int isDir;
 	std::filesystem::directory_iterator fileIterator;
 
-	void addLock(int h) {
+	int nextLock() {
+		return FILE_STREAM - (fileCount++) * 4;
+	}
+
+
+	std::string fileName() {
+		std::filesystem::path p(filePath);
+		return p.filename().string();
+	}
+
+	int addLock(bool exclusive) {
+		int h = nextLock();
 		bcplLocks.push_back(h);
+		return h;
 	}
 
 	void newLock(int h, std::string path) {
@@ -1029,9 +1047,14 @@ struct NativeFile {
 			isDir = (fileStat.st_mode & S_IFDIR) ? 1 : 0;
 		}
 	}
+	
+	// preset lock constructor for stdin
 
-	NativeFile(int h, std::string path) {
-		addLock(h);
+	NativeFile(int lock, std::string path) : NativeFile(path) {
+		bcplLocks.push_back(lock);
+	}
+
+	NativeFile(std::string path) {
 		filePath = path;
 		fileHandle = 0;
 		isTemp = 0;
@@ -1159,10 +1182,15 @@ struct NativeFile {
 	int seek(int offset, int mode) {
 		int oldpos = ftell(fileHandle);
 		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
-		fseek(fileHandle, offset, origin);
+		// simon come here
+		if (mode == -1 && offset < 0) offset = 0;
+		int res = fseek(fileHandle, offset, origin);
+		if (res) {
+			res = 0;
+		}
 		int currentpos = ftell(fileHandle);
-//		return (int)currentpos;
-		return oldpos;
+		return (int)currentpos;
+//		return oldpos;
 	}
 };
 
@@ -1263,11 +1291,26 @@ public:
 typedef std::map<std::string, NativeFile> FileMap;	// never removed
 typedef std::map<int, NativeFile*> FileLocks;  // sometimes collected
 
+
+/*
+
+*/
+
 class aciddos : public IDos {
-	int fileCount = 0;
 	FileMap fileMap;
 	FileLocks fileLocks;
 	acidlog doslog;
+
+	enum modes {
+		MODE_OLDFILE = 1005,   // Open existing file read/write positioned at beginning of file. 
+		MODE_NEWFILE = 1006,   // Open freshly created file (delete old file) read/write, exclusive lock. 
+		MODE_READWRITE = 1004   // Open old file w/shared lock, creates file if doesn't exist. 
+	};
+
+	enum locks {
+		SHARED_LOCK=-2,	    // File is readable by others
+		EXCLUSIVE_LOCK=-1   // No other access allowed
+	};
 
 	void emit() {
 		std::string s = doslog.str();
@@ -1307,16 +1350,15 @@ public:
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//mode
 		std::string s = cpu0->fetchPath(d1);
-		int lock = nextLock();
-		if (fileMap.count(s)) {
-			fileMap[s].newLock(lock,s);
-		}
-		else {
-			fileMap[s] = NativeFile(lock, s);
+		if (fileMap.count(s)==0) {
+			fileMap[s] = NativeFile(s);
 		}
 		NativeFile* f = &fileMap[s];
-		fileLocks[lock] = f;
 
+		bool exclusive = (d2 == MODE_WRITE);
+		int lock = f->addLock(exclusive);
+
+		fileLocks[lock] = f;
 		int success=f->open(d2);
 
 		if (success) {
@@ -1326,7 +1368,7 @@ public:
 		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
 
-		doslog << "open "<<s<<" => "<<result;
+		doslog << "open " << s << " " << d2 << " => "<<result;
 		emit();
 	}
 
@@ -1401,7 +1443,6 @@ public:
 		int d1 = cpu0->readRegister(1);//file
 		int d2 = cpu0->readRegister(2);//position	
 		int d3 = cpu0->readRegister(3);//mode start,current,end  -1,0,1
-
 		NativeFile* f = fileLocks[d1];
 		int pos=f->seek(d2, d3);
 		cpu0->writeRegister(0, pos);
@@ -1466,7 +1507,6 @@ public:
 		// d1=lock return d0=oldlock
 		// all paths lead to root - wtf LhA???
 		cpu0->writeRegister(0, 0);
-
 		doslog << "currentDir " << d1;
 		emit();
 	}
@@ -1475,18 +1515,22 @@ public:
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
 		std::string s = cpu0->fetchPath(d1);
-		int lock = nextLock();
-		if (fileMap.count(s)) {
-			fileMap[s].addLock(lock);
-		}
-		else {
-			fileMap[s] = NativeFile(lock, s);
+		int success = 0;
+
+		if (fileMap.count(s) == 0) {
+			fileMap[s] = NativeFile(s);
 		}
 		NativeFile* file = &fileMap[s];
-		fileLocks[lock] = file;
-		// yeh nah what?
-		int success=(file->status == 0) || (d2 == -1);
+		bool exclusive = (d2 == LOCK_EXCLUSIVE);
+		int lock=file->addLock(exclusive);
+		if (lock) {
+			fileLocks[lock] = file;
+			// yeh nah what?
+			success = (file->status == 0) || (d2 == -1);
+		}
+		
 		int result = success ? lock : 0;
+
 		cpu0->writeRegister(0, result);
 		doslog << "lock " << s << "," << d2 << " => " << result;
 		emit();
@@ -1505,8 +1549,8 @@ public:
 			return;
 		}
 		NativeFile* f = fileLocks[d1];
-		int lock = nextLock();
-		f->addLock(lock);
+
+		int lock = f->addLock(false);
 		fileLocks[lock] = f;	// count first??
 
 //		NativeFile(f);
@@ -1533,7 +1577,7 @@ public:
 
 			_fib.fib_Size = (int)size;
 			_fib.fib_NumBlocks = (size + 1023) / 1024;
-			_fib.fib_Protection = 0x0f;	//rwxd
+			_fib.fib_Protection = 0xdd00;	//rwxd
 			_fib.fib_DirEntryType = isdir ? 1 : -1;
 			//			pokeString(f.filePath,_fib.fib_FileName,108);
 //			ekopString(f->filePath, _fib.fib_FileName, 108);
@@ -1551,30 +1595,33 @@ public:
 		int d1 = cpu0->readRegister(1);//lock
 		int d2 = cpu0->readRegister(2);//fileinfo
 		NativeFile* f = fileLocks[d1];
+
+		memset(&_fib, 0, sizeof(FileInfoBlock));
 		int success = 0;
 		if (f->status == 0) {
 			int n = f->fileStat.st_size;
 			int mode = f->fileStat.st_mode & 7;
+//			_fib.fib_DiskKey = ;
 			_fib.fib_Size = n;
 			_fib.fib_NumBlocks = (n+1023)/1024;
-			_fib.fib_Protection = 0x0f;
+			_fib.fib_Protection = 0x01;		// 0x0f;
 //			_fib.fib_DirEntryType = (f->fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
 			_fib.fib_DirEntryType = (f->fileStat.st_mode& S_IFDIR ) ? 1 : -1 ;
 //			pokeString(f.filePath,_fib.fib_FileName,108);
-			ekopString(f->filePath, _fib.fib_FileName, 108);
+
+			std::string filename = f->fileName();
+			ekopString(filename, _fib.fib_FileName, 108);
 			cpu0->writeEndianMem(d2, &_fib, sizeof(_fib));
 			success = 1;
 		}
 		cpu0->writeRegister(0, success);
-		doslog<<"examine("<<d1<<")";
+		doslog<<"examine("<<d1<<") <= " << success;
 		emit();
 	}
 	void info() {
 		doslog << "info"; emit();
 	}
-	int nextLock() {
-		return FILE_STREAM - (fileCount++) * 4;
-	}
+
 	void createdir() {
 		int d1 = cpu0->readRegister(1);	//name
 		std::string s = cpu0->fetchPath(d1);
@@ -1585,14 +1632,11 @@ public:
 #endif
 		int lock = 0;
 		if (result == 0) {
-			lock = nextLock();
-			if (fileMap.count(s)) {
-				fileMap[s].newLock(lock, s);
-			}
-			else {
+			if (fileMap.count(s)==0){
 				fileMap[s] = NativeFile(lock, s);
 			}
 			NativeFile* f = &fileMap[s];
+			int lock = f->addLock(false);
 			fileLocks[lock] = f;
 		}
 		cpu0->writeRegister(0, lock);
@@ -1775,7 +1819,7 @@ public:
 			char c = fmt[i];
 			if (c == '%') {
 				int len = 2;
-				int d = 0;
+				int word = 0;
 				int decode = 1;
 				int dec = 0;
 				char pad = 0;
@@ -1792,25 +1836,26 @@ public:
 							ss << '%';
 							decode = 0;
 							break;
-						case 's':
-							s = cpu0->fetchString(a1);
+						case 's': {
+							int p = cpu0->read32(a1);
+							s = cpu0->fetchString(p);
 							a1 += 4;
 							ss << s;
-							decode = 0;
+							decode = 0; }
 							break;
 						case 'l':
 							len = 4;
 							break;
 						case 'd':
 							if (len == 2) {
-								d = cpu0->read16(a1);
+								word = cpu0->read16(a1);
 								a1 += 2;
 							}
 							else {
-								d = cpu0->read32(a1);
+								word = cpu0->read32(a1);
 								a1 += 4;
 							}
-							ss << (int)d;
+							ss << (int)word;
 							decode = 0;
 							break;
 						case 'c':
