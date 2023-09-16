@@ -1,3 +1,7 @@
+RayLib 4.6
+Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
+
+
 INFO: Initializing raylib 4.6-dev
 INFO: Supported raylib modules:
 INFO:     > rcore:..... loaded (mandatory)

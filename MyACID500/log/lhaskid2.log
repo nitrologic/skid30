@@ -1,0 +1,232 @@
+[hunk] lha start:002000 end:00ef60
+[args] e skid.lha_
+[home] .
+[mem] 00000000 R l 000000 00001600 000004 ZERO
+[read32] 801114,0080c000
+[read32] 80c0ac,00810000
+[exec] allocMem 1dbc
+[exec] setSignal 0,3000 <= 0 ;  , #CTRL_C#CTRL_D#SIGH_12288 <= 
+[exec] openlibrary dos.library,802000
+[read32] 802022,0080f000
+[read16] 80f034 flags:0 <= -1
+[read16] 80f034 flags:0 <= -1
+[write16] 80f034,ffff
+[read32] 801114,0080c000
+[read32] 80c098,00000000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask <= 80e000
+[read32] 80e0b8,deadbeef
+[write16] 80e0b8,ffff
+[write16] 80e0ba,ffff
+[dos] getvar LHAOPTS => ffffffff
+[dos] input
+[dos] isInteractive
+[exec] findTask <= 80e000
+[read32] 80e0b8,deadbeef
+[write16] 80e0b8,ffff
+[write16] 80e0ba,ffff
+[dos] lock T:,fffffffe => ffffffe8
+[dos] unlock ffffffe8
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[write16] 80e0b8,dead
+[write16] 80e0ba,beef
+[exec] fmt LhA V%ld.%02ldr - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._ => LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._|
+[dos] output
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt Registered to %s => Registered to Steffen Salzmann_|
+[dos] output
+[write] Registered to Steffen Salzmann_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt _ => _|
+[dos] output
+[write] _
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0 p => [0 p|
+[dos] output
+[write] [0 p
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] allocMem 110
+[dos] lock .\skid.lha,fffffffe => ffffffe4
+[dos] examine(ffffffe4) <= 1
+[dos] unlock ffffffe4
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] allocMem 2c
+[exec] allocMem d
+[exec] freemem
+[exec] fmt %s files %s => Extract files from|
+[exec] allocMem 3ecc
+[exec] allocMem 800c
+[exec] allocMem a10c
+[exec] fmt %s archive '%s':_ => Extracting from archive 'skid.lha':_|
+[dos] output
+[write] Extracting from archive 'skid.lha':_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] allocMem 3e
+[exec] allocMem 800c
+[dos] open .\skid.lha 1005 => ffffffe0
+[exec] allocMem 15
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] seek ffffffe0,0,ffffffff => 0
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[exec] freemem
+[exec] fmt 
+%11s: (%8ld/%8ld)  %s[K => 
+Extracting: (0/21)  Skid/.info[K|
+[dos] output
+[write] 
+Extracting: (0/21)  Skid/.info[K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock .\Skid\.info,fffffffe => 0
+[dos] open .\Skid\.info 1006 => 0
+[dos] lock .\Skid,fffffffe => 0
+[dos] createDir .\Skid => ffffffd8
+[dos] unlock ffffffd8
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open .\Skid\.info 1006 => ffffffd4
+[exec] fmt 
+[K => 
+[K|
+[dos] output
+[write] 
+[K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt 
+%11s: (%8ld/%8ld)  %s[K => 
+Extracting: (0/-24)  Skid/gfx/cars.palette[K|
+[dos] output
+[write] 
+Extracting: (0/-24)  Skid/gfx/cars.palette[K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock .\Skid\gfx\cars.palette,fffffffe => 0
+[dos] open .\Skid\gfx\cars.palette 1006 => 0
+[dos] lock .\Skid,fffffffe => ffffffcc
+[dos] unlock ffffffcc
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock .\Skid\gfx,fffffffe => 0
+[dos] createDir .\Skid\gfx => ffffffc8
+[dos] unlock ffffffc8
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open .\Skid\gfx\cars.palette 1006 => ffffffc4
+[exec] fmt 
+[K => 
+[K|
+[dos] output
+[write] 
+[K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] seek ffffffe0,fffffff2,ffffffff => 0
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem d
+[exec] allocMem 17
+[exec] allocMem 12
+[exec] allocMem 11
+[exec] freemem
+[exec] fmt 
+%11s: (%8ld/%8ld)  %s[K => 
+Extracting: (0/21)  Skid/.info[K|
+[dos] output
+[write] 
+Extracting: (0/21)  Skid/.info[K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock .\Skid\.info,fffffffe => 0
+[dos] open .\Skid\.info 1006 => 0
+[dos] lock .\Skid,fffffffe => ffffffb8
+[dos] unlock ffffffb8
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open .\Skid\.info 1006 => 0
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt 
+*** Error on file '%s' :  => 
+*** Error on file '.info' : |
+[dos] output
+[write] 
+*** Error on file '.info' : 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt %s[K_ => Unable to open output file[K_|
+[dos] output
+[write] Unable to open output file[K_
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] copyMem 18
+[exec] allocMem 22
+[exec] allocMem 19
+[exec] allocMem 15
+[exec] freemem
+[exec] fmt 
+%11s: (%8ld/%8ld)  %s[K => 
+Extracting: (0/-24)  Skid/gfx/cars.palette[K|
+[dos] output
+[write] 
+Extracting: (0/-24)  Skid/gfx/cars.palette[K
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock .\Skid\gfx\cars.palette,fffffffe => 0
+[dos] open .\Skid\gfx\cars.palette 1006 => 0
+[dos] lock .\Skid,fffffffe => ffffffa8
+[dos] unlock ffffffa8
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] lock .\Skid\gfx,fffffffe => ffffffa4
+[dos] unlock ffffffa4
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[dos] open .\Skid\gfx\cars.palette 1006 => 0
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt 
+*** Error on file '%s' :  => 
+*** Error on file 'cars.palette' : |
+[dos] output
+[write] 
+*** Error on file 'cars.palette' : 
+[exec] setSignal 0,0 <= 0 ;  ,  <= 
+[exec] fmt %s[K_ => Unable to open output file[K_|
+[dos] output
+[write] Unable to open output file[K_

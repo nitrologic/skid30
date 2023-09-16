@@ -1010,11 +1010,10 @@ typedef std::vector<uint8_t> Blob;
 int fileCount=0;
 
 struct NativeFile {
-	std::vector<int> bcplLocks;
-	int exclusiveLock;
-	std::vector<int> bcplUnlocks;
+	int exclusiveLock=0;
+	std::set<int> bcplLocks;
 	std::string filePath;
-	FILE *fileHandle;
+	FILE *fileHandle=NULL;
 	struct stat fileStat;
 	int status;
 	int isTemp;
@@ -1025,7 +1024,6 @@ struct NativeFile {
 		return FILE_STREAM - (fileCount++) * 4;
 	}
 
-
 	std::string fileName() {
 		std::filesystem::path p(filePath);
 		return p.filename().string();
@@ -1033,30 +1031,33 @@ struct NativeFile {
 
 	int addLock(bool exclusive) {
 		int h = nextLock();
-		bcplLocks.push_back(h);
+		if (exclusive) {
+			if (bcplLocks.size() || exclusiveLock || fileHandle) {
+				return 0;
+			}
+			exclusiveLock = h;
+			return h;
+		}
+		bcplLocks.insert(h);
 		return h;
 	}
 
-	void newLock(int h, std::string path) {
-		// assert path==filePath
-		bcplLocks.push_back(h);
-		int res = stat(path.c_str(), &fileStat);
-		status = res;
-		if (res == 0) {
-//			isDir = (fileStat.st_mode & _S_IFDIR) ? 1 : 0;
-			isDir = (fileStat.st_mode & S_IFDIR) ? 1 : 0;
+	void unlock(int h) {
+		if (exclusiveLock == h) {
+			exclusiveLock = 0;
+		}else{
+			bcplLocks.erase(h);
 		}
 	}
-	
+
 	// preset lock constructor for stdin
 
 	NativeFile(int lock, std::string path) : NativeFile(path) {
-		bcplLocks.push_back(lock);
+		bcplLocks.insert(lock);
 	}
 
 	NativeFile(std::string path) {
 		filePath = path;
-		fileHandle = 0;
 		isTemp = 0;
 		isDir = 0;
 		if (path == "stdin") {
@@ -1078,22 +1079,22 @@ struct NativeFile {
 			isDir = 1;
 			return;
 		}
-		int res = stat(path.c_str(), &fileStat);
-		status = res;
-		if (res == 0) {
-//			isDir = ( fileStat.st_mode & _S_IFDIR )? 1:0;
-			isDir = ( fileStat.st_mode & S_IFDIR )? 1:0;
-		}
+		statFile();
+	}
 
+	void statFile() {
+		int res = stat(filePath.c_str(), &fileStat);
+		if (res == 0) {
+			isDir = (fileStat.st_mode & S_IFDIR) ? 1 : 0;
+		}
+		status=res;
 	}
 
 	NativeFile() {
-
 	}
 
 	NativeFile(const NativeFile&f) {
 		filePath = f.filePath;
-		fileHandle = 0;
 		int res = stat(filePath.c_str(), &fileStat);
 		status = res;
 	}
@@ -1117,11 +1118,6 @@ struct NativeFile {
 			return 1;
 		}
 		return 0;
-	}
-
-	void unlock(int lock) {
-		bcplUnlocks.emplace_back(lock);
-//		status = -1;
 	}
 
 	int open(int mode) {
@@ -1148,11 +1144,11 @@ struct NativeFile {
 	void close() {
 		if (fileHandle) {
 			fclose(fileHandle);
+			fileHandle = 0;
 		}
 		else {
 			//todo - lha needs help
 		}
-		fileHandle = 0;
 	}
 
 	Blob read(int length) {
@@ -1354,27 +1350,30 @@ public:
 			fileMap[s] = NativeFile(s);
 		}
 		NativeFile* f = &fileMap[s];
-
-		bool exclusive = (d2 == MODE_WRITE);
+		bool exclusive = (d2 == MODE_NEWFILE);
 		int lock = f->addLock(exclusive);
-
-		fileLocks[lock] = f;
-		int success=f->open(d2);
-
-		if (success) {
-//			cpu0->setSignal(DOS_BIT, DOS_BIT);
-//			cpu0->setSignal(0, DOS_BIT);
+		int success = 0;
+		if (lock) {
+			success = f->open(d2);
+			if (success) {
+				fileLocks[lock] = f;
+			}
+			else 
+			{
+				f->unlock(lock);
+			}
 		}
 		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
 
-		doslog << "open " << s << " " << d2 << " => "<<result;
+		doslog << "open " << s << " " << std::dec << d2 << " => " << std::hex <<result;
 		emit();
 	}
 
 	void close(){
 		int d1 = cpu0->readRegister(1); //file
 		NativeFile* f = fileLocks[d1];
+		f->unlock(d1);
 		f->close();
 		cpu0->writeRegister(0, 0);	//RETURN_OK
 		doslog << "close " << d1 << " => 0";
@@ -1449,6 +1448,7 @@ public:
 		doslog << "seek " << d1 << "," << d2 << "," << d3 << " => " << pos;
 		emit();
 	}
+
 	void deletefile(){
 		doslog << "deletefile";emit();
 	}
@@ -1515,18 +1515,21 @@ public:
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
 		std::string s = cpu0->fetchPath(d1);
-		int success = 0;
-
 		if (fileMap.count(s) == 0) {
 			fileMap[s] = NativeFile(s);
 		}
 		NativeFile* file = &fileMap[s];
-		bool exclusive = (d2 == LOCK_EXCLUSIVE);
-		int lock=file->addLock(exclusive);
-		if (lock) {
-			fileLocks[lock] = file;
-			// yeh nah what?
-			success = (file->status == 0) || (d2 == -1);
+
+		int success = (file->status == 0) || (d2 == -1);
+		int lock = 0;
+
+		if (success) {
+			bool exclusive = (d2 == -2);
+			lock = file->addLock(exclusive);
+			if (lock) {
+				fileLocks[lock] = file;
+				// yeh nah what?
+			}
 		}
 		
 		int result = success ? lock : 0;
@@ -1633,10 +1636,11 @@ public:
 		int lock = 0;
 		if (result == 0) {
 			if (fileMap.count(s)==0){
-				fileMap[s] = NativeFile(lock, s);
+				fileMap[s] = NativeFile(s);
 			}
 			NativeFile* f = &fileMap[s];
-			int lock = f->addLock(false);
+			f->statFile();
+			lock = f->addLock(true);
 			fileLocks[lock] = f;
 		}
 		cpu0->writeRegister(0, lock);

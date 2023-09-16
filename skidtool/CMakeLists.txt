@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.0)
+
+#add_subdirectory(raylib)
 
 project(skidtool)
 
@@ -11,12 +13,14 @@ add_definitions( -DUNICODE )
 add_definitions( -D_UNICODE )
 endif(WIN32)
 
+
 include_directories(
   .
   zlib
   libpng
   musashi
   steam/sdk/public
+  raylib/src
 )
 link_directories(
     steam/sdk/redistributable_bin/win64
@@ -131,3 +135,6 @@ target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
 
 #ADD_EXECUTABLE(test test.cpp)
 #target_link_libraries(test musashi zlib libpng)
+
+ADD_EXECUTABLE(raydisplay raydisplay.cpp)
+target_link_libraries(raydisplay )
