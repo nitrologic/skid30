@@ -1,0 +1,232 @@
+[hunk] lha start:002000 end:00ef60
+[args] e skid.lha_
+[home] .
+[mem] 00000000 R l 000000 00001600 000004 ZERO
+[read32] 801114,0080c000
+[read32] 80c0ac,00810000
+[exec] allocMem 1dbc,10001 => 40000
+[exec] openlibrary dos.library,802000
+[read32] 802022,0080f000
+[read16] 80f034 flags:0 <= -1
+[read16] 80f034 flags:0 <= -1
+[write16] 80f034,ffff
+[read32] 801114,0080c000
+[read32] 80c098,00000000
+[exec] setTaskPri
+[exec] setTaskPri
+[exec] findTask <= 80e000
+[read32] 80e0b8,deadbeef
+[write16] 80e0b8,ffff
+[write16] 80e0ba,ffff
+[dos] getvar LHAOPTS => ffffffff
+[dos] input
+[dos] isInteractive
+[exec] findTask <= 80e000
+[read32] 80e0b8,deadbeef
+[write16] 80e0b8,ffff
+[write16] 80e0ba,ffff
+[dos] lock T: SHARED => ffffffe8
+[dos] unlock ffffffe8
+[write16] 80e0b8,dead
+[write16] 80e0ba,beef
+[exec] fmt LhA V%ld.%02ldr - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._ => LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._|
+[dos] output
+[write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+[exec] fmt Registered to %s => Registered to Steffen Salzmann_|
+[dos] output
+[write] Registered to Steffen Salzmann_
+[exec] fmt _ => _|
+[dos] output
+[write] _
+[exec] fmt [0 p => [0 p|
+[dos] output
+[write] [0 p
+[exec] allocMem 110,1 => 41f98
+[dos] lock .\skid.lha SHARED => ffffffe4
+[dos] examine(ffffffe4) <= 1
+[dos] unlock ffffffe4
+[exec] allocMem 2c,10001 => 420a8
+[exec] allocMem d,1 => 420d4
+[exec] freemem
+[exec] fmt %s files %s => Extract files from|
+[exec] allocMem 3ecc,1 => 42134
+[exec] allocMem 800c,10001 => 46000
+[exec] allocMem a10c,10001 => 4e00c
+[exec] fmt %s archive '%s':_ => Extracting from archive 'skid.lha':_|
+[dos] output
+[write] Extracting from archive 'skid.lha':_
+[exec] allocMem 3e,1 => 581b0
+[exec] allocMem 800c,1 => 581f0
+[dos] open .\skid.lha OLDFILE => ffffffe0
+[exec] allocMem 15,1 => 601fc
+[dos] seek ffffffe0,0,BEGINNING => 0
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[exec] copyMem 14
+[exec] copyMem d
+[exec] allocMem 17,1 => 60214
+[exec] allocMem 12,1 => 6022c
+[exec] allocMem 11,1 => 60240
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/21)  Skid/.info[K|
+[dos] output
+[write] Extracting: (0/21)  Skid/.info[K
+[dos] lock .\Skid\.info SHARED => 0
+[dos] open .\Skid\.info NEWFILE => 0
+[dos] lock .\Skid SHARED => 0
+[dos] createDir .\Skid => ffffffd8
+[dos] unlock ffffffd8
+[dos] open .\Skid\.info NEWFILE => ffffffd4
+[exec] fmt [K => [K|
+[dos] output
+[write] [K
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] copyMem 18
+[exec] allocMem 22,1 => 60314
+[exec] allocMem 19,1 => 60338
+[exec] allocMem 15,1 => 60354
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/-24)  Skid/gfx/cars.palette[K|
+[dos] output
+[write] Extracting: (0/-24)  Skid/gfx/cars.palette[K
+[dos] lock .\Skid\gfx\cars.palette SHARED => 0
+[dos] open .\Skid\gfx\cars.palette NEWFILE => 0
+[dos] lock .\Skid SHARED => ffffffcc
+[dos] unlock ffffffcc
+[dos] lock .\Skid\gfx SHARED => 0
+[dos] createDir .\Skid\gfx => ffffffc8
+[dos] unlock ffffffc8
+[dos] open .\Skid\gfx\cars.palette NEWFILE => ffffffc4
+[exec] fmt [K => [K|
+[dos] output
+[write] [K
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[dos] seek ffffffe0,fffffff2,BEGINNING => 8000
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] fmt      WARNING: Skipping corrupt/extraneous data[K_ =>      WARNING: Skipping corrupt/extraneous data[K_|
+[dos] output
+[write]      WARNING: Skipping corrupt/extraneous data[K_
+[exec] copyMem 14
+[exec] copyMem 17
+[exec] allocMem 21,1 => 60530
+[exec] allocMem 17,1 => 60554
+[exec] allocMem 16,1 => 6056c
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/139464)  Skid/maps/format.iff[K|
+[dos] output
+[write] Extracting: (0/139464)  Skid/maps/format.iff[K
+[dos] lock .\Skid\maps\format.iff SHARED => 0
+[dos] open .\Skid\maps\format.iff NEWFILE => 0
+[dos] lock .\Skid SHARED => ffffffbc
+[dos] unlock ffffffbc
+[dos] lock .\Skid\maps SHARED => 0
+[dos] createDir .\Skid\maps => ffffffb8
+[dos] unlock ffffffb8
+[dos] open .\Skid\maps\format.iff NEWFILE => ffffffb4
+[exec] fmt [K => [K|
+[dos] output
+[write] [K
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[dos] seek ffffffe0,1d45a,BEGINNING => 1d45a
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] fmt      WARNING: Skipping corrupt/extraneous data[K_ =>      WARNING: Skipping corrupt/extraneous data[K_|
+[dos] output
+[write]      WARNING: Skipping corrupt/extraneous data[K_
+[dos] seek ffffffe0,2545a,BEGINNING => 2545a
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[exec] copyMem 14
+[exec] copyMem 17
+[exec] allocMem 21,1 => 60750
+[exec] allocMem 17,1 => 60774
+[exec] allocMem 16,1 => 6078c
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/8130)  Skid/maps/format.map[K|
+[dos] output
+[write] Extracting: (0/8130)  Skid/maps/format.map[K
+[dos] lock .\Skid\maps\format.map SHARED => 0
+[dos] open .\Skid\maps\format.map NEWFILE => ffffffb0
+[exec] fmt [K => [K|
+[dos] output
+[write] [K
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] copyMem c
+[exec] allocMem 16,1 => 60894
+[exec] allocMem 11,1 => 608ac
+[exec] allocMem 11,1 => 608c0
+[exec] freemem
+[exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/63080)  Skid/skid[K|
+[dos] output
+[write] Extracting: (0/63080)  Skid/skid[K
+[dos] lock .\Skid\skid SHARED => 0
+[dos] open .\Skid\skid NEWFILE => ffffffac
+[exec] fmt [K => [K|
+[dos] output
+[write] [K
+[exec] fmt [0m => [0m|
+[dos] output
+[write] [0m
+[dos] seek ffffffe0,33ce1,BEGINNING => 33ce1
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[exec] copyMem 14
+[exec] freemem
+[exec] freemem
+[exec] fmt      WARNING: Skipping corrupt/extraneous data[K_ =>      WARNING: Skipping corrupt/extraneous data[K_|
+[dos] output
+[write]      WARNING: Skipping corrupt/extraneous data[K_
+[dos] seek ffffffe0,3bce1,BEGINNING => 3bce1
+[dos] read ffffffe0 , 581fc , 8000 => 8000
+[dos] seek ffffffe0,43ce1,BEGINNING => 43ce1
+[dos] read ffffffe0 , 581fc , 8000 => 1
+[dos] seek ffffffe0,43ce2,BEGINNING => 43ce2
+[dos] read ffffffe0 , 581fc , 8000 => 0
+[dos] close ffffffe0 => 0
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] fmt No files %s => No files extracted|
+[dos] output
+[write] No files extracted
+[exec] fmt .[K__ => .[K__|
+[dos] output
+[write] .[K__
+[exec] freemem
+[exec] freemem
+[exec] freemem
+[exec] fmt Operation not entirely successful._ => Operation not entirely successful._|
+[dos] output
+[write] Operation not entirely successful._
+[dos] currentDir 0
+[dos] close ffffffd4 => 0
+[dos] close ffffffc4 => 0
+[dos] close ffffffb4 => 0
+[dos] close ffffffb0 => 0
+[dos] close ffffffac => 0
+[exec] freemem
+[exec] freemem
+[dos] output
+[write] [ p[0m
+[read32] 801114,0080c000
+[exec] setTaskPri
+[exec] closeLibrary
+[exec] freemem
+[mem] 0afcc03e W w fffffe 00ee 00205c 
+[mem] 0afcc03e W w fffffc 1000 00205c 

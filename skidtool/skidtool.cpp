@@ -1178,11 +1178,10 @@ struct NativeFile {
 	int seek(int offset, int mode) {
 		int oldpos = ftell(fileHandle);
 		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
-		// simon come here
-		if (mode == -1 && offset < 0) offset = 0;
 		int res = fseek(fileHandle, offset, origin);
 		if (res) {
-			res = 0;
+// simon come here as this crashes lha
+//			return -1;
 		}
 		int currentpos = ftell(fileHandle);
 		return (int)currentpos;
@@ -1292,6 +1291,11 @@ typedef std::map<int, NativeFile*> FileLocks;  // sometimes collected
 
 */
 
+
+std::map<int, std::string> modeNames = { {1005,"OLDFILE"},{1006,"NEWFILE"},{1004,"READWRITE"} };
+std::map<int, std::string> lockNames = { {-1,"EXCLUSIVE"},{-2,"SHARED"} };
+std::map<int, std::string> seekNames = { {-1,"BEGINNING"},{0,"CURRENT"},{1,"END"} };
+
 class aciddos : public IDos {
 	FileMap fileMap;
 	FileLocks fileLocks;
@@ -1366,7 +1370,8 @@ public:
 		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
 
-		doslog << "open " << s << " " << std::dec << d2 << " => " << std::hex <<result;
+//		doslog << "open " << s << " " << std::dec << d2 << " => " << std::hex <<result;
+		doslog << "open " << s << " " << modeNames[d2] << " => " << result;
 		emit();
 	}
 
@@ -1445,7 +1450,8 @@ public:
 		NativeFile* f = fileLocks[d1];
 		int pos=f->seek(d2, d3);
 		cpu0->writeRegister(0, pos);
-		doslog << "seek " << d1 << "," << d2 << "," << d3 << " => " << pos;
+//		doslog << "seek " << d1 << "," << d2 << "," << d3 << " => " << pos;
+		doslog << "seek " << d1 << "," << d2 << "," << seekNames[d3] << " => " << pos;
 		emit();
 	}
 
@@ -1535,7 +1541,8 @@ public:
 		int result = success ? lock : 0;
 
 		cpu0->writeRegister(0, result);
-		doslog << "lock " << s << "," << d2 << " => " << result;
+//		doslog << "lock " << s << "," << d2 << " => " << result;
+		doslog << "lock " << s << " " << lockNames[d2] << " => " << result;
 		emit();
 	}
 	void unLock(){
@@ -1757,9 +1764,11 @@ public:
 		int d1 = cpu0->readRegister(1);//mask
 		int bits=cpu0->setSignal(d0,d1);
 		cpu0->writeRegister(0, bits);
+#ifdef LOG_SETSIGNAL
 		execlog << "setSignal " << d0 << "," << d1 << " <= " << bits;
 		execlog << " ; "<< sigbits(d0) << " , " << sigbits(d1) << " <= " << sigbits(bits);
 		emit();
+#endif
 	}
 
 	int nextSignal = 16;
@@ -1934,7 +1943,8 @@ public:
 		int d1 = cpu0->readRegister(1);
 		int r = cpu0->allocate(d0, d1);
 		cpu0->writeRegister(0, r);
-		execlog << "allocMem " << d0; emit();
+		execlog << "allocMem " << d0 << "," << d1 << " => " << r;
+		emit();
 	}
 
 	void waitPort() {
