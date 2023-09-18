@@ -2,6 +2,8 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+typedef std::vector<uint8_t> Raw;
+
 // EA DPAINT IFF ILBM FILE FORMAT
 // http://www.etwright.org/lwsdk/docs/filefmts/ilbm.html
 
@@ -231,7 +233,10 @@ void loadILBM(std::string path){
 
 }
 
-void loadSVX(std::string path) {
+Raw loadSVX(std::string path) {
+
+	Raw bytes;
+
 	writeString("Reading IFF 8SVX from ");
 	writeString(path);
 	writeEOL();
@@ -240,14 +245,14 @@ void loadSVX(std::string path) {
 	int form = fd.readBigInt();
 	if (form != FORM) {
 		std::cout << "expecting FORM at start of IFF ILBM" << std::endl;
-		return;
+		return bytes;
 	}
 	int fsize = fd.readBigInt();
 	int ilbm = fd.readBigInt();
 	if (ilbm != _8SVX) {
 		writeCC4Big(ilbm);
 		std::cout << "expecting ILBM at start of IFF ILBM" << std::endl;
-		return;
+		return bytes;
 	}
 	fsize -= 4;
 
@@ -299,7 +304,11 @@ void loadSVX(std::string path) {
 
 		case BODY:
 			std::cout << "BODY:" << tsize << std::endl;
-			fd.skip(tsize);
+			for (int i = 0; i < tsize; i++) {
+				uint8_t b = fd.readByte();
+				bytes.push_back(b^0x80);
+			}
+//			fd.skip(tsize);
 			if (tsize & 2) {
 //				fd.skip(2);
 			}
@@ -321,7 +330,7 @@ void loadSVX(std::string path) {
 	int count = 0;
 	while (!fd.eof() && count<64) {
 		int x = fd.readByte();
-		writeData8(x);
+//		writeData8(x);
 		std::cout << x << " " << (char)x << std::endl;
 	}
 
@@ -329,4 +338,5 @@ void loadSVX(std::string path) {
 	u16 h1 = fd.readBigShort();
 	bool magic = (h0 == 0) && (h1 == 1011);
 
+	return bytes;
 }

@@ -5,12 +5,14 @@ int machineError;
 
 std::string machineState = "";
 
+std::vector<logline> machineLog;
+
 void systemLog(const char* tag, std::string s) {
 	std::replace(s.begin(), s.end(), '\n', '_');
 	std::replace(s.begin(), s.end(), '\0', '|');
 	std::stringstream ss;
 	void* context = 0;
-	int ppc = m68k_get_reg(context, M68K_REG_PPC); //m68k_get_reg(NULL, M68K_REG_PPC);
+	int ppc = 0;// m68k_get_reg(context, M68K_REG_PPC); //m68k_get_reg(NULL, M68K_REG_PPC);
 	ss << addressString(ppc) << " [" << tag << "] " << s;
 	std::string line = ss.str();
 //	std::cout << line << std::endl;

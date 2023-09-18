@@ -82,8 +82,6 @@ std::string str_tolower(std::string s)
 	return s;
 }
 
-std::vector<logline> machineLog;
-
 // strips \n
 
 //void systemLog(const char* a, std::stringstream &ss) {

@@ -134,6 +134,6 @@ target_link_libraries(skidtool musashi zlib libpng winmm)
 #ADD_EXECUTABLE(test test.cpp)
 
 
-ADD_EXECUTABLE(raydisplay raydisplay.cpp)
+ADD_EXECUTABLE(raydisplay loadiff.h monitor.h filedecoder.h machine.cpp raydisplay.cpp)
 target_link_libraries(raydisplay raylib)
 target_link_libraries(raydisplay )
