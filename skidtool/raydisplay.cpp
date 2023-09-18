@@ -3,8 +3,8 @@
 #include <string>
 
 const char* title = "ACID500";
-const char* version = "v 0.1";
-const char* splash = "listening...";
+const char* version = "raydisplay 0.2";
+const char* splash = "f11:fullscreen";
 const char* start = "Start when steady";
 
 int frameCount = 0;

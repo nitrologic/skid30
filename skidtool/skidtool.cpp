@@ -2531,6 +2531,7 @@ int main() {
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleDisplayMode(out, CONSOLE_FULLSCREEN_MODE, &rect);
 */
+#ifdef HAS_STEAM
 	int loggedOn = OpenSteam(768030);
 	std::cout << "Steam " << ((loggedOn) ? "Logged In" : "Offline") << std::endl;
 
@@ -2554,7 +2555,7 @@ int main() {
 		}
 #endif
 	}
-
+#endif
 
 	int rows, cols;
 	screenSize(rows, cols);

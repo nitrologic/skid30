@@ -109,8 +109,8 @@ ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(skidtool 
-    steamstub.cpp
-    steamstub.h
+#    steamstub.cpp
+#    steamstub.h
     freeaudio/freeaudio.cpp
     freeaudio/freeaudio.h
     freeaudio/mmdevice.cpp
@@ -126,7 +126,8 @@ ADD_EXECUTABLE(skidtool
 # bootstrap that generates m68kops sources
 # ADD_EXECUTABLE(make68k musashi/m68kmake.c)
 
-target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
+# target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
+target_link_libraries(skidtool musashi zlib libpng winmm)
 
 #macos here
 #target_link_libraries(skidtool musashi zlib libpng)
