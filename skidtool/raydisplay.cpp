@@ -2,6 +2,10 @@
 #include <raylib.h>
 #include <string>
 
+// relative to ProjectDir
+
+const char* trackpng = "../../maps/format.png";
+
 const char* title = "ACID500";
 const char* version = "raydisplay 0.2";
 const char* splash = "f11:fullscreen";
@@ -22,8 +26,13 @@ int main(){
 	int screens = GetMonitorCount();
 	std::cout << "screens:" << screens << std::endl;
 
+	Texture2D track=LoadTexture(trackpng);
+		
 	while (!WindowShouldClose()){
 		frameCount++;
+
+		float tx = frameCount * 0.025;
+		float ty = frameCount * 0.010;
 
 		int width = GetRenderWidth();
 		int height = GetRenderHeight();
@@ -32,6 +41,10 @@ int main(){
 
 		BeginDrawing();
 		ClearBackground({ 0,0,0 });
+
+//		DrawTexture(track, 0, 0, WHITE);
+		DrawTextureEx(track, { -tx,-ty },0, 10, WHITE);
+
 		int x = 14;
 		int y = 20;
 		int h = 48;
@@ -40,12 +53,6 @@ int main(){
 		DrawText(version, x, y, h, c); y += h+12;
 		DrawText(splash, x, y, h, c); y += h+12;
 		DrawText(start, x, y, h, c); y += h+12;
-
-		for (int t = 0; t < 50; t++) {
-			int f = (frameCount + t*50) % 2500;
-			int o = f * f / 320;
-			DrawBox(o, o, width - 2*o, height - 2*o,DARKBLUE);
-		}
 
 		int fps = 1000/GetFrameTime();
 		std::string stats = "fps:" + std::to_string(fps);
@@ -60,6 +67,9 @@ int main(){
 			ToggleFullscreen();
 		}
 	}
+
+	if(IsWindowFullscreen())
+		ToggleFullscreen();
 
 	std::cout << "complete" << std::endl;
 }
