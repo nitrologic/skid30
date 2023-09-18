@@ -4,50 +4,49 @@
 ;	Source code to BLITZ BASIC ][	   ;
 ;			   ;
 ;           You dudes out there had better         ;
-;        like this, or I'm gonna start doing       ; 
+;        like this, or I am gonna start doing       ; 
 ;         something drastic with my life...        ;
 ;                like... GET A JOB!	   ;
 ;			   ;
 ;**************************************************;
 
+amigaformat	equ	0
 demo	equ	0
 release	equ	-1
 	;
 cripple	equ	0	;set to -1 to make crippled
 final	equ	-1	;set to -1 to make final version
-version	equ	195	;version number
+version	equ	19	;version number
 
 ;**************************************************;
 ;
 ;	     Modifications
 ;
-;V0.98 - change date on startup requester
-;V0.00 - clear 'inerr' flag at start of compile
-;V1.00 - max object size fixed to over 128
+;V98 - change date on startup requester
+;V99 - clear 'inerr' flag at start of compile
+;V100 - max object size fixed to over 128
 ;     - pop next changed to pop for
-;V1.10 - blitz2:deflibs - blitz2:blitzopts#?
-;V1.20 - .info ignored on libs and opts
-;V1.30 - square brackets bug fixed
-;V1.40 - .info lock fixed, & exec Flush cache used
-;V1.50 - optimizer removed! debugger added -
+;V110 - blitz2:deflibs - blitz2:blitzopts#?
+;V120 - .info ignored on libs and opts
+;V130 - square brackets bug fixed
+;V140 - .info lock fixed, & exec Flush cache used
+;V150 - optimizer removed! debugger added -
 ;       directtrap added - runtime errors majorly
 ;       overhauled! cont removed - ignore installed
 ;
-;V1.60 - vbr handled
-;v1.70 - runerrson & runerrsoff added, label runerrs removed
-;v1.80 - separate strings out with clr.b (a3)+ in 'sbtolong'
+;V160 - vbr handled
+;v170 - runerrson & runerrsoff added, label runerrs removed
+;v180 - separate strings out with clr.b (a3)+ in 'sbtolong'
 ;       fixed \a="Hello","goodbye"
 ;       removed 'library not found' error for maximum not found
 ;       flushc installed in direct mode (directtrap)
 ;
-;v1.90 - attempting to add [] checking...
+;v190 - attempting to add [] checking...
 ;
-;v1.90 - run prog does a 'createproc' so user can do a PANIC!
+;v200 - run prog does a 'createproc' so user can do a PANIC!
 ;       Blitz2 loads debugger now instead of dhandlerlib
 ;
-;v1.90 - added asmexit...checked for func ret outside of func.
-;
-;v1.95 - added 'proc not found' to functions
+;v190 - added asmexit...checked for func ret outside of func.
 ;
 ;**************************************************;
 
@@ -260,7 +259,8 @@ mainbit	;
 	move.l	d2,stackfuck
 	bra	actualbegin
 	;
-	include	options2.src.new
+
+;	include	options2_src_new
 	;
 tsthead	dc.l	$3f3,0,1,0,0
 tstsize1	dc.l	256,$3e9
@@ -444,19 +444,17 @@ tok34	dc.l	tok35	;*****
 	dc.b	'Else',0
 	dc.b	'[Statement...]',0
 	even
-	;
-	;below should not activate runtime error checking
-	;
 tok35	dc.l	tok36
 	dc	35
-	dc.b	'Even4',0
-	dc.b	'; align to 4 byte boundary',0
+	dc.b	'Jimi',0,0	;'CAnd',0,0	;available
 	even
 tok36	dc.l	tok37
 	dc	36
-	dc.b	'Even8',0
-	dc.b	'; align to 8 byte boundary',0
+	dc.b	'Jimi',0,0	;'COr',0,0	;available
 	even
+	;
+	;below should not activate runtime error checking
+	;
 tok37	dc.l	tok38	;*****
 	dc	37
 	dc.b	'Dc',0
@@ -747,7 +745,7 @@ menuadds	dc.l	menu0,menu10,menu1,menu4,menu5
 	cnop	0,4
 undobuffer	ds.b	128
 
-libsdir	dc.b	'blitz2:userlibs/',0
+libsdir	dc.b	'blitzlibs:',0
 	even
 
 nomemreq	dc.l	0
@@ -868,23 +866,22 @@ verreqin1	dc.b	1,0,1,0
 	dc.l	0
 	dc.l	verreqla4,verreqin2
 verreqla4	dc.b	'Blitz Basic 2 Version '
-tver	set	version/100
-	dc.b	tver+48,'.'
-tver	set	version-(tver*100)
-tver2	set	tver/10
-	dc.b	tver2+48
-tver	set	tver-(tver2*10)
-	dc.b	tver+48,0
-	;dc.b	(version/10)+48,'.',version-((version/10)*10)+48,'0',0
+	dc.b	(version/10)+48,'.',version-((version/10)*10)+48,'0',0
 	even
 verreqin2	dc.b	1,0,1,0
 	dc.w	12,18
 	dc.l	0
 	dc.l	verreqla5,verreqin3
-verreqla5	dc.b	'(C)opyright 1995 - Acid Software',0
+verreqla5	dc.b	'(C)opyright 1993 - Acid Software',0
 	even
 verreqin3	dc.b	1,0,1,0
 	
+	ifne	amigaformat
+	dc	64-8-16,30
+	dc.l	0,verreqla6,0
+verreqla6	dc.b	'Amiga Format Demo Version',0
+	endc
+
 	ifne	demo
 	dc	64-8,30
 	dc.l	0,verreqla6,0
@@ -937,7 +934,7 @@ nops8	nop
 	nop
 	nop
 	nop
-nops4	nop
+	nop
 nops3	nop
 	nop
 	nop
@@ -1209,9 +1206,6 @@ pusha3f
 pulla3	move.l	(a7)+,0(a5)
 pulla3f
 
-geta3	move.l	0(a5),a3
-geta3f
-
 numtoa0	move.l	#0,a0
 
 numtoa2	move.l	#0,a2
@@ -1300,14 +1294,14 @@ atokens	dc.l	donewtype,doend,dolet,dodim,dogoto
 	dc.l	dostate,dofunc,domwait,doif,dowhile
 	dc.l	domacro,doselect,docase
 	dc.l	dodefault,eos
-	dc.l	doxinclude,doinclude,syntaxerr
+	dc.l	doxinclude,doinclude,dounless
 	dc.l	doshared,dofor,donext,syntaxerr,syntaxerr
 	dc.l	dodata,doread
 	;
 	;the folowing should all be intercepted by getchar
 	;	
 	dc.l	syntaxerr,syntaxerr,syntaxerr,syntaxerr
-	dc.l	docerr,dothen,doelse,doeven4,doeven8
+	dc.l	docerr,dothen,doelse,syntaxerr,syntaxerr
 	;
 	dc.l	dodc,dods,doeven,dodcb,dosetreg,doincbin
 	dc.l	dofree,douse,dostop,docont,syntaxerr
@@ -1455,6 +1449,7 @@ begin	;find out how many system tokens exist
 .noseg	;
 	bsr	freeemup
 	bsr	freeres
+	bsr	frlibslist
 	bsr	freelibs
 	;
 fail3	move.l	segadd,d1
@@ -1479,8 +1474,8 @@ fail0	jsr	optreqdone
 	move	returncode,d0
 	ext.l	d0
 	bra	wb_exit
-t
-debugname	dc.b	'blitz2:defaultdbug',0
+
+debugname	dc.b	'blitz2:dbug/defaultdbug',0
 	even
 dseg	dc.l	0
  
@@ -1508,7 +1503,7 @@ menu	move.l	a5,firstitem
 
 dtext	dc.b	'Debug module to load',0
 	even
-dpath	dc.b	'Blitz2:'
+dpath	dc.b	'Blitz2:dbug'
 	dcb.b	192,0
 	even
 dname	dcb.b	192,0
@@ -1701,7 +1696,6 @@ runtheprog	move.l	4.w,a0
 	bsr	calcvbr
 	move.l	vbr,a0
 	move.l	#tokens,132(a0)
-	move.l	firsttype,136(a0)
 	move.l	#directtrap,128+15*4(a0)
 	clr	dirmode
 	clr.l	firstglob
@@ -1769,34 +1763,18 @@ flushlibs	move.l	4.w,a6
 
 defname	dc.b	'blitz2:deflibs',0
 	even
-deflibs	dc.l	0
 
-acidname	dc.b	'blitz2:acidlibs',0
-	even
-acidlibs	dc.l	0
+deflibs	dc	0	;flag for if deflibs are used
+deflibslen	dc.l	0	;length of def libs
 
-menu8	bsr	sleepon
-	bsr	freeblitzlibs
-	bsr	makeblitzlibs
-	bsr	loadblitzlibs
+menu8	bsr	freelibs
+	bsr	frlibslist
+	move.l	dos,a6
+	clr	deflibs
+	bsr	lnodefs
+	bsr	sleepon
+	bsr	loadlibs
 	bra	pointeron
-
-checklib	moveq	#-2,d2
-	jsr	lock(a6)
-	move.l	d0,d7
-	beq.s	.rts
-	;
-	;'deflibs' has been found! - lock in d7
-	;
-	;pick up file length
-	;
-	move.l	d7,d1
-	move.l	#namebuff,d2
-	jsr	examine(a6)
-	move.l	d7,d1
-	jsr	unlock(a6)
-	move.l	namebuff+124,d0
-.rts	rts
 
 makelibs	;find all lib dirs in 'libsdir' and make a list of 'em
 	;unless 'blitz2:deflibs' is there!
@@ -1806,16 +1784,25 @@ makelibs	;find all lib dirs in 'libsdir' and make a list of 'em
 	move.l	dos,a6
 	;
 	move.l	#defname,d1
-	bsr	checklib
-	move.l	d0,deflibs
-	;
-	move.l	#acidname,d1
-	bsr	checklib
-	move.l	d0,acidlibs
-	;
-makeblitzlibs	move.l	#libsdir,d1
 	moveq	#-2,d2
-	move.l	dos,a6
+	jsr	lock(a6)
+	move.l	d0,d7
+	beq	lnodefs
+	;
+	;'deflibs' has been found! - lock in d7
+	;
+	;pick up file length
+	;
+	move	#-1,deflibs
+	move.l	d7,d1
+	move.l	#namebuff,d2
+	jsr	examine(a6)
+	move.l	namebuff+124,deflibslen
+	move.l	d7,d1
+	jmp	unlock(a6)
+	;
+lnodefs	move.l	#libsdir,d1
+	moveq	#-2,d2
 	jsr	lock(a6)
 	move.l	d0,d7
 	beq	.done
@@ -1896,10 +1883,10 @@ makeblitzlibs	move.l	#libsdir,d1
 	rts
 
 frlibslist	;free up a libs list
-	move.l	4.w,a6
 	move.l	libslist,a2
 	clr.l	libslist
 	;clr	numlibs
+	move.l	4.w,a6
 .loop	cmp	#0,a2
 	beq	.done
 	move.l	a2,a1
@@ -2579,9 +2566,9 @@ dopass	;compile entire program based on 'pass'
 .okloop	clr	(a0)+
 	dbf	d0,.okloop
 	;
-	;put in 4 nops for dummy JSR to init routines! (was 3)
+	;put in 3 nops for dummy JSR to init routines!
 	;
-	lea	nops4,a0
+	lea	nops3,a0
 	lea	nopsf,a1
 	bsr	pokecode2
 	;
@@ -3116,7 +3103,7 @@ handletoken	;process a token in d0
 	;
 .nono	;check if asm type things....
 	;
-	;if so, no line remembering etc!
+	;if so, no line remembering etc!, optimizing
 	;
 	bclr	#15,d0
 	move	d0,d1
@@ -3147,7 +3134,7 @@ handletoken	;process a token in d0
 	beq	.noerr
 	cmp	#42,d0
 	bhi	.doerr
-	cmp	#35,d0
+	cmp	#37,d0
 	bcs.s	.doerr
 	;
 .noerr	bsr	undodebug
@@ -5973,7 +5960,6 @@ uselib3	tst	cfetchmode
 	move	10(a1),pusha3+2
 	move	10(a1),pusha32+2
 	move	10(a1),pulla3+2
-	move	10(a1),geta3+2
 	;
 .nots1	cmp	#64535,d1
 	bne	.notd
@@ -6081,7 +6067,7 @@ tokecode	;d1=token number, d2=form number!
 	tst	(a3)
 	bne	.go4it	;no libs to fetch....
 	move.l	2(a3),d0
-	or.l	10(a3),d0
+	or.l 10(A3),D0 ;simon come here
 	bne	.go4it	;no error chx...
 	btst	#0,9(a3)
 	bne	.go4it	;ditto...
@@ -6250,10 +6236,13 @@ uselib2	beq	.skip
 .done	move.l	(a7)+,a1
 .skip	rts
 
-findlibnoerr	;
+findlibnoerr;
+	;
 	move.l	firstlib,a1
 .loop	cmp	#0,a1
+	;
 	beq.s	.rts
+	;
 	cmp	4(a1),d1
 	beq	.found
 	move.l	(a1),a1
@@ -6316,38 +6305,37 @@ findtoke	;d1=token.
 	bra	.loop
 
 deflibsat	dc.l	0
-acidlibsat	dc.l	0
-blitzlibsat	dc.l	0	;start of blitzlibs list!
 
-loadlibgroup	;load a group of libraries!
+loadlibs	;use libslist to load in used libs dir contents
 	;
-	;d0=len, d1=name
-	;return d0=address
+	lea	firstlib,a3
+	move	deflibs,d0
+	beq	.nodefs
 	;
-	tst.l	d0
-	beq	.rts
-	move.l	d0,d6	;d6=len
+	move.l	deflibslen,d0
+	moveq	#1,d1
+	move.l	4.w,a6
+	jsr	doallocmem	;get memory for 'deflibs'
+	move.l	d0,deflibsat
+	;
 	move.l	dos,a6
+	move.l	#defname,d1
 	move.l	#1005,d2
 	jsr	open(a6)
 	move.l	d0,d7
-	beq	.rts
-	move.l	d6,d0
-	moveq	#1,d1
-	move.l	4.w,a6
-	jsr	doallocmem
-	move.l	d0,d5	;start address
+	beq	.nodefs
 	move.l	d7,d1
-	move.l	d5,d2
-	move.l	d6,d3
-	move.l	dos,a6
+	move.l	deflibsat(pc),d2
+	move.l	deflibslen,d3
 	jsr	read(a6)
 	move.l	d7,d1
 	jsr	close(a6)
 	;
-	move.l	d5,a0
+	;all libs read in, now to link 'em up.
+	;
+	move.l	deflibsat,a0
 .linkloop	move.l	(a0)+,d0
-	beq.s	.linkdone
+	beq	.linkdone
 	lea	32(a0),a1
 	move.l	a1,(a3)	;link in.
 	move.l	a1,a3
@@ -6362,62 +6350,37 @@ loadlibgroup	;load a group of libraries!
 	clr.l	32(a1)	;no relocs
 	lea	12(a1,d0.l),a2	;reloc info.
 	cmp.l	a0,a2	;is it over?
-	bcc.s	.linkloop
+	bcc	.linkloop
 	;
 	move.l	-8(a2),32(a1)	;number of relocs.
 	move.l	a2,36(a1)		;pointer to relocs.
 	bra	.linkloop
 	;
-.linkdone	move.l	d5,d0
-.rts	rts
-
-loadlibs	;use libslist to load in used libs dir contents
+.linkdone	clr.l	(a3)
+	bra	fixlibs
 	;
-	lea	firstlib,a3
-	;
-	move.l	acidlibs,d0
-	move.l	#acidname,d1
-	bsr	loadlibgroup
-	move.l	d0,acidlibsat
-	;
-	move.l	deflibs,d0
-	move.l	#defname,d1
-	bsr	loadlibgroup
-	move.l	d0,deflibsat
-	;
-	;all libs read in, now to link 'em up.
-	;
-	clr.l	(a3)
-	move.l	a3,blitzlibsat
-loadblitzlibs	;
-	;load in blitz libs only!
-	;
+.nodefs	lea	libslist,a2
+	move.l	dos,a6
 	lea	undobuffer,a0
 	lea	libsdir,a1
 .loop0	move.b	(a1)+,(a0)+
-	bne.s	.loop0
+	bne	.loop0
 	subq	#2,a0
 	cmp.b	#':',(a0)+
-	beq.s	.yup
+	beq	.yup
 	cmp.l	#undobuffer,a0
-	beq.s	.yup
+	beq	.yup
 	move.b	#'/',(a0)+
 .yup	move.l	a0,-(a7)	;store first pos for chars
 			;("BLITZLIBS:")
-
-	lea	libslist,a2	;lib names!
-	move.l	blitzlibsat,a3
-	move.l	dos,a6
 	;
 .loop	move.l	(a2),d0
-	bne.s	.more
-	clr.l	(a3)
+	bne	.more
 	addq	#4,a7
 	bra	fixlibs
-	;
 .more	move.l	d0,a2
 	tst	4(a2)
-	beq.s	.loop
+	beq	.loop
 	;
 	lea	6(a2),a1	;add dir name to libsdir
 	move.l	(a7),a0
@@ -6484,16 +6447,18 @@ loadalib	;filename pointed to by d1	;dos base in a6
 	moveq	#1,d1
 	move.l	4.w,a6
 	jsr	doallocmem
-	move.l	d0,a5
 	move.l	dos,a6
+	;
+	move.l	d0,a5		;loc of struct in mem
+	move.l	a5,(a3)
+	move.l	a5,a3
 	;
 	move.l	d7,d1
 	move.l	a5,d2
 	move.l	d6,d3
 	jsr	read(a6)		;read in struct
 	;
-	move.l	a5,(a3)
-	move.l	a5,a3
+	clr.l	(a5)
 	move.l	d6,6(a5)
 	clr.l	32(a5)
 	move.l	d7,d1
@@ -6530,7 +6495,6 @@ fixlibs	;
 	clr	nummaxs
 	move.l	lasttoken,a3
 	move.l	firstlib,a2
-	;
 .loop	cmp	#0,a2
 	beq	.done
 	move	4(a2),d7
@@ -6600,9 +6564,7 @@ fixlibs	;
 	move.l	a1,18(a2)
 	move.l	(a2),a2
 	bra	.loop
-	;
-.done	clr.l	(a3)
-	move.l	a7,errstack
+.done	move.l	a7,errstack
 	move.l	#.cont,errcont
 	move	#-1,ezerr
 	move	#65530,d1
@@ -6611,6 +6573,12 @@ fixlibs	;
 	move	#64935,d1
 	bsr	findlib
 	move.l	a1,ffplib
+;	move	#65235,d1
+;	bsr	findlib
+;	move.l	a1,stringslib1	;and string lib1
+;	move	#64535,d1
+;	bsr	findlib
+;	move.l	a1,datalib
 .cont	rts
 
 ffplib	dc.l	0
@@ -6632,15 +6600,25 @@ aligna1	exg.l	a1,d0
 	exg.l	a1,d0
 	rts
 
-freeblitzlibs	move.l	4.w,a6
-	move.l	blitzlibsat,a2
-	move.l	(a2),d0
-	clr.l	(a2)
-	move.l	d0,a2
+freelibs	;free up all memory used by libs
+	;
+	move	deflibs,d0
+	beq	.nodefs
+	clr.l	firstlib
+	move.l	deflibsat,a1
+	move.l	deflibslen,d0
+	move.l	4.w,a6
+	jmp	freemem(a6)
+	;
+.nodefs	move.l	firstlib,a2
+	clr.l	firstlib
+	move.l	lasttoken,a0
+	clr.l	(a0)
+	move.l	4.w,a6
 .loop	cmp	#0,a2
-	beq	frlibslist
+	beq	.done
 	move.l	32(a2),d0
-	beq.s	.skip
+	beq	.skip
 	lsl.l	#2,d0
 	move.l	36(a2),a1
 	jsr	freemem(a6)
@@ -6649,34 +6627,10 @@ freeblitzlibs	move.l	4.w,a6
 	move.l	(a2),a2
 	jsr	freemem(a6)
 	bra	.loop
-
-freelibs	;free up all memory used by libs
-	;
-	bsr	freeblitzlibs
-	;
-	move.l	4.w,a6
-	clr.l	firstlib
-	move.l	lasttoken,a0
-	clr.l	(a0)
-	;
-	move.l	deflibs,d0
-	beq.s	.defskip
-	move.l	deflibsat,d1
-	beq.s	.defskip
-	clr.l	deflibsat
-	move.l	d1,a1
-	jsr	freemem(a6)
-.defskip	;
-	move.l	acidlibs,d0
-	beq.s	.acidskip
-	move.l	acidlibsat,d1
-	beq.s	.acidskip
-	clr.l	acidlibsat
-	move.l	d1,a1
-	jsr	freemem(a6)
-.acidskip	;
-	rts
+.done	rts
 	
+	;free up macros
+	;
 freemacs	;
 	move.l	lastresmac,a0
 	move.l	(a0),a2
@@ -7826,19 +7780,19 @@ findlab	;see if namebuff is in list at a2, char offset in d7
 	;if no, a2=last for link
 	;
 .loop	move.l	(a2),d0
-	beq.s	.no
+	beq	.no
 	move.l	d0,a2
 	moveq	#0,d0
 	move.b	-1(a2,d7),d0
 	sub	d7,d0
 	subq	#1,d0
 	cmp	d0,d2
-	bne.s	.loop
+	bne	.loop
 	lea	0(a2,d7),a1
 	lea	namebuff,a0
 	subq	#1,d0
 .loop2	cmpm.b	(a1)+,(a0)+
-	bne.s	.loop
+	bne	.loop
 	dbf	d0,.loop2
 	bsr	reget
 	cmp	d0,d0
@@ -8828,7 +8782,7 @@ sharreval	moveq	#2,d2
 arreval	moveq	#3,d2	;getlong
 	moveq	#0,d1	;no push
 	moveq	#0,d3	;and convert
-	bra	maineval2	;2!*
+	bra	maineval2
 
 bakpevalu	bsr	bakup
 	;
@@ -9505,22 +9459,6 @@ doorw	move	#$8040,d1
 doorl	move	#$8080,d1
 	bra	doplus2
 
-;-----------end if OR, start of EOR---------------;
-
-doeorb	move	#$b100,d1
-	;
-doeor2	move	regat,d3
-	or	d3,d1
-	addq	#1,d3
-	lsl	#8,d3
-	lsl	#1,d3
-	or	d3,d1
-	bra	pokewd
-doeorw	move	#$b140,d1
-	bra	doeor2
-doeorl	move	#$b180,d1
-	bra	doeor2
-
 ;-----------end of OR, start of LSL---------------;
 
 dolslb	;
@@ -9800,23 +9738,8 @@ getelement2	;
 
 fetchsize	bsr	getchar3
 	cmp	#'.',d0
-	beq.s	.sizeobj
-	;
-	;find size of a var!
-	;
-	bsr	bakup
+	bne	syntaxerr
 	move	d2,-(a7)
-	bsr	makename
-	beq	syntaxerr
-	lea	firstvar,a2
-	bsr	findvar
-	bne	notypeerr	;!
-.found	move	4(a2),d3
-	ext.l	d3
-	move	(a7)+,d2
-	bra	fetchnum2
-
-.sizeobj	move	d2,-(a7)
 	bsr	makename
 	beq	syntaxerr
 	lea	alltypes,a2
@@ -10519,11 +10442,15 @@ makefjsr	move.l	d1,-(a7)
 	move.l	(a7)+,d1
 	bra	pokel
 
+mybop	nop
+
 afunction:	;do a local function -
 	;eg a=pixel{x,y}
 	;
+	move	mybop(pc),d1
+	bsr	pokewd
+	;
 	bsr	findproc
-	bne	noprocerr
 	moveq	#0,d1
 	move.b	5(a2),d1
 	bmi	illprocerr
@@ -10535,14 +10462,26 @@ afunction:	;do a local function -
 	lsl	#2,d1
 	sub	d1,stackuse
 .skip	;
-	cmp	#7,(a7)	;function type!
-	bne.s	.sss
+
+	cmp	#7,(a7)
+	bne	.sss
 	move.l	a2,-(a7)
 	bsr	makesbase
 	move.l	(a7)+,a2
 .sss	move	sbasegot,-(a7)
-	beq.s	.sssz
+	beq	.sssz
 	bsr	dopusha3
+
+;	move	sbasegot,-(a7)
+;	beq	.sss
+;	bsr	dopusha3
+;.sss	;
+;	cmp	#7,2(a7)	;is it a string type thing?
+;	bne	.sssz
+;	move.l	a2,-(a7)
+;	bsr	makesbase	;we'll need string base then.
+;	move.l	(a7)+,a2
+
 .sssz	;
 	bsr	savem
 	move	d3,-(a7)		;the movem regs
@@ -10588,20 +10527,10 @@ afunction:	;do a local function -
 	bsr	pokewd	;poke movem (a7)+...
 .nomovem	;
 	move	(a7)+,d1
-	beq.s	.nores
-	cmp	#7,(a7)
-	beq.s	.issb
-	;not a string...set a3 back to start of any strings...
-	lea	geta3,a0
-	lea	geta3f,a1
-	bsr	pokecode
-	bra.s	.nosb
-.issb	;is a string, wack off last '0'
-	move	deca3,d1
-	bsr	pokewd
-.nosb	bsr	dopulla3	;fix up string base
+	beq	.nores
+	bsr	dopulla3
 .nores	;
-	move	(a7)+,d2	;what it returns!
+	move	(a7)+,d2
 	cmp	#7,d2
 	bne	.notst
 	move	putstlen,d1
@@ -10609,10 +10538,9 @@ afunction:	;do a local function -
 	bsr	pokewd
 	;
 .notst	bsr	getchar3
-	;
+	move	mybop(pc),d1
+	bsr	pokewd
 	bra	varcont
-
-deca3	subq	#1,a3
 
 stvar	;handle string variable get!
 	;
@@ -11164,6 +11092,7 @@ makeinits	;make any initialing jsr's
 	sne	d1
 	bsr	pokewd
 	bra	.more
+	;
 .notdebuglib	;
 	cmp	#65235,d1
 	bne	.notstring1
@@ -11244,7 +11173,7 @@ makeinits	;make any initialing jsr's
 	move.l	pc,d1
 	cmp.l	(a7),d1
 	bne	.yi
-	move	#8,noinits+2
+	move	#6,noinits+2
 	bra	.yi3
 	;
 .yi	clr	noinits+2
@@ -11880,8 +11809,6 @@ evalconst	;
 evalconst2	;
 evalconst3	;move.l maths,a6
 	;
-	move	regat,-(a7)
-	clr	regat
 	move.l	pc,-(a7)
 	move.l	libat,-(a7)
 	move	nomemleft,-(a7)
@@ -11919,7 +11846,6 @@ evalconst3	;move.l maths,a6
 	;
 	move.l	(a7)+,a0
 	jsr	flushc
-	;
 	jsr	(a0)
 	;
 	move	(a7)+,cfetchmode
@@ -11927,7 +11853,6 @@ evalconst3	;move.l maths,a6
 	move	(a7)+,nomemleft
 	move.l	(a7)+,libat
 	move.l	(a7)+,pc
-	move	(a7)+,regat
 	;
 	bra	reget
 
@@ -12596,18 +12521,8 @@ dodc	bsr	getsize2
 	cmp	#',',d0
 	beq	.wloop
 	rts
-
-doeven4	;long align
-	addq.l	#3,pc
-	and	#$fffc,pc+2
-	rts
-
-doeven8	;phrase align
-	addq.l	#7,pc
-	and	#$fff8,pc+2
-	rts
-
-doeven	;word align
+	
+doeven
 alignpc	addq.l	#1,pc
 	bclr	#0,pc+3
 	rts
@@ -13462,7 +13377,7 @@ eos	move	procmode,d1
 	move.l	pc,4(a0)
 	;
 	bra	pokel
-
+				
 stateret	bsr	eos
 	bra	getchar3
 
@@ -13687,9 +13602,6 @@ procfixer	;fix up procs!
 	move	8(a2),d4
 	and	#32767,d4
 .linky	beq	.skipstat
-	;
-	;allocate statics!
-	;
 	move.b	4(a2),d1
 	and	#15,d1
 	move	d1,-(a7)
@@ -13697,17 +13609,15 @@ procfixer	;fix up procs!
 	bcs	.npush
 	move	#$2f04,d1
 	bsr	pokewd
-	;
 .npush	move.l	locdatast,d3
 	bsr	datastart
 	move	#localstat,d1
 	bsr	tokejsr2
-	;
 	move	(a7)+,d1
 	cmp	#5,d1
 	bcs	.skipstat
 	move	#$281f,d1
-	bsr	pokewd
+	bra	pokewd
 .skipstat	;
 	move	#$4e75,d1
 	bra	pokewd
@@ -14738,11 +14648,6 @@ operators	dc	'+'
 	;
 	dc	(opor-opabcd)/$1c+$8000+fnum	;OR
 	dc.l	doorb,doorw,doorl,doorl
-	dc.l	0,0,0
-	dc	1000
-	;
-	dc	(opeor-opabcd)/$1c+$8000+fnum	;OR
-	dc.l	doeorb,doeorw,doeorl,doeorl
 	dc.l	0,0,0
 	dc	1000
 	;

@@ -1,12 +1,11 @@
-HiSoft GenAm 680x0 Macro Assembler v3.01   Sep 1 2023  Page 1
+HiSoft GenAm 680x0 Macro Assembler v3.01   Sep 18 2023  Page 1
 blitz2.s
 
 
-Error addressing mode not allowed at line 3822 in file blitz2.s
- 3822 00.00004AEE FF80000024EA                 or.l    firstlocal,d0
-Error addressing mode not allowed at line 6070 in file blitz2.s
- 6070 00.000066E4 FF80000A                     or.l    10(a3),d0
-Error addressing mode not allowed at line 6109 in file blitz2.s
- 6109 00.0000675C FF800010                     or.l    16(a3),d0
-Error addressing mode not allowed at line 7610 i
+    1 00.00000000                      
+    2 00.00000000                      ;**************************************************;
+    3 00.00000000                      ;                          ;
+    4 00.00000000                      ;       Source code to BLITZ BASIC ][      ;
+    5 00.00000000                      ;                          ;
+    6 00.00000000                      ;           You dudes out there had better     
 

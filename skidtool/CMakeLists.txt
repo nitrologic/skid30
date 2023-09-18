@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
 
-#add_subdirectory(raylib)
-
 project(skidtool)
 
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
@@ -132,9 +130,9 @@ target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
 
 #macos here
 #target_link_libraries(skidtool musashi zlib libpng)
-
 #ADD_EXECUTABLE(test test.cpp)
-#target_link_libraries(test musashi zlib libpng)
+
 
 ADD_EXECUTABLE(raydisplay raydisplay.cpp)
+target_link_libraries(raydisplay raylib)
 target_link_libraries(raydisplay )

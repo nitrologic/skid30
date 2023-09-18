@@ -8,6 +8,8 @@
 
 // $50NZ reward bounty per critical issue reported
 
+// #define trace_log
+
 const int PREV_LINES = 4;
 const int ASM_LINES = 6;
 const int LOG_LINES = 4;
@@ -1177,7 +1179,8 @@ struct NativeFile {
 
 	int seek(int offset, int mode) {
 		int oldpos = ftell(fileHandle);
-		int origin = (mode == -1) ? SEEK_SET : (mode == 0) ? SEEK_CUR : SEEK_END;
+//		int origin = (mode == -1) ? SEEK_CUR : ((mode == 0) ? SEEK_SET : SEEK_END);
+		int origin = (mode == -1) ? SEEK_SET : ((mode == 0) ? SEEK_CUR : SEEK_END);
 		int res = fseek(fileHandle, offset, origin);
 		if (res) {
 // simon come here as this crashes lha
@@ -1530,7 +1533,7 @@ public:
 		int lock = 0;
 
 		if (success) {
-			bool exclusive = (d2 == -2);
+			bool exclusive = (d2 == -1);
 			lock = file->addLock(exclusive);
 			if (lock) {
 				fileLocks[lock] = file;
@@ -2005,7 +2008,9 @@ structcode taskStruct({
 
 unsigned int mmu_read_byte(unsigned int address){
 	int v8=acid500.read8(address);
-	if (v8&128) v8 |= -256;
+//	if (v8&128) 
+//		v8 |= -256;
+	v8 &= 0xff;
 	return v8;
 }
 unsigned int mmu_read_word(unsigned int address){
