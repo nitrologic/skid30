@@ -9,6 +9,9 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+
+extern int readClock();
+
 //#define STOP_ON_WRITE
 
 enum ami_mem_map {
@@ -35,7 +38,10 @@ const int ChipsetFlags = 3;
 
 typedef std::string logline;
 
-extern std::vector<logline> machineLog;
+extern std::vector<std::pair<int,logline>> machineLog;
+
+//extern std::vector<logline> machineLog;
+//extern std::vector<logline> machineLog;
 
 void systemLog(const char* tag, std::string s);
 
@@ -68,8 +74,6 @@ struct MachineEvent {
 	int time;
 	std::string detail;
 };
-
-extern std::vector<logline> machineLog;
 
 extern int machineError;
 

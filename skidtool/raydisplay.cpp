@@ -4,6 +4,8 @@
 
 #include "loadiff.h"
 
+#define DRAWTEXT
+
 // relative to ProjectDir
 
 const char* trackpng = "../../maps/format.png";
@@ -18,6 +20,11 @@ const char* start = "Start when steady";
 
 int frameCount = 0;
 
+extern"C"{
+int glfwInit(void); 
+}
+
+
 void DrawBox(int x, int y, int w, int h, Color c) {
 	DrawRectangleLines(x, y, w, h, c);
 }
@@ -27,11 +34,24 @@ int main(){
 
 	InitAudioDevice();
 
-//	InitWindow(768*2, 580*2, title);
-	InitWindow(1920/2, 1080/2, title);
+	glfwInit();
 
 	int screens = GetMonitorCount();
 	std::cout << "screens:" << screens << std::endl;
+	for (int i = 0; i < screens; i++) {
+		int w = GetMonitorWidth(i);
+		int h = GetMonitorHeight(i);
+		int ww = GetMonitorPhysicalWidth(i);
+		int hh = GetMonitorPhysicalHeight(i);
+		int hz = GetMonitorRefreshRate(i);
+		Vector2 xy=GetMonitorPosition(i);
+		std::string name(GetMonitorName(i));
+		std::cout << name << " " << w << "x" << h << " " << ww << "X" << hh;
+		std::cout << " @" << xy.x << "," << xy.y << " " << hz << "hz " << std::endl;
+	}
+//	InitWindow(768*2, 580*2, title);
+//	InitWindow(1920/2, 1080/2, title);
+	InitWindow(1920, 1080, title);
 
 	Texture2D track=LoadTexture(trackpng);
 
@@ -73,7 +93,7 @@ int main(){
 		DrawText(splash, x, y, h, c); y += h+12;
 		DrawText(start, x, y, h, c); y += h+12;
 
-		int fps = 1000/GetFrameTime();
+		int fps = 1.0/GetFrameTime();
 		std::string stats = "fps:" + std::to_string(fps);
 		DrawText(stats.c_str(), x, y, h/2, c); y += h + 12;
 

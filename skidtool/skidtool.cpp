@@ -8,11 +8,13 @@
 
 // $50NZ reward bounty per critical issue reported
 
-// #define trace_log
+#define trace_log
 
 const int PREV_LINES = 4;
 const int ASM_LINES = 6;
 const int LOG_LINES = 4;
+
+#define RUN_CYCLES_PER_TICK 64
 
 #include <assert.h>
 #include <sstream>
@@ -90,7 +92,7 @@ std::string str_tolower(std::string s)
 
 void flushLog() {
 	for (auto it : machineLog) {
-		std::cout << it << std::endl;
+		std::cout << addressString(it.first) << " " << it.second << std::endl;
 	}
 	machineLog.clear();
 }
@@ -112,8 +114,6 @@ std::string rawString(std::vector<u8> raw,bool addhex) {
 }
 
 #include "loadiff.h"
-
-#define RUN_CYCLES_PER_TICK 1024
 
 // vscode F11 - focus
 
@@ -563,7 +563,7 @@ struct acid68000 {
 	memory32* mem;
 	MemEvents memlog;
 
-	std::vector<int> history;
+	std::vector<std::pair<int,int>> history;
 	int prevPC = 0;
 	int prevTick = 0;
 
@@ -580,7 +580,8 @@ struct acid68000 {
 //		int pc = readRegister(16);
 //		int tick = readCounter();
 		if (ppc != prevPC) {
-			history.push_back(ppc);
+			int clock = readClock();
+			history.push_back({ ppc,clock });
 			prevPC = ppc;
 		}
 	}
@@ -588,7 +589,7 @@ struct acid68000 {
 	int previousPC(int age) {
 		int n = (int)history.size();
 		if (n > age) {
-			return history[n-age];
+			return history[n-age].first;
 		}
 		return 0;
 	}
@@ -693,11 +694,27 @@ struct acid68000 {
 
 	void writeTrace(std::string path) {
 		std::ofstream fout(path);
+
+
+		auto it = machineLog.begin();
+
+//		std::vector<std::pair<int, logline>> machineLog;
+
 		int n = history.size();
 		for (int i = 0; i < n; i++) {
-			int pc = history[i];
+			
+			int pc = history[i].first;
+			int clock = history[i].second;
+
+			while (it != machineLog.end() && clock > it._Ptr->first) {
+				int clk = it._Ptr->first;
+				std::string line=it._Ptr->second;
+				fout << addressString(clk) << " " << line << std::endl;
+				it++;
+			}
+
 			std::string dis = disassembleLine(pc);
-			fout << dis << std::endl;
+			fout << addressString(clock) << " " << dis << std::endl;
 		}
 		fout.close();
 	}
@@ -705,7 +722,7 @@ struct acid68000 {
 	void writeLog(std::string path) {
 		std::ofstream fout(path);
 		for (auto m : machineLog) {
-			fout << m << std::endl;
+			fout << addressString(m.first) << " " << m.second << std::endl;
 		}
 		fout.close();
 	}
@@ -939,6 +956,12 @@ struct acid68000 {
 };
 
 acid68000 acid500;
+
+int clockReads = 0;
+extern int readClock(){
+	return acid500.cycle+(clockReads++);
+}
+
 
 const int INPUT_STREAM = -4;
 const int OUTPUT_STREAM = -8;
@@ -2298,7 +2321,7 @@ void displayLogLines(int count) {
 	int n = machineLog.size();
 	for (int i = n - count; i < n; i++) {
 		if (i >= 0) {
-			std::cout << machineLog[i];
+			std::cout << machineLog[i].second << std::endl;
 		}
 		writeEOL();
 	}
