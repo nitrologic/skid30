@@ -4,6 +4,12 @@
 
 #include "loadiff.h"
 
+int systemClock = 0;
+
+int readClock() {
+	return systemClock++;
+}
+
 #define DRAWTEXT
 
 // relative to ProjectDir
@@ -36,6 +42,7 @@ int main(){
 
 	glfwInit();
 
+	int hz = 60;
 	int screens = GetMonitorCount();
 	std::cout << "screens:" << screens << std::endl;
 	for (int i = 0; i < screens; i++) {
@@ -43,12 +50,16 @@ int main(){
 		int h = GetMonitorHeight(i);
 		int ww = GetMonitorPhysicalWidth(i);
 		int hh = GetMonitorPhysicalHeight(i);
-		int hz = GetMonitorRefreshRate(i);
+		hz = GetMonitorRefreshRate(i);
 		Vector2 xy=GetMonitorPosition(i);
 		std::string name(GetMonitorName(i));
 		std::cout << name << " " << w << "x" << h << " " << ww << "X" << hh;
 		std::cout << " @" << xy.x << "," << xy.y << " " << hz << "hz " << std::endl;
 	}
+
+	SetTargetFPS(hz);
+	SetConfigFlags(FLAG_VSYNC_HINT);
+// FLAG_WINDOW_HIGHDPI);
 //	InitWindow(768*2, 580*2, title);
 //	InitWindow(1920/2, 1080/2, title);
 	InitWindow(1920, 1080, title);
@@ -70,8 +81,8 @@ int main(){
 	while (!WindowShouldClose()){
 		frameCount++;
 
-		float tx = frameCount * 0.025;
-		float ty = frameCount * 0.010;
+		float tx = frameCount * 0.025 * hz;
+		float ty = frameCount * 0.010 * hz;
 
 		int width = GetRenderWidth();
 		int height = GetRenderHeight();
@@ -93,9 +104,11 @@ int main(){
 		DrawText(splash, x, y, h, c); y += h+12;
 		DrawText(start, x, y, h, c); y += h+12;
 
-		int fps = 1.0/GetFrameTime();
-		std::string stats = "fps:" + std::to_string(fps);
-		DrawText(stats.c_str(), x, y, h/2, c); y += h + 12;
+		DrawFPS(x, y);
+
+//		int fps = 1.0/GetFrameTime();
+//		std::string stats = "fps:" + std::to_string(fps);
+//		DrawText(stats.c_str(), x, y, h/2, c); y += h + 12;
 
 		int mx = GetMouseX();
 		int my = GetMouseY();
