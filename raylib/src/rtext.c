@@ -1292,7 +1292,7 @@ int GetGlyphIndex(Font font, int codepoint)
 {
     int index = 0;
 
-#define SUPPORT_UNORDERED_CHARSET
+//#define SUPPORT_UNORDERED_CHARSET
 #if defined(SUPPORT_UNORDERED_CHARSET)
     int fallbackIndex = 0;      // Get index of fallback glyph '?'
 
