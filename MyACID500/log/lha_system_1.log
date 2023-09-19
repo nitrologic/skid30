@@ -1,0 +1,363 @@
+000000 000000 [hunk] lha start:002000 end:00ef60
+000001 000001 [args] e skid.lha_
+000002 000002 [home] .
+000003 000003 [mem] 00000000 R l 000000 00001600 000004 ZERO
+000079 000079 [read32] 801114,0080c000
+00007b 00007b [read32] 80c0ac,00810000
+000153 000153 [exec] allocMem 1dbc,10001 => 40000
+004224 004224 [exec] openlibrary dos.library,802000
+00427b 00427b [read32] 802022,0080f000
+00427d 00427d [read16] 80f034 flags:0 <= -1
+00427e 00427e [read16] 80f034 flags:0 <= -1
+00427f 00427f [write16] 80f034,ffff
+004321 004321 [read32] 801114,0080c000
+004323 004323 [read32] 80c098,00000000
+00436e 00436e [exec] setTaskPri
+004373 004373 [exec] setTaskPri
+004e1c 004e1c [exec] findTask <= 80e000
+004e63 004e63 [read32] 80e0b8,deadbeef
+004e66 004e66 [write16] 80e0b8,ffff
+004e67 004e67 [write16] 80e0ba,ffff
+004efd 004efd [dos] getvar LHAOPTS => ffffffff
+00616f 00616f [dos] input
+006173 006173 [dos] isInteractive
+031280 031280 [exec] findTask <= 80e000
+031283 031283 [read32] 80e0b8,deadbeef
+031286 031286 [write16] 80e0b8,ffff
+031287 031287 [write16] 80e0ba,ffff
+031386 031386 [dos] lock T: SHARED => ffffffe8
+031546 031546 [dos] unlock ffffffe8
+031688 031688 [write16] 80e0b8,dead
+031689 031689 [write16] 80e0ba,beef
+031895 031895 [exec] fmt LhA V%ld.%02ldr - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._ => LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._|
+032ae5 032ae5 [dos] output
+033118 033118 [write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+034151 034151 [exec] fmt Registered to %s => Registered to Steffen Salzmann_|
+034962 034962 [dos] output
+034c6d 034c6d [write] Registered to Steffen Salzmann_
+034e6c 034e6c [exec] fmt _ => _|
+034f9f 034f9f [dos] output
+035032 035032 [write] _
+03529a 03529a [exec] fmt [0 p => [0 p|
+0354b1 0354b1 [dos] output
+03558e 03558e [write] [0 p
+036198 036198 [exec] allocMem 110,1 => 41f98
+0371de 0371de [dos] lock .\skid.lha SHARED => ffffffe4
+0372e9 0372e9 [dos] examine(ffffffe4) <= 1
+037410 037410 [dos] unlock ffffffe4
+0376ca 0376ca [exec] allocMem 2c,10001 => 420a8
+037901 037901 [exec] allocMem d,1 => 420d4
+0398ec 0398ec [exec] freemem
+039bf3 039bf3 [exec] fmt %s files %s => Extract files from|
+03a345 03a345 [exec] allocMem 3ecc,1 => 42134
+03a52b 03a52b [exec] allocMem 800c,10001 => 46000
+03a739 03a739 [exec] allocMem a10c,10001 => 4e00c
+03aaa4 03aaa4 [exec] fmt %s archive '%s':_ => Extracting from archive 'skid.lha':_|
+03b42e 03b42e [dos] output
+03b749 03b749 [write] Extracting from archive 'skid.lha':_
+03bd64 03bd64 [exec] allocMem 3e,1 => 581b0
+03c09e 03c09e [exec] allocMem 800c,1 => 581f0
+03c30f 03c30f [dos] open .\skid.lha OLDFILE => ffffffe0
+03c56a 03c56a [exec] allocMem 15,1 => 601fc
+03d0ec 03d0ec [dos] seek ffffffe0,0,BEGINNING => 0
+03d1fd 03d1fd [dos] read ffffffe0 , 581fc , 8000 => 8000
+03d75c 03d75c [exec] copyMem 14
+03e227 03e227 [exec] copyMem d
+03ee19 03ee19 [exec] allocMem 17,1 => 60214
+03fb26 03fb26 [exec] allocMem 12,1 => 6022c
+03fe8b 03fe8b [exec] allocMem 11,1 => 60240
+0401e0 0401e0 [exec] freemem
+041229 041229 [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/21)  Skid/.info[K|
+041af1 041af1 [dos] output
+041e04 041e04 [write] Extracting: (0/21)  Skid/.info[K
+042768 042768 [dos] lock .\Skid\.info SHARED => 0
+042957 042957 [dos] open .\Skid\.info NEWFILE => 0
+042bef 042bef [dos] lock .\Skid SHARED => 0
+042cfb 042cfb [dos] createDir .\Skid => ffffffd8
+042f0e 042f0e [dos] unlock ffffffd8
+0432ab 0432ab [dos] open .\Skid\.info NEWFILE => ffffffd4
+043623 043623 [exec] fmt [K => [K|
+0437c5 0437c5 [dos] output
+04389e 04389e [write] [K
+043b5e 043b5e [exec] fmt [0m => [0m|
+043d00 043d00 [dos] output
+043dd9 043dd9 [write] [0m
+04493d 04493d [exec] copyMem 14
+0451c2 0451c2 [exec] freemem
+045374 045374 [exec] freemem
+045a3d 045a3d [exec] copyMem 18
+046ca8 046ca8 [exec] allocMem 22,1 => 60314
+0481e5 0481e5 [exec] allocMem 19,1 => 60338
+048642 048642 [exec] allocMem 15,1 => 60354
+0489e7 0489e7 [exec] freemem
+04a0b8 04a0b8 [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/232)  Skid/gfx/cars.palette[K|
+04ac5c 04ac5c [dos] output
+04b05f 04b05f [write] Extracting: (0/232)  Skid/gfx/cars.palette[K
+04bb1b 04bb1b [dos] lock .\Skid\gfx\cars.palette SHARED => 0
+04bd4d 04bd4d [dos] open .\Skid\gfx\cars.palette NEWFILE => 0
+04bfe1 04bfe1 [dos] lock .\Skid SHARED => ffffffcc
+04c1ad 04c1ad [dos] unlock ffffffcc
+04c4ab 04c4ab [dos] lock .\Skid\gfx SHARED => 0
+04c5b7 04c5b7 [dos] createDir .\Skid\gfx => ffffffc8
+04c7ca 04c7ca [dos] unlock ffffffc8
+04ccf6 04ccf6 [dos] open .\Skid\gfx\cars.palette NEWFILE => ffffffc4
+04d06e 04d06e [exec] fmt [K => [K|
+04d210 04d210 [dos] output
+04d2e9 04d2e9 [write] [K
+04d5a9 04d5a9 [exec] fmt [0m => [0m|
+04d74b 04d74b [dos] output
+04d824 04d824 [write] [0m
+04e388 04e388 [exec] copyMem 14
+04ec0d 04ec0d [exec] freemem
+04edbf 04edbf [exec] freemem
+04f488 04f488 [exec] copyMem 16
+0505c1 0505c1 [exec] allocMem 20,1 => 6045c
+051942 051942 [exec] allocMem 17,1 => 6047c
+051d89 051d89 [exec] allocMem 15,1 => 60494
+052114 052114 [exec] freemem
+05369c 05369c [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/8738)  Skid/gfx/engine.iff[K|
+05423b 05423b [dos] output
+054638 054638 [write] Extracting: (0/8738)  Skid/gfx/engine.iff[K
+0550a6 0550a6 [dos] lock .\Skid\gfx\engine.iff SHARED => 0
+05532b 05532b [dos] open .\Skid\gfx\engine.iff NEWFILE => ffffffc0
+055692 055692 [exec] fmt [K => [K|
+055834 055834 [dos] output
+05590d 05590d [write] [K
+055bcd 055bcd [exec] fmt [0m => [0m|
+055d6f 055d6f [dos] output
+055e48 055e48 [write] [0m
+0569ac 0569ac [exec] copyMem 14
+057231 057231 [exec] freemem
+0573e3 0573e3 [exec] freemem
+057aac 057aac [exec] copyMem 14
+058ab3 058ab3 [exec] allocMem 1e,1 => 60598
+059c78 059c78 [exec] allocMem 15,1 => 605b8
+05a075 05a075 [exec] allocMem 15,1 => 605d0
+05a41a 05a41a [exec] freemem
+05b890 05b890 [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/2164)  Skid/gfx/flag.iff[K|
+05c3a5 05c3a5 [dos] output
+05c7a0 05c7a0 [write] Extracting: (0/2164)  Skid/gfx/flag.iff[K
+05d1c8 05d1c8 [dos] lock .\Skid\gfx\flag.iff SHARED => 0
+05d48c 05d48c [dos] open .\Skid\gfx\flag.iff NEWFILE => ffffffbc
+05d7f3 05d7f3 [exec] fmt [K => [K|
+05d995 05d995 [dos] output
+05da6e 05da6e [write] [K
+05dd2e 05dd2e [exec] fmt [0m => [0m|
+05ded0 05ded0 [dos] output
+05dfa9 05dfa9 [write] [0m
+05eb0d 05eb0d [exec] copyMem 14
+05f392 05f392 [exec] freemem
+05f544 05f544 [exec] freemem
+05fc0d 05fc0d [exec] copyMem 16
+060d46 060d46 [exec] allocMem 20,1 => 606cc
+0620c7 0620c7 [exec] allocMem 17,1 => 606ec
+06250e 06250e [exec] allocMem 15,1 => 60704
+062899 062899 [exec] freemem
+063e21 063e21 [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/770)  Skid/gfx/impact.iff[K|
+064973 064973 [dos] output
+064d6c 064d6c [write] Extracting: (0/770)  Skid/gfx/impact.iff[K
+0657da 0657da [dos] lock .\Skid\gfx\impact.iff SHARED => 0
+065aef 065aef [dos] open .\Skid\gfx\impact.iff NEWFILE => ffffffb8
+065e44 065e44 [exec] fmt [K => [K|
+065fe6 065fe6 [dos] output
+0660bf 0660bf [write] [K
+06637f 06637f [exec] fmt [0m => [0m|
+066521 066521 [dos] output
+0665fa 0665fa [write] [0m
+06715e 06715e [exec] copyMem 14
+0679e3 0679e3 [exec] freemem
+067b95 067b95 [exec] freemem
+06825e 06825e [exec] copyMem 13
+0691e6 0691e6 [exec] allocMem 1d,1 => 60804
+06a2b3 06a2b3 [exec] allocMem 14,1 => 60824
+06a6b2 06a6b2 [exec] allocMem 15,1 => 60838
+06aa3d 06aa3d [exec] freemem
+06be52 06be52 [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/930)  Skid/gfx/num.iff[K|
+06c8c5 06c8c5 [dos] output
+06cc72 06cc72 [write] Extracting: (0/930)  Skid/gfx/num.iff[K
+06d6a8 06d6a8 [dos] lock .\Skid\gfx\num.iff SHARED => 0
+06d9be 06d9be [dos] open .\Skid\gfx\num.iff NEWFILE => ffffffb4
+06dd51 06dd51 [exec] fmt [K => [K|
+06def3 06def3 [dos] output
+06dfcc 06dfcc [write] [K
+06e28c 06e28c [exec] fmt [0m => [0m|
+06e42e 06e42e [dos] output
+06e507 06e507 [write] [0m
+06f06b 06f06b [exec] copyMem 14
+06f8f0 06f8f0 [exec] freemem
+06faa2 06faa2 [exec] freemem
+07016b 07016b [exec] copyMem 17
+071357 071357 [exec] allocMem 21,1 => 6092c
+0727b6 0727b6 [exec] allocMem 18,1 => 60950
+072be1 072be1 [exec] allocMem 15,1 => 60968
+072f86 072f86 [exec] freemem
+0745bf 0745bf [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/1336)  Skid/gfx/results.iff[K|
+075163 075163 [dos] output
+075566 075566 [write] Extracting: (0/1336)  Skid/gfx/results.iff[K
+07600a 07600a [dos] lock .\Skid\gfx\results.iff SHARED => 0
+076369 076369 [dos] open .\Skid\gfx\results.iff NEWFILE => ffffffb0
+0766f2 0766f2 [exec] fmt [K => [K|
+076894 076894 [dos] output
+07696d 07696d [write] [K
+076c2d 076c2d [exec] fmt [0m => [0m|
+076dcf 076dcf [dos] output
+076ea8 076ea8 [write] [0m
+077a0c 077a0c [exec] copyMem 14
+078291 078291 [exec] freemem
+078443 078443 [exec] freemem
+078b0c 078b0c [exec] copyMem 14
+079b13 079b13 [exec] allocMem 1e,1 => 60a70
+07acd8 07acd8 [exec] allocMem 15,1 => 60a90
+07b0d5 07b0d5 [exec] allocMem 15,1 => 60aa8
+07b47a 07b47a [exec] freemem
+07c8f0 07c8f0 [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/3972)  Skid/gfx/skid.iff[K|
+07d405 07d405 [dos] output
+07d800 07d800 [write] Extracting: (0/3972)  Skid/gfx/skid.iff[K
+07e228 07e228 [dos] lock .\Skid\gfx\skid.iff SHARED => 0
+07e5d0 07e5d0 [dos] open .\Skid\gfx\skid.iff NEWFILE => ffffffac
+07e94f 07e94f [exec] fmt [K => [K|
+07eaf1 07eaf1 [dos] output
+07ebca 07ebca [write] [K
+07ee8a 07ee8a [exec] fmt [0m => [0m|
+07f02c 07f02c [dos] output
+07f105 07f105 [write] [0m
+07fc69 07fc69 [exec] copyMem 14
+0804ee 0804ee [exec] freemem
+0806a0 0806a0 [exec] freemem
+080d69 080d69 [exec] copyMem 19
+082087 082087 [exec] allocMem 23,1 => 60ba4
+083688 083688 [exec] allocMem 1a,1 => 60bc8
+083b17 083b17 [exec] allocMem 15,1 => 60be4
+083ea2 083ea2 [exec] freemem
+0855fc 0855fc [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/70812)  Skid/gfx/skidmarks.med[K|
+086257 086257 [dos] output
+0866a4 0866a4 [write] Extracting: (0/70812)  Skid/gfx/skidmarks.med[K
+08716a 08716a [dos] lock .\Skid\gfx\skidmarks.med SHARED => 0
+087555 087555 [dos] open .\Skid\gfx\skidmarks.med NEWFILE => ffffffa8
+0878d0 0878d0 [exec] fmt [K => [K|
+087a72 087a72 [dos] output
+087b4b 087b4b [write] [K
+087e0b 087e0b [exec] fmt [0m => [0m|
+087fad 087fad [dos] output
+088086 088086 [write] [0m
+088c2f 088c2f [dos] seek ffffffe0,d73b,BEGINNING => d73b
+088d40 088d40 [dos] read ffffffe0 , 581fc , 8000 => 8000
+08929f 08929f [exec] copyMem 14
+089b24 089b24 [exec] freemem
+089cd6 089cd6 [exec] freemem
+08a39f 08a39f [exec] copyMem 17
+08b58b 08b58b [exec] allocMem 21,1 => 60cf8
+08c97a 08c97a [exec] allocMem 17,1 => 60d1c
+08cdbb 08cdbb [exec] allocMem 16,1 => 60d34
+08d178 08d178 [exec] freemem
+08e7c0 08e7c0 [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/139720)  Skid/maps/format.iff[K|
+08f406 08f406 [dos] output
+08f84f 08f84f [write] Extracting: (0/139720)  Skid/maps/format.iff[K
+0902e9 0902e9 [dos] lock .\Skid\maps\format.iff SHARED => 0
+090929 090929 [dos] lock .\Skid SHARED => ffffffa4
+090af5 090af5 [dos] unlock ffffffa4
+090e23 090e23 [dos] lock .\Skid\maps SHARED => 0
+090f2f 090f2f [dos] createDir .\Skid\maps => ffffffa0
+091142 091142 [dos] unlock ffffffa0
+091ace 091ace [exec] fmt [0m => [0m|
+091c70 091c70 [dos] output
+091d49 091d49 [write] [0m
+091fb5 091fb5 [exec] fmt *** Error on file '%s' :  => *** Error on file 'format.iff' : |
+09287d 09287d [dos] output
+092b90 092b90 [write] *** Error on file 'format.iff' : 
+092f4d 092f4d [exec] fmt %s[K_ => Unable to open output file[K_|
+093759 093759 [dos] output
+093a1a 093a1a [write] Unable to open output file[K_
+09468c 09468c [dos] seek ffffffe0,25468,BEGINNING => 25468
+09479d 09479d [dos] read ffffffe0 , 581fc , 8000 => 8000
+094cfc 094cfc [exec] copyMem 14
+095581 095581 [exec] freemem
+095733 095733 [exec] freemem
+095dfc 095dfc [exec] copyMem 17
+096fe8 096fe8 [exec] allocMem 21,1 => 60f3c
+0983d7 0983d7 [exec] allocMem 17,1 => 60f60
+098818 098818 [exec] allocMem 16,1 => 60f78
+098bd5 098bd5 [exec] freemem
+09a20e 09a20e [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/8386)  Skid/maps/format.map[K|
+09adfa 09adfa [dos] output
+09b1fb 09b1fb [write] Extracting: (0/8386)  Skid/maps/format.map[K
+09bc95 09bc95 [dos] lock .\Skid\maps\format.map SHARED => 0
+09c2d5 09c2d5 [dos] lock .\Skid SHARED => ffffff9c
+09c4a1 09c4a1 [dos] unlock ffffff9c
+09c7cf 09c7cf [dos] lock .\Skid\maps SHARED => ffffff98
+09c99b 09c99b [dos] unlock ffffff98
+09d327 09d327 [exec] fmt [0m => [0m|
+09d4c9 09d4c9 [dos] output
+09d5a2 09d5a2 [write] [0m
+09d80e 09d80e [exec] fmt *** Error on file '%s' :  => *** Error on file 'format.map' : |
+09e0d6 09e0d6 [dos] output
+09e3e9 09e3e9 [write] *** Error on file 'format.map' : 
+09e7a6 09e7a6 [exec] fmt %s[K_ => Unable to open output file[K_|
+09efb2 09efb2 [dos] output
+09f273 09f273 [write] Unable to open output file[K_
+09fe9d 09fe9d [exec] copyMem 14
+0a0722 0a0722 [exec] freemem
+0a08d4 0a08d4 [exec] freemem
+0a0f9d 0a0f9d [exec] copyMem c
+0a1adc 0a1adc [exec] allocMem 16,1 => 61178
+0a2725 0a2725 [exec] allocMem 11,1 => 61190
+0a2a8c 0a2a8c [exec] allocMem 11,1 => 611a4
+0a2dc7 0a2dc7 [exec] freemem
+0a3d5b 0a3d5b [exec] fmt %11s: (%8ld/%8ld)  %s[K => Extracting: (0/128616)  Skid/skid[K|
+0a4702 0a4702 [dos] output
+0a4a5f 0a4a5f [write] Extracting: (0/128616)  Skid/skid[K
+0a539d 0a539d [dos] lock .\Skid\skid SHARED => 0
+0a59dd 0a59dd [dos] lock .\Skid SHARED => ffffff94
+0a5ba9 0a5ba9 [dos] unlock ffffff94
+0a6415 0a6415 [exec] fmt [0m => [0m|
+0a65b7 0a65b7 [dos] output
+0a6690 0a6690 [write] [0m
+0a68fc 0a68fc [exec] fmt *** Error on file '%s' :  => *** Error on file 'skid' : |
+0a7076 0a7076 [dos] output
+0a72f1 0a72f1 [write] *** Error on file 'skid' : 
+0a76ae 0a76ae [exec] fmt %s[K_ => Unable to open output file[K_|
+0a7eba 0a7eba [dos] output
+0a817b 0a817b [write] Unable to open output file[K_
+0a8dea 0a8dea [dos] seek ffffffe0,43ce1,BEGINNING => 43ce1
+0a8efb 0a8efb [dos] read ffffffe0 , 581fc , 8000 => 1
+0a93a5 0a93a5 [dos] close ffffffe0 => 0
+0a95ac 0a95ac [exec] freemem
+0a9725 0a9725 [exec] freemem
+0a9898 0a9898 [exec] freemem
+0a9b4c 0a9b4c [exec] fmt %ld files %s => 3 files extracted|
+0aa064 0aa064 [dos] output
+0aa235 0aa235 [write] 3 files extracted
+0aa4ab 0aa4ab [exec] fmt , %ld files failed => , 3 files failed|
+0aa929 0aa929 [dos] output
+0aaaf2 0aaaf2 [write] , 3 files failed
+0aad17 0aad17 [exec] fmt .[K__ => .[K__|
+0aaf7b 0aaf7b [dos] output
+0ab05c 0ab05c [write] .[K__
+0ab40a 0ab40a [exec] freemem
+0ab579 0ab579 [exec] freemem
+0ab6ba 0ab6ba [exec] freemem
+0ab843 0ab843 [exec] fmt Operation not entirely successful._ => Operation not entirely successful._|
+0ac180 0ac180 [dos] output
+0ac497 0ac497 [write] Operation not entirely successful._
+0ac6dc 0ac6dc [dos] currentDir 0
+0aca81 0aca81 [dos] close ffffffd4 => 0
+0acb18 0acb18 [dos] close ffffffc4 => 0
+0acb67 0acb67 [dos] close ffffffc0 => 0
+0acc02 0acc02 [dos] close ffffffbc => 0
+0acc51 0acc51 [dos] close ffffffb8 => 0
+0accec 0accec [dos] close ffffffb4 => 0
+0acd3b 0acd3b [dos] close ffffffb0 => 0
+0acdd6 0acdd6 [dos] close ffffffac => 0
+0ace25 0ace25 [dos] close ffffffa8 => 0
+0adfcd 0adfcd [exec] freemem
+0ae063 0ae063 [exec] freemem
+0ae0f9 0ae0f9 [exec] freemem
+0ae18f 0ae18f [exec] freemem
+0ae26a 0ae26a [dos] output
+0ae2b7 0ae2b7 [write] [ p[0m
+0ae30a 0ae30a [read32] 801114,0080c000
+0ae353 0ae353 [exec] setTaskPri
+0ae39a 0ae39a [exec] closeLibrary
+0ae426 0ae426 [exec] freemem
+0b2cbf 0b2cbf [mem] 000a31f6 W w fffffe 00ee 00205c 
+0b2cc0 0b2cc0 [mem] 000a31f6 W w fffffc 1000 00205c 

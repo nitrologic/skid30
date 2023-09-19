@@ -13,7 +13,8 @@ void systemLog(const char* tag, std::string s) {
 	std::stringstream ss;
 	void* context = 0;
 	int clock = readClock();
-	ss << addressString(clock) << " [" << tag << "] " << s;
+//	ss << addressString(clock) << " [" << tag << "] " << s;
+	ss << "[" << tag << "] " << s;
 	std::string line = ss.str();
 //	std::cout << line << std::endl;
 	machineLog.push_back({ clock, line });

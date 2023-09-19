@@ -14,7 +14,10 @@ extern int readClock();
 
 //#define STOP_ON_WRITE
 
+// last allo ffe00
+
 enum ami_mem_map {
+	HEAP_START = 0x20000,
 //	ARGS_BASE = 0x200,
 	AMI_BASE = 0x800000,
 	EXEC_BASE = 0x801000,
@@ -40,11 +43,7 @@ typedef std::string logline;
 
 extern std::vector<std::pair<int,logline>> machineLog;
 
-//extern std::vector<logline> machineLog;
-//extern std::vector<logline> machineLog;
-
 void systemLog(const char* tag, std::string s);
-
 
 class acidlog : public std::stringstream {
 

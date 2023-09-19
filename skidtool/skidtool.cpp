@@ -1,20 +1,17 @@
 // acid500 monitor
 // 
-// by simon
-// 
-// all rights reserved 2023
-
+// All rights reserved 2023 Simon Armstrong
+//
 // https://github.com/nitrologic/skid30
+//
 
-// $50NZ reward bounty per critical issue reported
-
-#define trace_log
+// #define trace_log
 
 const int PREV_LINES = 4;
 const int ASM_LINES = 6;
 const int LOG_LINES = 4;
 
-#define RUN_CYCLES_PER_TICK 64
+#define RUN_CYCLES_PER_TICK 1024
 
 #include <assert.h>
 #include <sstream>
@@ -567,7 +564,7 @@ struct acid68000 {
 	int prevPC = 0;
 	int prevTick = 0;
 
-	int heapPointer = 0x40000;
+	int heapPointer = HEAP_START; // 0x40000;
 
 	std::set<std::uint32_t> breakpoints;
 
@@ -646,7 +643,8 @@ struct acid68000 {
 	// TODO - round size to page boundary
 
 	int allocate(int size, int bits) {
-		size = (size + 3) & -4;
+//		size = (size + 3) & -4;
+		size = (size + 31) & -32;
 		int p = heapPointer;
 		heapPointer += size;
 		if (bits & 1) {
@@ -1144,6 +1142,11 @@ struct NativeFile {
 	}
 
 	int open(int mode) {
+
+		if (fileHandle) {
+			return 0;
+		}
+
 //		if (status) return 0;
 		const char* m;
 		switch (mode) {
@@ -1160,6 +1163,7 @@ struct NativeFile {
 		}
 		// TODO: interpret amiga mode to fopen _Mode
 		fileHandle = fopen(filePath.c_str(), m);
+		statFile();
 		status = (fileHandle) ? 0 : -1;
 		return fileHandle?1:0;
 	}
@@ -1420,6 +1424,9 @@ public:
 			int n = blob.size();
 			for (int i = 0; i < n; i++) {
 				cpu0->write8(d2 + i, blob[i]);
+			}
+			for (int i = n; i < d3; i++) {
+				cpu0->write8(d2 + i, 0);
 			}
 			result = n;
 		}
@@ -2037,6 +2044,7 @@ unsigned int mmu_read_byte(unsigned int address){
 unsigned int mmu_read_word(unsigned int address){
 	int v16=acid500.read16(address);
 	v16 &= 0xffff;
+//	if (v16 & 0x8000) v16 |= -65536;
 	return v16;
 }
 unsigned int mmu_read_long(unsigned int address){
@@ -2309,7 +2317,7 @@ void disassemble(int pc,int count)
 const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
 const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
 
-const int SP_START = 0x1600;
+const int SP_START = 0x1e00;
 const int ROM_START = 0x2000;
 
 //const int SP_START = 0x5400;
@@ -2321,7 +2329,7 @@ void displayLogLines(int count) {
 	int n = machineLog.size();
 	for (int i = n - count; i < n; i++) {
 		if (i >= 0) {
-			std::cout << machineLog[i].second << std::endl;
+			std::cout << machineLog[i].second;
 		}
 		writeEOL();
 	}
@@ -2601,10 +2609,10 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* amiga_args= "e cv.lha\n";
-	const char* amiga_args = "e skid.lha\n";
-	const char* amiga_home = ".";
+//	const char* amiga_args = "e skid.lha\n";
+//	const char* amiga_home = ".";
 //	const char* args = "l skid.lha\n";
 //	const char* args = "e cv.lha\n";
 
@@ -2614,9 +2622,9 @@ int main() {
 
 //	const int nops[] = {0x63d6, 0};
 
-//	const char* amiga_binary = "../archive/genam";
-//	const char* amiga_home = "blitz2\\src";
-//	const char* amiga_args = "blitz2.s -S -P\n";
+	const char* amiga_binary = "../archive/genam";
+	const char* amiga_args = "blitz2.s -S -P\n";
+	const char* amiga_home = "blitz2\\src";
 
 //	const char* amiga_binary = "skidaf/skid";
 //	const char* amiga_home = "skidaf";

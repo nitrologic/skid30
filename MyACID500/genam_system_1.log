@@ -1,0 +1,610 @@
+000000 000000 [hunk] genam start:002000 end:011564
+000001 000001 [args] blitz2.s -S -P_
+000002 000002 [home] blitz2\src
+000003 000003 [mem] 00000000 R l 000000 00001e00 000004 ZERO
+00000e 00000e [exec] allocMem 1122,1 => 20000
+00001b 00001b [exec] openlibrary dos.library,802000
+000047 000047 [dos] datestamp 1dec
+00237f 00237f [exec] allocMem 2808,1 => 21140
+0027a5 0027a5 [exec] allocMem 1f48,1 => 23960
+0027c5 0027c5 [exec] allocMem c,1 => 258c0
+0027e5 0027e5 [exec] allocMem c,1 => 258e0
+003980 003980 [dos] open blitz2\src\genam.opts OLDFILE => 0
+003999 003999 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+007b3f 007b3f [dos] output
+007b50 007b50 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+009e1d 009e1d [write] All Rights Reserved - version 3.01_
+009e52 009e52 [write] _
+00a712 00a712 [dos] open blitz2\src\blitz2.lst NEWFILE => ffffffe0
+00afda 00afda [dos] open blitz2\src\blitz2.s OLDFILE => ffffffdc
+00afec 00afec [dos] lock blitz2\src\blitz2.s SHARED => ffffffd8
+00b401 00b401 [dos] examine(ffffffd8) <= 1
+00b40e 00b40e [dos] unlock ffffffd8
+00b43d 00b43d [exec] availMem 20001 => 400000
+00b855 00b855 [exec] allocMem 3b4fe,1 => 25900
+00b87f 00b87f [dos] read ffffffdc , 25908 , 3b4f6 => 3b4f3
+00c158 00c158 [exec] allocMem 19e,1 => 60e00
+00d74b 00d74b [exec] allocMem 2c,1 => 60fa0
+011988 011988 [write] Assembling blitz2.s_
+0126e1 0126e1 [write] Pass 1_
+032a21 032a21 [dos] open blitz2\src\MYOFFS.gs OLDFILE => 0
+032a36 032a36 [dos] open blitz2\src\MYOFFS OLDFILE => ffffffd0
+032a48 032a48 [dos] lock blitz2\src\MYOFFS SHARED => ffffffcc
+032e65 032e65 [dos] examine(ffffffcc) <= 1
+032e72 032e72 [dos] unlock ffffffcc
+032ea1 032ea1 [exec] availMem 20001 => 400000
+0332bf 0332bf [exec] allocMem 2234,1 => 60fe0
+0332e9 0332e9 [dos] read ffffffd0 , 60fe8 , 222c => 2229
+268b45 268b45 [exec] allocMem 2808,1 => 63220
+2a07d3 2a07d3 [exec] allocMem 1390,1 => 65a40
+2c795a 2c795a [dos] close ffffffd0 => 0
+37ac74 37ac74 [dos] open blitz2\src\WBHEADER.gs OLDFILE => 0
+37ac89 37ac89 [dos] open blitz2\src\WBHEADER OLDFILE => ffffffc4
+37b0a5 37b0a5 [dos] lock blitz2\src\WBHEADER SHARED => ffffffc0
+37b0ba 37b0ba [dos] examine(ffffffc0) <= 1
+37b0c7 37b0c7 [dos] unlock ffffffc0
+37b0f6 37b0f6 [exec] availMem 20001 => 400000
+37b514 37b514 [exec] allocMem 750,1 => 66de0
+37b53e 37b53e [dos] read ffffffc4 , 66de8 , 748 => 746
+41f77b 41f77b [dos] close ffffffc4 => 0
+429262 429262 [dos] open blitz2\src\OPTIONS2.SRC.gs OLDFILE => 0
+429277 429277 [dos] open blitz2\src\OPTIONS2.SRC.NEW OLDFILE => ffffffb8
+429289 429289 [dos] lock blitz2\src\OPTIONS2.SRC.NEW SHARED => ffffffb4
+42969e 42969e [dos] examine(ffffffb4) <= 1
+4296ab 4296ab [dos] unlock ffffffb4
+4296da 4296da [exec] availMem 20001 => 400000
+429afa 429afa [exec] allocMem 138e,1 => 67540
+429b24 429b24 [dos] read ffffffb8 , 67548 , 1386 => 1383
+6e3f54 6e3f54 [dos] close ffffffb8 => 0
+901de0 901de0 [dos] open blitz2\src\ASMMAC.gs OLDFILE => 0
+901df5 901df5 [dos] open blitz2\src\ASMMAC OLDFILE => ffffffac
+901e07 901e07 [dos] lock blitz2\src\ASMMAC SHARED => ffffffa8
+901e1c 901e1c [dos] examine(ffffffa8) <= 1
+901e29 901e29 [dos] unlock ffffffa8
+902262 902262 [exec] availMem 20001 => 400000
+902278 902278 [exec] allocMem 2760,1 => 688e0
+9026a4 9026a4 [dos] read ffffffac , 688e8 , 2758 => 2755
+904579 904579 [exec] allocMem 2808,1 => 6b040
+b68066 b68066 [dos] close ffffffac => 0
+c9e84a c9e84a [exec] allocMem 2808,1 => 6d860
+4ef43f 4ef43f [exec] allocMem 2808,1 => 70080
+357b29 357b29 [exec] allocMem 2808,1 => 728a0
+15cf43 15cf43 [exec] allocMem 2808,1 => 750c0
+633d93 633d93 [dos] open blitz2\src\OBJ.INFO OLDFILE => ffffffa4
+633da5 633da5 [dos] lock blitz2\src\OBJ.INFO SHARED => ffffffa0
+633dba 633dba [dos] examine(ffffffa0) <= 1
+633dc7 633dc7 [dos] unlock ffffffa0
+6341f7 6341f7 [dos] close ffffffa4 => 0
+b0d890 b0d890 [exec] allocMem 2808,1 => 778e0
+7cc372 7cc372 [exec] allocMem 2808,1 => 7a100
+6a99f0 6a99f0 [exec] allocMem 2808,1 => 7c920
+4a4071 4a4071 [exec] allocMem 2808,1 => 7f140
+03b056 03b056 [dos] open blitz2\src\TYPEREQ.gs OLDFILE => 0
+03b06b 03b06b [dos] open blitz2\src\TYPEREQ OLDFILE => ffffff98
+03b07d 03b07d [dos] lock blitz2\src\TYPEREQ SHARED => ffffff94
+03b092 03b092 [dos] examine(ffffff94) <= 1
+03b4b1 03b4b1 [dos] unlock ffffff94
+03b4e0 03b4e0 [exec] availMem 20001 => 400000
+03b4f6 03b4f6 [exec] allocMem 140a,1 => 81960
+03b924 03b924 [dos] read ffffff98 , 81968 , 1402 => 1400
+04dcb4 04dcb4 [exec] allocMem 2808,1 => 82d80
+389571 389571 [dos] close ffffff98 => 0
+711b04 711b04 [dos] open blitz2\src\OPTIONS.gs OLDFILE => 0
+711b19 711b19 [dos] open blitz2\src\OPTIONS.SRC OLDFILE => ffffff8c
+711b2b 711b2b [dos] lock blitz2\src\OPTIONS.SRC SHARED => ffffff88
+711b40 711b40 [dos] examine(ffffff88) <= 1
+711f4d 711f4d [dos] unlock ffffff88
+711f7c 711f7c [exec] availMem 20001 => 400000
+711f92 711f92 [exec] allocMem 3108,1 => 855a0
+7123c8 7123c8 [dos] read ffffff8c , 855a8 , 3100 => 30fe
+dd25eb dd25eb [exec] allocMem 2808,1 => 886c0
+1a2ee3 1a2ee3 [dos] close ffffff8c => 0
+1a4de1 1a4de1 [dos] open blitz2\src\CALCREQ.gs OLDFILE => 0
+1a4df6 1a4df6 [dos] open blitz2\src\CALCREQ OLDFILE => ffffff80
+1a4e08 1a4e08 [dos] lock blitz2\src\CALCREQ SHARED => ffffff7c
+1a522b 1a522b [dos] examine(ffffff7c) <= 1
+1a5238 1a5238 [dos] unlock ffffff7c
+1a5267 1a5267 [exec] availMem 20001 => 400000
+1a567d 1a567d [exec] allocMem b2e,1 => 8aee0
+1a56a7 1a56a7 [dos] read ffffff80 , 8aee8 , b26 => b24
+353fc4 353fc4 [dos] close ffffff80 => 0
+582d61 582d61 [dos] close ffffffdc => 0
+585d94 585d94 [exec] allocMem 11f70,1 => 8ba20
+586f1f 586f1f [write] Pass 2_
+5c8d81 5c8d81 [write] blob
+5d7ce4 5d7ce4 [write] Error during listing output at line 6 in file blitz2.s_
+5d813b 5d813b [write] blob
+5d8160 5d8160 [dos] close ffffffe0 => 0
+5d92b4 5d92b4 [write] _
+5dad1e 5dad1e [write] 1 error found_
+5e50c6 5e50c6 [write] 5 lines assembled into 0 bytes, Amiga executable position-independent code_
+5e6afa 5e6afa [write] 513892 bytes used_
+5e6f26 5e6f26 [exec] freemem
+5e6f35 5e6f35 [exec] freemem
+5e6f44 5e6f44 [exec] freemem
+5e6f53 5e6f53 [exec] freemem
+5e6f62 5e6f62 [exec] freemem
+5e737d 5e737d [exec] freemem
+5e738c 5e738c [exec] freemem
+5e739b 5e739b [exec] freemem
+5e73aa 5e73aa [exec] freemem
+5e73b9 5e73b9 [exec] freemem
+5e77d0 5e77d0 [exec] freemem
+5e77df 5e77df [exec] freemem
+5e77ee 5e77ee [exec] freemem
+5e77fd 5e77fd [exec] freemem
+5e780c 5e780c [exec] freemem
+5e781b 5e781b [exec] freemem
+5e7c2c 5e7c2c [exec] freemem
+5e7c3b 5e7c3b [exec] freemem
+5e7c4a 5e7c4a [exec] freemem
+5e7c59 5e7c59 [exec] freemem
+5e7c68 5e7c68 [exec] freemem
+5e8089 5e8089 [exec] freemem
+5e8098 5e8098 [exec] freemem
+5e80a7 5e80a7 [exec] freemem
+5e80b6 5e80b6 [exec] freemem
+5e80c5 5e80c5 [exec] freemem
+5e84e4 5e84e4 [exec] freemem
+5e84f3 5e84f3 [exec] freemem
+5e850e 5e850e [write] 
+5e892f 5e892f [exec] closeLibrary
+5e8937 5e8937 [exec] freemem
+63f3b1 63f3b1 [exec] allocMem 1122,1 => 9d9a0
+63f3be 63f3be [exec] openlibrary dos.library,802000
+63f3ea 63f3ea [dos] datestamp 1d78
+6416d2 6416d2 [exec] allocMem 2808,1 => 9eae0
+641b08 641b08 [exec] allocMem 1f48,1 => a1300
+641b28 641b28 [exec] allocMem c,1 => a3260
+641f48 641f48 [exec] allocMem c,1 => a3280
+6481bc 6481bc [dos] open blitz2\src\genam.opts OLDFILE => 0
+6485dd 6485dd [dos] open ENV:devpac\genam.opts OLDFILE => 0
+653790 653790 [dos] output
+6537a1 6537a1 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+655a66 655a66 [write] All Rights Reserved - version 3.01_
+655a9b 655a9b [write] _
+65676c 65676c [dos] open blitz2\src\code.s OLDFILE => 0
+656796 656796 [dos] open blitz2\src\code.s OLDFILE => 0
+659376 659376 [write] Could not open file code.s_
+65ad88 65ad88 [write] 22666 bytes used_
+65b1b6 65b1b6 [exec] freemem
+65b1c5 65b1c5 [exec] freemem
+65b1d4 65b1d4 [exec] freemem
+65b1e3 65b1e3 [exec] freemem
+65b1fe 65b1fe [write] 
+65b623 65b623 [exec] closeLibrary
+65b62b 65b62b [exec] freemem
+65f98e 65f98e [read32] 801000,00000000
+6638d5 6638d5 [read32] 801004,00801004
+667c1c 667c1c [read32] 801008,00801008
+66bb63 66bb63 [read32] 80100c,0080100c
+66feaa 66feaa [read32] 801010,00801010
+67076e 67076e [exec] allocMem 1122,1 => a32a0
+67077b 67077b [exec] openlibrary dos.library,802000
+6707a7 6707a7 [dos] datestamp 1d4e
+672adf 672adf [exec] allocMem 2808,1 => a43e0
+672f05 672f05 [exec] allocMem 1f48,1 => a6c00
+672f25 672f25 [exec] allocMem c,1 => a8b60
+672f45 672f45 [exec] allocMem c,1 => a8b80
+678c89 678c89 [dos] open blitz2\src\genam.opts OLDFILE => 0
+678ca2 678ca2 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+682c15 682c15 [dos] output
+682c26 682c26 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+684ef3 684ef3 [write] All Rights Reserved - version 3.01_
+684f28 684f28 [write] _
+685c05 685c05 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+685c35 685c35 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+689072 689072 [write] Could not open file 1985-91.s_
+68a660 68a660 [write] 22666 bytes used_
+68aa8c 68aa8c [exec] freemem
+68aa9b 68aa9b [exec] freemem
+68aaaa 68aaaa [exec] freemem
+68aab9 68aab9 [exec] freemem
+68aed6 68aed6 [write] 
+68aef3 68aef3 [exec] closeLibrary
+68aefb 68aefb [exec] freemem
+6a0038 6a0038 [exec] allocMem 1122,1 => a8ba0
+6a0045 6a0045 [exec] openlibrary dos.library,802000
+6a0071 6a0071 [dos] datestamp 1d24
+6a238b 6a238b [exec] allocMem 2808,1 => a9ce0
+6a27b1 6a27b1 [exec] allocMem 1f48,1 => ac500
+6a27d1 6a27d1 [exec] allocMem c,1 => ae460
+6a27f1 6a27f1 [exec] allocMem c,1 => ae480
+6a7349 6a7349 [dos] open blitz2\src\genam.opts OLDFILE => 0
+6a7362 6a7362 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+6afcef 6afcef [dos] output
+6afd00 6afd00 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+6b1fc3 6b1fc3 [write] All Rights Reserved - version 3.01_
+6b23fc 6b23fc [write] _
+6b2ce7 6b2ce7 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+6b311f 6b311f [dos] open blitz2\src\1985-91.s OLDFILE => 0
+6b615a 6b615a [write] Could not open file 1985-91.s_
+6b7b54 6b7b54 [write] 22666 bytes used_
+6b7b7e 6b7b7e [exec] freemem
+6b7f95 6b7f95 [exec] freemem
+6b7fa4 6b7fa4 [exec] freemem
+6b7fb3 6b7fb3 [exec] freemem
+6b7fce 6b7fce [write] 
+6b83eb 6b83eb [exec] closeLibrary
+6b83f3 6b83f3 [exec] freemem
+6bc33d 6bc33d [read32] 801000,00000000
+6c066f 6c066f [read32] 801004,00801004
+6c45a1 6c45a1 [read32] 801008,00801008
+6c84d3 6c84d3 [read32] 80100c,0080100c
+6cc80d 6cc80d [read32] 801010,00801010
+6cd0f1 6cd0f1 [exec] allocMem 1122,1 => ae4a0
+6cd0fe 6cd0fe [exec] openlibrary dos.library,802000
+6cd52a 6cd52a [dos] datestamp 1cfa
+6cf822 6cf822 [exec] allocMem 2808,1 => af5e0
+6cf846 6cf846 [exec] allocMem 1f48,1 => b1e00
+6cf866 6cf866 [exec] allocMem c,1 => b3d60
+6cfc90 6cfc90 [exec] allocMem c,1 => b3d80
+6d43d4 6d43d4 [dos] open blitz2\src\genam.opts OLDFILE => 0
+6d43ed 6d43ed [dos] open ENV:devpac\genam.opts OLDFILE => 0
+6dd166 6dd166 [dos] output
+6dd177 6dd177 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+6df03a 6df03a [write] All Rights Reserved - version 3.01_
+6df479 6df479 [write] _
+6e0162 6e0162 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+6e0192 6e0192 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+6e31d7 6e31d7 [write] Could not open file 1985-91.s_
+6e4c03 6e4c03 [write] 22666 bytes used_
+6e5031 6e5031 [exec] freemem
+6e5040 6e5040 [exec] freemem
+6e504f 6e504f [exec] freemem
+6e505e 6e505e [exec] freemem
+6e5079 6e5079 [write] 
+6e549e 6e549e [exec] closeLibrary
+6e54a6 6e54a6 [exec] freemem
+6fa176 6fa176 [exec] allocMem 1122,1 => b3da0
+6fa183 6fa183 [exec] openlibrary dos.library,802000
+6fa5b5 6fa5b5 [dos] datestamp 1cd0
+6fc88f 6fc88f [exec] allocMem 2808,1 => b4ee0
+6fc8b3 6fc8b3 [exec] allocMem 1f48,1 => b7700
+6fc8d3 6fc8d3 [exec] allocMem c,1 => b9660
+6fccfd 6fccfd [exec] allocMem c,1 => b9680
+701441 701441 [dos] open blitz2\src\genam.opts OLDFILE => 0
+70145a 70145a [dos] open ENV:devpac\genam.opts OLDFILE => 0
+70a1d3 70a1d3 [dos] output
+70a1e4 70a1e4 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+70c0a7 70c0a7 [write] All Rights Reserved - version 3.01_
+70c4e6 70c4e6 [write] _
+70d1cf 70d1cf [dos] open blitz2\src\1985-91.s OLDFILE => 0
+70d1ff 70d1ff [dos] open blitz2\src\1985-91.s OLDFILE => 0
+710244 710244 [write] Could not open file 1985-91.s_
+711c70 711c70 [write] 22666 bytes used_
+71209e 71209e [exec] freemem
+7120ad 7120ad [exec] freemem
+7120bc 7120bc [exec] freemem
+7120cb 7120cb [exec] freemem
+7120e6 7120e6 [write] 
+71250b 71250b [exec] closeLibrary
+712513 712513 [exec] freemem
+71644c 71644c [read32] 801000,00000000
+71a771 71a771 [read32] 801004,00801004
+71e68e 71e68e [read32] 801008,00801008
+7225ab 7225ab [read32] 80100c,0080100c
+7264c8 7264c8 [read32] 801010,00801010
+7271cc 7271cc [exec] allocMem 1122,1 => b96a0
+7271d9 7271d9 [exec] openlibrary dos.library,802000
+727205 727205 [dos] datestamp 1ca6
+729545 729545 [exec] allocMem 2808,1 => ba7e0
+72996b 72996b [exec] allocMem 1f48,1 => bd000
+72998b 72998b [exec] allocMem c,1 => bef60
+7299ab 7299ab [exec] allocMem c,1 => bef80
+72e503 72e503 [dos] open blitz2\src\genam.opts OLDFILE => 0
+72e51c 72e51c [dos] open ENV:devpac\genam.opts OLDFILE => 0
+736ea9 736ea9 [dos] output
+736eba 736eba [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+73917d 73917d [write] All Rights Reserved - version 3.01_
+7395b6 7395b6 [write] _
+739ea1 739ea1 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+73a2d9 73a2d9 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+73d314 73d314 [write] Could not open file 1985-91.s_
+73ed0e 73ed0e [write] 22666 bytes used_
+73ed38 73ed38 [exec] freemem
+73f14f 73f14f [exec] freemem
+73f15e 73f15e [exec] freemem
+73f16d 73f16d [exec] freemem
+73f188 73f188 [write] 
+73f5a5 73f5a5 [exec] closeLibrary
+73f5ad 73f5ad [exec] freemem
+753e40 753e40 [exec] allocMem 1122,1 => befa0
+753e4d 753e4d [exec] openlibrary dos.library,802000
+754287 754287 [dos] datestamp 1c7c
+756581 756581 [exec] allocMem 2808,1 => c00e0
+7565a5 7565a5 [exec] allocMem 1f48,1 => c2900
+7569cd 7569cd [exec] allocMem c,1 => c4860
+7569ed 7569ed [exec] allocMem c,1 => c4880
+75b137 75b137 [dos] open blitz2\src\genam.opts OLDFILE => 0
+75b150 75b150 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+763ecd 763ecd [dos] output
+763ede 763ede [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+7661a3 7661a3 [write] All Rights Reserved - version 3.01_
+7661d8 7661d8 [write] _
+766eb1 766eb1 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+766ee1 766ee1 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+76a32c 76a32c [write] Could not open file 1985-91.s_
+76b950 76b950 [write] 22666 bytes used_
+76bd86 76bd86 [exec] freemem
+76bd95 76bd95 [exec] freemem
+76bda4 76bda4 [exec] freemem
+76bdb3 76bdb3 [exec] freemem
+76c1da 76c1da [write] 
+76c1f7 76c1f7 [exec] closeLibrary
+76c1ff 76c1ff [exec] freemem
+770529 770529 [read32] 801000,00000000
+774431 774431 [read32] 801004,00801004
+778339 778339 [read32] 801008,00801008
+77c241 77c241 [read32] 80100c,0080100c
+780149 780149 [read32] 801010,00801010
+780a5d 780a5d [exec] allocMem 1122,1 => c48a0
+780a6a 780a6a [exec] openlibrary dos.library,802000
+780ea0 780ea0 [dos] datestamp 1c52
+7831be 7831be [exec] allocMem 2808,1 => c59e0
+7831e2 7831e2 [exec] allocMem 1f48,1 => c8200
+78360c 78360c [exec] allocMem c,1 => ca160
+78362c 78362c [exec] allocMem c,1 => ca180
+787d74 787d74 [dos] open blitz2\src\genam.opts OLDFILE => 0
+788199 788199 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+790b34 790b34 [dos] output
+790b45 790b45 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+792e14 792e14 [write] All Rights Reserved - version 3.01_
+793249 793249 [write] _
+793b30 793b30 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+793f62 793f62 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+796fa1 796fa1 [write] Could not open file 1985-91.s_
+7985b1 7985b1 [write] 22666 bytes used_
+798a09 798a09 [exec] freemem
+798a18 798a18 [exec] freemem
+798a27 798a27 [exec] freemem
+798e4a 798e4a [exec] freemem
+798e65 798e65 [write] 
+798e82 798e82 [exec] closeLibrary
+798e8a 798e8a [exec] freemem
+7ad6c8 7ad6c8 [exec] allocMem 1122,1 => ca1a0
+7ad6d5 7ad6d5 [exec] openlibrary dos.library,802000
+7adb07 7adb07 [dos] datestamp 1c28
+7afe59 7afe59 [exec] allocMem 2808,1 => cb2e0
+7afe7d 7afe7d [exec] allocMem 1f48,1 => cdb00
+7b02ad 7b02ad [exec] allocMem c,1 => cfa60
+7b02cd 7b02cd [exec] allocMem c,1 => cfa80
+7b4a21 7b4a21 [dos] open blitz2\src\genam.opts OLDFILE => 0
+7b4a3a 7b4a3a [dos] open ENV:devpac\genam.opts OLDFILE => 0
+7bd7f1 7bd7f1 [dos] output
+7bd802 7bd802 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+7bfad3 7bfad3 [write] All Rights Reserved - version 3.01_
+7bfb08 7bfb08 [write] _
+7c07e1 7c07e1 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+7c0811 7c0811 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+7c3c5c 7c3c5c [write] Could not open file 1985-91.s_
+7c5280 7c5280 [write] 22666 bytes used_
+7c56b6 7c56b6 [exec] freemem
+7c56c5 7c56c5 [exec] freemem
+7c56d4 7c56d4 [exec] freemem
+7c56e3 7c56e3 [exec] freemem
+7c5b0a 7c5b0a [write] 
+7c5b27 7c5b27 [exec] closeLibrary
+7c5b2f 7c5b2f [exec] freemem
+7c9a44 7c9a44 [read32] 801000,00000000
+7cd937 7cd937 [read32] 801004,00801004
+7d182a 7d182a [read32] 801008,00801008
+7d571d 7d571d [read32] 80100c,0080100c
+7d9610 7d9610 [read32] 801010,00801010
+7da344 7da344 [exec] allocMem 1122,1 => cfaa0
+7da351 7da351 [exec] openlibrary dos.library,802000
+7da77d 7da77d [dos] datestamp 1bfe
+7dca75 7dca75 [exec] allocMem 2808,1 => d0be0
+7dca99 7dca99 [exec] allocMem 1f48,1 => d3400
+7dcab9 7dcab9 [exec] allocMem c,1 => d5360
+7dcee3 7dcee3 [exec] allocMem c,1 => d5380
+7e1627 7e1627 [dos] open blitz2\src\genam.opts OLDFILE => 0
+7e1640 7e1640 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+7ea3b9 7ea3b9 [dos] output
+7ea3ca 7ea3ca [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+7ec28d 7ec28d [write] All Rights Reserved - version 3.01_
+7ec6cc 7ec6cc [write] _
+7ed3b5 7ed3b5 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+7ed3e5 7ed3e5 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+7f042a 7f042a [write] Could not open file 1985-91.s_
+7f1e56 7f1e56 [write] 22666 bytes used_
+7f2284 7f2284 [exec] freemem
+7f2293 7f2293 [exec] freemem
+7f22a2 7f22a2 [exec] freemem
+7f22b1 7f22b1 [exec] freemem
+7f22cc 7f22cc [write] 
+7f26f1 7f26f1 [exec] closeLibrary
+7f26f9 7f26f9 [exec] freemem
+806aee 806aee [exec] allocMem 1122,1 => d53a0
+806afb 806afb [exec] openlibrary dos.library,802000
+806f2d 806f2d [dos] datestamp 1bd4
+809257 809257 [exec] allocMem 2808,1 => d64e0
+80927b 80927b [exec] allocMem 1f48,1 => d8d00
+8096a5 8096a5 [exec] allocMem c,1 => dac60
+8096c5 8096c5 [exec] allocMem c,1 => dac80
+80de0d 80de0d [dos] open blitz2\src\genam.opts OLDFILE => 0
+80e232 80e232 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+816bcd 816bcd [dos] output
+816bde 816bde [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+818ead 818ead [write] All Rights Reserved - version 3.01_
+8192e2 8192e2 [write] _
+819bc9 819bc9 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+819ffb 819ffb [dos] open blitz2\src\1985-91.s OLDFILE => 0
+81d03a 81d03a [write] Could not open file 1985-91.s_
+81e64a 81e64a [write] 22666 bytes used_
+81eaa2 81eaa2 [exec] freemem
+81eab1 81eab1 [exec] freemem
+81eac0 81eac0 [exec] freemem
+81eee3 81eee3 [exec] freemem
+81eefe 81eefe [write] 
+81ef1b 81ef1b [exec] closeLibrary
+81ef23 81ef23 [exec] freemem
+822e1d 822e1d [read32] 801000,00000000
+826cfb 826cfb [read32] 801004,00801004
+82abd9 82abd9 [read32] 801008,00801008
+82eab7 82eab7 [read32] 80100c,0080100c
+832595 832595 [read32] 801010,00801010
+8336f1 8336f1 [exec] allocMem 1122,1 => daca0
+8336fe 8336fe [exec] openlibrary dos.library,802000
+83372a 83372a [dos] datestamp 1baa
+835a12 835a12 [exec] allocMem 2808,1 => dbde0
+835e38 835e38 [exec] allocMem 1f48,1 => de600
+835e58 835e58 [exec] allocMem c,1 => e0560
+835e78 835e78 [exec] allocMem c,1 => e0580
+83a9d0 83a9d0 [dos] open blitz2\src\genam.opts OLDFILE => 0
+83a9e9 83a9e9 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+843376 843376 [dos] output
+843387 843387 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+84564a 84564a [write] All Rights Reserved - version 3.01_
+845a83 845a83 [write] _
+84636e 84636e [dos] open blitz2\src\1985-91.s OLDFILE => 0
+8467a6 8467a6 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+8497e1 8497e1 [write] Could not open file 1985-91.s_
+84b1db 84b1db [write] 22666 bytes used_
+84b205 84b205 [exec] freemem
+84b61c 84b61c [exec] freemem
+84b62b 84b62b [exec] freemem
+84b63a 84b63a [exec] freemem
+84b655 84b655 [write] 
+84ba72 84ba72 [exec] closeLibrary
+84ba7a 84ba7a [exec] freemem
+85fe28 85fe28 [exec] allocMem 1122,1 => e05a0
+85fe35 85fe35 [exec] openlibrary dos.library,802000
+85fe61 85fe61 [dos] datestamp 1b80
+86217b 86217b [exec] allocMem 2808,1 => e16e0
+8625a1 8625a1 [exec] allocMem 1f48,1 => e3f00
+8625c1 8625c1 [exec] allocMem c,1 => e5e60
+8625e1 8625e1 [exec] allocMem c,1 => e5e80
+867139 867139 [dos] open blitz2\src\genam.opts OLDFILE => 0
+867152 867152 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+86fadf 86fadf [dos] output
+86faf0 86faf0 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+871db3 871db3 [write] All Rights Reserved - version 3.01_
+8721ec 8721ec [write] _
+872ad7 872ad7 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+872f0f 872f0f [dos] open blitz2\src\1985-91.s OLDFILE => 0
+875f4a 875f4a [write] Could not open file 1985-91.s_
+877944 877944 [write] 22666 bytes used_
+87796e 87796e [exec] freemem
+877d85 877d85 [exec] freemem
+877d94 877d94 [exec] freemem
+877da3 877da3 [exec] freemem
+877dbe 877dbe [write] 
+8781db 8781db [exec] closeLibrary
+8781e3 8781e3 [exec] freemem
+87c0c4 87c0c4 [read32] 801000,00000000
+87fb8d 87fb8d [read32] 801004,00801004
+883a56 883a56 [read32] 801008,00801008
+88751f 88751f [read32] 80100c,0080100c
+88b3e8 88b3e8 [read32] 801010,00801010
+88c15c 88c15c [exec] allocMem 1122,1 => e5ea0
+88c56d 88c56d [exec] openlibrary dos.library,802000
+88c599 88c599 [dos] datestamp 1b56
+88e905 88e905 [exec] allocMem 2808,1 => e6fe0
+88e929 88e929 [exec] allocMem 1f48,1 => e9800
+88ed53 88ed53 [exec] allocMem c,1 => eb760
+88ed73 88ed73 [exec] allocMem c,1 => eb780
+8934bb 8934bb [dos] open blitz2\src\genam.opts OLDFILE => 0
+8938e0 8938e0 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+89c27b 89c27b [dos] output
+89c28c 89c28c [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+89e55b 89e55b [write] All Rights Reserved - version 3.01_
+89e990 89e990 [write] _
+89f277 89f277 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+89f6a9 89f6a9 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+8a26e8 8a26e8 [write] Could not open file 1985-91.s_
+8a3cf8 8a3cf8 [write] 22666 bytes used_
+8a4150 8a4150 [exec] freemem
+8a415f 8a415f [exec] freemem
+8a416e 8a416e [exec] freemem
+8a4591 8a4591 [exec] freemem
+8a45ac 8a45ac [write] 
+8a45c9 8a45c9 [exec] closeLibrary
+8a45d1 8a45d1 [exec] freemem
+8b8934 8b8934 [exec] allocMem 1122,1 => eb7a0
+8b8941 8b8941 [exec] openlibrary dos.library,802000
+8b896d 8b896d [dos] datestamp 1b2c
+8bac49 8bac49 [exec] allocMem 2808,1 => ec8e0
+8bb077 8bb077 [exec] allocMem 1f48,1 => ef100
+8bb097 8bb097 [exec] allocMem c,1 => f1060
+8bb4b7 8bb4b7 [exec] allocMem c,1 => f1080
+8bfc07 8bfc07 [dos] open blitz2\src\genam.opts OLDFILE => 0
+8bfc20 8bfc20 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+8c89bf 8c89bf [dos] output
+8c89d0 8c89d0 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+8ca88b 8ca88b [write] All Rights Reserved - version 3.01_
+8caccc 8caccc [write] _
+8cb5bd 8cb5bd [dos] open blitz2\src\1985-91.s OLDFILE => 0
+8cb9f3 8cb9f3 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+8cea60 8cea60 [write] Could not open file 1985-91.s_
+8d0464 8d0464 [write] 22666 bytes used_
+8d048e 8d048e [exec] freemem
+8d08a9 8d08a9 [exec] freemem
+8d08b8 8d08b8 [exec] freemem
+8d08c7 8d08c7 [exec] freemem
+8d08e2 8d08e2 [write] 
+8d0d07 8d0d07 [exec] closeLibrary
+8d0d0f 8d0d0f [exec] freemem
+8d4bd9 8d4bd9 [read32] 801000,00000000
+8d868d 8d868d [read32] 801004,00801004
+8dc141 8dc141 [read32] 801008,00801008
+8dfff5 8dfff5 [read32] 80100c,0080100c
+8e3aa9 8e3aa9 [read32] 801010,00801010
+8e4c45 8e4c45 [exec] allocMem 1122,1 => f10a0
+8e4c52 8e4c52 [exec] openlibrary dos.library,802000
+8e508c 8e508c [dos] datestamp 1b02
+8e7376 8e7376 [exec] allocMem 2808,1 => f21e0
+8e739a 8e739a [exec] allocMem 1f48,1 => f4a00
+8e77c2 8e77c2 [exec] allocMem c,1 => f6960
+8e77e2 8e77e2 [exec] allocMem c,1 => f6980
+8ebf2c 8ebf2c [dos] open blitz2\src\genam.opts OLDFILE => 0
+8ebf45 8ebf45 [dos] open ENV:devpac\genam.opts OLDFILE => 0
+8f4cc2 8f4cc2 [dos] output
+8f4cd3 8f4cd3 [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+8f6f98 8f6f98 [write] All Rights Reserved - version 3.01_
+8f6fcd 8f6fcd [write] _
+8f7ca6 8f7ca6 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+8f7cd6 8f7cd6 [dos] open blitz2\src\1985-91.s OLDFILE => 0
+8fb121 8fb121 [write] Could not open file 1985-91.s_
+8fc745 8fc745 [write] 22666 bytes used_
+8fcb7b 8fcb7b [exec] freemem
+8fcb8a 8fcb8a [exec] freemem
+8fcb99 8fcb99 [exec] freemem
+8fcba8 8fcba8 [exec] freemem
+8fcfcf 8fcfcf [write] 
+8fcfec 8fcfec [exec] closeLibrary
+8fcff4 8fcff4 [exec] freemem
+910f0c 910f0c [exec] allocMem 1122,1 => f69a0
+910f19 910f19 [exec] openlibrary dos.library,802000
+911347 911347 [dos] datestamp 1ad8
+913631 913631 [exec] allocMem 2808,1 => f7ae0
+913655 913655 [exec] allocMem 1f48,1 => fa300
+913a7b 913a7b [exec] allocMem c,1 => fc260
+913a9b 913a9b [exec] allocMem c,1 => fc280
+9181e1 9181e1 [dos] open blitz2\src\genam.opts OLDFILE => 0
+9181fa 9181fa [dos] open ENV:devpac\genam.opts OLDFILE => 0
+920f9d 920f9d [dos] output
+920fae 920fae [write] GenAm Macro Assembler Copyright © HiSoft 1985-91_
+92327f 92327f [write] All Rights Reserved - version 3.01_
+9232b4 9232b4 [write] _
+923f8d 923f8d [dos] open blitz2\src\1985-91.s OLDFILE => 0
+923fbd 923fbd [dos] open blitz2\src\1985-91.s OLDFILE => 0
+927408 927408 [write] Could not open file 1985-91.s_
+928a2c 928a2c [write] 22666 bytes used_
+928e62 928e62 [exec] freemem
+928e71 928e71 [exec] freemem
+928e80 928e80 [exec] freemem
+928e8f 928e8f [exec] freemem
+9292b6 9292b6 [write] 
+9292d3 9292d3 [exec] closeLibrary
+9292db 9292db [exec] freemem
+92d19c 92d19c [read32] 801000,00000000
+930c3b 930c3b [read32] 801004,00801004
+9346da 9346da [read32] 801008,00801008
+938179 938179 [read32] 80100c,0080100c
+93c018 93c018 [read32] 801010,00801010
+93d1c4 93d1c4 [exec] allocMem 1122,1 => fc2a0
+93d1d1 93d1d1 [exec] openlibrary dos.library,802000
+93d60d 93d60d [dos] datestamp 1aae
+93f909 93f909 [exec] allocMem 2808,1 => fd3e0
+93f92d 93f92d [exec] allocMem 1f48,1 => ffc00
