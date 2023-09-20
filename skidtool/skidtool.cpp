@@ -704,9 +704,9 @@ struct acid68000 {
 			int pc = history[i].first;
 			int clock = history[i].second;
 
-			while (it != machineLog.end() && clock > it._Ptr->first) {
-				int clk = it._Ptr->first;
-				std::string line=it._Ptr->second;
+			while (it != machineLog.end() && clock > it->first) {
+				int clk = it->first;
+				std::string line=it->second;
 				fout << addressString(clk) << " " << line << std::endl;
 				it++;
 			}
