@@ -557,10 +557,12 @@ void _glfwGetVideoModeCocoa(_GLFWmonitor* monitor, GLFWvidmode *mode)
 {
     @autoreleasepool {
 
-    CGDisplayModeRef native = CGDisplayCopyDisplayMode(monitor->ns.displayID);
-    *mode = vidmodeFromCGDisplayMode(native, monitor->ns.fallbackRefreshRate);
-    mode->width=monitor->ns.width;
-    mode->height=monitor->ns.height;
+    // fetch current desktop mode
+    CGDisplayModeRef desktopMode = CGDisplayCopyDisplayMode(monitor->ns.displayID);
+    *mode = vidmodeFromCGDisplayMode(desktopMode, monitor->ns.fallbackRefreshRate);
+    // fetch native resolution of monitor 
+    mode->width = monitor->ns.nativePixelWidth;
+    mode->height = monitor->ns.nativePixelHeight;
     CGDisplayModeRelease(native);
 
     } // autoreleasepool
