@@ -364,6 +364,10 @@ void _glfwPollMonitorsCocoa(void)
         CGDisplayModeRef mode = CGDisplayCopyDisplayMode(displays[i]);
         if (CGDisplayModeGetRefreshRate(mode) == 0.0)
             monitor->ns.fallbackRefreshRate = getFallbackRefreshRate(displays[i]);
+
+            monitor->ns.width=CGDisplayModeGetWidth(mode);
+            monitor->ns.height=CGDisplayModeGetHeight(mode);
+
         CGDisplayModeRelease(mode);
 
         _glfwInputMonitor(monitor, GLFW_CONNECTED, _GLFW_INSERT_LAST);
@@ -555,6 +559,8 @@ void _glfwGetVideoModeCocoa(_GLFWmonitor* monitor, GLFWvidmode *mode)
 
     CGDisplayModeRef native = CGDisplayCopyDisplayMode(monitor->ns.displayID);
     *mode = vidmodeFromCGDisplayMode(native, monitor->ns.fallbackRefreshRate);
+    mode->width=monitor->ns.width;
+    mode->height=monitor->ns.height;
     CGDisplayModeRelease(native);
 
     } // autoreleasepool
