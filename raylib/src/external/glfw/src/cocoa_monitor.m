@@ -364,10 +364,10 @@ void _glfwPollMonitorsCocoa(void)
         CGDisplayModeRef mode = CGDisplayCopyDisplayMode(displays[i]);
         if (CGDisplayModeGetRefreshRate(mode) == 0.0)
             monitor->ns.fallbackRefreshRate = getFallbackRefreshRate(displays[i]);
-
-            monitor->ns.nativePixelWidth=CGDisplayModeGetWidth(mode);
-            monitor->ns.nativePixelHeight=CGDisplayModeGetHeight(mode);
-
+        
+        monitor->ns.nativePixelWidth=CGDisplayModeGetWidth(mode);
+        monitor->ns.nativePixelHeight=CGDisplayModeGetHeight(mode);
+        
         CGDisplayModeRelease(mode);
 
         _glfwInputMonitor(monitor, GLFW_CONNECTED, _GLFW_INSERT_LAST);
@@ -560,10 +560,10 @@ void _glfwGetVideoModeCocoa(_GLFWmonitor* monitor, GLFWvidmode *mode)
     // fetch current desktop mode
     CGDisplayModeRef desktopMode = CGDisplayCopyDisplayMode(monitor->ns.displayID);
     *mode = vidmodeFromCGDisplayMode(desktopMode, monitor->ns.fallbackRefreshRate);
+    CGDisplayModeRelease(desktopMode);
     // fetch native resolution of monitor 
     mode->width = monitor->ns.nativePixelWidth;
     mode->height = monitor->ns.nativePixelHeight;
-    CGDisplayModeRelease(native);
 
     } // autoreleasepool
 }

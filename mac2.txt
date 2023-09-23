@@ -1,0 +1,13 @@
+CMake Warning (dev) at raylib/cmake/LibraryConfigurations.cmake:22 (MESSAGE):
+  OpenGL is deprecated starting with macOS 10.14 (Mojave)!
+Call Stack (most recent call first):
+  raylib/src/CMakeLists.txt:48 (include)
+This warning is for project developers.  Use -Wno-dev to suppress it.
+
+xcode
+14.0.3
+
+  109  cd macos
+  115  cmake -G Xcode ..
+  116  cmake -G Xcode -DCMAKE_BUILD_TYPE=Debug ..
+
