@@ -7,6 +7,8 @@
 
 // #define trace_log
 
+#define acid500_cpu M68K_CPU_TYPE_68020
+
 const int PREV_LINES = 4;
 const int ASM_LINES = 6;
 const int LOG_LINES = 4;
@@ -101,7 +103,10 @@ std::string rawString(std::vector<u8> raw,bool addhex) {
 	ss << std::setfill('0')  << std::right << std::hex;
 	for (int i = 0; i < n; i++) {
 		ss << std::setw(2) << (int)raw[i] << " ";
-		ss2 << (char)raw[i];
+		char c = (char)raw[i];
+		if (c > 7) {
+			ss2 << (char)raw[i];
+		}
 	}
 	if (addhex) {
 		ss2 << std::endl << ss.str();// std::endl + ss2.str();
@@ -1178,6 +1183,8 @@ struct NativeFile {
 		}
 	}
 
+//	+		fileHandle	0x0000018aa38c3f80 {_Placeholder=0x0000018aa38ba3d0 }	_iobuf *
+
 	Blob read(int length) {
 		Blob blob;
 		uint8_t c;
@@ -1197,8 +1204,18 @@ struct NativeFile {
 		if (fileHandle == 0) {
 			return -1;
 		}
+		if (exclusiveLock == 0) {
+			return -2;
+		}
 		int size = blob.size();
-		int n = fwrite(blob.data(), 1, size, fileHandle);
+		uint8_t* p = blob.data();
+		int n = 0;
+		while (n < size) {
+			int count = fwrite(p, 1, size, fileHandle);
+			if (count <= 0) break;
+			n += count;
+			p += count;
+		}
 		return n;
 	}
 
@@ -1417,7 +1434,7 @@ public:
 		int d1 = cpu0->readRegister(1); //file
 		int d2 = cpu0->readRegister(2); //buffer physicalAddress
 		int d3 = cpu0->readRegister(3); //length
-		int result = 0;
+		int result = d3;
 		if (d1) {
 			NativeFile* f = fileLocks[d1];
 			Blob blob = f->read(d3);
@@ -1425,9 +1442,13 @@ public:
 			for (int i = 0; i < n; i++) {
 				cpu0->write8(d2 + i, blob[i]);
 			}
+#ifndef ZERO_PAD_FREAD			
 			for (int i = n; i < d3; i++) {
 				cpu0->write8(d2 + i, 0);
 			}
+#endif
+#ifdef WRITE_RESULT_WRITTEN
+#endif
 			result = n;
 		}
 		cpu0->writeRegister(0, result);
@@ -1452,6 +1473,7 @@ public:
 		case OUTPUT_STREAM: {
 			std::string s = rawString(raw,false);
 			systemLog("write", s);
+			std::cout << s;// << std::endl;
 			break;
 		}
 		default: {
@@ -1644,7 +1666,7 @@ public:
 			int mode = f->fileStat.st_mode & 7;
 //			_fib.fib_DiskKey = ;
 			_fib.fib_Size = n;
-			_fib.fib_NumBlocks = (n+1023)/1024;
+			_fib.fib_NumBlocks = 0;// (n + 1023) / 1024;
 			_fib.fib_Protection = 0x01;		// 0x0f;
 //			_fib.fib_DirEntryType = (f->fileStat.st_mode& _S_IFDIR ) ? 1 : -1 ;
 			_fib.fib_DirEntryType = (f->fileStat.st_mode& S_IFDIR ) ? 1 : -1 ;
@@ -2151,14 +2173,11 @@ void loadHunk(std::string path,int physical) {
 			std::cout << "todo: support empty bss hunks" << std::endl;
 		}
 	}
-	writeNamedInt("total words", totalWords);
-	writeEOL();
-
+//	writeNamedInt("total words", totalWords);
+//	writeEOL();
 	Chunk chunk(totalWords);
-
-	writeNamedInt("hunk count", n);
-	writeEOL();
-
+//	writeNamedInt("hunk count", n);
+//	writeEOL();
 	int index = 0;
 	bool parseHunk = true;
 	while (parseHunk) 
@@ -2174,7 +2193,7 @@ void loadHunk(std::string path,int physical) {
 		switch (type) {
 		case 1001: // HUNK___CODE
 		{			
-			std::cout << "HUNK_CODE" << std::endl;
+//			std::cout << "HUNK_CODE" << std::endl;
 			int target = offsetWords[index];
 
 			u32 size = fd.readBigInt();
@@ -2195,7 +2214,7 @@ void loadHunk(std::string path,int physical) {
 		}
 		case 1002: //HUNK__DATA
 		{
-			std::cout << "HUNK_DATA" << std::endl;
+//			std::cout << "HUNK_DATA" << std::endl;
 			int target = offsetWords[index];
 			u32 count = fd.readBigInt();
 			for (int i = 0; i < count; i++) {
@@ -2207,7 +2226,7 @@ void loadHunk(std::string path,int physical) {
 		}
 		case 1004:	//RELOC32
 		{
-			std::cout << "HUNK_RELOC32" << std::endl;
+//			std::cout << "HUNK_RELOC32" << std::endl;
 			while (true) {
 				u32 count = fd.readBigInt();
 				if (count == 0)
@@ -2229,7 +2248,7 @@ void loadHunk(std::string path,int physical) {
 		}
 		case 1010:	//HUNK__END
 		{
-			std::cout << "HUNK_END" << std::endl;
+//			std::cout << "HUNK_END" << std::endl;
 			index++;
 			if (index == n) {
 				parseHunk = false;
@@ -2257,18 +2276,14 @@ void loadHunk(std::string path,int physical) {
 		}
 
 	}
-
 	std::stringstream ss;
 	ss<<filename<<" start:"<<addressString(physical)<<" end:" << addressString(physical+totalWords*2);
 	systemLog("hunk", ss.str());
-
-	writeString("hunks parsed");
-	writeEOL();
-
+//	writeString("hunks parsed");
+//	writeEOL();
 	for (int i = 0; i < totalWords; i++) {
 		acid500.qwrite16(physical+i*2,chunk[i]);
 	}
-
 	return;
 }
 
@@ -2335,8 +2350,7 @@ void displayLogLines(int count) {
 	}
 }
 
-void debugRom(int pc24,const char *name,const char *args,const char *home) {
-
+void initMig(){
 	acidexec *bass=new acidexec(&acid500);
 	aciddos* sub = new aciddos(&acid500);
 	acidbench* bench = new acidbench(&acid500);
@@ -2350,7 +2364,49 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 	mig.setNonVolatile(nvram);
 	mig.setGraphics(gfx);
 	mig.setMath(math);
-	
+}
+
+int runRom(int pc24,const char *name,const char *args,const char *home) {
+	initMig();
+	acid500.setHome(home);
+	systemLog("args", args);
+	systemLog("home", home);
+	acid500.qwrite32(0, SP_START); //sp
+	acid500.qwrite32(4, 0x801000); //exec
+	acid500.qwrite32(8, pc24); //pc
+	int pc = pc24;//acid500.readRegister(16);
+	writeClear();
+	m68k_init();
+	m68k_set_cpu_type(acid500_cpu);
+	m68k_pulse_reset();
+	int arglen = 0;
+	if (args) {
+		arglen=acid500.writes(ARGS_START, args, 0x100);
+	}
+	// command line mode starts D0,A0 with arglen,args
+	acid500.writeRegister(0, arglen);
+	acid500.writeRegister(8, ARGS_START);
+	int err = 0;
+	int run=1;
+	while (run && err==0) {
+		int n=RUN_CYCLES_PER_TICK;
+		int cycles=m68k_execute(n);
+		acid500.step++;
+		acid500.cycle+=cycles;
+		if (acid500.memoryError) {
+			run = false;
+			err = acid500.memoryError;
+		}
+	}
+	std::cout << "cycles: " << acid500.cycle << std::endl;
+	acid500.writeLog("skidtool.log");
+	return err;
+}
+
+void debugRom(int pc24,const char *name,const char *args,const char *home) {
+
+	initMig();
+
 	int key = 0;
 	int run = 0;
 	int err = 0;
@@ -2382,7 +2438,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 	writeClear();
 
 	m68k_init();
-	m68k_set_cpu_type(M68K_CPU_TYPE_68000);
+	m68k_set_cpu_type(acid500_cpu);
 	m68k_pulse_reset();
 
 	int arglen = 0;
@@ -2609,12 +2665,10 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-//	const char* amiga_binary = "../archive/lha";
+	const char* amiga_binary = "../archive/lha";
 //	const char* amiga_args= "e cv.lha\n";
-//	const char* amiga_args = "e skid.lha\n";
-//	const char* amiga_home = ".";
-//	const char* args = "l skid.lha\n";
-//	const char* args = "e cv.lha\n";
+	const char* amiga_args = "e skid.lha\n";
+	const char* amiga_home = ".";
 
 //	const char* amiga_binary = "../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
@@ -2622,9 +2676,9 @@ int main() {
 
 //	const int nops[] = {0x63d6, 0};
 
-	const char* amiga_binary = "../archive/genam";
-	const char* amiga_args = "blitz2.s -S -P\n";
-	const char* amiga_home = "blitz2\\src";
+//	const char* amiga_binary = "../archive/genam";
+//	const char* amiga_args = "blitz2.s -S -P\n";
+//	const char* amiga_home = "blitz2\\src";
 
 //	const char* amiga_binary = "skidaf/skid";
 //	const char* amiga_home = "skidaf";
@@ -2648,7 +2702,8 @@ int main() {
 
 	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
-	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+//	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);

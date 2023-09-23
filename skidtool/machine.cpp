@@ -177,14 +177,11 @@ Chunk loadChunk(std::string path,int physical) {
 			std::cout << "todo: support empty bss hunks" << std::endl;
 		}
 	}
-	writeNamedInt("total words", totalWords);
-	writeEOL();
-
+//	writeNamedInt("total words", totalWords);
+//	writeEOL();
 	Chunk chunk(totalWords);
-
-	writeNamedInt("hunk count", n);
-	writeEOL();
-
+//	writeNamedInt("hunk count", n);
+//	writeEOL();
 	int index = 0;
 	bool parseHunk = true;
 	while (parseHunk) 
@@ -284,9 +281,8 @@ Chunk loadChunk(std::string path,int physical) {
 
 	}
 
-	writeString("hunks parsed");
-	writeEOL();
-
+//	writeString("hunks parsed");
+//	writeEOL();
 	return chunk;
 }
 

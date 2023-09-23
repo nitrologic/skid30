@@ -1,8 +1,14 @@
 #include <iostream>
 #include <raylib.h>
 #include <string>
+#include <sstream>
 
 #include "loadiff.h"
+
+using S = std::string;
+using SS = std::stringstream;
+
+S intString(int i) { return std::to_string(i); }
 
 int systemClock = 0;
 
@@ -35,6 +41,25 @@ void DrawBox(int x, int y, int w, int h, Color c) {
 	DrawRectangleLines(x, y, w, h, c);
 }
 
+
+void DrawDisplay(int w,int h) {
+
+	int sw = 720/2;
+	int sh = 536/2;
+
+	int fw = sw * 4;
+	int fh = sh * 4;
+
+	int ox = (w - fw) / 2;
+	int oy = (h - fh) / 2;
+
+	DrawRectangle(ox, oy, fw, 5, WHITE);
+	DrawRectangle(ox, fh-oy, fw, 5, WHITE);
+}
+
+
+// pal display - lores pixel = 5 * 7
+
 int main(){
 	std::cout << "raydisplay 0.0" << std::endl;
 
@@ -59,9 +84,6 @@ int main(){
 
 	SetTargetFPS(hz);
 	SetConfigFlags(FLAG_VSYNC_HINT);
-// FLAG_WINDOW_HIGHDPI);
-//	InitWindow(768*2, 580*2, title);
-//	InitWindow(1920/2, 1080/2, title);
 	InitWindow(1920, 1080, title);
 
 	Texture2D track=LoadTexture(trackpng);
@@ -94,12 +116,19 @@ int main(){
 
 //		DrawTexture(track, 0, 0, WHITE);
 		DrawTextureEx(track, { -tx,-ty },0, 10, WHITE);
+
+		DrawDisplay(width,height);
+
 #ifdef DRAWTEXT
 		int x = 14;
 		int y = 20;
 		int h = 48;
 		Color c = GOLD;
-		DrawText(title, x, y, h, c); y += h+12;
+
+		SS status;
+		status << title << "  " << intString(width) << "x" <<  intString(height);
+		
+		DrawText(status.str().c_str(), x, y, h, c); y += h + 12;
 		DrawText(version, x, y, h, c); y += h+12;
 		DrawText(splash, x, y, h, c); y += h+12;
 		DrawText(start, x, y, h, c); y += h+12;
@@ -119,6 +148,12 @@ int main(){
 				
 		if (IsKeyPressed(KEY_F11)) {
 			ToggleFullscreen();
+			if (IsWindowFullscreen()) {
+				HideCursor();
+			}
+			else {
+				ShowCursor();
+			}
 		}
 
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
