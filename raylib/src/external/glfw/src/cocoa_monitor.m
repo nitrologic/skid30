@@ -365,8 +365,8 @@ void _glfwPollMonitorsCocoa(void)
         if (CGDisplayModeGetRefreshRate(mode) == 0.0)
             monitor->ns.fallbackRefreshRate = getFallbackRefreshRate(displays[i]);
 
-            monitor->ns.width=CGDisplayModeGetWidth(mode);
-            monitor->ns.height=CGDisplayModeGetHeight(mode);
+            monitor->ns.nativePixelWidth=CGDisplayModeGetWidth(mode);
+            monitor->ns.nativePixelHeight=CGDisplayModeGetHeight(mode);
 
         CGDisplayModeRelease(mode);
 
