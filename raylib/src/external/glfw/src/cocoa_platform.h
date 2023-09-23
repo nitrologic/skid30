@@ -200,6 +200,7 @@ typedef struct _GLFWmonitorNS
     uint32_t            unitNumber;
     id                  screen;
     double              fallbackRefreshRate;
+    int width,height; //simon was here
 } _GLFWmonitorNS;
 
 // Cocoa-specific per-cursor data

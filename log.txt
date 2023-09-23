@@ -1,0 +1,165 @@
+/Users/simon/nitro/skid30/build/skidtool/raydispla/Users/simon/.zprofile:2: command not found: EXPORT
+y
+simon@Simons-MacBook-Air skidtool % /Users/simon/nitro/skid30/build/skidtool/raydi
+splay
+raydisplay 0.0
+INFO: AUDIO: Device initialized successfully
+INFO:     > Backend:       miniaudio / Core Audio
+INFO:     > Format:        32-bit IEEE Floating Point -> 32-bit IEEE Floating Point
+INFO:     > Channels:      2 -> 2
+INFO:     > Sample rate:   48000 -> 48000
+INFO:     > Periods size:  1440
+screens:1
+Built-in Retina Display 1470x956 290X188 @0,0 60hz 
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: Initializing raylib 4.6-dev
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+INFO: DISPLAY: Trying to enable VSYNC
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1470 x 956
+INFO:     > Screen size:  735 x 478
+INFO:     > Render size:  735 x 478
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M2
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: FILEIO: [../../maps/format.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (1024x516 | R8G8B8 | 1 mipmaps)
+INFO: TEXTURE: [ID 3] Texture loaded successfully (1024x516 | R8G8B8 | 1 mipmaps)
+INFO: FILEIO: [../../archive/click.wav] File loaded successfully
+INFO: WAVE: Data loaded successfully (44100 Hz, 16 bit, 1 channels)
+complete
+simon@Simons-MacBook-Air skidtool % /Users/simon/nitro/skid30/build/skidtool/raydi
+splay
+raydisplay 0.0
+INFO: AUDIO: Device initialized successfully
+INFO:     > Backend:       miniaudio / Core Audio
+INFO:     > Format:        32-bit IEEE Floating Point -> 32-bit IEEE Floating Point
+INFO:     > Channels:      2 -> 2
+INFO:     > Sample rate:   48000 -> 48000
+INFO:     > Periods size:  1440
+screens:1
+Built-in Retina Display 1470x956 290X188 @0,0 60hz 
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: Initializing raylib 4.6-dev
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+INFO: DISPLAY: Trying to enable VSYNC
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1470 x 956
+INFO:     > Screen size:  735 x 478
+INFO:     > Render size:  735 x 478
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M2
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: FILEIO: [../../maps/format.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (1024x516 | R8G8B8 | 1 mipmaps)
+INFO: TEXTURE: [ID 3] Texture loaded successfully (1024x516 | R8G8B8 | 1 mipmaps)
+INFO: FILEIO: [../../archive/click.wav] File loaded successfully
+INFO: WAVE: Data loaded successfully (44100 Hz, 16 bit, 1 channels)
+complete
+simon@Simons-MacBook-Air skidtool % /Users/simon/nitro/skid30/build/skidtool/raydi
+splay
+raydisplay 0.0
+INFO: AUDIO: Device initialized successfully
+INFO:     > Backend:       miniaudio / Core Audio
+INFO:     > Format:        32-bit IEEE Floating Point -> 32-bit IEEE Floating Point
+INFO:     > Channels:      2 -> 2
+INFO:     > Sample rate:   48000 -> 48000
+INFO:     > Periods size:  1440
+screens:1
+Built-in Retina Display 1470x956 290X188 @0,0 60hz 
+INFO: TIMER: Target time per frame: 16.667 milliseconds
+INFO: Initializing raylib 4.6-dev
+INFO: Supported raylib modules:
+INFO:     > rcore:..... loaded (mandatory)
+INFO:     > rlgl:...... loaded (mandatory)
+INFO:     > rshapes:... loaded (optional)
+INFO:     > rtextures:. loaded (optional)
+INFO:     > rtext:..... loaded (optional)
+INFO:     > rmodels:... loaded (optional)
+INFO:     > raudio:.... loaded (optional)
+INFO: DISPLAY: Trying to enable VSYNC
+INFO: DISPLAY: Device initialized successfully
+INFO:     > Display size: 1470 x 956
+INFO:     > Screen size:  1470 x 956
+INFO:     > Render size:  1470 x 956
+INFO:     > Viewport offsets: 0, 0
+INFO: GLAD: OpenGL extensions loaded successfully
+INFO: GL: Supported extensions count: 43
+INFO: GL: OpenGL device information:
+INFO:     > Vendor:   Apple
+INFO:     > Renderer: Apple M2
+INFO:     > Version:  4.1 Metal - 83.1
+INFO:     > GLSL:     4.10
+INFO: GL: VAO extension detected, VAO functions loaded successfully
+INFO: GL: NPOT textures extension detected, full NPOT textures supported
+INFO: GL: DXT compressed textures supported
+INFO: TEXTURE: [ID 1] Texture loaded successfully (1x1 | R8G8B8A8 | 1 mipmaps)
+INFO: TEXTURE: [ID 1] Default texture loaded successfully
+INFO: SHADER: [ID 1] Vertex shader compiled successfully
+INFO: SHADER: [ID 2] Fragment shader compiled successfully
+INFO: SHADER: [ID 3] Program shader loaded successfully
+INFO: SHADER: [ID 3] Default shader loaded successfully
+INFO: RLGL: Render batch vertex buffers loaded successfully in RAM (CPU)
+INFO: RLGL: Render batch vertex buffers loaded successfully in VRAM (GPU)
+INFO: RLGL: Default OpenGL state initialized successfully
+INFO: TEXTURE: [ID 2] Texture loaded successfully (128x128 | GRAY_ALPHA | 1 mipmaps)
+INFO: FONT: Default font loaded successfully (224 glyphs)
+INFO: FILEIO: [../../maps/format.png] File loaded successfully
+INFO: IMAGE: Data loaded successfully (1024x516 | R8G8B8 | 1 mipmaps)
+INFO: TEXTURE: [ID 3] Texture loaded successfully (1024x516 | R8G8B8 | 1 mipmaps)
+INFO: FILEIO: [../../archive/click.wav] File loaded successfully
+INFO: WAVE: Data loaded successfully (44100 Hz, 16 bit, 1 channels)
+complete
+simon@Simons-MacBook-Air skidtool % 
