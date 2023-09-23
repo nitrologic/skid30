@@ -19,9 +19,11 @@ include_directories(
   steam/sdk/public
   raylib/src
 )
+
 link_directories(
     steam/sdk/redistributable_bin/win64
 )
+
 set(musashi_src
     musashi/m68kcpu.c
     musashi/m68kdasm.c
@@ -61,6 +63,7 @@ set(zlib_src
     zlib/uncompr.c
     zlib/zutil.c
 )
+
 set(zlib_include
     zlib/crc32.h
     zlib/deflate.h
@@ -107,7 +110,7 @@ ADD_LIBRARY(zlib ${zlib_src} ${zlib_include})
 ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
-ADD_EXECUTABLE(skidtool 
+ADD_EXECUTABLE(acid500 
 #    steamstub.cpp
 #    steamstub.h
     freeaudio/freeaudio.cpp
@@ -128,9 +131,9 @@ ADD_EXECUTABLE(skidtool
 # target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
 
 if(WIN32)
-target_link_libraries(skidtool musashi zlib libpng winmm)
+target_link_libraries(acid500 musashi zlib libpng winmm)
 else()
-target_link_libraries(skidtool musashi zlib libpng)
+target_link_libraries(acid500 musashi zlib libpng)
 endif()
 
 #macos here

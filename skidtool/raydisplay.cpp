@@ -83,7 +83,7 @@ int main(){
 		screenwidth=w;
 		screenheight=h;
 	}
-//	return 0;
+	return 0;
 
 	InitAudioDevice();
 
@@ -94,7 +94,7 @@ int main(){
 //	InitWindow(1920/2, 1080/2, title);
 //	InitWindow(2040, 1332, title);
 //	InitWindow(screenwidth/2, screenheight/2, title);
-	InitWindow(screenwidth, screenheight, title);
+//	InitWindow(screenwidth, screenheight, title);
 
 	Texture2D track=LoadTexture(trackpng);
 
