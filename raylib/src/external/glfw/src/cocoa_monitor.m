@@ -358,7 +358,15 @@ void _glfwPollMonitorsCocoa(void)
         monitor->ns.displayID  = displays[i];
         monitor->ns.unitNumber = unitNumber;
         monitor->ns.screen     = screen;
-        monitor->ns.scaleFactor=[screen backingScaleFactor];
+        monitor->ns.displayScale=[screen backingScaleFactor];
+
+        
+        monitor->ns.displayScale=[screen backingScaleFactor];
+
+        NSRect rect = [screen convertRectToBacking:[screen visibleFrame]];
+        
+        monitor->ns.nativeWidth=rect.size.width;
+        monitor->ns.nativeHeight=rect.size.height;
 
         _glfw_free(name);
 
@@ -559,11 +567,15 @@ void _glfwGetVideoModeCocoa(_GLFWmonitor* monitor, GLFWvidmode *mode)
     CGDisplayModeRef desktopMode = CGDisplayCopyDisplayMode(monitor->ns.displayID);
     *mode = vidmodeFromCGDisplayMode(desktopMode, monitor->ns.fallbackRefreshRate);
     CGDisplayModeRelease(desktopMode);
+        
+        mode->width=monitor->ns.nativeWidth;
+        mode->height=monitor->ns.nativeHeight;
+        
     // fetch native resolution of monitor
-        float scaleFactor = monitor->ns.scaleFactor;
+        float scaleFactor = monitor->ns.displayScale;
         if(scaleFactor>0.01){
-            mode->width *= scaleFactor;
-            mode->height *= scaleFactor;
+//            mode->width *= scaleFactor;
+//            mode->height *= scaleFactor;
         }
  
     } // autoreleasepool
