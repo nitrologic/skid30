@@ -320,18 +320,18 @@ void _glfwPollMonitorsCocoa(void)
 
         const uint32_t unitNumber = CGDisplayUnitNumber(displays[i]);
         NSScreen* screen = nil;
-
+        
         for (screen in [NSScreen screens])
         {
             NSNumber* screenNumber = [screen deviceDescription][@"NSScreenNumber"];
-
+            
             // HACK: Compare unit numbers instead of display IDs to work around
             //       display replacement on machines with automatic graphics
             //       switching
             if (CGDisplayUnitNumber([screenNumber unsignedIntValue]) == unitNumber)
                 break;
-        }
-
+            }
+        
         // HACK: Compare unit numbers instead of display IDs to work around
         //       display replacement on machines with automatic graphics
         //       switching
@@ -358,6 +358,7 @@ void _glfwPollMonitorsCocoa(void)
         monitor->ns.displayID  = displays[i];
         monitor->ns.unitNumber = unitNumber;
         monitor->ns.screen     = screen;
+        monitor->ns.scaleFactor=[screen backingScaleFactor];
 
         _glfw_free(name);
 
@@ -365,11 +366,8 @@ void _glfwPollMonitorsCocoa(void)
         if (CGDisplayModeGetRefreshRate(mode) == 0.0)
             monitor->ns.fallbackRefreshRate = getFallbackRefreshRate(displays[i]);
         
-        monitor->ns.nativePixelWidth=CGDisplayModeGetWidth(mode);
-        monitor->ns.nativePixelHeight=CGDisplayModeGetHeight(mode);
-        
         CGDisplayModeRelease(mode);
-
+        
         _glfwInputMonitor(monitor, GLFW_CONNECTED, _GLFW_INSERT_LAST);
     }
 
@@ -561,10 +559,13 @@ void _glfwGetVideoModeCocoa(_GLFWmonitor* monitor, GLFWvidmode *mode)
     CGDisplayModeRef desktopMode = CGDisplayCopyDisplayMode(monitor->ns.displayID);
     *mode = vidmodeFromCGDisplayMode(desktopMode, monitor->ns.fallbackRefreshRate);
     CGDisplayModeRelease(desktopMode);
-    // fetch native resolution of monitor 
-    mode->width = monitor->ns.nativePixelWidth;
-    mode->height = monitor->ns.nativePixelHeight;
-
+    // fetch native resolution of monitor
+        float scaleFactor = monitor->ns.scaleFactor;
+        if(scaleFactor>0.01){
+            mode->width *= scaleFactor;
+            mode->height *= scaleFactor;
+        }
+ 
     } // autoreleasepool
 }
 

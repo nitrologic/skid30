@@ -11,3 +11,9 @@ xcode
   115  cmake -G Xcode ..
   116  cmake -G Xcode -DCMAKE_BUILD_TYPE=Debug ..
 
+I know I can get this scaling coefficient using the backingScaleFactor method but this is only possible for NSScreen, how can I get the scaling coefficient for a CGDisplay?
+
+https://developer.apple.com/library/archive/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/APIs/APIs.html
+
+CGDisplayModeGetPixelWidth(<#CGDisplayModeRef  _Nullable mode#>) / mode->;
+
