@@ -879,7 +879,7 @@ struct acid68000 {
 			memoryError = machineError;
 			m68k_pulse_halt();
 			// TODO - emit message
-//			systemLog("acid",machineState + std::to_string(qbits) + std::to_string(machineError));
+			systemLog("acid",machineState + std::to_string(qbits) + std::to_string(machineError));
 			machineError = 0;
 //			flushLog();
 //			log_bus(qbits?2:0, 1, physicalAddress, 0);
@@ -2116,6 +2116,12 @@ void loadHunk(std::string path,int physical) {
 
 	filedecoder fd(path);
 
+	if (fd.f==0) {
+		writeString("error");
+		writeEOL();
+		return;
+	}
+
 	// page 256 hunk__header
 
 	u16 h0 = fd.readBigShort();
@@ -2375,7 +2381,7 @@ int runRom(int pc24,const char *name,const char *args,const char *home) {
 	acid500.qwrite32(4, 0x801000); //exec
 	acid500.qwrite32(8, pc24); //pc
 	int pc = pc24;//acid500.readRegister(16);
-	writeClear();
+//	writeClear();
 	m68k_init();
 	m68k_set_cpu_type(acid500_cpu);
 	m68k_pulse_reset();
@@ -2665,10 +2671,10 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* amiga_args= "e cv.lha\n";
-	const char* amiga_args = "e skid.lha\n";
-	const char* amiga_home = ".";
+//	const char* amiga_args = "e skid.lha\n";
+//	const char* amiga_home = ".";
 
 //	const char* amiga_binary = "../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
@@ -2680,6 +2686,12 @@ int main() {
 //	const char* amiga_args = "blitz2.s -S -P\n";
 //	const char* amiga_home = "blitz2\\src";
 
+//	const char* amiga_binary = "C/Avail";
+	const char* amiga_binary = "C/Dir";
+//	const char* amiga_binary = "C/Date";	//needs Utility library
+	const char* amiga_args = "\n\0";
+	const char* amiga_home = ".";
+//
 //	const char* amiga_binary = "skidaf/skid";
 //	const char* amiga_home = "skidaf";
 //	const char* amiga_args = "\n";
@@ -2702,8 +2714,8 @@ int main() {
 
 	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
-//	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
-	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+//	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
