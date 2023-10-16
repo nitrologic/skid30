@@ -52,6 +52,7 @@ public:
 	virtual void unloadseg() = 0;
 	virtual void delay() = 0;
 	virtual void datestamp() = 0;
+	virtual void readargs() = 0;
 };
 class IBench {
 public:

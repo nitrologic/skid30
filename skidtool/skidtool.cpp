@@ -1378,6 +1378,18 @@ public:
 		fileLocks[OUTPUT_STREAM] = &fileMap["stdout"];
 	}
 
+//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node01A1.html
+	void readargs() {
+		int d1 = cpu0->readRegister(1);
+		int d2 = cpu0->readRegister(2);	//array
+		int d3 = cpu0->readRegister(3); //rdargs
+		std::string tremplate = cpu0->fetchString(d1);
+		cpu0->writeRegister(0,0); // default failure
+		doslog << "readargs " << tremplate << "," << d3 << " => " << 0;
+		emit();
+		return;
+	}
+
 // http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0196.html
 	void getvar() {
 		int d1 = cpu0->readRegister(1);
@@ -2686,8 +2698,8 @@ int main() {
 //	const char* amiga_args = "blitz2.s -S -P\n";
 //	const char* amiga_home = "blitz2\\src";
 
-//	const char* amiga_binary = "C/Avail";
-	const char* amiga_binary = "C/Dir";
+	const char* amiga_binary = "C/Avail";	//waiting readargs euspport
+//	const char* amiga_binary = "C/Dir";		//waiting readargs support
 //	const char* amiga_binary = "C/Date";	//needs Utility library
 	const char* amiga_args = "\n\0";
 	const char* amiga_home = ".";

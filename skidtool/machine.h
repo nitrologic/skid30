@@ -249,8 +249,11 @@ enum enum_exec {
 
 	RAWDOFMT=-522,
 	OPENLIBRARY=-552,
+	
 
 	COPYMEM=-624,
+
+	ALLOCVEC = -684,
 };
 
 enum enum_intuition {
@@ -295,6 +298,7 @@ enum enum_dos {
 	DOS_DATESTAMP=-192,
 	DOS_DELAY=-198,
 	DOS_ISINTERACTIVE = -216,
+	DOS_READARGS = -798,
 	DOS_GETVAR = -906
 };
 
@@ -463,6 +467,9 @@ struct amiga16 : memory32{
 		case DOS_CLOSE:
 			dos->close();
 			break;
+		case DOS_READARGS:
+			dos->readargs();
+			break;
 		case DOS_GETVAR:
 			dos->getvar();
 			break;
@@ -554,6 +561,7 @@ struct amiga16 : memory32{
 			exec->rawDoFmt();
 //			return 1;
 			break;
+		case ALLOCVEC:
 		case ALLOCMEM:
 		case ALLOCATE:
 			exec->allocMem();
