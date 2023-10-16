@@ -20,10 +20,10 @@ int readClock() {
 
 // relative to ProjectDir
 
-const char* trackpng = "../../maps/format.png";
-const char* skidmed = "../../MyACID500/skidaf/gfx/skidmarks.med";
-const char* engineiff = "../../MyACID500/skidaf/gfx/engine.iff";
-const char* clickwav = "../../archive/click.wav";
+const char* trackpng = "../../../maps/format.png";
+const char* skidmed = "../../../MyACID500/skidaf/gfx/skidmarks.med";
+const char* engineiff = "../../../MyACID500/skidaf/gfx/engine.iff";
+const char* clickwav = "../../../archive/click.wav";
 
 const char* title = "ACID500";
 const char* version = "raydisplay 0.2";

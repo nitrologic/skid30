@@ -17,3 +17,10 @@ https://developer.apple.com/library/archive/documentation/GraphicsAnimation/Conc
 
 CGDisplayModeGetPixelWidth(<#CGDisplayModeRef  _Nullable mode#>) / mode->;
 
+    // fetch native resolution of monitor
+        float scaleFactor = monitor->ns.displayScale;
+        if(scaleFactor>0.01){
+//            mode->width *= scaleFactor;
+//            mode->height *= scaleFactor;
+        }
+ 
