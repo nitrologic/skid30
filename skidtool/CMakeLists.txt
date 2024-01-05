@@ -17,7 +17,6 @@ include_directories(
   libpng
   musashi
   steam/sdk/public
-  raylib/src
 )
 
 link_directories(
@@ -139,8 +138,3 @@ endif()
 #macos here
 #target_link_libraries(skidtool musashi zlib libpng)
 #ADD_EXECUTABLE(test test.cpp)
-
-
-ADD_EXECUTABLE(raydisplay loadiff.h monitor.h filedecoder.h machine.cpp raydisplay.cpp)
-target_link_libraries(raydisplay raylib)
-target_link_libraries(raydisplay )

@@ -2688,7 +2688,7 @@ int main() {
 //	const char* amiga_args = "e skid.lha\n";
 //	const char* amiga_home = ".";
 
-//	const char* amiga_binary = "../archive/guardian";
+	const char* amiga_binary = "../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
 //	const char* amiga_binary = "../archive/oblivion/oblivion";
 
@@ -2698,7 +2698,7 @@ int main() {
 //	const char* amiga_args = "blitz2.s -S -P\n";
 //	const char* amiga_home = "blitz2\\src";
 
-	const char* amiga_binary = "C/Avail";	//waiting readargs euspport
+//	const char* amiga_binary = "C/Avail";	//waiting readargs support
 //	const char* amiga_binary = "C/Dir";		//waiting readargs support
 //	const char* amiga_binary = "C/Date";	//needs Utility library
 	const char* amiga_args = "\n\0";
