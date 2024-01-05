@@ -2131,6 +2131,7 @@ void loadHunk(std::string path,int physical) {
 	if (fd.f==0) {
 		writeString("error");
 		writeEOL();
+		exit(1);
 		return;
 	}
 
@@ -2688,7 +2689,7 @@ int main() {
 //	const char* amiga_args = "e skid.lha\n";
 //	const char* amiga_home = ".";
 
-	const char* amiga_binary = "../archive/guardian";
+	const char* amiga_binary = "../../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
 //	const char* amiga_binary = "../archive/oblivion/oblivion";
 
