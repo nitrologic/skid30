@@ -1,4 +1,4 @@
-A project to celebrate 30th anniversary of original Skidmarks game.
+A project to celebrate 30th anniversary of original Acid Software games.
 
 The Musashi M68000 emulator has a new home in the ACID500 console.
 
@@ -11,12 +11,7 @@ The ACID500 is designed to boot and execute a selection of classic amiga binarie
 [skidtool](skidtool)
 
 ACID500
-Copyright (c) 2023 Simon Armstong (@nitrologic)
 
-RAYLIB 4.6
-Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
+Copyright (c) 2024 Simon Armstong (@nitrologic)
 
-GLFW
-Copyright (c) 2002-2006 Marcus Geelnard
-Copyright (c) 2006-2019 Camilla Löwy
-
+All rights reserved.

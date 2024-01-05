@@ -1,7 +1,7 @@
 #pragma once
 
 // bespoke computer interface based on public amiga interfaces 
-// (C) 2023 Simon Armstrong
+// (C) 2024 Simon Armstrong
 
 class IExec{
 public:

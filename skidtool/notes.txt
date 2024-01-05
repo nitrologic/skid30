@@ -1,5 +1,13 @@
-
+# add_subdirectory(raylib)
 
 ADD_EXECUTABLE(raydisplay loadiff.h monitor.h filedecoder.h machine.cpp raydisplay.cpp)
 target_link_libraries(raydisplay raylib)
 target_link_libraries(raydisplay )
+
+RAYLIB 4.6
+Copyright (c) 2013-2023 Ramon Santamaria (@raysan5)
+
+GLFW
+Copyright (c) 2002-2006 Marcus Geelnard
+Copyright (c) 2006-2019 Camilla Löwy
+

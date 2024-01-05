@@ -1,6 +1,6 @@
 // acid500 monitor
 // 
-// All rights reserved 2023 Simon Armstrong
+// All rights reserved 2024 Simon Armstrong
 //
 // https://github.com/nitrologic/skid30
 //

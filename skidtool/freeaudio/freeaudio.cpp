@@ -1,5 +1,5 @@
 // freeaudio.cpp
-// (C)2004-2023 Simon Armstrong
+// (C)2004-2024 Simon Armstrong
 // All rights reserved
 
 // 2023.08.23 refresh for acid500 duties
