@@ -7,6 +7,12 @@ std::string machineState = "";
 
 std::vector<std::pair<int,logline>> machineLog;
 
+void flattenString(std::string &s){
+	std::replace(s.begin(), s.end(), '\n', '_');
+	std::replace(s.begin(), s.end(), '\r', '_');
+	std::replace(s.begin(), s.end(), '\0', '|');
+}
+
 void systemLog(const char* tag, std::string s) {
 	std::replace(s.begin(), s.end(), '\n', '_');
 	std::replace(s.begin(), s.end(), '\0', '|');

@@ -9,6 +9,7 @@
 #include "monitor.h"
 #include "filedecoder.h"
 
+void flattenString(std::string &s);
 
 extern int readClock();
 
@@ -652,8 +653,8 @@ struct amiga16 : memory32{
 		if (address == (TASK_BASE + 0xb8)) {
 			return 0xdeadbeef;
 		}
-		if (address == (TASK_BASE + 0xa4)) {
-			return 0xb00bcafe;
+		if (address == (TASK_BASE + 0xa4)) {	//lha
+			return 0xcafeb0b0;
 		}
 		if (address == (TASK_BASE + 0xac)) {	//oblivion
 			return 0xb00bcafe;

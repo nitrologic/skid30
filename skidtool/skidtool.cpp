@@ -1,6 +1,8 @@
 // acid500 monitor
 // 
-// All rights reserved 2024 Simon Armstrong
+// (C) Copyright 2024 Simon Armstrong
+//
+// All rights reserved 
 //
 // https://github.com/nitrologic/skid30
 //
@@ -269,7 +271,8 @@ struct heap {
 rom16 kickstart(0xf80000, 0xff80000, "../../media/kick.rom", 524288 ); // 512K
 #endif
 
-ram16 chipmem(0x000000, 0xff00000, 0x100000);	// 2MB
+ram16 chipmem(0x000000, 0xfe00000, 0x100000);	// 2MB
+
 chipset16 chipset(0xdff000, 0xffff000, 0x100); // 256 16 bit registers dff000..dff1fe 
 interface8 cia_a(0xbfe000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
 interface8 cia_b(0xbfd000, 0xffff000, 0x1000); // 256 16 bit registers dff000..dff1fe 
@@ -1976,6 +1979,8 @@ public:
 
 		cpu0->push(scratch);
 
+		flattenString(fmt);
+
 		execlog << "fmt " << fmt << " => " << s;
 		emit();
 
@@ -2684,12 +2689,12 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-//	const char* amiga_binary = "../archive/lha";
+	const char* amiga_binary = "../archive/lha";
 //	const char* amiga_args= "e cv.lha\n";
-//	const char* amiga_args = "e skid.lha\n";
-//	const char* amiga_home = ".";
+	const char* amiga_args = "e skid.lha\n";
+	const char* amiga_home = ".";
 
-	const char* amiga_binary = "../../archive/guardian";
+//	const char* amiga_binary = "../../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
 //	const char* amiga_binary = "../archive/oblivion/oblivion";
 
@@ -2702,8 +2707,8 @@ int main() {
 //	const char* amiga_binary = "C/Avail";	//waiting readargs support
 //	const char* amiga_binary = "C/Dir";		//waiting readargs support
 //	const char* amiga_binary = "C/Date";	//needs Utility library
-	const char* amiga_args = "\n\0";
-	const char* amiga_home = ".";
+//	const char* amiga_args = "\n\0";
+//	const char* amiga_home = ".";
 //
 //	const char* amiga_binary = "skidaf/skid";
 //	const char* amiga_home = "skidaf";
