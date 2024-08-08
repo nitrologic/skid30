@@ -650,7 +650,7 @@ struct amiga16 : memory32{
 			return BAD_BASE;
 //			return offset;
 		}
-		if (address == (TASK_BASE + 0xb8)) {
+		if (address == (TASK_BASE + 0xb8)) {	//lha stores pointer before writing -1
 			return 0xdeadbeef;
 		}
 		if (address == (TASK_BASE + 0xa4)) {	//lha
