@@ -3,7 +3,9 @@ cmake_minimum_required(VERSION 3.0)
 project(skidtool)
 
 if(WIN32)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+#ninja rules
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
+#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
 add_definitions( -DWIN32 )
 add_definitions( -DUNICODE )
 add_definitions( -D_UNICODE )
@@ -116,6 +118,8 @@ ADD_EXECUTABLE(acid500
     freeaudio/freeaudio.h
     freeaudio/mmdevice.cpp
     skidtool.cpp 
+    skidnative.cpp
+    skidnative.h
     machine.cpp
     machine.h 
     exec.h
@@ -130,7 +134,7 @@ ADD_EXECUTABLE(acid500
 # target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
 
 if(WIN32)
-target_link_libraries(acid500 musashi zlib libpng winmm)
+target_link_libraries(acid500 musashi zlib libpng winmm kernel32)
 else()
 target_link_libraries(acid500 musashi zlib libpng)
 endif()

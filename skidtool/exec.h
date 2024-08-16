@@ -65,6 +65,30 @@
 
 */
 
+#include <cstdint>
+
+#define YEH_NA
+#ifdef YEH_NA
+
+typedef int8_t BYTE;
+typedef uint8_t UBYTE;
+
+typedef uint32_t ULONG;
+
+typedef uint16_t UWORD;
+typedef void VOID;
+
+typedef int32_t APTR;
+typedef int32_t LABEL;
+
+struct List{
+	APTR	LN_SUCC; //Pointer to next (successor)
+	APTR	LN_PRED; //Pointer to previous (predecessor)
+	UBYTE	LN_TYPE;
+	BYTE	LN_PRI; //Priority, for sorting
+	APTR	LN_NAME; //ID string, null terminated
+	LABEL	LN_SIZE; //Note: word aligned
+};
 
 struct Node {
 	struct  Node* ln_Succ;	/* Pointer to next (successor) */
@@ -74,36 +98,30 @@ struct Node {
 	char* ln_Name;		/* ID string, null terminated */
 };	/* Note: word aligned */
 
-class Task {
-public:
-
-	struct Task {
-		struct  Node tc_Node;
-		UBYTE   tc_Flags;
-		UBYTE   tc_State;
-		BYTE    tc_IDNestCnt;	    /* intr disabled nesting*/
-		BYTE    tc_TDNestCnt;	    /* task disabled nesting*/
-		ULONG   tc_SigAlloc;	    /* sigs allocated */
-		ULONG   tc_SigWait;	    /* sigs we are waiting for */
-		ULONG   tc_SigRecvd;	    /* sigs we have received */
-		ULONG   tc_SigExcept;	    /* sigs we will take excepts for */
-		UWORD   tc_TrapAlloc;	    /* traps allocated */
-		UWORD   tc_TrapAble;	    /* traps enabled */
-		APTR    tc_ExceptData;	    /* points to except data */
-		APTR    tc_ExceptCode;	    /* points to except code */
-		APTR    tc_TrapData;	    /* points to trap code */
-		APTR    tc_TrapCode;	    /* points to trap data */
-		APTR    tc_SPReg;		    /* stack pointer	    */
-		APTR    tc_SPLower;	    /* stack lower bound    */
-		APTR    tc_SPUpper;	    /* stack upper bound + 2*/
-		VOID(*tc_Switch)();	    /* task losing CPU	  */
-		VOID(*tc_Launch)();	    /* task getting CPU  */
-		struct  List tc_MemEntry;	    /* Allocated memory. Freed by RemTask() */
-		APTR    tc_UserData;	    /* For use by the task; no restrictions! */
-	};
-
+struct Task {
+	struct  Node tc_Node;
+	UBYTE   tc_Flags;
+	UBYTE   tc_State;
+	BYTE    tc_IDNestCnt;	    /* intr disabled nesting*/
+	BYTE    tc_TDNestCnt;	    /* task disabled nesting*/
+	ULONG   tc_SigAlloc;	    /* sigs allocated */
+	ULONG   tc_SigWait;	    /* sigs we are waiting for */
+	ULONG   tc_SigRecvd;	    /* sigs we have received */
+	ULONG   tc_SigExcept;	    /* sigs we will take excepts for */
+	UWORD   tc_TrapAlloc;	    /* traps allocated */
+	UWORD   tc_TrapAble;	    /* traps enabled */
+	APTR    tc_ExceptData;	    /* points to except data */
+	APTR    tc_ExceptCode;	    /* points to except code */
+	APTR    tc_TrapData;	    /* points to trap code */
+	APTR    tc_TrapCode;	    /* points to trap data */
+	APTR    tc_SPReg;		    /* stack pointer	    */
+	APTR    tc_SPLower;	    /* stack lower bound    */
+	APTR    tc_SPUpper;	    /* stack upper bound + 2*/
+	VOID(*tc_Switch)();	    /* task losing CPU	  */
+	VOID(*tc_Launch)();	    /* task getting CPU  */
+	struct  List tc_MemEntry;	    /* Allocated memory. Freed by RemTask() */
+	APTR    tc_UserData;	    /* For use by the task; no restrictions! */
 };
-
 
 class IExec{
 public:
@@ -175,3 +193,5 @@ public:
 class IFFPMath {
 public:
 };
+
+#endif
