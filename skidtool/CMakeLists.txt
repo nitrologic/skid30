@@ -4,6 +4,7 @@ project(skidtool)
 
 if(WIN32)
 #ninja rules
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
 #SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
 add_definitions( -DWIN32 )
