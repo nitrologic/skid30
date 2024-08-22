@@ -55,9 +55,11 @@ int mouseOn() {
 #endif
 
 #ifdef __linux__
+#include <inttypes.h>
 #include <unistd.h>
 #include <stdio.h>
 
+#include <ctime>
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <sys/time.h>
@@ -78,6 +80,33 @@ int getch2(){
 	scanf("%c",&c);	
 	return (int)c;
 }
+
+// CLOCK_REALTIME
+
+uint64_t millis(){
+	timespec spec;
+    clock_gettime(CLOCK_REALTIME, &spec);
+	return (spec.tv_sec*1000)+(spec.tv_nsec/1e6);
+}
+
+struct std::tm jan1978 = {0,0,0,1,1,78};
+
+void dayminticks(int *dmt) {
+	timeval t;
+	gettimeofday(&t,NULL);
+	std::time_t epoch = std::mktime(&jan1978);   // get time now
+	std::time_t now = std::time(0);   // get time now
+	std::tm* time = std::localtime(&now);
+	int days=std::difftime(now, epoch) / (60 * 60 * 24);;
+	int mins=time->tm_hour*60+time->tm_min;
+	int ticks=t.tv_sec*50+t.tv_usec/2e4;
+    dmt[0]=days;
+	dmt[1]=mins;
+	dmt[2]=ticks;
+}
+
+
+
 #endif
 
 #ifdef __APPLE__
@@ -125,14 +154,6 @@ void dayminticks(int *dmt) {
     dmt[0]=days;
 	dmt[1]=mins;
 	dmt[2]=ticks;
-}
-
-#else
-
-uint64_t millis(){
-	timespec spec;
-    clock_gettime(CLOCK_REALTIME, &spec);
-	return (spec.tv_sec*1000)+(spec.tv_nsec/1e6);
 }
 
 #endif
