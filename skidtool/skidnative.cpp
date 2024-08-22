@@ -52,9 +52,13 @@ int mouseOn() {
 	return 0;
 }
 
-#else
-#include <sys/ioctl.h>
+#endif
 
+#ifdef __linux__
+#include <unistd.h>
+#include <stdio.h>
+
+#include <sys/ioctl.h>
 #include <termios.h>
 #include <sys/time.h>
 
@@ -65,32 +69,31 @@ void screenSize(int &row,int &col){
 	col=w.ws_col;
 }
 
-void Sleep(int ms){
+void sleep(int ms){
 	usleep(ms*1e3);
 }
+
 int getch2(){
 	char c;
 	scanf("%c",&c);	
 	return (int)c;
 }
+#endif
 
-#ifdef LINUX2
+#ifdef __APPLE__
 
+#include <ctime>
 #include "tty_getch.h"
-#include <time.h>
+#include <sys/time.h>
 
 int millis(){
 	uint64_t t=clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
 	return (int)(t/1e6);
 }
-#else
 
-uint64_t millis(){
-	timespec spec;
-    clock_gettime(CLOCK_REALTIME, &spec);
-	return (spec.tv_sec*1000)+(spec.tv_nsec/1e6);
+void sleep(int ms){
+	usleep(ms*1e3);
 }
-
 
 #ifdef NO_TM
 struct tm {
@@ -124,10 +127,15 @@ void dayminticks(int *dmt) {
 	dmt[2]=ticks;
 }
 
-#endif
+#else
+
+uint64_t millis(){
+	timespec spec;
+    clock_gettime(CLOCK_REALTIME, &spec);
+	return (spec.tv_sec*1000)+(spec.tv_nsec/1e6);
+}
 
 #endif
-
 
 void initConsole()
 {
