@@ -2559,9 +2559,12 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_binary = "../archive/lha";
 //	const char* amiga_args= "e cv.lha\n";
-	const char* amiga_args = "e skid.lha\n";
+//	const char* amiga_args = "e skid.lha\n";
+
+	const char* amiga_binary = "C/Avail";
+	const char* amiga_args= "";
 	const char* amiga_home = ".";
 
 //	const char* amiga_binary = "../../archive/guardian";
