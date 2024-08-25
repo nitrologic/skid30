@@ -2429,7 +2429,8 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 //		key=run?0:tty_getch();
 //		key=tty_getch();
 //		key=getch();
-		key=getch2();
+
+		key=getch3();
 
 		if (key == 'q') break;
 

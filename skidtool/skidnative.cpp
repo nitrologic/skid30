@@ -4,6 +4,23 @@
 #include <windows.h>
 #include <conio.h>
 #include <synchapi.h>
+#include <deque>
+#include <mutex>
+#include <thread>
+
+void readInputThread();
+
+std::thread *readThread;
+
+void initConsole()
+{
+	timeBeginPeriod(1);	
+	SetConsoleOutputCP(CP_UTF8);
+//	SetConsoleCP(CP_UTF8);
+	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	SetConsoleMode(hStdin, 0);
+	readThread = new std::thread(readInputThread);
+}
 
 void sleep(int ms)
 {
@@ -23,12 +40,36 @@ void dayminticks(int *dmt) {
 	dmt[2] = time.wSecond * 50 + (time.wMilliseconds/20);
 }
 
+std::mutex inputMutex;
+std::deque<int> inputQueue;
+
+void readInputThread(){
+	while(true){
+		int ch=_getch();
+		if(ch>0){
+			std::unique_lock lock(inputMutex);
+			inputQueue.push_back(ch);
+		}
+	}
+}
+
 int getch2() {
 	if (_kbhit()) {
 		return getch();
 	}
 	return -1;
 }
+
+int getch3() {
+	int value=-1;
+	if(!inputQueue.empty()){
+		std::unique_lock lock(inputMutex);
+		value=inputQueue.front();
+		inputQueue.pop_front();
+	}
+	return value;
+}
+
 void usleep(int micros) {
 	int millis = micros / 1e6;
 	Sleep(millis);
@@ -156,17 +197,13 @@ void dayminticks(int *dmt) {
 	dmt[2]=ticks;
 }
 
-#endif
-
 void initConsole()
 {
-#ifdef WIN32
-	SetConsoleOutputCP(CP_UTF8);
-//	SetConsoleCP(CP_UTF8);
-#endif
-
 #ifdef NCURSES
 	initscr();
 	timeout(200);
 #endif
 }
+
+#endif
+
