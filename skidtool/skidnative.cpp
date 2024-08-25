@@ -1,16 +1,41 @@
 #pragma once
+#include <cstdio>
+#include <cstdlib>
+
+#include <deque>
+#include <mutex>
+#include <thread>
+
+std::mutex inputMutex;
+std::deque<int> inputQueue;
+
+void readInputThread(){
+	while(true){
+//		int ch=getch();
+		int ch=std::getc(stdin);
+		if(ch>0){
+			std::unique_lock lock(inputMutex);
+			inputQueue.push_back(ch);
+		}
+	}
+}
+
+int getch3() {
+	int value=-1;
+	if(!inputQueue.empty()){
+		std::unique_lock lock(inputMutex);
+		value=inputQueue.front();
+		inputQueue.pop_front();
+	}
+	return value;
+}
+
+std::thread *readThread;
 
 #ifdef WIN32
 #include <windows.h>
 #include <conio.h>
 #include <synchapi.h>
-#include <deque>
-#include <mutex>
-#include <thread>
-
-void readInputThread();
-
-std::thread *readThread;
 
 void initConsole()
 {
@@ -27,6 +52,13 @@ void sleep(int ms)
 	Sleep(ms);
 }
 
+int getch2() {
+	if (_kbhit()) {
+		return getch();
+	}
+	return -1;
+}
+
 SYSTEMTIME epoch = { 1978,1,0,1 };
 
 void dayminticks(int *dmt) {
@@ -38,36 +70,6 @@ void dayminticks(int *dmt) {
 	dmt[0] = (v1-v0);
 	dmt[1] = time.wHour * 60 + time.wMinute;
 	dmt[2] = time.wSecond * 50 + (time.wMilliseconds/20);
-}
-
-std::mutex inputMutex;
-std::deque<int> inputQueue;
-
-void readInputThread(){
-	while(true){
-		int ch=_getch();
-		if(ch>0){
-			std::unique_lock lock(inputMutex);
-			inputQueue.push_back(ch);
-		}
-	}
-}
-
-int getch2() {
-	if (_kbhit()) {
-		return getch();
-	}
-	return -1;
-}
-
-int getch3() {
-	int value=-1;
-	if(!inputQueue.empty()){
-		std::unique_lock lock(inputMutex);
-		value=inputQueue.front();
-		inputQueue.pop_front();
-	}
-	return value;
 }
 
 void usleep(int micros) {
@@ -98,12 +100,20 @@ int mouseOn() {
 #ifdef __linux__
 #include <inttypes.h>
 #include <unistd.h>
-#include <stdio.h>
 
 #include <ctime>
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <sys/time.h>
+
+void initConsole()
+{
+#ifdef NCURSES
+	initscr();
+	timeout(200);
+#endif
+	readThread = new std::thread(readInputThread);
+}
 
 void screenSize(int &row,int &col){
 	winsize w;
@@ -195,14 +205,6 @@ void dayminticks(int *dmt) {
     dmt[0]=days;
 	dmt[1]=mins;
 	dmt[2]=ticks;
-}
-
-void initConsole()
-{
-#ifdef NCURSES
-	initscr();
-	timeout(200);
-#endif
 }
 
 #endif
