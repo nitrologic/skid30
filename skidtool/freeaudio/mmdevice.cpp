@@ -46,6 +46,7 @@ struct abuffer {
 	LPWAVEHDR	hdr;
 	u8			*data;
 	int			id;
+	int handle;
 
 	void init(HWAVEOUT device,int size,int n) {
 		hdr=(LPWAVEHDR)malloc(sizeof(WAVEHDR));
@@ -53,7 +54,7 @@ struct abuffer {
 		id=n;
 		hdr->lpData=(LPSTR)data;
 		hdr->dwBufferLength=size;
-		hdr->dwUser=(int)this;
+		hdr->dwUser=(DWORD_PTR)this;
 		hdr->dwFlags=WHDR_BEGINLOOP|WHDR_ENDLOOP;
 		hdr->dwLoops=0x7fffffff;
 		waveOutPrepareHeader(device,hdr,sizeof(WAVEHDR));
@@ -137,13 +138,15 @@ struct winmmdevice:audiodevice {
 	{
 		pcmsetting	pcm(freq,channels,bits);
 		if (bits==8) {mode=0;samplesize=1;} else {mode=1;samplesize=2;}
-		if (waveOutOpen(&device,WAVE_MAPPER,&pcm.wf,0,(long)this,0)) return 1;
+
+		DWORD_PTR instance = (DWORD_PTR)this;
+		if (waveOutOpen(&device,WAVE_MAPPER,&pcm.wf,0,instance,0)) return 1;
 		buffersize=size;
 		bnum=0;
 		mix->freq=freq;
 		mix->channels=channels;
 		buffer.init(device,size*samplesize*32,0);
-		timeSetEvent(5,5,(LPTIMECALLBACK)audioTimerProc,(DWORD)this,TIME_ONESHOT);//PERIODIC );
+		timeSetEvent(5,5,(LPTIMECALLBACK)audioTimerProc,(DWORD_PTR)this,TIME_ONESHOT);//PERIODIC );
 		timeout=0;
 		playing=1;
 		lagbuffers=6;

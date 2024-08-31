@@ -2549,7 +2549,6 @@ int main() {
 	screenSize(rows, cols);
 //	mouseOn();
 	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
-
 	initConsole();
 
 // amiga_binary
@@ -2607,6 +2606,8 @@ int main() {
 	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
 	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+
+
 //	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 //  kickstart sanity test
