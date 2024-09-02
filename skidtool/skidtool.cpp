@@ -2594,7 +2594,7 @@ int main() {
 
 	loadHunk(amiga_binary,ROM_START);
 
-//#define pause
+#define pause
 #ifdef pause
 	writeString("enter to continue");
 	writeEOL();
