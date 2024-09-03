@@ -176,7 +176,6 @@ struct Stream {
 	void writeLong(int b) {
 		out << std::setfill('0') << std::setw(8) << std::right << std::hex << b << std::dec;
 	}
-
 	void writeString(std::string s) {
 		out << s;
 	}
@@ -2426,11 +2425,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 			refresh=false;
 		}
 
-//		key=run?0:tty_getch();
-//		key=tty_getch();
-//		key=getch();
-
-		key=getch3();
+		key=getChar();
 
 		if (key == 'q') break;
 
@@ -2486,15 +2481,12 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 //		usleep(1000);
 	}
 
-
 	std::cout << std::endl << std::endl << "Write log to disk? (y/N)";
-
+	waitChar();
 	acid500.writeLog("skidtool.log");
-
 #ifdef trace_log
 	acid500.writeTrace("trace.log");
 #endif
-
 //	acid500.dumplog(0);
 }
 
@@ -2598,7 +2590,7 @@ int main() {
 #ifdef pause
 	writeString("enter to continue");
 	writeEOL();
-	getchar();
+	waitChar();
 #endif
 
 //	const char* name = "lha @ ROM_START";

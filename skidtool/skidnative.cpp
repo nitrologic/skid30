@@ -5,22 +5,39 @@
 #include <deque>
 #include <mutex>
 #include <thread>
+#include <condition_variable>
 
 std::mutex inputMutex;
-std::deque<int> inputQueue;
+std::mutex availableMutex;
+std::condition_variable inputAvailable;
+std::deque<int> inputQueue;	// shared variable
 
 void readInputThread(){
 	while(true){
 //		int ch=getch();
 		int ch=std::getc(stdin);
 		if(ch>0){
-			std::unique_lock lock(inputMutex);
-			inputQueue.push_back(ch);
+			{
+				std::unique_lock lock(inputMutex);
+				inputQueue.push_back(ch);
+			}
+//			inputAvailable.notify_all();
+			inputAvailable.notify_one();
 		}
 	}
 }
 
-int getch3() {
+int waitChar(){
+	std::unique_lock<std::mutex> lock(availableMutex);
+	if(inputQueue.empty()){
+		inputAvailable.wait(lock,[]{return !inputQueue.empty();});
+	}
+	int value=inputQueue.front();
+	inputQueue.pop_front();
+	return value;
+}
+
+int getChar() {
 	int value=-1;
 	if(!inputQueue.empty()){
 		std::unique_lock lock(inputMutex);

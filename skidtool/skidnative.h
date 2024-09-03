@@ -5,8 +5,8 @@ int millis();
 void dayminticks(int *dmt);
 void sleep(int ms);
 
-int getch2();
-int getch3();
+int waitChar();
+int getChar();
 
 void initConsole();
 void screenSize(int& columns, int& rows);
