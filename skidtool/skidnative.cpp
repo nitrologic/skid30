@@ -28,13 +28,18 @@ void readInputThread(){
 }
 
 int waitChar(){
-	std::unique_lock<std::mutex> lock(availableMutex);
-	if(inputQueue.empty()){
-		inputAvailable.wait(lock,[]{return !inputQueue.empty();});
+	while(true)
+	{
+		std::unique_lock<std::mutex> lock(inputMutex);
+		if(inputQueue.empty()){
+			inputAvailable.wait(lock,[]{return !inputQueue.empty();});
+		}
+		if(!inputQueue.empty()){
+			int value=inputQueue.front();
+			inputQueue.pop_front();
+			return value;
+		}
 	}
-	int value=inputQueue.front();
-	inputQueue.pop_front();
-	return value;
 }
 
 int getChar() {
