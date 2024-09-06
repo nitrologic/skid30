@@ -2230,8 +2230,9 @@ void disassemble(int pc,int count)
 	}
 }
 
-const char* title = "☰☰☰☰☰☰☰☰☰☰ 🟠 ACID500 monitor";
-const char* help = "[s]tep [o]ver [c]ontinue [pause] [r]eset [h]ome [q]uit";
+const char* title = "       ☰☰☰☰☰☰☰ ☰☰☰☰☰☰☰ ☰☰☰☰☰☰☰ 🟠 ACID 500";
+
+const char* help = "[s]tep [o]ver [c]ont [pause] [r]eset [h]ome [q]uit";
 
 const int SP_START = 0x1e00;
 const int ROM_START = 0x2000;
