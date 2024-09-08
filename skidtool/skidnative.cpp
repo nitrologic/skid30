@@ -10,16 +10,18 @@
 std::mutex inputMutex;
 std::mutex availableMutex;
 std::condition_variable inputAvailable;
-std::deque<int> inputQueue;	// shared variable
+std::deque<int> inputQueue;	
+bool empty=true; // shared variable
 
 void readInputThread(){
 	while(true){
-//		int ch=getch();
-		int ch=std::getc(stdin);
+		int ch=getchar();
+//		int ch=std::getc(stdin);
 		if(ch>0){
 			{
 				std::unique_lock lock(inputMutex);
 				inputQueue.push_back(ch);
+				empty=false;
 			}
 //			inputAvailable.notify_all();
 			inputAvailable.notify_one();
@@ -32,7 +34,7 @@ int waitChar(){
 	{
 		std::unique_lock<std::mutex> lock(inputMutex);
 		if(inputQueue.empty()){
-			inputAvailable.wait(lock,[]{return !inputQueue.empty();});
+			inputAvailable.wait(lock,[]{return empty;});
 		}
 		if(!inputQueue.empty()){
 			int value=inputQueue.front();
@@ -164,7 +166,7 @@ void sleep(int ms){
 	usleep(ms*1e3);
 }
 
-int getch2(){
+int getch3(){
 	char c;
 	scanf("%c",&c);	
 	return (int)c;
@@ -205,7 +207,7 @@ void dayminticks(int *dmt) {
 #include <sys/time.h>
 
 void initConsole(){
-	
+	readThread = new std::thread(readInputThread);	
 }
 
 

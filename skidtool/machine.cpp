@@ -72,21 +72,25 @@ void writeData8(int b) {
 
 void writeHome() {
 //	std::cout << "\033[0;0f" << std::flush;
-	std::cout << "\033[0;0H" << std::flush;
-	//	std::cout << "\033[H" << std::flush;
+//	std::cout << "\033[0;0H" << std::flush;
+//	std::cout << "\033[H" << std::flush;
+	std::cout << std::flush;
 }
 
 void writeClear() {
-	std::cout << "\033[2J" << "\033[H" << std::flush;
+//	std::cout << "\033[2J" << "\033[H" << std::flush;
+	std::cout << std::flush;
 }
 
 void writeEOL() {
-	std::cout << "\033[K" << std::endl;
+//	std::cout << "\033[K" << std::endl;
+	std::cout << std::endl;
 }
 void writeSpace() {
 	std::cout << " ";
 }
 void writeChar(int c) {
+//	std::cout << "%" << c;
 	std::cout << (char)c;
 }
 void writeString(std::string s) {

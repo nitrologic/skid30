@@ -2507,7 +2507,7 @@ int convertFiles() {
 int main() {
 
 	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
-	std::cout << "skidtool 0.4" << std::endl;
+	std::cout << "skidtool 0.5" << std::endl;
 /*
 	COORD rect;
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
