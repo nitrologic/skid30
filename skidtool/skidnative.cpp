@@ -204,6 +204,11 @@ void dayminticks(int *dmt) {
 #include "tty_getch.h"
 #include <sys/time.h>
 
+void initConsole(){
+	
+}
+
+
 int millis(){
 	uint64_t t=clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
 	return (int)(t/1e6);
