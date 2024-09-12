@@ -1598,7 +1598,16 @@ public:
 		cpu0->writeRegister(0, lock);
 		doslog << "createDir " << s << " => " << lock; emit();
 	}
+	void printfault(){
+		int d1 = cpu0->readRegister(1);//code
+		int d2 = cpu0->readRegister(2);//header
+		int code=d1;
+		std::string header=cpu0->fetchString(d2);
+		cpu0->writeRegister(0, 0);
+		doslog << "printfault " << header << " - " << code; emit();
+	}
 	void ioerr() {
+		cpu0->writeRegister(0, 0);
 		doslog << "ioErr"; emit();
 	}
 	void createproc() {
@@ -2482,12 +2491,17 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 //		usleep(1000);
 	}
 
-	std::cout << std::endl << std::endl << "Write log to disk? (y/N)";
-	waitChar();
-	acid500.writeLog("skidtool.log");
+	std::cout << std::endl << std::endl << "Write skidtool.log to disk? (y/N) " << std::flush;
+
+//	waitChar();
+//	acid500.writeLog("skidtool.log");
 #ifdef trace_log
 	acid500.writeTrace("trace.log");
 #endif
+
+	std::cout << "done" << std::endl;
+
+	uninitConsole();
 //	acid500.dumplog(0);
 }
 
@@ -2505,9 +2519,9 @@ int convertFiles() {
 
 
 int main() {
-
-	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
 	std::cout << "skidtool 0.5" << std::endl;
+
+//	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
 /*
 	COORD rect;
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -2542,7 +2556,7 @@ int main() {
 	int rows, cols;
 	screenSize(rows, cols);
 //	mouseOn();
-	std::cout << "rows:" << rows << " cols:" << cols << std::endl;
+	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 	initConsole();
 
 // amiga_binary

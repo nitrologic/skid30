@@ -264,11 +264,11 @@ enum enum_intuition {
 enum enum_nonvolatile {
 	NV_GETCOPY = -30,
 	NV_FREEDATA = -36,
-	NV_STORE=-42,
-	NV_DELETE=-48,
-	NV_GETINFO=-54,
-	NV_GETLIST=-60,
-	NV_SETPROTECTION=-66
+	NV_STORE = -42,
+	NV_DELETE = -48,
+	NV_GETINFO = -54,
+	NV_GETLIST = -60,
+	NV_SETPROTECTION = -66
 };
 
 enum enum_graphics {
@@ -294,11 +294,13 @@ enum enum_dos {
 	DOS_EXNEXT = -108,
 	DOS_CREATEDIR = -120,
 	DOS_CURRENTDIR = -126,
-	DOS_LOADSEG=-150,
-	DOS_UNLOADSEG=-156,
-	DOS_DATESTAMP=-192,
-	DOS_DELAY=-198,
+	DOS_IOERR = -132,
+	DOS_LOADSEG = -150,
+	DOS_UNLOADSEG = -156,
+	DOS_DATESTAMP = -192,
+	DOS_DELAY = -198,
 	DOS_ISINTERACTIVE = -216,
+	DOS_PRINTFAULT = -474,
 	DOS_READARGS = -798,
 	DOS_GETVAR = -906
 };
@@ -462,6 +464,13 @@ struct amiga16 : memory32{
 
 	int callDos(int offset) {
 		switch (offset) {
+
+		case DOS_PRINTFAULT:
+			dos->printfault();
+			break;
+		case DOS_IOERR:
+			dos->ioerr();
+			break;
 		case DOS_OPEN:
 			dos->open();			
 			break;

@@ -10,3 +10,4 @@ int getChar();
 
 void initConsole();
 void screenSize(int& columns, int& rows);
+void uninitConsole();

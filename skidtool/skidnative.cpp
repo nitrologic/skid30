@@ -6,15 +6,17 @@
 #include <mutex>
 #include <thread>
 #include <condition_variable>
+#include <atomic>
 
 std::mutex inputMutex;
 std::mutex availableMutex;
 std::condition_variable inputAvailable;
 std::deque<int> inputQueue;	
 bool empty=true; // shared variable
+std::atomic<bool> stopReadThread=false;
 
 void readInputThread(){
-	while(true){
+	while(!stopReadThread){
 		int ch=getchar();
 //		int ch=std::getc(stdin);
 		if(ch>0){
@@ -25,6 +27,8 @@ void readInputThread(){
 			}
 //			inputAvailable.notify_all();
 			inputAvailable.notify_one();
+		}else{
+			return;
 		}
 	}
 }
@@ -61,14 +65,23 @@ std::thread *readThread;
 #include <conio.h>
 #include <synchapi.h>
 
+HANDLE hStdin;
+
 void initConsole()
 {
 	timeBeginPeriod(1);	
 	SetConsoleOutputCP(CP_UTF8);
 //	SetConsoleCP(CP_UTF8);
-	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	hStdin = GetStdHandle(STD_INPUT_HANDLE);
 	SetConsoleMode(hStdin, 0);
 	readThread = new std::thread(readInputThread);
+}
+
+void uninitConsole(){
+	stopReadThread=true;
+	FreeConsole();
+//	CloseHandle(hStdin);
+	readThread->join();
 }
 
 void sleep(int ms)
