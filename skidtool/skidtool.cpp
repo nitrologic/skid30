@@ -2526,7 +2526,9 @@ int convertFiles() {
 
 
 int main() {
+	writeClear();
 	std::cout << "skidtool 0.5" << std::endl;
+
 
 //	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
 /*
