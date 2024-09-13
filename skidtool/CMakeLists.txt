@@ -6,7 +6,9 @@ if(WIN32)
 #ninja rules
 set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
-#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+#msvc rules
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+#windows rules
 add_definitions( -DWIN32 )
 add_definitions( -DUNICODE )
 add_definitions( -D_UNICODE )

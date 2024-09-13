@@ -1,3 +1,6 @@
+cd msvc19
+cmake -G"Visual Studio 17 2022" ..
+
 DOS_IOERR=-132,
 
 enum DosErrors{

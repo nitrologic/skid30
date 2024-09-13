@@ -7,7 +7,14 @@
 // https://github.com/nitrologic/skid30
 //
 
+#include <filesystem>
+
 // #define trace_log
+
+//#include <experimental/filesystem>
+//namespace filesystem = std::experimental::filesystem;
+
+namespace filesystem = std::filesystem;
 
 #define acid500_cpu M68K_CPU_TYPE_68020
 
@@ -924,14 +931,14 @@ struct NativeFile {
 	int status;
 	int isTemp;
 	int isDir;
-	std::filesystem::directory_iterator fileIterator;
+	filesystem::directory_iterator fileIterator;
 
 	int nextLock() {
 		return FILE_STREAM - (fileCount++) * 4;
 	}
 
 	std::string fileName() {
-		std::filesystem::path p(filePath);
+		filesystem::path p(filePath);
 		return p.filename().string();
 	}
 
@@ -1007,7 +1014,7 @@ struct NativeFile {
 
 	int nextEntry() {
 		if (status == 0) {
-			fileIterator = std::filesystem::directory_iterator(filePath);
+			fileIterator = filesystem::directory_iterator(filePath);
 			status = 1;
 		}
 		if (status == 2) {
@@ -1015,7 +1022,7 @@ struct NativeFile {
 			status = 1;
 		}
 		if(status==1){
-			if (fileIterator==std::filesystem::directory_iterator()) {
+			if (fileIterator==filesystem::directory_iterator()) {
 //			if (fileIterator._At_end()) {
 				status = 3;
 				return 0;
@@ -1522,10 +1529,10 @@ public:
 		if (f->nextEntry()) {
 
 			const auto& entry = *(f->fileIterator);
-			std::filesystem::path p = entry.path();
+			filesystem::path p = entry.path();
 
 			std::string s = p.filename().string();
-			//			std::filesystem::directory_entry &entry = fileIterator;
+			//			filesystem::directory_entry &entry = fileIterator;
 
 			uint64_t size = entry.file_size();
 			bool isdir = entry.is_directory();
@@ -2014,7 +2021,7 @@ void loadHunk(std::string path,int physical) {
 	writeString(path);
 	writeEOL();
 
-	std::filesystem::path p(path);
+	filesystem::path p(path);
 	std::string filename=p.filename().string();
 
 	filedecoder fd(path);

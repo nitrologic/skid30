@@ -146,9 +146,10 @@ public:
 };
 class IDos {
 public:
-	virtual void open()=0;
-	virtual void close()=0;
-	virtual void read()=0;
+	virtual void printfault() = 0;
+	virtual void open() = 0;
+	virtual void close() = 0;
+	virtual void read() = 0;
 	virtual void write() = 0;
 	virtual void input() = 0;
 	virtual void output() = 0;
