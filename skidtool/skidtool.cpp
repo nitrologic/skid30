@@ -2413,7 +2413,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 				writeEOL();
 			}
 			writeEOL();
-
+#ifdef HISTORY
 			for (int i = 0; i < PREV_LINES; i++) {
 				int index = (PREV_LINES - i);
 				int pc2 = acid500.previousPC(index);
@@ -2426,7 +2426,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 
 			}
 			writeEOL();
-
+#endif
 			disassemble(pc, ASM_LINES);
 			writeEOL();
 
@@ -2435,8 +2435,8 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 //			acid500.dumplog(5);
 
 			writeString(help);
-			writeEOL();
-			writeEOL();
+//			writeEOL();
+//			writeEOL();
 
 			drawtime=millis();
 			refresh=false;
@@ -2609,7 +2609,7 @@ int main() {
 
 	loadHunk(amiga_binary,ROM_START);
 
-#define pause
+//#define pause
 #ifdef pause
 	writeString("enter to continue");
 	writeEOL();
