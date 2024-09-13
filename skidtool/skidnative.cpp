@@ -168,6 +168,12 @@ void initConsole()
 	readThread = new std::thread(readInputThread);
 }
 
+void uninitConsole()
+{
+	readThread->join();
+}
+
+
 void screenSize(int &row,int &col){
 	winsize w;
 	ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
