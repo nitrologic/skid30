@@ -1,4 +1,6 @@
+mkdir -p skidtool/bin
 pushd skidtool/bin
+cmake ..
 make
 popd
 

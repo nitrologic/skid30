@@ -170,7 +170,8 @@ void initConsole()
 
 void uninitConsole()
 {
-	readThread->join();
+	pthread_cancel(readThread->native_handle());
+//	readThread->join();
 }
 
 
