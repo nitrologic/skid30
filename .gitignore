@@ -19,3 +19,4 @@ build
 macos
 skidtool/bin
 skidtool/msvc19
+skidtool/xcode15

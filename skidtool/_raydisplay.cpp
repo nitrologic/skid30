@@ -84,6 +84,7 @@ int main(){
 		screenheight=h;
 	}
 //	return 0;
+//	return 0;
 
 	InitAudioDevice();
 
