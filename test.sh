@@ -1,3 +1,5 @@
+set -e
+
 mkdir -p skidtool/bin
 pushd skidtool/bin
 cmake ..

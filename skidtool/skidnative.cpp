@@ -226,10 +226,22 @@ void dayminticks(int *dmt) {
 #include "tty_getch.h"
 #include <sys/time.h>
 
+static struct termios old, new1;
+
 void initConsole(){
+    tcgetattr(0, &old); /* grab old terminal i/o settings */
+    new1 = old; /* make new settings same as old settings */
+    new1.c_lflag &= ~ICANON; /* disable buffered i/o */
+//    new1.c_lflag &= echo ? ECHO : ~ECHO; /* set echo mode */
+    tcsetattr(0, TCSANOW, &new1); /* use these new terminal i/o settings now */
+
 	readThread = new std::thread(readInputThread);	
 }
 
+void uninitConsole()
+{
+	pthread_cancel(readThread->native_handle());
+}
 
 int millis(){
 	uint64_t t=clock_gettime_nsec_np(CLOCK_UPTIME_RAW);
