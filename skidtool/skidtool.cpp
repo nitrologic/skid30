@@ -9,7 +9,7 @@
 
 #include <filesystem>
 
-// #define trace_log
+#define trace_log
 
 //#include <experimental/filesystem>
 //namespace filesystem = std::experimental::filesystem;
@@ -2498,16 +2498,17 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 //		usleep(1000);
 	}
 
-	std::cout << std::endl << std::endl << "Write skidtool.log to disk? (y/N) " << std::flush;
-
-//	waitChar();
-//	acid500.writeLog("skidtool.log");
 #ifdef trace_log
-	acid500.writeTrace("trace.log");
+	std::cout << std::endl << std::endl << "Write skidtool.log to disk? (y/N) " << std::flush;
+	int charcode=waitChar();
+	std::cout << "charcode " << charcode << std::flush;
+//	acid500.writeLog("skidtool.log");
+	if(charcode=='y'){
+		acid500.writeTrace("trace.log");
+	}
 #endif
 
 	std::cout << "done" << std::endl;
-
 	uninitConsole();
 //	acid500.dumplog(0);
 }

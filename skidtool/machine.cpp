@@ -83,8 +83,10 @@ void writeClear() {
 }
 
 void writeEOL() {
-//	std::cout << "\033[K" << std::endl;
-	std::cout << "<eol>" << std::endl;
+	// clear to end of line
+	std::cout << "\033[K" << std::endl;
+//	std::cout << "<eol>" << std::endl;
+//	std::cout << std::endl;
 }
 void writeSpace() {
 	std::cout << " ";

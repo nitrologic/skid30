@@ -36,9 +36,11 @@ void readInputThread(){
 int waitChar(){
 	while(true)
 	{
-		std::unique_lock<std::mutex> lock(inputMutex);
-		if(inputQueue.empty()){
-			inputAvailable.wait(lock,[]{return empty;});
+		{
+			std::unique_lock<std::mutex> lock(inputMutex);
+			if(inputQueue.empty()){
+				inputAvailable.wait(lock,[]{return !empty;});
+			}
 		}
 		if(!inputQueue.empty()){
 			int value=inputQueue.front();
