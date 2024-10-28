@@ -22,7 +22,7 @@ const int PREV_LINES = 4;
 const int ASM_LINES = 6;
 const int LOG_LINES = 4;
 
-#define RUN_CYCLES_PER_TICK 1024
+#define RUN_CYCLES_PER_TICK 1024*64
 
 #include <assert.h>
 #include <sstream>
@@ -2427,8 +2427,8 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 			}
 			writeEOL();
 #endif
-			disassemble(pc, ASM_LINES);
-			writeEOL();
+//			disassemble(pc, ASM_LINES);
+//			writeEOL();
 
 			displayLogLines(LOG_LINES);
 
@@ -2501,7 +2501,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 #ifdef trace_log
 	std::cout << std::endl << std::endl << "Write skidtool.log to disk? (y/N) " << std::flush;
 	int charcode=waitChar();
-	std::cout << "charcode " << charcode << std::flush;
+//	std::cout << "charcode " << charcode << std::flush;
 //	acid500.writeLog("skidtool.log");
 	if(charcode=='y'){
 		acid500.writeTrace("trace.log");
@@ -2581,9 +2581,9 @@ int main() {
 //	const char* amiga_args= "e cv.lha\n";
 //	const char* amiga_args = "e skid.lha\n";
 
-	const char* amiga_binary = "C/Avail";
-	const char* amiga_args= "";
-	const char* amiga_home = ".";
+//	const char* amiga_binary = "C/Avail";
+//	const char* amiga_args= "";
+//	const char* amiga_home = ".";
 
 //	const char* amiga_binary = "../../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
@@ -2591,9 +2591,14 @@ int main() {
 
 //	const int nops[] = {0x63d6, 0};
 
-//	const char* amiga_binary = "../archive/genam";
-//	const char* amiga_args = "blitz2.s -S -P\n";
-//	const char* amiga_home = "blitz2\\src";
+	const char* amiga_binary = "../archive/genam";
+	const char* amiga_args = "blitz2skid.s\n";
+	const char* amiga_home = "blitz2src";
+
+//	const char* amiga_binary = "blitz2src/blitz2skid";
+//	const char* amiga_args = "\n";
+//	const char* amiga_home = ".";
+	//	const char* amiga_args = "blitz2.s -S -P\n";
 
 //	const char* amiga_binary = "C/Avail";	//waiting readargs support
 //	const char* amiga_binary = "C/Dir";		//waiting readargs support
