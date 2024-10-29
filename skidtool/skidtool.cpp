@@ -2582,10 +2582,10 @@ int main() {
 //	const char* amiga_args = "e skid.lha\n";
 
 //	const char* amiga_binary = "C/Avail";
-	const char* amiga_args= "";
-	const char* amiga_home = ".";
+//	const char* amiga_args= "";
+//	const char* amiga_home = ".";
 
-	const char* amiga_binary = "../archive/skidpower/skidmarks";
+//	const char* amiga_binary = "../archive/skidpower/skidmarks";
 
 //	const char* amiga_binary = "../../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
@@ -2593,9 +2593,9 @@ int main() {
 
 //	const int nops[] = {0x63d6, 0};
 
-//	const char* amiga_binary = "../archive/genam";
-//	const char* amiga_args = "blitz2skid.s\n";
-//	const char* amiga_home = "blitz2src";
+	const char* amiga_binary = "../archive/genam";
+	const char* amiga_args = "blitz2skid.s\n\0";
+	const char* amiga_home = "blitz2src";
 
 //	const char* amiga_binary = "blitz2src/blitz2skid";
 //	const char* amiga_args = "\n";
