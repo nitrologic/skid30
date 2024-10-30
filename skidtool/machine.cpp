@@ -116,10 +116,7 @@ void writeCC4Big(int tag) {
 	}
 }
 
-
-
-
-Chunk loadChunk(std::string path,int physical) {
+Chunk loadPhysicalChunk(std::string path,int physical) {
 
 	std::replace(path.begin(),path.end(),':','\\');
 
@@ -274,7 +271,8 @@ Chunk loadChunk(std::string path,int physical) {
 		}
 		default:
 		{
-			std::cout << "type " << std::hex << type << " not supported " << std::endl;
+			std::cout << "type " << std::dec << type << " not supported " << std::endl;
+//			std::cout << "type " << std::hex << type << " not supported " << std::endl;
 //			assert(false);
 			break;
 		}

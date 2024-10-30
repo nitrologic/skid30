@@ -56,7 +56,7 @@ End Function
 namespace fs = std::filesystem;
 
 
-bool pathExists(const std::string& path){
+bool pathExists(const fs::path& path ){//const std::string& path){
 	try{
 		return fs::exists(path);
 	}catch(fs::filesystem_error e){
@@ -1572,7 +1572,7 @@ public:
 		std::string segname = cpu0->fetchPath(d1);
 		int seglist = 0;
 		int physical = 0x050000;
-		Chunk chunk = loadChunk(segname, physical);
+		Chunk chunk = loadPhysicalChunk(segname, physical);
 		int n = chunk.size();
 		for (int i = 0; i < n; i++) {
 			acid500.qwrite16(physical + i * 2, chunk[i]);
@@ -2266,9 +2266,20 @@ void loadHunk(std::string path,int physical) {
 			}
 			break;
 		}
+		case 1003: // HUNK__BSS
+		{
+			std::cout << "HUNK_BSS" << std::endl;
+			int target = offsetWords[index];
+			u32 count = fd.readBigInt();
+			for (int i = 0; i < count; i++) {
+				chunk[target+i*2+0] = 0;
+				chunk[target + i * 2 + 1] = 0;
+			}
+			break;
+		}
 		case 1004:	//RELOC32
 		{
-//			std::cout << "HUNK_RELOC32" << std::endl;
+			std::cout << "HUNK_RELOC32" << std::endl;
 			while (true) {
 				u32 count = fd.readBigInt();
 				if (count == 0)
@@ -2299,8 +2310,9 @@ void loadHunk(std::string path,int physical) {
 		}
 		default:
 		{
-			std::cout << "type " << std::hex << type << " not supported " << std::endl;
-//			assert(false);
+			//std::cout << "type " << std::hex << type << " not supported " << std::endl;
+			std::cout << "type " << type << " not supported " << std::endl;
+			//			assert(false);
 			break;
 		}
 		}
@@ -2647,16 +2659,12 @@ int convertFiles() {
 	return 0;
 }
 
-
-// main entry point
-
+// main entry point for acid500 skidkick
 
 int main() {
 	writeClear();
-	std::cout << "skidtool 0.6" << std::endl;
-
-
 //	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
+	std::cout << "skidtool nitrokick 0.6" << std::endl;
 /*
 	COORD rect;
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -2694,9 +2702,24 @@ int main() {
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 	initConsole();
 
+#ifdef test_genam
 	const char* amiga_binary = "../archive/genam";
 	const char* amiga_args = "blitz2skid.s\n";
 	const char* amiga_home = "blitz2src";
+#endif
+
+#define test_guard
+
+#ifdef test_guard
+	//  const char* amiga_binary = "../../archive/guardian";
+	//	const char* amiga_binary = "../archive/virus";
+	//	const char* amiga_binary = "../archive/oblivion/oblivion";
+	//	const char* amiga_binary = "../archive/skidpower/skidmarks";
+
+	const char* amiga_binary = "skidpow30/Skid";
+	const char* amiga_home = "skidpow30";
+	const char* amiga_args = "";
+#endif
 
 // amiga_binary
 // 
@@ -2713,14 +2736,6 @@ int main() {
 //	const char* amiga_binary = "C/Avail";
 //	const char* amiga_args= "";
 //	const char* amiga_home = ".";
-//	const char* amiga_args= "";
-//	const char* amiga_home = ".";
-
-//	const char* amiga_binary = "../archive/skidpower/skidmarks";
-
-//	const char* amiga_binary = "../../archive/guardian";
-//	const char* amiga_binary = "../archive/virus";
-//	const char* amiga_binary = "../archive/oblivion/oblivion";
 
 //	const int nops[] = {0x63d6, 0};
 

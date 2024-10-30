@@ -56,7 +56,7 @@ public:
 };
 
 
-Chunk loadChunk(std::string path, int physical);
+Chunk loadPhysicalChunk(std::string path, int physical);
 
 
 class IEvent {

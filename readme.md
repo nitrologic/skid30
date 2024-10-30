@@ -2,11 +2,7 @@
 
 Latest milestone - ACID500 sucessfully hosts Hisoft genam3 assembling fresh build of Sibly's finest source.
 
-![ACID500 monitor tool](media/sig12.jpg)
-
-A project to celebrate 30th anniversary of original Acid Software games.
-
-The Musashi M68000 emulator has a new home in the ACID500 console.
+The Musashi M68000 emulator finds a new home in the ACID500 console.
 
 ![ACID500 monitor tool](media/sig12.jpg)
 
