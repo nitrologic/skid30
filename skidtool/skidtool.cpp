@@ -2569,6 +2569,13 @@ int main() {
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 	initConsole();
 
+
+	const char* amiga_binary = "../archive/genam";
+	const char* amiga_args = "blitz2skid.s\n";
+	const char* amiga_home = "blitz2src";
+
+
+
 // amiga_binary
 // 
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
@@ -2582,20 +2589,16 @@ int main() {
 //	const char* amiga_args = "e skid.lha\n";
 
 //	const char* amiga_binary = "C/Avail";
-	const char* amiga_args= "";
-	const char* amiga_home = ".";
+//	const char* amiga_args= "";
+//	const char* amiga_home = ".";
 
-	const char* amiga_binary = "../archive/skidpower/skidmarks";
+//	const char* amiga_binary = "../archive/skidpower/skidmarks";
 
 //	const char* amiga_binary = "../../archive/guardian";
 //	const char* amiga_binary = "../archive/virus";
 //	const char* amiga_binary = "../archive/oblivion/oblivion";
 
 //	const int nops[] = {0x63d6, 0};
-
-//	const char* amiga_binary = "../archive/genam";
-//	const char* amiga_args = "blitz2skid.s\n";
-//	const char* amiga_home = "blitz2src";
 
 //	const char* amiga_binary = "blitz2src/blitz2skid";
 //	const char* amiga_args = "\n";
@@ -2630,10 +2633,9 @@ int main() {
 
 	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
-	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+//	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
-
-//	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
