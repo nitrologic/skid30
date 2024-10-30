@@ -7,7 +7,112 @@
 // https://github.com/nitrologic/skid30
 //
 
+#include <iostream>
 #include <filesystem>
+
+/*
+Rem
+bbdoc: Returns a case sensitive filename if it exists from a case insensitive file path.
+End Rem
+Function CasedFileName$(path$)
+	Local	dir,sub$,s$,f$,folder$,p
+	Local	mode,size,mtime,ctime       
+	If stat_( path,mode,size,mtime,ctime )=0
+		mode:&S_IFMT_
+		If mode=S_IFREG_ Or mode=S_IFDIR_ Return path
+	EndIf
+	folder$="."
+	For p=Len(path)-2 To 0 Step -1
+		If path[p]=47 Exit
+	Next
+	If p>0
+		sub=path[0..p]
+		sub$=CasedFileName(sub$)
+		If Not sub$ Return
+		path=path$[Len(sub)+1..]
+		folder$=sub
+	EndIf
+	s=path.ToLower()
+	dir=opendir_(folder)
+	If dir
+		While True
+			f=readdir_(dir)
+			If Not f Exit
+			If s=f.ToLower()
+				If sub f=sub+"/"+f
+				closedir_(dir)
+				Return f
+			EndIf
+		Wend
+		closedir_(dir)
+	EndIf
+End Function
+*/
+
+#include <string>
+#include <filesystem>
+#include <algorithm>
+
+namespace fs = std::filesystem;
+
+
+bool pathExists(const std::string& path){
+	try{
+		return fs::exists(path);
+	}catch(fs::filesystem_error e){
+		return false;
+	}
+}
+
+std::string CasedFileName(const std::string& path) {
+	fs::path fs_path(path);
+
+	// If the file or directory exists with the exact case, return it
+	if (pathExists(fs_path)) {
+		return fs_path.string();
+	}
+
+	// Separate folder and file name
+	fs::path folder = fs_path.parent_path();
+	std::string filename = fs_path.filename().string();
+
+	// Convert filename to lowercase for case-insensitive comparison
+	std::string filename_lower = filename;
+	std::transform(filename_lower.begin(), filename_lower.end(), filename_lower.begin(), ::tolower);
+
+	// If folder path is empty, search in current directory
+	if (folder.empty()) {
+		folder = ".";
+	}
+
+	// Iterate over files in the specified directory
+	try{
+		for (const auto& entry : fs::directory_iterator(folder)) {
+
+			try{
+
+				std::string entry_name = entry.path().filename().string();
+				std::string entry_name_lower = entry_name;
+				std::transform(entry_name_lower.begin(), entry_name_lower.end(), entry_name_lower.begin(), ::tolower);
+
+				// Check if filenames match in a case-insensitive manner
+				if (filename_lower == entry_name_lower) {
+					return (folder / entry_name).string();
+				}
+			}catch(fs::filesystem_error error){
+				std::cout << "fs::filesystem_error : " << error.what() << std::endl;
+			}
+		}
+	}catch(fs::filesystem_error error){
+		std::cout << "iterate folder : " << folder << " fs::filesystem_error : " << error.what() << std::endl;
+	}
+
+	// Return empty string if no match found
+	return "";
+}
+
+
+
 
 #define trace_log
 
@@ -166,6 +271,11 @@ amiga16 mig(0x800000, 0xff00000, 0x100000);
 
 // chinnamasta soc
 
+
+#include <filesystem>
+
+char fileSeparator = std::filesystem::path::preferred_separator;
+
 extern "C" {
 #include "musashi/m68k.h"
 #include "musashi/m68kcpu.h"
@@ -174,8 +284,6 @@ extern "C" {
 #include "musashi/mmu.h"
 #include "musashi/m68kops.h"
 }
-
-
 
 struct Stream {
 	std::stringstream out;
@@ -497,17 +605,27 @@ struct acid68000 {
 	}
 
 	void setHome(std::string path) {
-		homePath = path + "\\";
+		homePath = path + fileSeparator;
 	}
+
+	// TODO case sensitive file system support
 
 	std::string fetchPath(int a1) {
 		std::string s=fetchString(a1);
 //		s = str_tolower(s);
-		std::replace(s.begin(),s.end(),'/','\\');
+		if(fileSeparator=='\\'){
+			std::replace(s.begin(),s.end(),'/','\\');
+		}else{
+			std::replace(s.begin(),s.end(),'\\','/');
+		}
 		int p = s.find_first_of(':');
 		if (p<0) {
 			s = homePath + s;
 		}
+
+		std::string ss=CasedFileName(s);
+
+		std::cout << "fetchPath " << s << std::endl;
 		return s;
 	}
 
@@ -915,8 +1033,6 @@ void ekopString(std::string s, char* dest, int maxlen) {
 	}
 	dest[(i & -4) | (3 - (i & 3))] = 0;
 }
-
-#include <filesystem>
 
 typedef std::vector<uint8_t> Blob;
 
