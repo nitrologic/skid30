@@ -22,8 +22,9 @@ void systemLog(const char* tag, std::string s) {
 //	ss << addressString(clock) << " [" << tag << "] " << s;
 	ss << "[" << tag << "] " << s;
 	std::string line = ss.str();
-//	std::cout << line << std::endl;
 	machineLog.push_back({ clock, line });
+// if logging to console
+//	std::cout << line << std::endl;
 }
 
 std::string addressString(int b) {

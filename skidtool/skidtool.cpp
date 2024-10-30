@@ -608,7 +608,8 @@ struct acid68000 {
 		homePath = path + fileSeparator;
 	}
 
-	// TODO case sensitive file system support
+	// check case sensitive file system support
+	// check caller empty string result exception handling
 
 	std::string fetchPath(int a1) {
 		std::string s=fetchString(a1);
@@ -622,10 +623,11 @@ struct acid68000 {
 		if (p<0) {
 			s = homePath + s;
 		}
-
 		std::string ss=CasedFileName(s);
-
-		std::cout << "fetchPath " << s << std::endl;
+//		std::cout << "fetchPath " << s << " => " << ss << std::endl;
+		if(ss.length()){
+			s=ss;
+		}
 		return s;
 	}
 
@@ -1171,6 +1173,11 @@ struct NativeFile {
 		}
 		// TODO: interpret amiga mode to fopen _Mode
 		fileHandle = fopen(filePath.c_str(), m);
+#if LOG_VERBOSE		
+		if(!fileHandle){
+			std::cout << "fopen failure for " << filePath << " mode " << m << std::endl;
+		}
+#endif
 		statFile();
 		status = (fileHandle) ? 0 : -1;
 		return fileHandle?1:0;
@@ -1424,12 +1431,14 @@ public:
 			}
 			else 
 			{
+//				std::cout << "::open lock failure " << s << std::endl;
 				f->unlock(lock);
 			}
+		}else{
+			std::cout << "::open no lock failure " << s << std::endl;
 		}
 		int result = success ? lock : 0;
 		cpu0->writeRegister(0, result);
-
 //		doslog << "open " << s << " " << std::dec << d2 << " => " << std::hex <<result;
 		doslog << "open " << s << " " << modeNames[d2] << " => " << result;
 		emit();
@@ -2644,7 +2653,7 @@ int convertFiles() {
 
 int main() {
 	writeClear();
-	std::cout << "skidtool 0.5" << std::endl;
+	std::cout << "skidtool 0.6" << std::endl;
 
 
 //	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
@@ -2685,12 +2694,9 @@ int main() {
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 	initConsole();
 
-
 	const char* amiga_binary = "../archive/genam";
 	const char* amiga_args = "blitz2skid.s\n";
 	const char* amiga_home = "blitz2src";
-
-
 
 // amiga_binary
 // 
