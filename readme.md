@@ -1,4 +1,4 @@
-![ACID500 hosting genam assembler](media/genam3blitz2.jpg)
+![ACID500 hosting genam assembler](media/genam3blitz2.png)
 
 Latest milestone - ACID500 sucessfully hosts Hisoft genam3 assembling fresh build of Sibly's finest source.
 
