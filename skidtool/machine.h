@@ -302,7 +302,9 @@ enum enum_dos {
 	DOS_ISINTERACTIVE = -216,
 	DOS_PRINTFAULT = -474,
 	DOS_READARGS = -798,
-	DOS_GETVAR = -906
+	DOS_FREEARGS = -858,
+	DOS_GETVAR = -906,
+	DOS_VPRINTF = -954
 };
 
 // address is 0x800000
@@ -480,8 +482,14 @@ struct amiga16 : memory32{
 		case DOS_READARGS:
 			dos->readargs();
 			break;
+		case DOS_FREEARGS:
+			dos->freeargs();
+			break;
 		case DOS_GETVAR:
 			dos->getvar();
+			break;
+		case DOS_VPRINTF:
+			dos->vprintf();
 			break;
 		case DOS_ISINTERACTIVE:
 //			return offset;

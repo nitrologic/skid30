@@ -12,16 +12,15 @@ message("### CMAKE_CXX_COMPILER_ID ${CMAKE_CXX_COMPILER_ID}")
 
 if(MSVC)
 #msvc rules
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std:c++17")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std:c++17")
 else()
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
+if(WIN32)
+set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+endif(WIN32)
 endif()
 
 if(WIN32)
-#ninja rules
-set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -std=c++17")
-#windows rules
 add_definitions( -DWIN32 )
 add_definitions( -DUNICODE )
 add_definitions( -D_UNICODE )
@@ -135,6 +134,7 @@ ADD_EXECUTABLE(acid500
 	skidtool.cpp 
 	skidnative.cpp
 	skidnative.h
+	skidkick.h
 	machine.cpp
 	machine.h 
 	exec.h

@@ -174,6 +174,8 @@ public:
 	virtual void delay() = 0;
 	virtual void datestamp() = 0;
 	virtual void readargs() = 0;
+	virtual void freeargs() = 0;
+	virtual void vprintf() = 0;
 };
 class IBench {
 public:
