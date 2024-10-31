@@ -486,6 +486,13 @@ struct MemEvent : Stream {
 	int pc;
 	std::string label;
 
+	MemEvent(const MemEvent&other) {
+		time = other.time;
+		address = other.address;
+		data = other.data;
+		pc = other.pc;
+		label = other.label;
+	}
 	MemEvent(int t32, int a32, int d32, int pc32, std::string label0) :time(t32), address(a32), data(d32), pc(pc32), label(label0) {
 	}
 
@@ -527,14 +534,13 @@ struct MemEvent : Stream {
 		}
 		if (star) {
 			writeSpace();
+			writeChar('*');
 			writeAddress(pc32);
 		}
 
 		writeSpace();
 		writeString(label);
-
 		writeEOL();
-
 		return flush();
 	}
 };
@@ -810,6 +816,8 @@ struct acid68000 {
 		unsigned int value = m68k_get_reg(context, (m68k_register_t) reg);
 		return (int)value;
 	}
+
+	// sets ::mem
 
 	int decode(int physicalAddress) {
 #ifdef KICKSTART		
@@ -1387,7 +1395,29 @@ public:
 		fileLocks[INPUT_STREAM] = &fileMap["stdin"];
 		fileLocks[OUTPUT_STREAM] = &fileMap["stdout"];
 	}
+/*
+* struct CSource {
+	UBYTE	*CS_Buffer;
+	LONG	CS_Length;
+	LONG	CS_CurChr;
+};
+struct RDArgs {
+	struct	CSource RDA_Source;	// Select input source 
+	LONG	RDA_DAList;		// PRIVATE. 
+	UBYTE* RDA_Buffer;		// Optional string parsing space. 
+	LONG	RDA_BufSiz;		// Size of RDA_Buffer (0..n) 
+	UBYTE* RDA_ExtHelp;		// Optional extended help 
+	LONG	RDA_Flags;		// Flags for any required control 
+};
+#define RDAB_STDIN	0	// Use "STDIN" rather than "COMMAND LINE" 
+#define RDAF_STDIN	1
+#define RDAB_NOALLOC	1	// If set, do not allocate extra string space.
+#define RDAF_NOALLOC	2
+#define RDAB_NOPROMPT	2	// Disable reprompting for string input. 
+#define RDAF_NOPROMPT	4
+*/
 
+	\
 //http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node01A1.html
 	void readargs() {
 		int d1 = cpu0->readRegister(1);
@@ -2708,7 +2738,7 @@ int main() {
 	const char* amiga_home = "blitz2src";
 #endif
 
-#define test_guard
+//#define test_guard
 
 #ifdef test_guard
 	//  const char* amiga_binary = "../../archive/guardian";
@@ -2719,6 +2749,13 @@ int main() {
 	const char* amiga_binary = "skidpow30/Skid";
 	const char* amiga_home = "skidpow30";
 	const char* amiga_args = "";
+#endif
+
+#define test_avail
+#ifdef test_avail
+	const char* amiga_binary = "C/Avail";	//waiting readargs support
+	const char* amiga_args = "\n\0";
+	const char* amiga_home = ".";
 #endif
 
 // amiga_binary

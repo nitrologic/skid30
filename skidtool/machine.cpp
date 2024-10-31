@@ -1,6 +1,8 @@
 #include "machine.h"
 #include "m68k.h"
 
+#define LOG_VERBOSE
+
 int machineError;
 
 std::string machineState = "";
@@ -24,7 +26,9 @@ void systemLog(const char* tag, std::string s) {
 	std::string line = ss.str();
 	machineLog.push_back({ clock, line });
 // if logging to console
-//	std::cout << line << std::endl;
+#ifdef LOG_VERBOSE
+	std::cout << line;// << std::endl;
+#endif
 }
 
 std::string addressString(int b) {
