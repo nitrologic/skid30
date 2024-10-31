@@ -1,7 +1,7 @@
 #include "machine.h"
 #include "m68k.h"
 
-#define LOG_VERBOSE
+//#define LOG_VERBOSE
 
 int machineError;
 

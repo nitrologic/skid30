@@ -12,6 +12,21 @@
 #include <sys/stat.h>
 #endif
 
+
+enum {
+	MEMF_ANY = 0,
+	MEMF_PUBLIC = 1,
+	MEMF_CHIP = 2,
+	MEMF_FAST = 4,
+	MEMF_LOCAL = 256,
+	MEMF_DMA = 512,
+	MEMF_KICK = 1024,
+	MEMF_CLEAR = 0x10000,
+	MEMF_LARGEST = 0x20000,
+	MEMF_REVERSE = 0x40000,
+	MEMF_TOTAL = 0x80000
+};
+
 struct acidmicro {
 
 	virtual int setSignalBits(int newbits, int setbits) = 0;
@@ -47,6 +62,85 @@ struct acidmicro {
 
 };
 
+std::string decodeFormattedString(acidmicro *cpu0, std::string fmt, int args) {
+	int a1 = args;
+	//		systemLog("fmt", fmt);
+	std::stringstream ss;
+
+	for (auto i = 0; i < fmt.length(); i++) {
+		char c = fmt[i];
+		if (c == '%') {
+			int len = 2;
+			int word = 0;
+			int decode = 1;
+			int dec = 0;
+			char pad = 0;
+			std::string s;
+			while (decode) {
+				char d = fmt[++i];
+				if (d >= '0' && d <= '9') {
+					if (d == 0) pad = '0';
+					dec = dec * 10 + (int)(d - '0');
+					continue;
+				}
+				switch (d) {	//b=bstr d=decimal u=unsigned x=hex s=str
+				case '%':
+					ss << '%';
+					decode = 0;
+					break;
+				case 's': {
+					int p = cpu0->read32(a1);
+					s = cpu0->fetchString(p);
+					a1 += 4;
+					ss << s;
+					decode = 0;
+				}
+						break;
+				case 'l':
+					len = 4;
+					break;
+				case 'd':
+					if (len == 2) {
+						word = cpu0->read16(a1);
+						a1 += 2;
+					}
+					else {
+						word = cpu0->read32(a1);
+						a1 += 4;
+					}
+					{
+						std::string w = std::to_string(word);
+						size_t pad = (dec > w.length()) ? dec - w.length() : 0;
+						ss << std::string(pad, ' ');
+						ss << (int)word;
+					}
+					decode = 0;
+					break;
+				case 'c':
+					if (len == 2) {
+						d = cpu0->read16(a1);
+						a1 += 2;
+					}
+					else {
+						d = cpu0->read32(a1);
+						a1 += 4;
+					}
+					ss << (char)d;
+					decode = 0;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		else {
+			ss << (char)c;
+		}
+
+	}
+	ss << '\0';
+	return ss.str();
+}
 
 #include <string.h>
 
@@ -391,8 +485,10 @@ public:
 		int d1 = cpu0->readRegister(1); // format
 		int d2 = cpu0->readRegister(2); // array
 		std::string format = cpu0->fetchString(d1);
-        std::cout << "VPRINTF " << format << std::endl;
-    }
+//		std::cout << "VPRINTF " << format << std::endl;
+		std::string s = decodeFormattedString(cpu0, format, d2);
+		std::cout << "{VF}" << s << std::endl;
+	}
 
 /*
 * struct CSource {
@@ -422,7 +518,9 @@ struct RDArgs {
 		int d3 = cpu0->readRegister(3); // rdargs
 		std::string tremplate = cpu0->fetchString(d1);
 		cpu0->writeRegister(0,emptyArgs); // default failure
+#ifdef LOG_VERBOSE
 		doslog << "readargs " << tremplate << "," << d3 << " => " << 0;
+#endif
 		emit();
 		return;
 	}
@@ -939,77 +1037,8 @@ public:
 		int a3 = cpu0->readRegister(11);//putchdata
 
 		std::string fmt = cpu0->fetchString(a0);
-//		systemLog("fmt", fmt);
-		std::stringstream ss;
 
-		for (auto i = 0; i < fmt.length(); i++) {
-			char c = fmt[i];
-			if (c == '%') {
-				int len = 2;
-				int word = 0;
-				int decode = 1;
-				int dec = 0;
-				char pad = 0;
-				std::string s;
-				while(decode){
-					char d = fmt[++i];
-					if (d >= '0' && d <= '9') {
-						if (d == 0) pad = '0';
-						dec = dec * 10 + (int)(d - '0');
-						continue;
-					}
-					switch (d) {	//b=bstr d=decimal u=unsigned x=hex s=str
-						case '%':
-							ss << '%';
-							decode = 0;
-							break;
-						case 's': {
-							int p = cpu0->read32(a1);
-							s = cpu0->fetchString(p);
-							a1 += 4;
-							ss << s;
-							decode = 0; }
-							break;
-						case 'l':
-							len = 4;
-							break;
-						case 'd':
-							if (len == 2) {
-								word = cpu0->read16(a1);
-								a1 += 2;
-							}
-							else {
-								word = cpu0->read32(a1);
-								a1 += 4;
-							}
-							ss << (int)word;
-							decode = 0;
-							break;
-						case 'c':
-							if (len == 2) {
-								d = cpu0->read16(a1); 
-								a1 += 2;
-							}
-							else {
-								d = cpu0->read32(a1);
-								a1 += 4;
-							}
-							ss << (char)d;
-							decode = 0;
-							break;
-						default:
-							break;
-					}
-				}
-			}
-			else {
-				ss << (char)c;
-			}
-
-		}
-
-		ss << '\0';
-		std::string s = ss.str();
+		std::string s = decodeFormattedString(cpu0,fmt,a1);
 		int n = s.length();
 
 		// todo: check null terminated
@@ -1043,6 +1072,9 @@ public:
 	void availMem() {
 		int d1 = cpu0->readRegister(1);	//attributes
 		int bytes = 0x400000;
+
+		if (d1 & MEMF_FAST) bytes = 0;
+
 		cpu0->writeRegister(0, bytes);
 		execlog << "availMem " << d1 << " => " << bytes;
 	}

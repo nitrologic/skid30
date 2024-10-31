@@ -647,7 +647,8 @@ struct acid68000 : acidmicro {
 	// TODO - round size to page boundary
 
 	int allocate(int size, int bits) {
-		//		size = (size + 3) & -4;
+		if (bits & MEMF_FAST) return 0;
+//		size = (size + 3) & -4;
 		size = (size + 31) & -32;
 		int p = heapPointer;
 		heapPointer += size;
@@ -914,7 +915,7 @@ struct acid68000 : acidmicro {
 	}
 
 	void push(int physicalAddress) {
-		int sp=readRegister(15)-4;
+		int sp = readRegister(15) - 4;
 		write32(sp, physicalAddress);
 		writeRegister(15, sp);
 	}
@@ -931,10 +932,10 @@ struct acid68000 : acidmicro {
 		mem->write32(address, value);
 	}
 
-	int writes(int physicalAddress, std::string s,int maxlen) {
+	int writes(int physicalAddress, std::string s, int maxlen) {
 		int address = decode(physicalAddress);
 		int count = 0;
-		for(auto c:s){
+		for (auto c : s) {
 			mem->write8(address++, c);
 			count++;
 			if (count >= maxlen) break;
