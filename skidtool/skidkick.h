@@ -8,6 +8,8 @@
 #include <filesystem>
 #ifdef _WIN32
 #include <direct.h>
+#else
+#include <sys/stat.h>
 #endif
 
 struct acidmicro {
