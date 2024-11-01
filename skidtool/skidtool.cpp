@@ -611,9 +611,21 @@ struct acid68000 : acidmicro {
 		else {
 			std::replace(s.begin(), s.end(), '\\', '/');
 		}
+		int t = s.find_first_of(':');
+
+
 		int p = s.find_first_of(':');
 		if (p < 0) {
 			s = homePath + s;
+		}else{
+			std::string device=s.substr(0,p);
+			s=s.substr(p+1);
+			if (device == "t" || device == "T") {
+				s = "temp/" + s;
+			}
+			else {
+				// return error
+			}
 		}
 		std::string ss = CasedFileName(s);
 		//		std::cout << "fetchPath " << s << " => " << ss << std::endl;
@@ -1421,6 +1433,7 @@ int runRom(int pc24,const char *name,const char *args,const char *home) {
 			run = false;
 			err = acid500.memoryError;
 		}
+		flushLog();
 	}
 	std::cout << "cycles: " << acid500.cycle << std::endl;
 	acid500.writeLog("skidtool.log");
@@ -1690,7 +1703,7 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-#define test_avail
+//#define test_avail
 #ifdef test_avail
 	const char* amiga_binary = "C/Avail";	//waiting readargs support
 	const char* amiga_args = "\n\0";
@@ -1705,13 +1718,15 @@ int main() {
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
 
-//	const char* amiga_binary = "../archive/lha";
+#define test_lha
+#ifdef test_lha
+	const char* amiga_home = ".";
+	const char* amiga_binary = "../archive/lha";
 //	const char* amiga_args= "e cv.lha\n";
-//	const char* amiga_args = "e skid.lha\n";
-
+	const char* amiga_args = "e skid.lha\n";
+#endif
 //	const char* amiga_binary = "C/Avail";
 //	const char* amiga_args= "";
-//	const char* amiga_home = ".";
 
 //	const int nops[] = {0x63d6, 0};
 

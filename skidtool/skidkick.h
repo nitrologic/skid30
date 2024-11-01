@@ -724,8 +724,12 @@ struct RDArgs {
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
 		std::string s = cpu0->fetchPath(d1);
+		
 		if (fileMap.count(s) == 0) {
 			fileMap[s] = NativeFile(s);
+		}
+		else {
+			fileMap[s].statFile();
 		}
 		NativeFile* file = &fileMap[s];
 
@@ -741,6 +745,7 @@ struct RDArgs {
 			}
 		}
 		
+
 		int result = success ? lock : 0;
 
 		cpu0->writeRegister(0, result);
