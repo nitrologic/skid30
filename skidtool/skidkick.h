@@ -1,4 +1,3 @@
-
 #include "skidnative.h"
 #include "exec.h"
 #include "machine.h"
@@ -12,6 +11,9 @@
 #include <sys/stat.h>
 #endif
 
+#define LOG_DOS
+
+//#define ZERO_PAD_FREAD			
 
 enum {
 	MEMF_ANY = 0,
@@ -253,6 +255,7 @@ struct NativeFile {
 		int h = nextLock();
 		if (exclusive) {
 			if (bcplLocks.size() || exclusiveLock || fileHandle) {
+				std::cout << "NativeFile::addLock failure " << std::endl;
 				return 0;
 			}
 			exclusiveLock = h;
@@ -362,7 +365,7 @@ struct NativeFile {
 		}
 		// TODO: interpret amiga mode to fopen _Mode
 		fileHandle = fopen(filePath.c_str(), m);
-#if LOG_VERBOSE		
+#ifdef LOG_DOS
 		if(!fileHandle){
 			std::cout << "fopen failure for " << filePath << " mode " << m << std::endl;
 		}
@@ -546,6 +549,7 @@ struct RDArgs {
 		std::string s = cpu0->fetchPath(d1);
 		if (fileMap.count(s)==0) {
 			fileMap[s] = NativeFile(s);
+			std::cout << " NativeFile : " << s << std::endl;
 		}
 		NativeFile* f = &fileMap[s];
 		bool exclusive = (d2 == MODE_NEWFILE);
@@ -593,7 +597,7 @@ struct RDArgs {
 			for (int i = 0; i < n; i++) {
 				cpu0->write8(d2 + i, blob[i]);
 			}
-#ifndef ZERO_PAD_FREAD			
+#ifdef ZERO_PAD_FREAD			
 			for (int i = n; i < d3; i++) {
 				cpu0->write8(d2 + i, 0);
 			}
@@ -720,6 +724,11 @@ struct RDArgs {
 		emit();
 	}
 
+#define SHARED_LOCK	     -2	    // File is readable by others 
+#define ACCESS_READ	     -2	    // Synonym 
+#define EXCLUSIVE_LOCK	     -1	    // No other access allowed	  
+#define ACCESS_WRITE	     -1	    // Synonym 
+
 	void lock(){
 		int d1 = cpu0->readRegister(1);//name
 		int d2 = cpu0->readRegister(2);//type
@@ -733,7 +742,7 @@ struct RDArgs {
 		}
 		NativeFile* file = &fileMap[s];
 
-		int success = (file->status == 0) || (d2 == -1);
+		int success = (file->status == 0) || (d2 == -1) || (d2 == -2);
 		int lock = 0;
 
 		if (success) {
@@ -744,7 +753,10 @@ struct RDArgs {
 				// yeh nah what?
 			}
 		}
-		
+		else {
+			std::cout << "no scuccess lock path : " << s << std::endl;
+		}
+
 
 		int result = success ? lock : 0;
 
@@ -1035,6 +1047,8 @@ public:
 		execlog << "openDevice " << devname << "," << d0 << "," << a1 << "," << d1 << " <= " << r; emit();
 	}
 
+	// todo - leaks scratch memory 
+
 	void rawDoFmt() {
 		int a0 = cpu0->readRegister(8);//fmt
 		int a1 = cpu0->readRegister(9);//args
@@ -1056,17 +1070,15 @@ public:
 			cpu0->write16(scratch + i * 4 + 2,0x4e92);	//jsr(a2)
 		}
 		cpu0->write16(scratch + n * 4, 0x4e75);
-
 		cpu0->push(scratch);
 
-		flattenString(fmt);
+		// simon come here
 
-		execlog << "fmt " << fmt << " => " << s;
-		emit();
-
+//		flattenString(fmt);
+//		execlog << "fmt " << fmt << " => " << s;
+//		emit();
 //		machineError = scratch;
 //		cpu0->memoryError = scratch;
-
 // TODO: interpret datastream from the docs, generate instructionlist
 // TODO: return args ptr (a1) at new pos
 	}

@@ -1,0 +1,368 @@
+skidtool nitrokick 0.6
+screenSize rows:120 cols:35
+Reading Hunk from ../archive/lha
+$ 24482400 $ 42322000 $ 60000046 $ 00000fa0 $ 524b4559 $ 424f4231 $ 2a60c923 $ ffffffff
+HUNK_RELOC32
+HUNK_RELOC32
+unexpected data remaining in file
+0 0xcccc
+
+000000 [hunk] lha start:002000 end:00ef60
+000001 [args] e skid.lha_
+000002 [home] .
+000003 [mem] 00000000 R l 000000 00001e00 *000004 ZERO
+00000d [read32] 801114,0080c000
+00000f [read32] 80c0ac,00810000
+000021 [exec] allocMem 1dbc,10001 => 20040
+000544 [exec] openlibrary dos.library,802000
+00054d [read32] 802022,0080f000
+00054f [read16] 80f034 flags:0 <= -1
+000550 [read16] 80f034 flags:0 <= -1
+000551 [write16] 80f034,ffff
+000559 [read32] 801114,0080c000
+00055b [read32] 80c098,00000000
+000560 [exec] setTaskPri
+000565 [exec] setTaskPri
+00066c [exec] findTask <= 80e000
+00066f [read32] 80e0b8,deadbeef
+000672 [write16] 80e0b8,ffff
+000673 [write16] 80e0ba,ffff
+00067f [dos] getvar LHAOPTS => ffffffff
+000883 [dos] input
+000887 [dos] isInteractive
+LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use.
+Registered to Steffen Salzmann
+
+Extracting from archive 'skid.lha':
+Extracting: (       0/      21)  Skid/.info
+
+01431e [exec] findTask <= 80e000
+014321 [read32] 80e0b8,deadbeef
+014324 [write16] 80e0b8,ffff
+014325 [write16] 80e0ba,ffff
+01433c [dos] lock temp/ SHARED => ffffffe8
+01435c [dos] unlock ffffffe8
+014370 [write16] 80e0b8,dead
+014371 [write16] 80e0ba,beef
+01450e [dos] output
+0145af [write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+0147d2 [dos] output
+01481d [write] Registered to Steffen Salzmann_
+014852 [dos] output
+014861 [write] _
+0148b5 [dos] output
+0148cc [write]
+0149d6 [exec] allocMem 110,1 => 22020
+014b88 [dos] lock .\skid.lha SHARED => ffffffe4
+014b97 [dos] examine(ffffffe4) <= 1
+014bb0 [dos] unlock ffffffe4
+014bda [exec] allocMem 2c,10001 => 22140
+014c0b [exec] allocMem d,1 => 22180
+014e86 [exec] freemem
+014f54 [exec] allocMem 3ecc,1 => 22200
+014f76 [exec] allocMem 800c,10001 => 260e0
+014f9a [exec] allocMem a10c,10001 => 2e100
+0150a2 [dos] output
+0150f7 [write] Extracting from archive 'skid.lha':_
+015164 [exec] allocMem 3e,1 => 382c0
+0151b2 [exec] allocMem 800c,1 => 38300
+0151e5 [dos] open .\skid.lha OLDFILE => ffffffe0
+015216 [exec] allocMem 15,1 => 40320
+0152e8 [dos] seek ffffffe0,0,BEGINNING => 0
+0152f7 [dos] read ffffffe0 , 3830c , 8000 => 8000
+015358 [exec] copyMem 14
+01543f [exec] copyMem d
+01557d [exec] allocMem 17,1 => 40340
+0156d6 [exec] allocMem 12,1 => 40360
+01571f [exec] allocMem 11,1 => 40380
+01575a [exec] freemem
+0159bf [dos] output
+Extracting: (       0/      21)  Skid/.info
+015ae2 [dos] lock .\Skid\.info SHARED => ffffffdc
+015b08 [dos] unlock ffffffdc
+015d48 [dos] output
+015dc7 [write] _'Skid/.info' already exists, overwrite? (Y/N/A/S/Q):
+015e12 [dos] output
+015e27 [write]
+015e42 [exec] findTask <= 80e000
+015e45 [read32] 80e0a4,cafeb0b0
+015e4a [read32] 80e0a4,cafeb0b0
+015e55 [exec] findTask <= 80e000
+015e64 [exec] allocMem 50,10001 => 40660
+015e88 [exec] putMsg
+015e8c [exec] waitPort
+015e90 [exec] getMsg
+015ea6 [exec] freemem
+015eb3 [dos] input
+015eba [dos] read fffffffc , 219c3 , 1 => 1
+015ec3 [exec] findTask <= 80e000
+015ec6 [read32] 80e0a4,cafeb0b0
+015ecb [read32] 80e0a4,cafeb0b0
+015ed6 [exec] findTask <= 80e000
+015ee5 [exec] allocMem 50,10001 => 406c0
+015f09 [exec] putMsg
+015f0d [exec] waitPort
+015f11 [exec] getMsg
+015f27 [exec] freemem
+015f6c [dos] output
+015f83 [write]
+015fe6 [dos] output
+
+
+016034 [dos] open .\Skid\.info NEWFILE => ffffffd8
+016090 [dos] output
+
+0260f8 [dos] output
+02610d [write]
+0261dd [exec] copyMem 14
+0262aa [exec] freemem
+0262c4 [exec] freemem
+02634f [exec] copyMem 18
+026548 [exec] allocMem 22,1 => 407a0
+026793 [exec] allocMem 19,1 => 407e0
+0267f2 [exec] allocMem 15,1 => 40800
+026835 [exec] freemem
+026b6f [dos] output
+Extracting: (       0/     232)  Skid/gfx/cars.palette
+026cc6 [dos] lock .\Skid\gfx\cars.palette SHARED => ffffffd4
+026cec [dos] unlock ffffffd4
+026e4d [dos] open .\Skid\gfx\cars.palette NEWFILE => ffffffd0
+026ea9 [dos] output
+
+026f0f [dos] output
+026f24 [write]
+026ff4 [exec] copyMem 14
+0270c1 [exec] freemem
+0270db [exec] freemem
+027166 [exec] copyMem 16
+02733d [exec] allocMem 20,1 => 40a40
+027554 [exec] allocMem 17,1 => 40a60
+0275af [exec] allocMem 15,1 => 40a80
+0275f2 [exec] freemem
+027907 [dos] output
+Extracting: (       0/    8738)  Skid/gfx/engine.iff
+027a56 [dos] lock .\Skid\gfx\engine.iff SHARED => ffffffcc
+027a7c [dos] unlock ffffffcc
+027bda [dos] open .\Skid\gfx\engine.iff NEWFILE => ffffffc8
+027c36 [dos] output
+
+027c9c [dos] output
+027cb1 [write]
+027d81 [exec] copyMem 14
+027e4e [exec] freemem
+027e68 [exec] freemem
+027ef3 [exec] copyMem 14
+0280a8 [exec] allocMem 1e,1 => 40cc0
+02828b [exec] allocMem 15,1 => 40ce0
+0282e2 [exec] allocMem 15,1 => 40d00
+028325 [exec] freemem
+028616 [dos] output
+Extracting: (       0/    2164)  Skid/gfx/flag.iff
+02875d [dos] lock .\Skid\gfx\flag.iff SHARED => ffffffc4
+028783 [dos] unlock ffffffc4
+0288de [dos] open .\Skid\gfx\flag.iff NEWFILE => ffffffc0
+02893a [dos] output
+
+0289a0 [dos] output
+0289b5 [write]
+028a85 [exec] copyMem 14
+028b52 [exec] freemem
+028b6c [exec] freemem
+028bf7 [exec] copyMem 16
+028dce [exec] allocMem 20,1 => 40f00
+028fe5 [exec] allocMem 17,1 => 40f20
+029040 [exec] allocMem 15,1 => 40f40
+029083 [exec] freemem
+039399 [dos] output
+Extracting: (       0/     770)  Skid/gfx/impact.iff
+0394e8 [dos] lock .\Skid\gfx\impact.iff SHARED => ffffffbc
+03950e [dos] unlock ffffffbc
+03967a [dos] open .\Skid\gfx\impact.iff NEWFILE => ffffffb8
+0396d6 [dos] output
+
+03973c [dos] output
+039751 [write]
+039821 [exec] copyMem 14
+0398ee [exec] freemem
+039908 [exec] freemem
+039993 [exec] copyMem 13
+039b37 [exec] allocMem 1d,1 => 41180
+039d00 [exec] allocMem 14,1 => 411a0
+039d55 [exec] allocMem 15,1 => 411c0
+039d98 [exec] freemem
+03a077 [dos] output
+Extracting: (       0/     930)  Skid/gfx/num.iff
+03a1ba [dos] lock .\Skid\gfx\num.iff SHARED => ffffffb4
+03a1e0 [dos] unlock ffffffb4
+03a344 [dos] open .\Skid\gfx\num.iff NEWFILE => ffffffb0
+03a3a0 [dos] output
+
+03a406 [dos] output
+03a41b [write]
+03a4eb [exec] copyMem 14
+03a5b8 [exec] freemem
+03a5d2 [exec] freemem
+03a65d [exec] copyMem 17
+03a845 [exec] allocMem 21,1 => 413c0
+03aa76 [exec] allocMem 18,1 => 41400
+03aad3 [exec] allocMem 15,1 => 41420
+03ab16 [exec] freemem
+03ae3d [dos] output
+Extracting: (       0/    1336)  Skid/gfx/results.iff
+03af90 [dos] lock .\Skid\gfx\results.iff SHARED => ffffffac
+03afb6 [dos] unlock ffffffac
+03b135 [dos] open .\Skid\gfx\results.iff NEWFILE => ffffffa8
+03b191 [dos] output
+
+03b1f7 [dos] output
+03b20c [write]
+03b2dc [exec] copyMem 14
+03b3a9 [exec] freemem
+03b3c3 [exec] freemem
+03b44e [exec] copyMem 14
+03b603 [exec] allocMem 1e,1 => 41660
+03b7e6 [exec] allocMem 15,1 => 41680
+03b83d [exec] allocMem 15,1 => 416a0
+03b880 [exec] freemem
+03bb71 [dos] output
+Extracting: (       0/    3972)  Skid/gfx/skid.iff
+03bcb8 [dos] lock .\Skid\gfx\skid.iff SHARED => ffffffa4
+03bcde [dos] unlock ffffffa4
+03be55 [dos] open .\Skid\gfx\skid.iff NEWFILE => ffffffa0
+03beb1 [dos] output
+
+03bf17 [dos] output
+03bf2c [write]
+*** Error on file 'format.iff' : Unable to open output file
+Extracting: (       0/    8386)  Skid/maps/format.map04c00b [exec] copyMem 14
+04c0d8 [exec] freemem
+04c0f2 [exec] freemem
+04c17d [exec] copyMem 19
+04c387 [exec] allocMem 23,1 => 418a0
+04c5ec [exec] allocMem 1a,1 => 418e0
+04c64d [exec] allocMem 15,1 => 41900
+04c690 [exec] freemem
+04c9dc [dos] output
+Extracting: (       0/   70812)  Skid/gfx/skidmarks.med
+04cb37 [dos] lock .\Skid\gfx\skidmarks.med SHARED => ffffff9c
+04cb5d [dos] unlock ffffff9c
+04ccf4 [dos] open .\Skid\gfx\skidmarks.med NEWFILE => ffffff98
+04cd50 [dos] output
+
+04cdb6 [dos] output
+04cdcb [write]
+04ce8c [dos] seek ffffffe0,d73b,BEGINNING => d73b
+04ce9b [dos] read ffffffe0 , 3830c , 8000 => 8000
+04cefc [exec] copyMem 14
+04cfc9 [exec] freemem
+04cfe3 [exec] freemem
+04d06e [exec] copyMem 17
+04d256 [exec] allocMem 21,1 => 41b40
+04d47d [exec] allocMem 17,1 => 41b80
+04d4da [exec] allocMem 16,1 => 41ba0
+04d51f [exec] freemem
+04d84b [dos] output
+Extracting: (       0/  139720)  Skid/maps/format.iff
+04d9a0 [dos] lock .\Skid\maps\format.iff SHARED => ffffff94
+04d9c6 [dos] unlock ffffff94
+04db92 [dos] lock .\Skid SHARED => ffffff90
+04dbb4 [dos] unlock ffffff90
+04dbfe [dos] lock .\Skid\maps SHARED => ffffff8c
+04dc20 [dos] unlock ffffff8c
+04dd1b [dos] output
+04dd30 [write]
+04de0d [dos] output
+*** Error on file 'format.iff' :
+04df4e [dos] output
+04df97 [write] Unable to open output file_
+04e069 [dos] seek ffffffe0,25468,BEGINNING => 25468
+04e078 [dos] read ffffffe0 , 3830c , 8000 => 8000
+04e0d9 [exec] copyMem 14
+04e1a6 [exec] freemem
+04e1c0 [exec] freemem
+04e24b [exec] copyMem 17
+04e433 [exec] allocMem 21,1 => 41ee0
+04e65a [exec] allocMem 17,1 => 41f20
+04e6b7 [exec] allocMem 16,1 => 41f40
+04e6fc [exec] freemem
+04ea27 [dos] output
+Extracting: (       0/    8386)  Skid/maps/format.map
+04eb7c [dos] lock .\Skid\maps\format.map SHARED => ffffff88
+04eba2 [dos] unlock ffffff88
+04ed6e [dos] lock .\Skid SHARED => ffffff84
+04ed90 [dos] unlock ffffff84
+04edda [dos] lock .\Skid\maps SHARED => ffffff80
+04edfc [dos] unlock ffffff80
+*** Error on file 'format.map' : Unable to open output file
+*** Error on file 'skid' : Unable to open output file
+3 files extracted, 3 files failed.
+
+Operation not entirely successful.
+
+
+05eefd [dos] output
+05ef12 [write]
+05efef [dos] output
+*** Error on file 'format.map' :
+05f130 [dos] output
+05f179 [write] Unable to open output file_
+05f259 [exec] copyMem 14
+05f326 [exec] freemem
+05f340 [exec] freemem
+05f3cb [exec] copyMem c
+05f4f8 [exec] allocMem 16,1 => 42280
+05f637 [exec] allocMem 11,1 => 422a0
+05f67e [exec] allocMem 11,1 => 422c0
+05f6b9 [exec] freemem
+05f90c [dos] output
+Extracting: (       0/  128616)  Skid/skid
+05fa2b [dos] lock .\Skid\skid SHARED => ffffff7c
+05fa51 [dos] unlock ffffff7c
+05fbe6 [dos] lock .\Skid SHARED => ffffff78
+05fc08 [dos] unlock ffffff78
+05fcdf [dos] output
+05fcf4 [write]
+05fdb3 [dos] output
+*** Error on file 'skid' :
+05fee8 [dos] output
+05ff31 [write] Unable to open output file_
+060002 [dos] seek ffffffe0,43ce1,BEGINNING => 43ce1
+060011 [dos] read ffffffe0 , 3830c , 8000 => 1
+060065 [dos] close ffffffe0 => 0
+060086 [exec] freemem
+06009f [exec] freemem
+0600b6 [exec] freemem
+060151 [dos] output
+3 files extracted
+060209 [dos] output
+060236 [write] , 3 files failed
+060286 [dos] output
+06029f [write] .__
+0602d9 [exec] freemem
+0602f0 [exec] freemem
+060307 [exec] freemem
+0603e2 [dos] output
+060435 [write] Operation not entirely successful._
+060456 [dos] currentDir 0
+0604bd [dos] close ffffffd8 => 0
+0604c8 [dos] close ffffffd0 => 0
+0604d3 [dos] close ffffffc8 => 0
+0604de [dos] close ffffffc0 => 0
+0604e9 [dos] close ffffffb8 => 0
+0604f4 [dos] close ffffffb0 => 0
+0604ff [dos] close ffffffa8 => 0
+06050a [dos] close ffffffa0 => 0
+060515 [dos] close ffffff98 => 0
+0606f1 [exec] freemem
+0606fd [exec] freemem
+060709 [exec] freemem
+060715 [exec] freemem
+060724 [dos] output
+06072b [write]
+060730 [read32] 801114,0080c000
+060735 [exec] setTaskPri
+06073c [exec] closeLibrary
+060746 [exec] freemem
+060f51 [mem] 00050014 W w fffffe 00ee *00205c
+060f52 [mem] 00050014 W w fffffc 1000 *00205c
+cycles: 366879
