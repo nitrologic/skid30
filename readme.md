@@ -12,6 +12,6 @@ Latest milestone - ACID500 sucessfully hosts Hisoft genam assembling a fresh bui
 
 Active progress on this project includes the use of the lha command line archiving tool as most useful utility to have running.
 
-Current research is AmigaDOS lock behavior as possibly cause of lha tool write failures. [recent log file](MyAcid500/log/lhaskid4.log)
+Current research is AmigaDOS lock behavior as possibly cause of lha tool write failures. [recent log file](MyACID500/log/lhaskid4.log)
 
 [skidtool](skidtool)
