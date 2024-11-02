@@ -209,9 +209,11 @@ std::string str_tolower(std::string s)
 //}
 
 void flushLog() {
+#ifdef LOG_COUT
 	for (auto it : machineLog) {
 		std::cout << addressString(it.first) << " " << it.second << std::endl;
 	}
+#endif
 	machineLog.clear();
 }
 
@@ -1666,7 +1668,7 @@ int convertFiles() {
 int main() {
 	writeClear();
 //	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
-	std::cout << "skidtool nitrokick 0.6" << std::endl;
+	std::cout << "skidtool nitrokick 0.7" << std::endl;
 /*
 	COORD rect;
 	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);

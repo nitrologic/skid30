@@ -11,7 +11,7 @@
 #include <sys/stat.h>
 #endif
 
-#define LOG_DOS
+//#define LOG_DOS
 
 //#define ZERO_PAD_FREAD			
 
@@ -747,7 +747,7 @@ struct RDArgs {
 		}
 		NativeFile* file = &fileMap[s];
 
-		int success = (file->status == 0) || (d2 == -1) || (d2 == -2);
+		int success = (file->status == 0) || (d2 == -1);
 		int lock = 0;
 
 		if (success) {
