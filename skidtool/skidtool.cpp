@@ -856,7 +856,10 @@ struct acid68000 : acidmicro {
 			if ((a32 & 0xff000000) == 0xff000000) {
 				// link address here
 //				physicalAddress = 0;
-				a32 = 0;
+				std::cout << "read8 bad address" << std::endl;
+				memoryError = a32;
+				m68k_pulse_halt();
+				return -1;
 			}
 		}
 		int physicalAddress = a32 & 0xffffff;
@@ -1570,17 +1573,13 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 			}
 			writeEOL();
 #endif
-//			disassemble(pc, ASM_LINES);
-//			writeEOL();
-
+			disassemble(pc, ASM_LINES);
+			writeEOL();
 			displayLogLines(LOG_LINES);
-
 //			acid500.dumplog(5);
-
 			writeString(help);
 //			writeEOL();
 //			writeEOL();
-
 			drawtime=millis();
 			refresh=false;
 		}
@@ -1714,14 +1713,8 @@ int main() {
 	const char* amiga_home = "blitz2src";
 #endif
 
-//#define test_guard
-
-#ifdef test_guard
-	//  const char* amiga_binary = "../../archive/guardian";
-	//	const char* amiga_binary = "../archive/virus";
-	//	const char* amiga_binary = "../archive/oblivion/oblivion";
-	//	const char* amiga_binary = "../archive/skidpower/skidmarks";
-
+#define test_skidpow30
+#ifdef test_skidpow30
 	const char* amiga_binary = "skidpow30/Skid";
 	const char* amiga_home = "skidpow30";
 	const char* amiga_args = "";
@@ -1742,40 +1735,12 @@ int main() {
 	const char* amiga_args = "e skid.lha\n";
 #endif
 
-#define test_oblivion
+//#define test_oblivion
 #ifdef test_oblivion
 	const char* amiga_binary = "oblivion/oblivion";
 	const char* amiga_home = "oblivion";
 	const char* amiga_args = "\n\0";
 #endif
-
-// amiga_binary
-// 
-//	const char* amiga_binary = "../archive/blitz2/blitz2";
-//	const char* args = "-c test.bb\n";
-
-//	const char* amiga_binary = "../archive/genam";
-//	const char* args = "test.s -S -P\n";
-//	const char* amiga_binary = "C/Avail";
-//	const char* amiga_args= "";
-
-//	const int nops[] = {0x63d6, 0};
-
-//	const char* amiga_binary = "blitz2src/blitz2skid";
-//	const char* amiga_args = "\n";
-//	const char* amiga_home = ".";
-	//	const char* amiga_args = "blitz2.s -S -P\n";
-
-//	const char* amiga_binary = "C/Avail";	//waiting readargs support
-//	const char* amiga_binary = "C/Dir";		//waiting readargs support
-//	const char* amiga_binary = "C/Date";	//needs Utility library
-//	const char* amiga_args = "\n\0";
-//	const char* amiga_home = ".";
-//
-//	const char* amiga_binary = "skidaf/skid";
-//	const char* amiga_home = "skidaf";
-//	const char* amiga_args = "\n";
-
 
 	const int nops[] = { 0 };
 

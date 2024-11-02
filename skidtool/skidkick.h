@@ -11,9 +11,9 @@
 #include <sys/stat.h>
 #endif
 
-#define LOG_DOS
+#define LOG_DOS_OPEN_FAIL
 
-//#define ZERO_PAD_FREAD			
+#define ZERO_PAD_FREAD			
 
 enum {
 	MEMF_ANY = 0,
@@ -366,7 +366,7 @@ struct NativeFile {
 		}
 		// TODO: interpret amiga mode to fopen _Mode
 		fileHandle = fopen(filePath.c_str(), m);
-#ifdef LOG_DOS
+#ifdef LOG_DOS_OPEN_FAIL
 		if(!fileHandle){
 			std::cout << "fopen failure for " << filePath << " mode " << m << std::endl;
 		}
@@ -550,7 +550,9 @@ struct RDArgs {
 		std::string s = cpu0->fetchPath(d1);
 		if (fileMap.count(s)==0) {
 			fileMap[s] = NativeFile(s);
-			std::cout << " NativeFile : " << s << std::endl;
+#ifdef LOG_FILE_OPEN
+			std::cout << " NativeFile::open path : " << s << std::endl;
+#endif
 		}
 		NativeFile* f = &fileMap[s];
 		bool exclusive = (d2 == MODE_NEWFILE);
