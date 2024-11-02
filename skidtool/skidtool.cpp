@@ -108,7 +108,7 @@ std::string CasedFileName(const std::string& path) {
 			}
 		}
 	}catch(fs::filesystem_error error){
-		std::cout << "iterate folder : " << folder << " fs::filesystem_error : " << error.what() << std::endl;
+//		std::cout << "*** iterate folder : " << folder << " fs::filesystem_error : " << error.what() << std::endl;
 	}
 
 	// Return empty string if no match found
