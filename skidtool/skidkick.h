@@ -243,7 +243,8 @@ struct NativeFile {
 	std::filesystem::directory_iterator fileIterator;
 
 	int nextLock() {
-		return FILE_STREAM - (fileCount++) * 4;
+		int t = FILE_STREAM - (fileCount++) * 4;
+		return (uint32_t)t >> 2;
 	}
 
 	std::string fileName() {
@@ -370,7 +371,7 @@ struct NativeFile {
 			std::cout << "fopen failure for " << filePath << " mode " << m << std::endl;
 		}
 #endif
-		statFile();
+//		statFile();
 		status = (fileHandle) ? 0 : -1;
 		return fileHandle?1:0;
 	}
@@ -712,6 +713,10 @@ struct RDArgs {
 		cpu0->writeRegister(0, seglist);
 		doslog << "loadseg " << segname << " => " << seglist;
 		emit();
+	}
+
+	void setfiledate(){
+		
 	}
 
 	void currentdir() {

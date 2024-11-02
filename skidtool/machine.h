@@ -300,6 +300,7 @@ enum enum_dos {
 	DOS_DATESTAMP = -192,
 	DOS_DELAY = -198,
 	DOS_ISINTERACTIVE = -216,
+	DOS_SETFILEDATE = -396,
 	DOS_PRINTFAULT = -474,
 	DOS_READARGS = -798,
 	DOS_FREEARGS = -858,
@@ -494,6 +495,9 @@ struct amiga16 : memory32{
 		case DOS_ISINTERACTIVE:
 //			return offset;
 			dos->isinteractive();
+			break;
+		case DOS_SETFILEDATE:
+			dos->setfiledate();
 			break;
 		case DOS_CURRENTDIR:
 			dos->currentdir();

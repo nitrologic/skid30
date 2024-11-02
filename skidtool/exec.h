@@ -168,6 +168,7 @@ public:
 	virtual void createproc() = 0;
 	virtual void exit() = 0;
 	virtual void isinteractive() = 0;
+	virtual void setfiledate() = 0;
 	virtual void getvar() = 0;
 	virtual void loadseg() = 0;
 	virtual void unloadseg() = 0;

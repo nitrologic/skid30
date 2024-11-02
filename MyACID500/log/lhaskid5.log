@@ -1,0 +1,122 @@
+skidtool nitrokick 0.6
+screenSize rows:120 cols:35
+Reading Hunk from ../archive/lha
+$ 24482400 $ 42322000 $ 60000046 $ 00000fa0 $ 524b4559 $ 424f4231 $ 2a60c923 $ ffffffff
+HUNK_RELOC32
+HUNK_RELOC32
+unexpected data remaining in file
+0 0xcccc
+
+000000 [hunk] lha start:002000 end:00ef60
+000001 [args] e skid.lha_
+000002 [home] .
+000003 [mem] 00000000 R l 000000 00001e00 *000004 ZERO
+00000d [read32] 801114,0080c000
+00000f [read32] 80c0ac,00810000
+000021 [exec] allocMem 1dbc,10001 => 20040
+000544 [exec] openlibrary dos.library,802000
+00054d [read32] 802022,0080f000
+00054f [read16] 80f034 flags:0 <= -1
+000550 [read16] 80f034 flags:0 <= -1
+000551 [write16] 80f034,ffff
+000559 [read32] 801114,0080c000
+00055b [read32] 80c098,00000000
+000560 [exec] setTaskPri
+000565 [exec] setTaskPri
+00066c [exec] findTask <= 80e000
+00066f [read32] 80e0b8,deadbeef
+000672 [write16] 80e0b8,ffff
+000673 [write16] 80e0ba,ffff
+00067f [dos] getvar LHAOPTS => ffffffff
+000883 [dos] input
+000887 [dos] isInteractive
+LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use.
+Registered to Steffen Salzmann
+
+Extracting from archive 'skid.lha':
+Extracting: (       0/      21)  Skid/.info
+
+01431e [exec] findTask <= 80e000
+014321 [read32] 80e0b8,deadbeef
+014324 [write16] 80e0b8,ffff
+014325 [write16] 80e0ba,ffff
+01433c [dos] lock temp/ SHARED => 3ffffffa
+01435c [dos] unlock 3ffffffa
+014370 [write16] 80e0b8,dead
+014371 [write16] 80e0ba,beef
+01450e [dos] output
+0145af [write] LhA V1.35r - Copyright (c) 1991,92 Stefan Boberg. Not for commercial use._
+0147d2 [dos] output
+01481d [write] Registered to Steffen Salzmann_
+014852 [dos] output
+014861 [write] _
+0148b5 [dos] output
+0148cc [write]
+0149d6 [exec] allocMem 110,1 => 22020
+014b88 [dos] lock .\skid.lha SHARED => 3ffffff9
+014b97 [dos] examine(3ffffff9) <= 1
+014bb0 [dos] unlock 3ffffff9
+014bda [exec] allocMem 2c,10001 => 22140
+014c0b [exec] allocMem d,1 => 22180
+014e86 [exec] freemem
+014f54 [exec] allocMem 3ecc,1 => 22200
+014f76 [exec] allocMem 800c,10001 => 260e0
+014f9a [exec] allocMem a10c,10001 => 2e100
+0150a2 [dos] output
+0150f7 [write] Extracting from archive 'skid.lha':_
+015164 [exec] allocMem 3e,1 => 382c0
+0151b2 [exec] allocMem 800c,1 => 38300
+0151e5 [dos] open .\skid.lha OLDFILE => 3ffffff8
+015216 [exec] allocMem 15,1 => 40320
+0152e8 [dos] seek 3ffffff8,0,BEGINNING => 0
+0152f7 [dos] read 3ffffff8 , 3830c , 8000 => 8000
+015358 [exec] copyMem 14
+01543f [exec] copyMem d
+01557d [exec] allocMem 17,1 => 40340
+0156d6 [exec] allocMem 12,1 => 40360
+01571f [exec] allocMem 11,1 => 40380
+01575a [exec] freemem
+0159bf [dos] output
+Extracting: (       0/      21)  Skid/.info
+015ae2 [dos] lock .\Skid\.info SHARED => 3ffffff7
+015b08 [dos] unlock 3ffffff7
+015d48 [dos] output
+015dc7 [write] _'Skid/.info' already exists, overwrite? (Y/N/A/S/Q):
+015e12 [dos] output
+015e27 [write]
+015e42 [exec] findTask <= 80e000
+015e45 [read32] 80e0a4,cafeb0b0
+015e4a [read32] 80e0a4,cafeb0b0
+015e55 [exec] findTask <= 80e000
+015e64 [exec] allocMem 50,10001 => 40660
+015e88 [exec] putMsg
+015e8c [exec] waitPort
+015e90 [exec] getMsg
+015ea6 [exec] freemem
+015eb3 [dos] input
+015eba [dos] read fffffffc , 219c3 , 1 => 1
+015ec3 [exec] findTask <= 80e000
+015ec6 [read32] 80e0a4,cafeb0b0
+015ecb [read32] 80e0a4,cafeb0b0
+015ed6 [exec] findTask <= 80e000
+015ee5 [exec] allocMem 50,10001 => 406c0
+015f09 [exec] putMsg
+015f0d [exec] waitPort
+015f11 [exec] getMsg
+015f27 [exec] freemem
+015f6c [dos] output
+015f83 [write]
+015fe6 [dos] output
+
+
+016034 [dos] open .\Skid\.info NEWFILE => 3ffffff6
+01609c [exec] copyMem 15
+02622f [write] blob
+02625d [dos] close 3ffffff6 => 0
+026332 [acid] -396(dosBase) un supported-2147483648-396
+cycles: 134525
+
+C:\nitrologic\dsptool\bin\skid30\skidtool\msvc19\Debug\acid500.exe (process 24516) exited with code 0.
+To automatically close the console when debugging stops, enable Tools->Options->Debugging->Automatically close the console when debugging stops.
+
+

@@ -847,7 +847,16 @@ struct acid68000 : acidmicro {
 		return -1;
 	}
 
-	int read8(int physicalAddress) {
+	int read8(int a32) {
+		int qbits = a32 & 0xc0000000;
+		if (qbits) {
+			if ((a32 & 0xff000000) == 0xff000000) {
+				// link address here
+//				physicalAddress = 0;
+				a32 = 0;
+			}
+		}
+		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
 		if (address < 0) {
 			log_bus(0, 2, physicalAddress, 0);
@@ -866,6 +875,10 @@ struct acid68000 : acidmicro {
 		int physicalAddress = a32 & 0xffffff;
 
 		if (qbits & QBIT) { // 0x80000000 pc is on the bus, check breakpoints
+			if ((a32 & 0xff000000)== 0xff000000){
+				// link address here
+				physicalAddress = 0;
+			}
 			if (breakpoints.count(a32)) {
 				memoryError = physicalAddress;
 				m68k_pulse_halt();
@@ -900,6 +913,13 @@ struct acid68000 : acidmicro {
 
 	int read32(int a32) {
 		int qbits = a32 & 0xc0000000;
+		if (qbits) {
+			if ((a32 & 0xff000000) == 0xff000000) {
+				// link address here
+//				physicalAddress = 0;
+				a32 = 0;
+			}
+		}
 		int physicalAddress = a32 & 0xffffff;
 		int address = decode(physicalAddress);
 		if (address < 0) {
