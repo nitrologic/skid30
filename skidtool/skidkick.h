@@ -11,7 +11,7 @@
 #include <sys/stat.h>
 #endif
 
-//#define LOG_DOS
+#define LOG_DOS
 
 //#define ZERO_PAD_FREAD			
 
@@ -690,11 +690,10 @@ struct RDArgs {
 
 	void delay() {
 		int d1 = cpu0->readRegister(1);//{ticks}
-
 		int ms = d1 * 20;
 		sleep(ms);
-
-		doslog << "delay " << d1; emit();
+		doslog << "delay " << d1; 
+		emit();
 	}
 
 	void unloadseg() {

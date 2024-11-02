@@ -1,5 +1,7 @@
 #include "skidkick.h"
 
+#define LOG_COUT
+
 //#include <sys/stat.h>
 
 // acid500 monitor
@@ -527,7 +529,6 @@ struct MemEvent : Stream {
 
 		writeSpace();
 		writeString(label);
-		writeEOL();
 		return flush();
 	}
 };
@@ -1008,6 +1009,7 @@ public:
 	}
 	void closeWorkBench() {
 		cpu0->writeRegister(0, 1); // return true for success
+//		cpu0->writeRegister(0, 0);
 	}
 };
 
@@ -1732,6 +1734,21 @@ int main() {
 	const char* amiga_home = ".";
 #endif
 
+//#define test_lha
+#ifdef test_lha
+	const char* amiga_home = ".";
+	const char* amiga_binary = "../archive/lha";
+//	const char* amiga_args= "e cv.lha\n";
+	const char* amiga_args = "e skid.lha\n";
+#endif
+
+#define test_oblivion
+#ifdef test_oblivion
+	const char* amiga_binary = "oblivion/oblivion";
+	const char* amiga_home = "oblivion";
+	const char* amiga_args = "\n\0";
+#endif
+
 // amiga_binary
 // 
 //	const char* amiga_binary = "../archive/blitz2/blitz2";
@@ -1739,14 +1756,6 @@ int main() {
 
 //	const char* amiga_binary = "../archive/genam";
 //	const char* args = "test.s -S -P\n";
-
-#define test_lha
-#ifdef test_lha
-	const char* amiga_home = ".";
-	const char* amiga_binary = "../archive/lha";
-//	const char* amiga_args= "e cv.lha\n";
-	const char* amiga_args = "e skid.lha\n";
-#endif
 //	const char* amiga_binary = "C/Avail";
 //	const char* amiga_args= "";
 
@@ -1767,8 +1776,6 @@ int main() {
 //	const char* amiga_home = "skidaf";
 //	const char* amiga_args = "\n";
 
-//	const char* amiga_binary = "oblivion/oblivion";
-//	const char* amiga_home = "oblivion";
 
 	const int nops[] = { 0 };
 
@@ -1785,9 +1792,9 @@ int main() {
 
 	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
-//	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
-	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+//	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
