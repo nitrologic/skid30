@@ -8,10 +8,9 @@ The ACID500 is designed to boot and execute a selection of classic amiga binarie
 
 ![ACID500 hosting genam assembler](media/genam3blitz2.png)
 
-Latest milestone - ACID500 sucessfully hosts Hisoft genam assembling a fresh build of Sibly's finest source - Blitz2 - basic compiler of champions.
+Latest ACID500 milestones
 
-Active progress on this project includes the use of the lha command line archiving tool as most useful utility to have running.
-
-Current research is AmigaDOS lock behavior as possibly cause of lha tool write failures. [recent log file](MyACID500/log/lhaskid4.log)
+* hosts Hisoft genam assembling a fresh build of Sibly's finest source - Blitz2 - basic compiler of champions.
+* hosts lha utility and extracts an lha file archive
 
 [skidtool](skidtool)
