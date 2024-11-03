@@ -1707,13 +1707,37 @@ int main() {
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 	initConsole();
 
+#define test_sibwing
+#ifdef test_sibwing
+	const char* amiga_binary = "sw";
+	const char* amiga_home = ".";
+	const char* amiga_args = "";
+#endif
+
+//#define test_bb2
+#ifdef test_bb2
+//	const char* amiga_binary = "blitz2/blitz2";
+	const char* amiga_binary = "blitz2/ted";
+	const char* amiga_home = "blitz2";
+	const char* amiga_args = "";
+#endif
+
+//#define test_lha
+#ifdef test_lha
+	const char* amiga_home = ".";
+	const char* amiga_binary = "../archive/lha";
+	const char* amiga_args = "e skid.lha\n";
+#endif
+
+
+//#define test_genam
 #ifdef test_genam
 	const char* amiga_binary = "../archive/genam";
 	const char* amiga_args = "blitz2skid.s\n";
 	const char* amiga_home = "blitz2src";
 #endif
 
-#define test_skidpow30
+//#define test_skidpow30
 #ifdef test_skidpow30
 	const char* amiga_binary = "skidpow30/Skid";
 	const char* amiga_home = "skidpow30";
@@ -1725,14 +1749,6 @@ int main() {
 	const char* amiga_binary = "C/Avail";	//waiting readargs support
 	const char* amiga_args = "\n\0";
 	const char* amiga_home = ".";
-#endif
-
-//#define test_lha
-#ifdef test_lha
-	const char* amiga_home = ".";
-	const char* amiga_binary = "../archive/lha";
-//	const char* amiga_args= "e cv.lha\n";
-	const char* amiga_args = "e skid.lha\n";
 #endif
 
 //#define test_oblivion
