@@ -1707,7 +1707,7 @@ int main() {
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 	initConsole();
 
-#define test_sibwing
+//#define test_sibwing
 #ifdef test_sibwing
 	const char* amiga_binary = "sw";
 	const char* amiga_home = ".";
@@ -1722,7 +1722,7 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-//#define test_lha
+#define test_lha
 #ifdef test_lha
 	const char* amiga_home = ".";
 	const char* amiga_binary = "../archive/lha";
@@ -1773,9 +1773,9 @@ int main() {
 
 	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
-	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+//	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
-//	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
