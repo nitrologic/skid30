@@ -13,7 +13,7 @@
 
 #define LOG_DOS_OPEN_FAIL
 
-#define ZERO_PAD_FREAD			
+#define ZERO_PAD_FREAD
 
 enum {
 	MEMF_ANY = 0,

@@ -1,6 +1,6 @@
 #include "skidkick.h"
 
-#define LOG_COUT
+// #define LOG_COUT
 
 //#include <sys/stat.h>
 
