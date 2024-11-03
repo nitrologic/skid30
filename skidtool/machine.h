@@ -303,6 +303,8 @@ enum enum_dos {
 	DOS_SETFILEDATE = -396,
 	DOS_PRINTFAULT = -474,
 	DOS_READARGS = -798,
+	DOS_MATCHFIRST = -822,
+	DOS_MATCHEND = -834,
 	DOS_FREEARGS = -858,
 	DOS_GETVAR = -906,
 	DOS_VPRINTF = -954
@@ -482,6 +484,12 @@ struct amiga16 : memory32{
 			break;
 		case DOS_READARGS:
 			dos->readargs();
+			break;
+		case DOS_MATCHFIRST:
+			dos->matchfirst();
+			break;
+		case DOS_MATCHEND:
+			dos->matchend();
 			break;
 		case DOS_FREEARGS:
 			dos->freeargs();

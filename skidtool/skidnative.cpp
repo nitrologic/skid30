@@ -7,12 +7,13 @@
 #include <thread>
 #include <condition_variable>
 #include <atomic>
+#include <iostream>
 
 std::mutex inputMutex;
 std::mutex availableMutex;
 std::condition_variable inputAvailable;
 std::deque<int> inputQueue;	
-bool empty=true; // shared variable
+volatile bool empty=true; // shared variable
 std::atomic<bool> stopReadThread=false;
 
 void readInputThread(){
@@ -25,8 +26,9 @@ void readInputThread(){
 				inputQueue.push_back(ch);
 				empty=false;
 			}
-//			inputAvailable.notify_all();
-			inputAvailable.notify_one();
+			inputAvailable.notify_all();
+//			inputAvailable.notify_one();
+std::cout << "readInputThread : notify" << std::endl;
 		}else{
 			return;
 		}
@@ -39,7 +41,9 @@ int waitChar(){
 		{
 			std::unique_lock<std::mutex> lock(inputMutex);
 			if(inputQueue.empty()){
-				inputAvailable.wait(lock,[]{return !empty;});
+				inputAvailable.wait(lock,[]{
+					return !empty;
+				});
 			}
 		}
 		if(!inputQueue.empty()){

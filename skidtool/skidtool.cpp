@@ -1,6 +1,6 @@
 #include "skidkick.h"
 
-// #define LOG_COUT
+#define LOG_COUT
 
 //#include <sys/stat.h>
 
@@ -485,15 +485,15 @@ struct MemEvent : Stream {
 	MemEvent(int t32, int a32, int d32, int pc32, std::string label0) :time(t32), address(a32), data(d32), pc(pc32), label(label0) {
 	}
 
+	// tttttttt RW lwb aaaaaa dd[dd][dddd]
+
 	std::string toString() {
-
 		out.clear();
-
 		int t32 = time;
 		int a32 = address;
 		int d32 = data;
 		int pc32 = pc;
-		
+	
 		int star = (a32 >> 31) & 1;
 		int rw = (a32 >> 29) & 3;
 		int opsize = (a32 >> 27) & 3;
@@ -564,7 +564,7 @@ struct acid68000 : acidmicro {
 
 	std::string homePath;
 
-	void programCounter(int physicalAddress) {
+	void traceProgramCounter(int physicalAddress) {
 
 		int ppc = readRegister(M68K_REG_PPC); //m68k_get_reg(NULL, M68K_REG_PPC);
 
@@ -685,7 +685,7 @@ struct acid68000 : acidmicro {
 	}
 
 	// input address is 24 bit physical with qbit signals in high bits
-
+	// with the exception of bcpl pointers - work in progress
 	void log_bus(int readwritefetch, int byteshortint, int address, int value) {
 		bool enable = (readwritefetch == 1) ? (mem->flags & 2) : (mem->flags & 1);
 		int star = (mem->flags & 4) ? 1 : 0;
@@ -890,7 +890,7 @@ struct acid68000 : acidmicro {
 				m68k_pulse_halt();
 				return 0;
 			}
-			programCounter(physicalAddress);
+			traceProgramCounter(physicalAddress);
 		}
 		int address = decode(physicalAddress);
 		if (address < 0) {
@@ -906,7 +906,8 @@ struct acid68000 : acidmicro {
 			// TODO - emit message
 			systemLog("acid", machineState + std::to_string(qbits) + std::to_string(machineError));
 			machineError = 0;
-			//			flushLog();
+			
+			flushLog();
 			//			log_bus(qbits?2:0, 1, physicalAddress, 0);
 		}
 
@@ -1705,7 +1706,6 @@ int main() {
 	screenSize(rows, cols);
 //	mouseOn();
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
-	initConsole();
 
 //#define test_sibwing
 #ifdef test_sibwing
@@ -1722,7 +1722,7 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-#define test_lha
+//#define test_lha
 #ifdef test_lha
 	const char* amiga_home = ".";
 	const char* amiga_binary = "../archive/lha";
@@ -1744,9 +1744,10 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-//#define test_avail
-#ifdef test_avail
-	const char* amiga_binary = "C/Avail";	//waiting readargs support
+#define test_c
+#ifdef test_c
+//	const char* amiga_binary = "C/Avail";	//waiting readargs support
+	const char* amiga_binary = "C/Dir";	//waiting readargs support
 	const char* amiga_args = "\n\0";
 	const char* amiga_home = ".";
 #endif
@@ -1761,18 +1762,16 @@ int main() {
 	const int nops[] = { 0 };
 
 	loadHunk(amiga_binary,ROM_START);
+//	const char* name = "lha @ ROM_START";
+	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
 
+//	initConsole();
 //#define pause
 #ifdef pause
 	writeString("enter to continue");
 	writeEOL();
 	waitChar();
 #endif
-
-//	const char* name = "lha @ ROM_START";
-
-	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
-
 //	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
 
 	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);

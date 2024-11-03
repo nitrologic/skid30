@@ -7,9 +7,8 @@
 #include <filesystem>
 #ifdef _WIN32
 #include <direct.h>
-#else
-#include <sys/stat.h>
 #endif
+#include <sys/stat.h>
 
 #define LOG_DOS_OPEN_FAIL
 
@@ -527,6 +526,59 @@ struct RDArgs {
 #endif
 		emit();
 		return;
+	}
+
+/*
+
+***********************************************************************
+************************ PATTERN MATCHING ******************************
+************************************************************************
+
+* structure expected by MatchFirst, MatchNext.
+* Allocate this structure and initialize it as follows:
+*
+* Set ap_BreakBits to the signal bits (CDEF) that you want to take a
+* break on, or NULL, if you don't want to convenience the user.
+*
+* If you want to have the FULL PATH NAME of the files you found,
+* allocate a buffer at the END of this structure, and put the size of
+* it into ap_Strlen.  If you don't want the full path name, make sure
+* you set ap_Strlen to zero.  In this case, the name of the file, and stats
+* are available in the ap_Info, as per usual.
+*
+* Then call MatchFirst() and then afterwards, MatchNext() with this structure.
+* You should check the return value each time (see below) and take the
+* appropriate action, ultimately calling MatchEnd() when there are
+* no more files and you are done.  You can tell when you are done by
+* checking for the normal AmigaDOS return code ERROR_NO_MORE_ENTRIES.
+*
+*/
+#ifdef EMBED_AMIGA_INCLUDES
+	struct AnchorPath {
+		struct AChain* ap_Base;	/* pointer to first anchor */
+#define	ap_First ap_Base
+		struct AChain* ap_Last;	/* pointer to last anchor */
+#define ap_Current ap_Last
+		LONG	ap_BreakBits;	/* Bits we want to break on */
+		LONG	ap_FoundBreak;	/* Bits we broke on. Also returns ERROR_BREAK */
+		BYTE	ap_Flags;	/* New use for extra word. */
+		BYTE	ap_Reserved;
+		WORD	ap_Strlen;	/* This is what ap_Length used to be */
+#define	ap_Length ap_Flags	/* Old compatability for LONGWORD ap_Length */
+		struct	FileInfoBlock ap_Info;
+		UBYTE	ap_Buf[1];	/* Buffer for path name, allocated by user */
+		/* FIX! */
+	};
+#endif
+//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node018D.html
+	void matchfirst() {
+		int d1 = cpu0->readRegister(1);	// template
+		int d2 = cpu0->readRegister(2);	// path
+		std::string path = cpu0->fetchString(d2);
+		cpu0->writeRegister(0, 0);
+	}
+	void matchend() {
+
 	}
 	void freeargs() {
 	}

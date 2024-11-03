@@ -176,6 +176,8 @@ public:
 	virtual void datestamp() = 0;
 	virtual void readargs() = 0;
 	virtual void freeargs() = 0;
+	virtual void matchfirst() = 0;
+	virtual void matchend() = 0;
 	virtual void vprintf() = 0;
 };
 class IBench {
