@@ -28,7 +28,7 @@ void readInputThread(){
 			}
 			inputAvailable.notify_all();
 //			inputAvailable.notify_one();
-std::cout << "readInputThread : notify" << std::endl;
+//			std::cout << "readInputThread : notify" << std::endl;
 		}else{
 			return;
 		}

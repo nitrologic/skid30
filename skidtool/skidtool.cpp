@@ -1394,7 +1394,7 @@ void disassemble(int pc,int count)
 
 const char* title = "       ☰☰☰☰☰☰☰ ☰☰☰☰☰☰☰ ☰☰☰☰☰☰☰ 🟠 ACID 500";
 
-const char* help = "[s]tep [o]ver [c]ont [pause] [r]eset [h]ome [q]uit";
+const char* help = "[s]tep [o]ver [c]ont [p]ause [r]eset [h]ome [q]uit";
 
 const int SP_START = 0x1e00;
 const int ROM_START = 0x2000;
@@ -1669,18 +1669,18 @@ int convertFiles() {
 
 int main() {
 	writeClear();
-//	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
+	//	std::cout << "  ☰☰ ACID 500 🟠" << std::endl;
 	std::cout << "skidtool nitrokick 0.7" << std::endl;
-/*
-	COORD rect;
-	HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
-	SetConsoleDisplayMode(out, CONSOLE_FULLSCREEN_MODE, &rect);
-*/
+	/*
+		COORD rect;
+		HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleDisplayMode(out, CONSOLE_FULLSCREEN_MODE, &rect);
+	*/
 #ifdef HAS_STEAM
 	int loggedOn = OpenSteam(768030);
 	std::cout << "Steam " << ((loggedOn) ? "Logged In" : "Offline") << std::endl;
 
-	if (loggedOn>0) {
+	if (loggedOn > 0) {
 
 #ifdef STATS
 		while (true) {
@@ -1704,17 +1704,17 @@ int main() {
 
 	int rows, cols;
 	screenSize(rows, cols);
-//	mouseOn();
+	//	mouseOn();
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 
-//#define test_sibwing
+// #define test_sibwing - fails to run 
 #ifdef test_sibwing
 	const char* amiga_binary = "sw";
 	const char* amiga_home = ".";
 	const char* amiga_args = "";
 #endif
 
-//#define test_bb2
+	//#define test_bb2
 #ifdef test_bb2
 //	const char* amiga_binary = "blitz2/blitz2";
 	const char* amiga_binary = "blitz2/ted";
@@ -1722,29 +1722,29 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-//#define test_lha
+	//#define test_lha
 #ifdef test_lha
 	const char* amiga_home = ".";
 	const char* amiga_binary = "../archive/lha";
 	const char* amiga_args = "e skid.lha\n";
 #endif
 
-
-//#define test_genam
+#define test_genam
 #ifdef test_genam
 	const char* amiga_binary = "../archive/genam";
 	const char* amiga_args = "blitz2skid.s\n";
 	const char* amiga_home = "blitz2src";
 #endif
 
-//#define test_skidpow30
+// #define test_skidpow30
+// memory errors
 #ifdef test_skidpow30
 	const char* amiga_binary = "skidpow30/Skid";
 	const char* amiga_home = "skidpow30";
 	const char* amiga_args = "";
 #endif
 
-#define test_c
+	//#define test_c
 #ifdef test_c
 //	const char* amiga_binary = "C/Avail";	//waiting readargs support
 	const char* amiga_binary = "C/Dir";	//waiting readargs support
@@ -1752,29 +1752,37 @@ int main() {
 	const char* amiga_home = ".";
 #endif
 
-//#define test_oblivion
+	//#define test_oblivion
 #ifdef test_oblivion
 	const char* amiga_binary = "oblivion/oblivion";
 	const char* amiga_home = "oblivion";
 	const char* amiga_args = "\n\0";
 #endif
 
+//	bool debug_rom = true;
+	bool debug_rom = false;
+
 	const int nops[] = { 0 };
 
-	loadHunk(amiga_binary,ROM_START);
-//	const char* name = "lha @ ROM_START";
-	std::string name = std::string("hunk:")+amiga_binary+" args:"+amiga_args;
+	loadHunk(amiga_binary, ROM_START);
+	//	const char* name = "lha @ ROM_START";
+	std::string name = std::string("hunk:") + amiga_binary + " args:" + amiga_args;
 
-//	initConsole();
-//#define pause
+	if (debug_rom)
+	{
+		initConsole();
+		//#define pause
 #ifdef pause
-	writeString("enter to continue");
-	writeEOL();
-	waitChar();
+		writeString("enter to continue");
+		writeEOL();
+		waitChar();
 #endif
-//	debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
-
-	runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+		debugRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+	}
+	else 
+	{
+		runRom(ROM_START, name.c_str(), amiga_args, amiga_home);
+	}
 
 //  kickstart sanity test
 //	debugCode(0xf800d2);
