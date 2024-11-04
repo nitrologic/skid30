@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project(skidtool
 	VERSION 0.0.0
-	DESCRIPTION "skidtool acid32 development harness"
+	DESCRIPTION "acid500 development harness"
 	HOMEPAGE_URL "https://github.com/nitrologic/skid30"
 	LANGUAGES C CXX ASM
 )
