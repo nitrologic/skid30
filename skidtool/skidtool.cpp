@@ -1714,22 +1714,22 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-	//#define test_bb2
+#define test_bb2
 #ifdef test_bb2
-//	const char* amiga_binary = "blitz2/blitz2";
-	const char* amiga_binary = "blitz2/ted";
+	const char* amiga_binary = "blitz2/blitz2";
+//	const char* amiga_binary = "blitz2/ted";
 	const char* amiga_home = "blitz2";
 	const char* amiga_args = "";
 #endif
 
-	//#define test_lha
+//#define test_lha
 #ifdef test_lha
 	const char* amiga_home = ".";
 	const char* amiga_binary = "../archive/lha";
 	const char* amiga_args = "e skid.lha\n";
 #endif
 
-#define test_genam
+//#define test_genam
 #ifdef test_genam
 	const char* amiga_binary = "../archive/genam";
 	const char* amiga_args = "blitz2skid.s\n";
