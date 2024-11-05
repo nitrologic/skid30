@@ -267,6 +267,21 @@ enum enum_intuition {
 	INTUITION_GETSCREENDATA=-426
 };
 
+enum enum_mathffp {
+	SP_FIX=-30,
+	SP_FLOAT = -36,
+	SP_MUL = -42,
+	SP_DIV = -48,
+	SP_ADD = -54,
+	SP_SUB = -60,
+	SP_CMP = -66,
+	SP_TST = -72,
+	SP_ABS = -78,
+	SP_NEG = -84,
+	SP_FLOOR = -90,
+	SP_CEIL = -96
+};
+
 enum enum_nonvolatile {
 	NV_GETCOPY = -30,
 	NV_FREEDATA = -36,
@@ -487,6 +502,10 @@ struct amiga16 : memory32{
 			return offset;
 		}
 		return 0;
+	}
+
+	int callMathFFP(int offset) {
+
 	}
 
 	int callDos(int offset) {

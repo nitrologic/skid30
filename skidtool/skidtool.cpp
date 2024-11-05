@@ -1726,16 +1726,13 @@ int main() {
 #endif
 
 #define test_buzzbar
-//00015e [acid] -3800(dosBase) un supported-2147483648-3800
 #ifdef test_buzzbar
 	const char* amiga_binary = "acidpd/buzzbar/buzzbar";
 	const char* amiga_home = "acidpd/buzzbar";
 	const char* amiga_args = "";
 #endif
 
-
 //#define test_worm
-//00015e [acid] -3800(dosBase) un supported-2147483648-3800
 #ifdef test_worm
 	const char* amiga_binary = "acidpd/worm/worm";
 	const char* amiga_home = "acidpd/worm";
@@ -1743,13 +1740,12 @@ int main() {
 #endif
 
 //#define test_insectoids2
-//00015e [acid] -3800(dosBase) un supported-2147483648-3800
+// needs mathffp commands
 #ifdef test_insectoids2
 	const char* amiga_binary = "acidpd/Insectoids2/insectoids2";
 	const char* amiga_home = "acidpd/Insectoids2";
 	const char* amiga_args = "";
 #endif
-
 
 //#define test_zombies
 // needs diskfont.library
