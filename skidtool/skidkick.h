@@ -1106,6 +1106,7 @@ public:
 	}
 
 	// todo - leaks scratch memory 
+	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node036C.html
 
 	void rawDoFmt() {
 		int a0 = cpu0->readRegister(8);//fmt
@@ -1124,21 +1125,11 @@ public:
 		for (int i = 0; i < n; i++) {
 //			int moveqvald0 = 0xe000 | (255 & s[i]);
 			int moveqvald0 = 0x7000 | (255 & s[i]);
-			cpu0->write16(scratch + i * 4 + 0,moveqvald0);
-			cpu0->write16(scratch + i * 4 + 2,0x4e92);	//jsr(a2)
+			cpu0->write16(scratch + i * 4 + 0, moveqvald0);
+			cpu0->write16(scratch + i * 4 + 2, 0x4e92);	//jsr(a2)
 		}
 		cpu0->write16(scratch + n * 4, 0x4e75);
 		cpu0->push(scratch);
-
-		// simon come here
-
-//		flattenString(fmt);
-//		execlog << "fmt " << fmt << " => " << s;
-//		emit();
-//		machineError = scratch;
-//		cpu0->memoryError = scratch;
-// TODO: interpret datastream from the docs, generate instructionlist
-// TODO: return args ptr (a1) at new pos
 	}
 
 // TODO heap symantics

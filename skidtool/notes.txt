@@ -1,3 +1,14 @@
+		// simon come here
+
+//		flattenString(fmt);
+//		execlog << "fmt " << fmt << " => " << s;
+//		emit();
+//		machineError = scratch;
+//		cpu0->memoryError = scratch;
+// TODO: interpret datastream from the docs, generate instructionlist
+// TODO: return args ptr (a1) at new pos
+
+
 https://forums.codeguru.com/showthread.php?343829-break-blocked-getchar-call
 
 int unblock = 0;		// (write-end of the pipe)
