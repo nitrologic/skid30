@@ -1,9 +1,4 @@
-ACID500
-=======
-
-No kickstart required.
-
-The ACID500 skidtool is an ode to the Amiga home computer.
+## skid30 skidtool acid500
 
 This project contains the Musashi 68K emulator (Copyright 1998-2002 Karl Stenerud) MIT license 2013
 
@@ -23,7 +18,6 @@ enum ami_mem_map {
 };
 ```
 
-The ami16 class decodes library bits and maps a skeleton of their API to ACID500 native implementations.
+The amiga16 class in machine.h decodes library bits and maps a skeleton of their API to native implementations.
 
-
-[test logs](../MyACID500/log.txt)
+The acidmicro acidexec and aciddos classes in skidkick.h provide native implementation.

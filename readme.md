@@ -7,7 +7,7 @@ All rights reserved.
 
 The ACID500 is designed to boot and execute a selection of classic Amiga binaries devoid proprietary Kickstart ROM. 
 
-Exec and dos.library are both implemented on native side of the emulation architecture.
+Exec and dos library are implemented on native side of the emulation architecture.
 
 ### Items of interest
 
