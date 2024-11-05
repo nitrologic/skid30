@@ -9,12 +9,6 @@ The ACID500 is designed to boot and execute a selection of classic Amiga binarie
 
 Exec and dos library are implemented on native side of the emulation architecture.
 
-### Items of interest
-
-rawDoFmt exec.library -522
-
-The ACID 500 generates and runs additional 68000 instructions to keep things optimal.
-
 ### Milestones
 
 ![ACID500 hosting genam assembler](media/genam3blitz2.png)

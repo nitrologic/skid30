@@ -1035,6 +1035,12 @@ public:
 		else if (s == "mathffp.library") {
 			r = MATHFFP_BASE;
 		}
+		else if (s == "diskfont.library") {
+			r = DISKFONT_BASE;
+		}
+		else if (s == "mathtrans.library") {
+			r = MATHTRANS_BASE;
+		}
 		else {
 			// todo: build a named map
 			r = 0;
@@ -1087,6 +1093,19 @@ public:
 	// 
 	// rts
 
+	void superState() {
+		cpu0->writeRegister(0, 0);	//always in superstate
+		execlog << "superState "; emit();
+
+	}
+
+//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_3._guide/node0244.html
+
+	void userState() {
+		cpu0->writeRegister(0, 0);	//always in superstate
+		execlog << "superState "; emit();
+
+	}
 	void doIO() {
 		int a1 = cpu0->readRegister(9);//ioreq
 		int r = 0;

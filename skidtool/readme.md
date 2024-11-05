@@ -21,3 +21,9 @@ enum ami_mem_map {
 The amiga16 class in machine.h decodes library bits and maps a skeleton of their API to native implementations.
 
 The acidmicro acidexec and aciddos classes in skidkick.h provide native implementation.
+
+### Items of interest
+
+rawDoFmt exec.library -522
+
+The ACID 500 generates and runs additional 68000 instructions to keep things optimal.

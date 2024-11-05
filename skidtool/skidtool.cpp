@@ -2,6 +2,8 @@
 
 #define LOG_COUT
 
+#define MICRO_HISTORY
+
 //#include <sys/stat.h>
 
 // acid500 monitor
@@ -667,7 +669,7 @@ struct acid68000 : acidmicro {
 		size = (size + 31) & -32;
 		int p = heapPointer;
 		heapPointer += size;
-		if (bits & 1) {
+		if (bits & MEMF_CLEAR) {	//MEMF_CLEAR
 			for (int i = 0; i < size; i += 4) {
 				qwrite32(p + i, 0);
 			}
@@ -1014,6 +1016,15 @@ public:
 	void closeWorkBench() {
 		cpu0->writeRegister(0, 1); // return true for success
 //		cpu0->writeRegister(0, 0);
+	}
+	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node021F.html
+	void getScreenData() {
+		int a0 = cpu0->readRegister(8);
+		int d0 = cpu0->readRegister(0);
+		int a1 = cpu0->readRegister(9);
+		int d1 = cpu0->readRegister(1);
+		std::cout << "getScreenData: ????" << std::endl;
+
 	}
 };
 
@@ -1560,7 +1571,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 				writeEOL();
 			}
 			writeEOL();
-#ifdef HISTORY
+#ifdef MICRO_HISTORY
 			for (int i = 0; i < PREV_LINES; i++) {
 				int index = (PREV_LINES - i);
 				int pc2 = acid500.previousPC(index);
@@ -1714,7 +1725,41 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-#define test_bb2
+#define test_buzzbar
+//00015e [acid] -3800(dosBase) un supported-2147483648-3800
+#ifdef test_buzzbar
+	const char* amiga_binary = "acidpd/buzzbar/buzzbar";
+	const char* amiga_home = "acidpd/buzzbar";
+	const char* amiga_args = "";
+#endif
+
+
+//#define test_worm
+//00015e [acid] -3800(dosBase) un supported-2147483648-3800
+#ifdef test_worm
+	const char* amiga_binary = "acidpd/worm/worm";
+	const char* amiga_home = "acidpd/worm";
+	const char* amiga_args = "";
+#endif
+
+//#define test_insectoids2
+//00015e [acid] -3800(dosBase) un supported-2147483648-3800
+#ifdef test_insectoids2
+	const char* amiga_binary = "acidpd/Insectoids2/insectoids2";
+	const char* amiga_home = "acidpd/Insectoids2";
+	const char* amiga_args = "";
+#endif
+
+
+//#define test_zombies
+// needs diskfont.library
+#ifdef test_zombies
+	const char* amiga_binary = "acidpd/zombies/Zombies";
+	const char* amiga_home = "acidpd/zombies";
+	const char* amiga_args = "";
+#endif
+
+//#define test_bb2
 #ifdef test_bb2
 	const char* amiga_binary = "blitz2/blitz2";
 //	const char* amiga_binary = "blitz2/ted";

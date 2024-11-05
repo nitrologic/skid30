@@ -27,6 +27,8 @@ enum ami_mem_map {
 	NONVOLATILE_BASE = 0x804000,
 	GRAPHICS_BASE = 0x805000,
 	MATHFFP_BASE = 0x806000,
+	DISKFONT_BASE = 0x807000,
+	MATHTRANS_BASE = 0x808000,
 	WORKBENCH_BASE = 0x80c000,
 	TASK_BASE = 0x80e000,
 	BAD_BASE = 0x80f000,
@@ -218,6 +220,9 @@ enum enum_exec {
 	FORBID = -132,
 	PERMIT = -138,
 
+	SUPERSTATE = -150,
+	USERSTATE = -156,
+
 	SETINTVECTOR = -162,
 	ADDINTSERVER = -168,
 
@@ -259,6 +264,7 @@ enum enum_exec {
 
 enum enum_intuition {
 	INTUITION_CLOSEWORKBENCH = -78,
+	INTUITION_GETSCREENDATA=-426
 };
 
 enum enum_nonvolatile {
@@ -366,8 +372,11 @@ struct amiga16 : memory32{
 	// library index is next few bits, see ami_mem_map
 
 	virtual int read16(int address, int flags) {
-		int lib = (address + 4095) >> 12;
-		int offset = address | (-1 << 12);
+
+		int lib = (address + 2047) >> 12;	//execbase+128=SoftVer
+//		int lib = (address + 4095) >> 12;
+//		int offset = address | (-1 << 12);
+		int offset = address - (lib << 12);
 
 		if (flags == 0) {
 			std::stringstream ss;
@@ -385,6 +394,16 @@ struct amiga16 : memory32{
 		}
 		switch (lib) {
 		case 1:
+			if (offset > 0) {
+				switch (offset) {
+					case 0x128: // 296	MaxLocMemHi
+						return 8;	//top of chip mem 512K = 8 * 64K					
+					case 0x14:// 20 AttnFlagsHi
+						return 0;
+					default:
+						return 0;
+				}
+			}
 			machineError = callExec(offset);
 			break;
 		case 2:
@@ -459,6 +478,9 @@ struct amiga16 : memory32{
 		switch (offset) {
 		case INTUITION_CLOSEWORKBENCH:
 			bench->closeWorkBench();
+			break;
+		case INTUITION_GETSCREENDATA:
+			bench->getScreenData();
 			break;
 		default:
 			machineState = std::to_string(offset) + "(intuitionBase) un supported";
@@ -574,6 +596,12 @@ struct amiga16 : memory32{
 			break;
 		case PERMIT:
 			systemLog("exec", "permit");
+			break;
+		case SUPERSTATE:
+			exec->superState();
+			break;
+		case USERSTATE:
+			exec->userState();
 			break;
 		case SETINTVECTOR:
 			systemLog("exec", "setintvector");

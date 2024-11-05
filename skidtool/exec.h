@@ -143,6 +143,8 @@ public:
 	virtual void setSignal() = 0;
 	virtual void forbid() = 0;
 	virtual void permit() = 0;
+	virtual void superState() = 0;
+	virtual void userState() = 0;
 };
 class IDos {
 public:
@@ -183,6 +185,7 @@ public:
 class IBench {
 public:
 	virtual void closeWorkBench() = 0;
+	virtual void getScreenData() = 0;
 };
 class INonVolatile {
 public:

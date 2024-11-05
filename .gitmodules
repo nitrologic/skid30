@@ -1,0 +1,3 @@
+[submodule "MyACID500/acidpd"]
+	path = MyACID500/acidpd
+	url = https://github.com/nitrologic/acidpd
