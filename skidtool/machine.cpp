@@ -120,7 +120,7 @@ void writeCC4Big(int tag) {
 	}
 }
 
-Chunk loadPhysicalChunk(std::string path,int physical) {
+Chunk16 loadPhysicalChunk(std::string path,int physical) {
 
 	std::replace(path.begin(),path.end(),':','\\');
 
@@ -132,7 +132,7 @@ Chunk loadPhysicalChunk(std::string path,int physical) {
 	if (fd.f == 0) {
 		writeString("file failure");
 		writeEOL();
-		return Chunk();
+		return Chunk16();
 	}
 	// page 256 hunk__header
 
@@ -143,7 +143,7 @@ Chunk loadPhysicalChunk(std::string path,int physical) {
 	if (!magic) {
 		writeString("loadChunk fail magic");
 		writeEOL();
-		return Chunk();
+		return Chunk16();
 	}
 
 	while (!fd.eof()) {
@@ -193,7 +193,7 @@ Chunk loadPhysicalChunk(std::string path,int physical) {
 	}
 //	writeNamedInt("total words", totalWords);
 //	writeEOL();
-	Chunk chunk(totalWords);
+	Chunk16 chunk(totalWords);
 //	writeNamedInt("hunk count", n);
 //	writeEOL();
 	int index = 0;

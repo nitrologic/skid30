@@ -51,7 +51,7 @@ struct acidmicro {
 	virtual void write16(int physicalAddress, int value) = 0;
 	virtual void write32(int physicalAddress, int value) = 0;
 
-	virtual void writeChunk(int physicalAddress, const Chunk &chunk) = 0;
+	virtual void writeChunk(int physicalAddress, const Chunk16 &chunk) = 0;
 
 	void writeEndianMem(int physicalAddress, void* src, size_t size) {
 		int n = (size + 3) / 4;
@@ -759,7 +759,7 @@ struct RDArgs {
 		std::string segname = cpu0->fetchPath(d1);
 		int seglist = 0;
 		int physical = 0x050000;
-		Chunk chunk = loadPhysicalChunk(segname, physical);
+		Chunk16 chunk = loadPhysicalChunk(segname, physical);
 		cpu0->writeChunk(physical, chunk);
 		int n = chunk.size();
 		seglist = (n==0)?0:physical >> 2;

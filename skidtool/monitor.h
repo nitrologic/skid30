@@ -9,7 +9,7 @@ typedef uint8_t u8;
 typedef uint16_t u16;
 typedef uint32_t u32;
 
-typedef std::vector<u16> Chunk;
+typedef std::vector<u16> Chunk16;
 
 void writeByte(int b);
 void writeShort(int b);

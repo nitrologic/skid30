@@ -1,6 +1,6 @@
 #include "skidkick.h"
 
-#define LOG_COUT
+//#define LOG_COUT
 
 #define MICRO_HISTORY
 
@@ -566,6 +566,11 @@ struct acid68000 : acidmicro {
 
 	std::string homePath;
 
+	void halt(int a0) {
+		memoryError = a0;
+		m68k_pulse_halt();
+	}
+
 	void traceProgramCounter(int physicalAddress) {
 
 		int ppc = readRegister(M68K_REG_PPC); //m68k_get_reg(NULL, M68K_REG_PPC);
@@ -843,6 +848,7 @@ struct acid68000 : acidmicro {
 			return physicalAddress & (~cia_b.mask);
 		}
 
+		// replace with halt()
 		memoryError = physicalAddress;
 		m68k_pulse_halt();
 
@@ -948,7 +954,7 @@ struct acid68000 : acidmicro {
 		}
 	}
 
-	void writeChunk(int physicalAddress, const Chunk& chunk) {
+	void writeChunk(int physicalAddress, const Chunk16& chunk) {
 		int n = chunk.size();
 		for (int i = 0; i < n; i++) {
 			qwrite16(physicalAddress + i * 2, chunk[i]);
@@ -1009,6 +1015,7 @@ extern int readClock(){
 
 class acidbench : public IBench {
 	acid68000* cpu0;
+	acidstruct* workbenchScreen;
 public:
 	acidbench(acid68000* cpu) {
 		cpu0 = cpu;
@@ -1017,14 +1024,93 @@ public:
 		cpu0->writeRegister(0, 1); // return true for success
 //		cpu0->writeRegister(0, 0);
 	}
+/*
+struct Screen
+{
+	struct Screen *NextScreen;		// linked list of screens 
+	struct Window* FirstWindow;		// linked list Screen's Windows 
+
+	WORD LeftEdge, TopEdge;		// parameters of the screen 
+	WORD Width, Height;			// parameters of the screen 
+
+	WORD MouseY, MouseX;		// position relative to upper-left 
+
+	UWORD Flags;			// see definitions below 
+
+	UBYTE* Title;			// null-terminated Title text 
+	UBYTE* DefaultTitle;		// for Windows without ScreenTitle 
+
+	// Bar sizes for this Screen and all Window's in this Screen 
+	// Note that BarHeight is one less than the actual menu bar
+	 * height.	We're going to keep this in V36 for compatibility,
+	 * although V36 artwork might use that extra pixel
+	 *
+	 * Also, the title bar height of a window is calculated from the
+	 * screen's WBorTop field, plus the font height, plus one.
+	 
+	BYTE BarHeight, BarVBorder, BarHBorder, MenuVBorder, MenuHBorder;
+	BYTE WBorTop, WBorLeft, WBorRight, WBorBottom;
+
+	struct TextAttr* Font;		// this screen's default font	   
+
+	// the display data structures for this Screen 
+	struct ViewPort ViewPort;		// describing the Screen's display 
+	struct RastPort RastPort;		// describing Screen rendering	   
+	struct BitMap BitMap;		// extra copy of RastPort BitMap   
+	struct Layer_Info LayerInfo;	// each screen gets a LayerInfo    
+
+	// Only system gadgets may be attached to a screen.
+	 *	You get the standard system Screen Gadgets automatically
+	 
+	struct Gadget* FirstGadget;
+
+	UBYTE DetailPen, BlockPen;		// for bar/border/gadget rendering 
+
+	// the following variable(s) are maintained by Intuition to support the
+	 * DisplayBeep() color flashing technique
+	 
+	UWORD SaveColor0;
+
+	// This layer is for the Screen and Menu bars 
+	struct Layer* BarLayer;
+
+	UBYTE* ExtData;
+
+	UBYTE* UserData;	// general-purpose pointer to User data extension 
+
+	//*** Data below this point are SYSTEM PRIVATE ***
+};
+
+
+*/
+
+/*
+008ee8: 41fa ff78           : lea     (-$88,PC), A0; ($8e62)
+008eec: 33e8 000c 0000 8eb8 : move.w  ($c,A0), $8eb8.l // width
+008ef4: 33e8 000e 0000 8ebc : move.w  ($e,A0), $8ebc.l // height
+008efc: 13e8 00bd 0000 8ec3 : move.b  ($bd,A0), $8ec3.l //
+008f04: 33e8 004c 0000 8ec0 : move.w  ($4c,A0), $8ec0.l
+*/
+	const int HIRES = 0x8000;
+	const int LACE = 4;
+
 	//http://amigadev.elowar.com/read/ADCD_2.1/Includes_and_Autodocs_2._guide/node021F.html
 	void getScreenData() {
-		int a0 = cpu0->readRegister(8);
-		int d0 = cpu0->readRegister(0);
-		int a1 = cpu0->readRegister(9);
-		int d1 = cpu0->readRegister(1);
-		std::cout << "getScreenData: ????" << std::endl;
+		int a0 = cpu0->readRegister(8);//buffer
+		int d0 = cpu0->readRegister(0);//size($54)
+		int d1 = cpu0->readRegister(1);//type
+		int a1 = cpu0->readRegister(9);//screen
+		std::cout << "acidbench::getScreenData buffer : " << a0 << " type : " << d1 << " size : " << d0 << std::endl;
+		int bytes = d0;
 
+		cpu0->write16(a0 + 12, 320);
+		cpu0->write16(a0 + 14, 240);
+
+//		cpu0->copyMem(a0, workbenchScreen.physical, bytes);
+
+		cpu0->writeRegister(0, 1); // return true for success
+
+		cpu0->halt(a0);
 	}
 };
 
@@ -1237,7 +1323,7 @@ void loadHunk(std::string path,int physical) {
 	}
 //	writeNamedInt("total words", totalWords);
 //	writeEOL();
-	Chunk chunk(totalWords);
+	Chunk16 chunk(totalWords);
 //	writeNamedInt("hunk count", n);
 //	writeEOL();
 	int index = 0;
@@ -1488,7 +1574,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 	int err = 0;
 	bool refresh=true;
 	
-	const char* status = name;
+	const char* status = "READY";// name;
 
 	acid500.setHome(home);
 
@@ -1538,6 +1624,7 @@ void debugRom(int pc24,const char *name,const char *args,const char *home) {
 			writeHome();
 			writeString(title);
 			writeEOL();
+			writeNamedString("name", name);
 			writeEOL();
 			writeNamedInt("key", key);
 			writeEOL();
@@ -1800,8 +1887,8 @@ int main() {
 	const char* amiga_args = "\n\0";
 #endif
 
-//	bool debug_rom = true;
-	bool debug_rom = false;
+	bool debug_rom = true;
+//	bool debug_rom = false;
 
 	const int nops[] = { 0 };
 

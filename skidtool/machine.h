@@ -32,7 +32,8 @@ enum ami_mem_map {
 	WORKBENCH_BASE = 0x80c000,
 	TASK_BASE = 0x80e000,
 	BAD_BASE = 0x80f000,
-	SAD_BASE = 0x810000
+	SAD_BASE = 0x810000,	// not implemented decode error such as WORKBENCH_BASE + 0xac
+	ACID_BASE = 0x900000,	// native bridge for acidstructs
 };
 
 std::string addressString(int b);
@@ -58,7 +59,7 @@ public:
 };
 
 
-Chunk loadPhysicalChunk(std::string path, int physical);
+Chunk16 loadPhysicalChunk(std::string path, int physical);
 
 
 class IEvent {
@@ -334,6 +335,18 @@ enum enum_dos {
 // address is 0x800000
 // 
 // underlying 0x100000 shorts to be removed
+//
+// ACID_BASE 0x900000 wired to acidstruct::pysical 
+
+struct acidstruct {
+	const int blocksize = 4096;
+	int physical;
+	Chunk16 chunk;
+	acidstruct(int index,int words):chunk(words) {
+		physical = ACID_BASE + index * blocksize;
+	}
+};
+
 
 struct amiga16 : memory32{
 	std::vector<u16> shorts;	// deprecate me
@@ -344,6 +357,8 @@ struct amiga16 : memory32{
 	IGraphics* gfx;
 	IFFPMath* math;
 
+	std::vector<acidstruct> native;
+
 	amiga16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags=0;
 		dos = NULL;
@@ -351,6 +366,10 @@ struct amiga16 : memory32{
 		bench = NULL;
 		nvram = NULL;
 		gfx = NULL;
+	}
+	int allocNative(int bytes) {
+		int nativeCount = (int)native.size();
+		native.emplace_back(nativeCount,bytes);
 	}
 	void setBench(IBench* work) {
 		bench = work;
@@ -385,6 +404,8 @@ struct amiga16 : memory32{
 	// low 12 bits are offset into 6 byte per entry jump table
 	// 
 	// library index is next few bits, see ami_mem_map
+	//
+	// exec supports positive offsets for system vars MaxLocMem AttnFlags
 
 	virtual int read16(int address, int flags) {
 
