@@ -120,9 +120,8 @@ set(png_include
 	libpng/pngstruct.h
 )
 
-#ADD_LIBRARY(zlib ${zlib_src} ${zlib_include})
-#ADD_LIBRARY(libpng ${png_src} ${png_include})
-
+ADD_LIBRARY(zlib ${zlib_src} ${zlib_include})
+ADD_LIBRARY(libpng ${png_src} ${png_include})
 ADD_LIBRARY(musashi ${musashi_src} ${musashi_include})
 
 ADD_EXECUTABLE(acid500 
@@ -150,9 +149,9 @@ ADD_EXECUTABLE(acid500
 # target_link_libraries(skidtool musashi zlib libpng winmm steam_api64)
 
 if(WIN32)
-target_link_libraries(acid500 musashi winmm kernel32)
+target_link_libraries(acid500 musashi zlib libpng winmm kernel32)
 else()
-target_link_libraries(acid500 musashi)
+target_link_libraries(acid500 musashi zlib libpng)
 endif()
 
 #macos here
