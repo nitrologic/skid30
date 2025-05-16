@@ -1812,7 +1812,7 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-#define test_buzzbar
+//#define test_buzzbar
 #ifdef test_buzzbar
 	const char* amiga_binary = "acidpd/buzzbar/buzzbar";
 	const char* amiga_home = "acidpd/buzzbar";
@@ -1842,6 +1842,7 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
+// can't remember how to run blitz2 from command line, check src
 //#define test_bb2
 #ifdef test_bb2
 	const char* amiga_binary = "blitz2/blitz2";
@@ -1872,7 +1873,7 @@ int main() {
 	const char* amiga_args = "";
 #endif
 
-	//#define test_c
+//#define test_c
 #ifdef test_c
 //	const char* amiga_binary = "C/Avail";	//waiting readargs support
 	const char* amiga_binary = "C/Dir";	//waiting readargs support
@@ -1880,7 +1881,7 @@ int main() {
 	const char* amiga_home = ".";
 #endif
 
-	//#define test_oblivion
+#define test_oblivion
 #ifdef test_oblivion
 	const char* amiga_binary = "oblivion/oblivion";
 	const char* amiga_home = "oblivion";
