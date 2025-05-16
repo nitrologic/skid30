@@ -185,6 +185,7 @@ struct chipset16 : memory32 {
 	std::vector<u16> shorts;
 	chipset16(u32 p, u32 m, int wordCount) : memory32(p, m), shorts(wordCount) {
 		flags = ChipsetFlags;
+		shorts[15]=0x20;//oblivion waits for DSKBLK to be set
 	}
 	virtual void write16(int address, int value) {
 		shorts[address >> 1] = value;

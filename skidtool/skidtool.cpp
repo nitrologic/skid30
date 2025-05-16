@@ -1805,7 +1805,7 @@ int main() {
 	//	mouseOn();
 	std::cout << "screenSize rows:" << rows << " cols:" << cols << std::endl;
 
-// #define test_sibwing - fails to run 
+#define test_sibwing // - fails to run 
 #ifdef test_sibwing
 	const char* amiga_binary = "sw";
 	const char* amiga_home = ".";
@@ -1881,7 +1881,7 @@ int main() {
 	const char* amiga_home = ".";
 #endif
 
-#define test_oblivion
+//#define test_oblivion
 #ifdef test_oblivion
 	const char* amiga_binary = "oblivion/oblivion";
 	const char* amiga_home = "oblivion";
